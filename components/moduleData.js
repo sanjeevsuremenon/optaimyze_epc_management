@@ -98,6 +98,20 @@ export const moduleDashboards = {
       { href: "/dailymeeting", label: "Daily Meetings" },
     ],
   },
+  assets: {
+    key: "assets",
+    label: "Asset Management",
+    href: "/assetdashboard",
+    description: "Track fixed assets and equipment custody, and calibrations.",
+    icon: faHeadset,
+    sublinks: [
+      { href: "/assets/dashboard", label: "Assets Dashboard" },
+      { href: "/assets/mme", label: "MME Equipment" },
+      { href: "/assets/fixedassets", label: "Fixed Assets" },
+      { href: "/assets/ppe-dashboard", label: "PPE Dashboard" },
+      { href: "/assets/reports", label: "Reports" },
+    ],
+  },
 };
 
 export const moduleCards = [
@@ -106,13 +120,7 @@ export const moduleCards = [
   moduleDashboards.purchaseorders,
   moduleDashboards.vendors,
   moduleDashboards.dailymeetings,
-  {
-    label: "Asset Management",
-    href: "#",
-    description: "Track fixed assets and equipment.",
-    icon: faHeadset,
-    badge: "Coming Soon",
-  },
+  moduleDashboards.assets,
   {
     label: "Inventory Tags",
     href: "#",

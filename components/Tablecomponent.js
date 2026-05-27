@@ -24,14 +24,13 @@ function GlobalFilter({
 
   return (
     <label className="flex gap-x-2 items-baseline">
-      <span className="text-red-500 text-sm font-medium uppercase">
-        {" "}
+      <span className="text-slate-300 text-sm font-medium uppercase">
         Search
       </span>
 
       <input
         type="text"
-        className="mt-1 px-3 py-2 block text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        className="mt-1 px-3 py-2 block text-sm w-full rounded-md bg-slate-900/70 border border-slate-700 text-slate-100 shadow-sm focus:border-cyan-500 focus:ring focus:ring-cyan-500/20"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
@@ -58,11 +57,11 @@ export function SelectColumnFilter({
 
   return (
     <label className="flex gap-x-1 items-baseline">
-      <span className="text-red-500 text-sm font-bold uppercase">
-        {render("Header")}:{" "}
+      <span className="text-slate-300 text-sm font-bold uppercase">
+        {render("Header")}: {" "}
       </span>
       <select
-        className="mt-1 p-2 text-[10px] w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        className="mt-1 p-2 text-[11px] w-full rounded-md bg-slate-900/70 border border-slate-700 text-slate-100 shadow-sm focus:border-cyan-500 focus:ring focus:ring-cyan-500/20"
         name={id}
         id={id}
         value={filterValue}
@@ -111,11 +110,7 @@ export function Mattype({ value }) {
 
 export function Cellstyle({ value }) {
   return (
-    <span
-      className={classNames(
-        "px-3 py-1 uppercase leading-wide font-bold text-xs rounded-full shadow-sm bg-slate-300 text-slate-900"
-      )}
-    >
+    <span className="text-sm text-slate-100">
       {value}
     </span>
   );
@@ -123,8 +118,8 @@ export function Cellstyle({ value }) {
 
 export function Datestyle({ value }) {
   return (
-    <span className={classNames("px-3 py-1 text-indigo-900")}>
-      {moment(value).fromNow()}
+    <span className="text-sm text-cyan-300 font-medium">
+      {moment(value).format("DD MMM YYYY")}
     </span>
   );
 }
@@ -247,11 +242,15 @@ export function Normalstylesim1({ value }) {
 
 export function Boldstyle3({ value }) {
   return (
-    <span
-      className={classNames(
-        "px-2 py-1 text-sky-800 bg-sky-50 font-bold text-[12px] tracking-wider"
-      )}
-    >
+    <span className="font-semibold text-sm text-slate-100">
+      {value}
+    </span>
+  );
+}
+
+export function Managerstyle({ value }) {
+  return (
+    <span className="text-sm text-slate-300 font-normal italic">
       {value}
     </span>
   );
@@ -259,11 +258,7 @@ export function Boldstyle3({ value }) {
 
 export function Boldstyle4({ value }) {
   return (
-    <span
-      className={classNames(
-        "px-3 py-1 text-green-800 bg-sky-50 font-bold text-[14px] tracking-widest"
-      )}
-    >
+    <span className="italic font-medium text-sm text-slate-100">
       {value}
     </span>
   );
@@ -343,23 +338,26 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
 
   const [displayedRows, setDisplayedRows] = useState(Math.min(20, rows.length));
   const [selectedMatcode, setSelectedMatcode] = useState("");
+  const [isNearBottom, setIsNearBottom] = useState(false);
 
   React.useEffect(() => {
-    if (!enablePagination) return;
-    
-    const handleScroll = (e) => {
-      const container = e.target;
-      if (container.scrollHeight - container.scrollTop <= container.clientHeight + 100) {
-        setDisplayedRows(prev => Math.min(prev + 10, rows.length));
+    if (!enablePagination) {
+      setIsNearBottom(false);
+      return;
+    }
+
+    const handleWindowScroll = () => {
+      const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
+      setIsNearBottom(nearBottom && displayedRows < rows.length);
+      if (nearBottom) {
+        setDisplayedRows((prev) => Math.min(prev + 10, rows.length));
       }
     };
 
-    const scrollElement = document.querySelector('[data-scroll-container]');
-    if (scrollElement) {
-      scrollElement.addEventListener('scroll', handleScroll);
-      return () => scrollElement.removeEventListener('scroll', handleScroll);
-    }
-  }, [rows.length, enablePagination]);
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+    handleWindowScroll();
+    return () => window.removeEventListener('scroll', handleWindowScroll);
+  }, [rows.length, enablePagination, displayedRows]);
 
   const visibleRows = enablePagination ? rows.slice(0, displayedRows) : rows;
 
@@ -402,8 +400,19 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
         )}
       </div>
 
+      {enablePagination && (
+        <div className="sticky top-24 z-20 mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950/95 px-4 py-3 text-sm text-slate-300 shadow-lg shadow-slate-950/20">
+          <span className="font-medium text-slate-100">
+            Showing {visibleRows.length} of {rows.length} items
+          </span>
+          <span className="text-slate-400">
+            Scroll down to load more
+          </span>
+        </div>
+      )}
+
       {viewMode === 'table' ? (
-        <div data-scroll-container className={enablePagination ? 'max-h-[70vh] overflow-y-auto' : ''}>
+        <div>
           <table className="w-full divide-y divide-slate-700">
             <thead className="sticky top-0 bg-slate-800/80 text-slate-100 font-bold" {...getTableProps()} border="1">
               {headerGroups.map((headerGroup) => (
@@ -462,7 +471,7 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" data-scroll-container={enablePagination ? true : undefined} style={enablePagination ? { maxHeight: '70vh', overflowY: 'auto' } : {}}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {visibleRows.map((row) => {
             prepareRow(row);
             return (
@@ -488,6 +497,12 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
       {enablePagination && displayedRows < rows.length && viewMode === 'card' && (
         <div className="text-center py-4 text-slate-400 text-sm">
           Showing {displayedRows} of {rows.length} rows (scroll to load more)
+        </div>
+      )}
+
+      {enablePagination && isNearBottom && displayedRows < rows.length && (
+        <div className="fixed right-6 bottom-6 z-50 rounded-2xl border border-cyan-500 bg-slate-950/95 px-4 py-3 text-sm text-cyan-100 shadow-xl shadow-cyan-500/30 backdrop-blur-md">
+          Loading more items...
         </div>
       )}
     </>

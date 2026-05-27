@@ -36,7 +36,16 @@ export default function AppLayout({ children }) {
 
   if (requiresAuth && status === "unauthenticated") return null;
 
-  const isDashboard = router.pathname === '/' || router.pathname.includes('dashboard') || router.pathname === '/projectsdashboard';
+  const dashboardPaths = [
+    '/',
+    '/projectsdashboard',
+    '/materialsdashboard',
+    '/purchaseordersdashboard',
+    '/vendorsdashboard',
+    '/dailymeetingdashboard',
+    '/assetdashboard'
+  ];
+  const isDashboard = dashboardPaths.includes(router.pathname);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">

@@ -26,6 +26,23 @@ import Tablecomponent, {
 
 function Openpurchaseorders() {
   const router = useRouter();
+  const [viewMode, setViewMode] = useState('table');
+  const viewModeKey = 'openpurchaseorders_view_mode';
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = window.localStorage.getItem(viewModeKey);
+      if (saved === 'table' || saved === 'card') {
+        setViewMode(saved);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(viewModeKey, viewMode);
+    }
+  }, [viewMode]);
 
   const [selectedopenpo, setSelectedopenpo] = useState({});
   // const [editmode, setEditmode] = useState(false);

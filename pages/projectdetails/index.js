@@ -9,6 +9,7 @@ import Tablecomponent, {
   Boldstyle3,
   Boldstyle4,
   Datestyle,
+  Managerstyle,
 } from "../../components/Tablecomponent";
 
 export default function Projectdetails({ initialProjects = [], session }) {
@@ -17,6 +18,22 @@ export default function Projectdetails({ initialProjects = [], session }) {
   const [search, setSearch] = useState("");
   const [debounced, setDebounced] = useState("");
   const [viewMode, setViewMode] = useState('table');
+  const viewModeKey = "projectdetails_view_mode";
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = window.localStorage.getItem(viewModeKey);
+      if (saved === 'table' || saved === 'card') {
+        setViewMode(saved);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(viewModeKey, viewMode);
+    }
+  }, [viewMode]);
 
   // debounce search input
   useEffect(() => {
@@ -46,7 +63,7 @@ export default function Projectdetails({ initialProjects = [], session }) {
         Header: "Project Manager",
         accessor: "project-incharge",
         Filter: SelectColumnFilter,
-        Cell: Boldstyle3,
+        Cell: Managerstyle,
       },
       {
         Header: "Start Date",
