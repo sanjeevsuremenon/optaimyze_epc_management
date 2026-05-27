@@ -1,0 +1,272 @@
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  text-align: center;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+}
+
+.templateSection {
+  background: #d5e5f6;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+}
+
+.templateFields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: 500;
+  color: hsl(255, 88%, 49%);
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.field input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.field textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.transformationsSection {
+  background: #e6f2e6;
+  padding: 1.0rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+.transformationsList {
+  background: #dfe8f1;
+  padding: 1.0rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.transformationItem {
+ font-size: 0.75rem;
+ font-weight: bold;
+ width: 400px;
+}
+
+
+
+.uploadSection {
+  margin-bottom: 2rem;
+  background-color: #e8efd8;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.fileInput {
+  margin-top: 1rem;
+}
+
+.processButton {
+  background-color: #3498db;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.processButton:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.resultSection {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.resultSection h3 {
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.preview {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.previewItem {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.previewItem p {
+  margin: 0.25rem 0;
+}
+
+.warning {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.progressBar {
+  margin: 1rem 0;
+  background: #f0f0f0;
+  border-radius: 4px;
+  height: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progressFill {
+  background: #3498db;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.progressBar span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 0.8rem;
+} 
+
+.removeButton {
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.addButton {
+  background-color: #3498db;
+  color: white;
+  padding: 0.5rem 0.5rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 4px;
+  max-width: 20px;
+  vertical-align: middle;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.resultsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.resultsTable thead th {
+  background: #f8f9fa;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.resultRow {
+  animation: fadeIn 0.5s ease-in;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.resultRow td {
+  padding: 12px;
+  border-bottom: 1px solid #dee2e6;
+  vertical-align: top;
+}
+
+.statusCell {
+  font-weight: 500;
+  color: #007bff;
+  white-space: nowrap;
+}
+
+.summarySection {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.summaryItem {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.summaryLabel {
+  font-weight: 500;
+  color: #495057;
+}
+
+.summaryCount {
+  color: #6c757d;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

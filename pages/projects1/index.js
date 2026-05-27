@@ -1,0 +1,319 @@
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useSession } from "next-auth/react";
+import { FiSearch, FiArrowUp, FiArrowDown, FiFolder, FiShoppingCart, FiBarChart2, FiGrid, FiList, FiDownload } from 'react-icons/fi';
+
+export default function Projects1() {
+  const { data: session } = useSession();
+  const [projects, setProjects] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: 'project-name', direction: 'asc' });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [purchaseOrders, setPurchaseOrders] = useState([]);
+  const [networkPOs, setNetworkPOs] = useState([]);
+  const [network, setNetwork] = useState(null);
+  const [poLayoutMode, setPOLayoutMode] = useState('card');
+
+  const poCardRefs = useRef({});
+  const [poSortConfig, setPOSortConfig] = useState({ key: 'ponum', direction: 'asc' });
+
+  const formatDate = useCallback((dateStr) => {
+    if (!dateStr) return 'N/A';
+    const d = new Date(dateStr);
+    if (isNaN(d)) return 'N/A';
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
+  }, []);
+
+  const formatTimestamp = useCallback(() => {
+    const d = new Date();
+    const YYYY = d.getFullYear();
+    const MM = String(d.getMonth() + 1).padStart(2, '0');
+    const DD = String(d.getDate()).padStart(2, '0');
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    const ss = String(d.getSeconds()).padStart(2, '0');
+    return `${YYYY}-${MM}-${DD}_${hh}-${mm}-${ss}`;
+  }, []);
+
+  // Debounced search with abort
+  useEffect(() => {
+    if (!searchTerm || !searchTerm.trim()) {
+      setProjects([]);
+      return;
+    }
+    setLoading(true);
+    const controller = new AbortController();
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/projects?str=${encodeURIComponent(searchTerm.trim())}`, { signal: controller.signal });
+        const data = await res.json();
+        setProjects(data || []);
+      } catch (err) {
+        if (err.name !== 'AbortError') console.error(err);
+        setProjects([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 500);
+    return () => {
+      controller.abort();
+      clearTimeout(t);
+    };
+  }, [searchTerm]);
+
+  // Sorting helpers
+  const requestSort = (key) => {
+    setSortConfig(prev => {
+      if (prev.key === key) {
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+      }
+      return { key, direction: 'asc' };
+    });
+  };
+
+  const requestPOSort = (key) => {
+    setPOSortConfig(prev => {
+      if (prev.key === key) {
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+      }
+      return { key, direction: 'asc' };
+    });
+  };
+
+  const SortIndicator = ({ config, columnKey }) => {
+    if (config.key !== columnKey) return null;
+    return config.direction === 'asc' ? <FiArrowUp className="inline ml-1 text-slate-300" /> : <FiArrowDown className="inline ml-1 text-slate-300" />;
+  };
+
+  const sortedProjects = useMemo(() => {
+    if (!projects) return [];
+    const items = [...projects];
+    const key = sortConfig.key;
+    items.sort((a, b) => {
+      const va = (a[key] || '').toString().toLowerCase();
+      const vb = (b[key] || '').toString().toLowerCase();
+      if (va < vb) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (va > vb) return sortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+    return items;
+  }, [projects, sortConfig]);
+
+  const sortedPurchaseOrders = useMemo(() => {
+    if (!purchaseOrders) return [];
+    const items = [...purchaseOrders];
+    const key = poSortConfig.key;
+    items.sort((a, b) => {
+      // status first: pending before complete when sorting by status
+      if (key === 'status') {
+        const sa = a.balgrval === 0 ? 'complete' : 'pending';
+        const sb = b.balgrval === 0 ? 'complete' : 'pending';
+        if (sa < sb) return poSortConfig.direction === 'asc' ? -1 : 1;
+        if (sa > sb) return poSortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      }
+      // numeric compare for value fields
+      if (key === 'poval' || key === 'balgrval') {
+        const na = parseFloat(a[key] || 0) || 0;
+        const nb = parseFloat(b[key] || 0) || 0;
+        return poSortConfig.direction === 'asc' ? na - nb : nb - na;
+      }
+      // date compare
+      if (key === 'podate' || key === 'delivery-date') {
+        const da = a[key] ? new Date(a[key]).getTime() : 0;
+        const db = b[key] ? new Date(b[key]).getTime() : 0;
+        return poSortConfig.direction === 'asc' ? da - db : db - da;
+      }
+      // default string
+      const va = (a[key] || '').toString().toLowerCase();
+      const vb = (b[key] || '').toString().toLowerCase();
+      if (va < vb) return poSortConfig.direction === 'asc' ? -1 : 1;
+      if (va > vb) return poSortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+    return items;
+  }, [purchaseOrders, poSortConfig]);
+
+  // Fetch POs + network when project selected
+  useEffect(() => {
+    if (!selectedProject) return;
+    const controller = new AbortController();
+    const load = async () => {
+      try {
+        const [pRes, nRes, poRes] = await Promise.all([
+          fetch(`/api/projects/${selectedProject}`, { signal: controller.signal }),
+          fetch(`/api/networks/${selectedProject}`, { signal: controller.signal }),
+          fetch(`/api/purchaseorders/project/consolidated/${selectedProject}`, { signal: controller.signal })
+        ]);
+        // ignore non-critical failures
+        const pJson = pRes.ok ? await pRes.json() : null;
+        const nJson = nRes.ok ? await nRes.json() : null;
+        const poJson = poRes.ok ? await poRes.json() : [];
+        setNetwork(nJson);
+        setPurchaseOrders(poJson || []);
+        if (nJson?.['network-num']) {
+          const netRes = await fetch(`/api/purchaseorders/project/consolidated/network/${nJson['network-num']}`, { signal: controller.signal });
+          const netJson = netRes.ok ? await netRes.json() : [];
+          setNetworkPOs(netJson || []);
+        } else {
+          setNetworkPOs([]);
+        }
+      } catch (err) {
+        if (err.name !== 'AbortError') console.error('Error loading project data', err);
+      }
+    };
+    load();
+    return () => controller.abort();
+  }, [selectedProject]);
+
+  const handleDownloadExcel = async () => {
+    if (!selectedProject) return alert('Select a project');
+    try {
+      const res = await fetch(`/api/purchaseorders/project/excel/${selectedProject}`);
+      if (!res.ok) throw new Error('Failed');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PO_Schedule_${selectedProject}_${formatTimestamp()}.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+      alert('Download failed');
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100">
+      <main className="container mx-auto px-6 py-8">
+        <div className="max-w-2xl mx-auto mb-8">
+          <div className="relative">
+            <input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search projects by name or WBS"
+              className="w-full pl-12 pr-4 py-3 rounded-lg bg-slate-800/60 border border-slate-700 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-500"
+            />
+            <FiSearch className="absolute left-4 top-3 text-slate-400" />
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="flex justify-center">
+            <div className="animate-spin h-10 w-10 border-b-2 border-cyan-500 rounded-full" />
+          </div>
+        ) : (
+          <div className="space-y-6">
+            <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 shadow-lg">
+              <h2 className="text-lg font-semibold text-white mb-3">Projects</h2>
+              {sortedProjects.length === 0 ? (
+                <div className="text-center py-8 text-slate-400">
+                  <FiFolder className="mx-auto w-12 h-12 mb-3" />
+                  <div>No projects - try searching</div>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="text-slate-300 text-xs">
+                      <tr>
+                        <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestSort('project-wbs')}>WBS <SortIndicator config={sortConfig} columnKey="project-wbs" /></th>
+                        <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestSort('project-name')}>Name <SortIndicator config={sortConfig} columnKey="project-name" /></th>
+                        <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestSort('project-incharge')}>Manager <SortIndicator config={sortConfig} columnKey="project-incharge" /></th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-slate-200">
+                      {sortedProjects.map((p, i) => (
+                        <tr key={i} onClick={() => setSelectedProject(p['project-wbs'].replace('/', '%2F'))} className="cursor-pointer odd:bg-slate-900 even:bg-slate-800 hover:shadow-md transform hover:-translate-y-0.5 transition-shadow duration-150">
+                          <td className="px-4 py-2 font-mono text-slate-200">{p['project-wbs']}</td>
+                          <td className="px-4 py-2 font-semibold text-slate-100 tracking-tight">{p['project-name']}</td>
+                          <td className="px-4 py-2 text-slate-300">{p['project-incharge']}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {selectedProject && (
+              <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 shadow-lg">
+                <div className="flex justify-between items-center mb-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">Purchase Orders</h3>
+                    {network && <div className="text-sm text-slate-400">Network: {network['network-num']}</div>}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button onClick={handleDownloadExcel} className="px-3 py-2 bg-green-600 rounded-md text-white">Download Excel</button>
+                    <div className="flex items-center bg-slate-800/60 rounded-md p-1">
+                      <button onClick={() => setPOLayoutMode('card')} className={`p-2 rounded ${poLayoutMode==='card'? 'bg-slate-700 text-cyan-300' : 'text-slate-300'}`}><FiGrid /></button>
+                      <button onClick={() => setPOLayoutMode('table')} className={`p-2 rounded ${poLayoutMode==='table'? 'bg-slate-700 text-cyan-300' : 'text-slate-300'}`}><FiList /></button>
+                    </div>
+                  </div>
+                </div>
+
+                {sortedPurchaseOrders.length === 0 ? (
+                  <div className="text-center py-8 text-slate-400">
+                    <FiShoppingCart className="mx-auto w-12 h-12 mb-3" />
+                    No purchase orders for this project.
+                  </div>
+                ) : poLayoutMode === 'card' ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {purchaseOrders.map((po) => (
+                      <div key={po.ponum} className="p-4 bg-slate-800/60 border border-slate-700 rounded-lg shadow-2xl hover:shadow-2xl transition-transform transform hover:-translate-y-1">
+                        <div className="flex justify-between items-center mb-2">
+                          <div className="text-cyan-300 font-semibold cursor-pointer" onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}>{po.ponum}</div>
+                          <div className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${po.balgrval===0 ? 'bg-gradient-to-r from-emerald-400 to-green-300 text-slate-900' : 'bg-gradient-to-r from-yellow-300 to-amber-400 text-slate-900'}`}>{po.balgrval===0?'Complete':'Pending'}</div>
+                        </div>
+                        <div className="text-slate-300 text-xs space-y-1">
+                          <div><strong>Date:</strong> {formatDate(po.podate)}</div>
+                          <div><strong>Delivery:</strong> {po['delivery-date'] ? formatDate(po['delivery-date']) : 'N/A'}</div>
+                          <div><strong>Vendor:</strong> {po.vendorname || po.vendorcode}</div>
+                          <div><strong>Value:</strong> {po.poval ? po.poval.toLocaleString() : '0'} SAR</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="text-slate-300 text-xs">
+                        <tr>
+                          <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestPOSort('ponum')}>PO <SortIndicator config={poSortConfig} columnKey="ponum" /></th>
+                          <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestPOSort('podate')}>Date <SortIndicator config={poSortConfig} columnKey="podate" /></th>
+                          <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestPOSort('delivery-date')}>Delivery <SortIndicator config={poSortConfig} columnKey="delivery-date" /></th>
+                          <th className="px-4 py-2 text-left">Vendor</th>
+                          <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestPOSort('poval')}>Value <SortIndicator config={poSortConfig} columnKey="poval" /></th>
+                          <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestPOSort('status')}>Status <SortIndicator config={poSortConfig} columnKey="status" /></th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-slate-200">
+                        {sortedPurchaseOrders.map((po) => (
+                          <tr key={po.ponum} className="odd:bg-slate-900 even:bg-slate-800 hover:shadow-md transform hover:-translate-y-0.5 transition-shadow duration-150 cursor-pointer">
+                            <td className="px-4 py-2 text-cyan-300 font-mono" onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}>{po.ponum}</td>
+                            <td className="px-4 py-2">{formatDate(po.podate)}</td>
+                            <td className="px-4 py-2">{po['delivery-date'] ? formatDate(po['delivery-date']) : 'N/A'}</td>
+                            <td className="px-4 py-2">{po.vendorname}</td>
+                            <td className="px-4 py-2">{po.poval ? po.poval.toLocaleString() : '0'}</td>
+                            <td className="px-4 py-2"><span className={`px-3 py-1 rounded-full text-sm font-semibold ${po.balgrval===0 ? 'bg-gradient-to-r from-emerald-400 to-green-300 text-slate-900 shadow-sm' : 'bg-gradient-to-r from-yellow-300 to-amber-400 text-slate-900 shadow-sm'}`}>{po.balgrval===0?'Complete':'Pending'}</span></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
+   

@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Rampart+One&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Freehand:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+@import "react-datepicker/dist/react-datepicker.css";
+
+@layer components {
+    /*  */
+    .hide-scroll-bar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .hide-scroll-bar::-webkit-scrollbar {
+      display: none;
+    }
+  
+
+    @keyframes show {
+        100% {
+          opacity: 0.8;
+          transform: scale(0.99);
+        }
+      }
+      .section-content {
+        transition: all 0.3s ease-in-out;
+      }
+      
+      .section-content.collapsed {
+        max-height: 0;
+        overflow: hidden;
+      }
+      
+      .section-content.expanded {
+        max-height: 1000px;
+      }
+
+
+    
+
+}
