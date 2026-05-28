@@ -61,7 +61,6 @@ function HeaderComponent() {
     { href: "/vendors/group-mapping", label: "Vendor Mapping", highlight: true },
     { href: "/material-groups", label: "Material Groups", highlight: true },
     { href: "/vendor-feedback", label: "Vendor Feedback", highlight: true },
-    { href: "/po-feedback", label: "PO Feedback", highlight: true },
   ];
 
   return (

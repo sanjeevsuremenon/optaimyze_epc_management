@@ -15,7 +15,8 @@ const handler = async (req, res) => {
             "account.network": network,
             $or: [
               { "account.wbs": { $exists: false } },
-              { "account.wbs": null }
+              { "account.wbs": null },
+              { "account.wbs": "" }
             ]
           }).toArray()
 

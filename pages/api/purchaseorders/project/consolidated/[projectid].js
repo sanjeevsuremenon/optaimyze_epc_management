@@ -8,14 +8,53 @@ const handler = async (req, res) => {
     switch (req.method) {
       case "GET": {       
         
-        const purchaseorders = await db
-          .collection("purchaseorders")
-          .find(
-            {$expr: {
-              $eq: [{ $substr: ["$account.wbs", 0, 12] }, projectid]
-            }
-            } 
-          ).toArray()
+        let purchaseorders = [];
+        if (projectid === "unassigned") {
+          purchaseorders = await db.collection("purchaseorders").find({
+            $and: [
+              {
+                $or: [
+                  { "account.wbs": { $exists: false } },
+                  { "account.wbs": null },
+                  { "account.wbs": "" }
+                ]
+              },
+              {
+                $or: [
+                  { "account.network": { $exists: false } },
+                  { "account.network": null },
+                  { "account.network": "" }
+                ]
+              }
+            ]
+          }).toArray();
+        } else {
+          // Find network for this project
+          const network = await db.collection("networks").findOne({ "project-wbs": { $regex: `^${projectid}` } });
+          
+          let networkPOs = [];
+          if (network && network["network-num"]) {
+            networkPOs = await db.collection("purchaseorders").find({
+              "account.network": network["network-num"],
+              $or: [
+                { "account.wbs": { $exists: false } },
+                { "account.wbs": null },
+                { "account.wbs": "" }
+              ]
+            }).toArray();
+          }
+
+          const projectPOs = await db
+            .collection("purchaseorders")
+            .find(
+              {$expr: {
+                $eq: [{ $substr: ["$account.wbs", 0, 12] }, projectid]
+              }
+              } 
+            ).toArray();
+            
+          purchaseorders = [...projectPOs, ...networkPOs];
+        }
           
           let result = []
 

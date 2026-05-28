@@ -1,239 +1,168 @@
-import React, { useState, useEffect } from 'react';
-import { FiAlertTriangle, FiCalendar, FiClock, FiExternalLink } from 'react-icons/fi';
+import React from 'react';
+import { FiAlertTriangle, FiCalendar, FiClock, FiMessageSquare, FiEye } from 'react-icons/fi';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 
-const DeliveryAlertList = () => {
-  const [passedPOs, setPassedPOs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchPassedPOs = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('/api/reports/purchaseorders/deliverydatepassed');
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        
-        const data = await response.json();
-        setPassedPOs(data);
-      } catch (err) {
-        console.error('Error fetching passed POs:', err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPassedPOs();
-  }, []);
+const DeliveryAlertList = ({ passedPOs = [], onOpenComment }) => {
+  const router = useRouter();
 
   const getSeverityColor = (daysOverdue) => {
-    if (daysOverdue <= 7) return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-    if (daysOverdue <= 30) return 'text-orange-600 bg-orange-50 border-orange-200';
-    return 'text-red-600 bg-red-50 border-red-200';
+    if (daysOverdue <= 7) return 'text-rose-400 bg-rose-500/10 border-rose-500/20';
+    if (daysOverdue <= 30) return 'text-orange-400 bg-orange-500/10 border-orange-500/20';
+    return 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20';
   };
 
   const getSeverityIcon = (daysOverdue) => {
-    if (daysOverdue <= 7) return 'text-yellow-500';
+    if (daysOverdue <= 7) return 'text-rose-500';
     if (daysOverdue <= 30) return 'text-orange-500';
-    return 'text-red-500';
+    return 'text-yellow-500';
   };
-
-  const handleViewPO = (ponumber) => {
-    // Use the same modal approach as BG alerts
-    window.open(`/po-alert-report/view-po?ponumber=${ponumber}`, '_blank');
-  };
-
-  if (loading) {
-    return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-          <span className="ml-2 text-gray-600">Loading delivery date alerts...</span>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="text-center text-red-600">
-          <FiAlertTriangle className="mx-auto h-8 w-8 mb-2" />
-          <p>Error loading data: {error}</p>
-        </div>
-      </div>
-    );
-  }
 
   if (passedPOs.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="text-center text-green-600">
-          <FiCalendar className="mx-auto h-8 w-8 mb-2" />
-          <h3 className="text-lg font-medium mb-1">No Delivery Date Alerts</h3>
-          <p className="text-sm text-gray-600">All POs are within their delivery dates.</p>
+      <div className="p-12">
+        <div className="text-center">
+          <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
+            <FiCalendar className="h-8 w-8 text-emerald-400" />
+          </div>
+          <h3 className="text-lg font-bold text-slate-100 mb-1">No Delivery Date Alerts</h3>
+          <p className="text-sm text-slate-400">All purchase orders are currently within their delivery dates.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md">
+    <div>
       {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-red-50 to-orange-50">
+      <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <FiAlertTriangle className="h-6 w-6 text-red-500 mr-3" />
+            <FiAlertTriangle className="h-5 w-5 text-orange-500 mr-3" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-bold text-slate-100">
                 Delivery Date Passed Alerts
               </h3>
-              <p className="text-sm text-gray-600">
-                {passedPOs.length} PO{passedPOs.length !== 1 ? 's' : ''} with overdue delivery dates
-              </p>
             </div>
           </div>
           <div className="text-right">
-            <p className="text-sm text-gray-500">Report Date</p>
-            <p className="text-sm font-medium text-gray-900">
-              {moment().format('MMM D, YYYY')}
-            </p>
+            <span className="bg-slate-950 text-orange-400 py-1 px-3 rounded-full text-xs font-bold border border-slate-800 shadow-sm">
+              {passedPOs.length} Alerts
+            </span>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  PO Number
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Vendor
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Plant
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Open Value
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Overdue Date(s)
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Days Overdue
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {passedPOs.map((po, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {po.ponumber}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
-                      {po.poDetails?.vendorname || 'N/A'}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {po.poDetails?.vendorcode || 'N/A'}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {po.poDetails?.plant || 'N/A'}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {po.poDetails?.openvalue ? 
-                      `${po.poDetails.openvalue.toLocaleString()} SAR` : 
-                      'N/A'
-                    }
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="space-y-1">
-                      {po.daysOverdue.map((overdue, idx) => (
-                        <div key={idx} className="flex items-center">
-                          <FiClock className={`h-4 w-4 mr-2 ${getSeverityIcon(overdue.daysOverdue)}`} />
-                          <div>
-                            <div className="text-sm font-medium text-gray-900">
-                              {overdue.field === 'podelydate' ? 'PO Delivery' : 'Estimated Delivery'}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              {moment(overdue.date).format('MMM D, YYYY')}
-                            </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left table-fixed">
+          <colgroup>
+            <col className="w-[12%]" />
+            <col className="w-[20%]" />
+            <col className="w-[8%]" />
+            <col className="w-[10%]" />
+            <col className="w-[15%]" />
+            <col className="w-[15%]" />
+            <col className="w-[20%]" />
+          </colgroup>
+          <thead className="bg-slate-950 sticky top-0 z-10 shadow-sm border-b border-slate-800">
+            <tr>
+              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">PO Number</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Vendor</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Plant</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Open Value</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Overdue Date(s)</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Days Overdue</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-800/50 bg-slate-900">
+            {passedPOs.map((po, index) => (
+              <tr key={index} className="hover:bg-slate-800/40 transition-colors group">
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <div className="text-xs font-bold text-cyan-400">
+                    {po.ponumber}
+                  </div>
+                </td>
+                <td className="px-4 py-3">
+                  <div className="text-xs text-slate-200 capitalize break-words font-medium">
+                    {po.poDetails?.vendorname?.toLowerCase() || 'N/A'}
+                  </div>
+                  <div className="text-[10px] text-slate-500 font-mono mt-0.5">
+                    {po.poDetails?.vendorcode || 'N/A'}
+                  </div>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-xs text-slate-300">
+                  {po.poDetails?.plant || 'N/A'}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-xs font-mono text-emerald-400">
+                  {po.poDetails?.openvalue ? 
+                    `${po.poDetails.openvalue.toLocaleString()} SAR` : 
+                    'N/A'
+                  }
+                </td>
+                <td className="px-4 py-3">
+                  <div className="space-y-2">
+                    {po.daysOverdue.map((overdue, idx) => (
+                      <div key={idx} className="flex items-start">
+                        <FiClock className={`h-3 w-3 mt-0.5 mr-1.5 ${getSeverityIcon(overdue.daysOverdue)}`} />
+                        <div>
+                          <div className="text-[10px] font-bold text-slate-300 uppercase tracking-wide">
+                            {overdue.field === 'podelydate' ? 'PO Delivery' : 'Estimated'}
+                          </div>
+                          <div className="text-[11px] text-slate-400">
+                            {moment(overdue.date).format('MMM D, YYYY')}
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="space-y-1">
-                      {po.daysOverdue.map((overdue, idx) => (
+                      </div>
+                    ))}
+                  </div>
+                </td>
+                <td className="px-4 py-3">
+                  <div className="space-y-1.5">
+                    {po.daysOverdue.map((overdue, idx) => (
+                      <div key={idx}>
                         <span
-                          key={idx}
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getSeverityColor(overdue.daysOverdue)}`}
+                          className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border ${getSeverityColor(overdue.daysOverdue)}`}
                         >
                           {overdue.daysOverdue} day{overdue.daysOverdue !== 1 ? 's' : ''} overdue
                         </span>
-                      ))}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleViewPO(po.ponumber)}
-                        className="inline-flex items-center px-2 py-1 border border-transparent text-xs leading-4 font-medium rounded text-blue-600 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                      >
-                        <FiExternalLink className="mr-1 h-3 w-3" />
-                        View PO
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Summary Footer */}
-      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-        <div className="flex justify-between items-center text-sm text-gray-600">
-          <div>
-            <span className="font-medium">Summary:</span>
-            <span className="ml-2">
-              {passedPOs.length} PO{passedPOs.length !== 1 ? 's' : ''} with overdue delivery dates
-            </span>
-          </div>
-          <div className="flex space-x-4">
-            <span className="flex items-center">
-              <div className="w-3 h-3 bg-yellow-400 rounded-full mr-2"></div>
-              ≤ 7 days
-            </span>
-            <span className="flex items-center">
-              <div className="w-3 h-3 bg-orange-400 rounded-full mr-2"></div>
-              8-30 days
-            </span>
-            <span className="flex items-center">
-              <div className="w-3 h-3 bg-red-400 rounded-full mr-2"></div>
-              &gt; 30 days
-            </span>
-          </div>
-        </div>
+                      </div>
+                    ))}
+                  </div>
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center justify-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => router.push(`/openpurchaseorders1/schedule/${po.ponumber}`)}
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-violet-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-violet-500"
+                      title="Update Schedule"
+                    >
+                      <FiCalendar size={12} /> Schedule
+                    </button>
+                    <button
+                      onClick={() => onOpenComment(po.ponumber)}
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-blue-500"
+                      title="View/Add Comments"
+                    >
+                      <FiMessageSquare size={12} /> Comment
+                    </button>
+                    <button
+                      onClick={() => router.push(`/openpurchaseorders1/view/${po.ponumber}`)}
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-cyan-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-cyan-500"
+                      title="View PO Details & Timeline"
+                    >
+                      <FiEye size={12} /> View
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
 
-export default DeliveryAlertList; 
+export default DeliveryAlertList;

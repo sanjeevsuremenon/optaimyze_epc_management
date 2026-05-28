@@ -41,16 +41,35 @@ export default async function handler(req, res) {
           .toArray();
 
         const unregisteredVendors = unregisteredMappings.map(mapping => ({
-          'vendor-name': mapping['vendor-name'],
-          'vendor-code': mapping['vendor-name'], // Use name as code for unregistered
+          'vendor-name': mapping['vendor-name'] || mapping.vendorName,
+          'vendor-code': mapping['vendor-code'] || mapping.vendorCode || 'NA',
           isUnregistered: true,
           mappingDate: mapping.createdAt
         }));
 
-        // Combine registered and unregistered vendors
+        // Also check for non-SAP vendors
+        const nonsapMappings = await db.collection('nonsapvendorgroupmap')
+          .find({ subgroupId: new ObjectId(subgroupId) })
+          .toArray();
+
+        const nonsapVendorIds = [...new Set(nonsapMappings.map(mapping => mapping.nonsapVendorId))];
+        const nonsapVendorRecords = await db.collection('nonsapvendors')
+          .find({ _id: { $in: nonsapVendorIds.map(id => new ObjectId(id)) } })
+          .toArray();
+
+        const nonsapVendors = nonsapVendorRecords.map(vendor => ({
+          ...vendor,
+          'vendor-name': vendor.vendorname,
+          'vendor-code': 'NA',
+          isUnregistered: true,
+          isNonsap: true
+        }));
+
+        // Combine all vendors
         const allVendors = [
           ...vendors.map(vendor => ({ ...vendor, isUnregistered: false })),
-          ...unregisteredVendors
+          ...unregisteredVendors,
+          ...nonsapVendors
         ];
 
         return res.status(200).json(allVendors);

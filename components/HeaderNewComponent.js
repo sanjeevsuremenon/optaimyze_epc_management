@@ -69,14 +69,7 @@ function HeaderNewComponent() {
         { href: "/openpurchaseorders1", label: "Open PO" },
         { href: "/purchaseordersearch", label: "PO Complete Details" },
         { href: "/po-alert-report", label: "PO Alerts" },
-        { href: "/po-feedback", label: "PO Feedback" },
-        { href: "/po-comments", label: "PO Comments Summary" },
-        { href:"/cash-po-materials-report", label: "Cash Purchases Dashboard" },
-        { href:"/all-purchases-report", label: "All Purchases Report" },
-        { href:"/domestic-purchases-report", label: "Within KSA/Domestic Purchases Details" },
-        { href:"/import-purchases-report", label: "Import Purchases Details" },
-        { href:"/services-purchases-report", label: "Services Purchases Details" },
-        { href:"/channel-partner-purchases-report", label: "Channel partner Purchases Details" },
+        { href: "/purchases-report", label: "Comprehensive Purchases Report" },
       ]
     },
     {

@@ -14,7 +14,7 @@ function isNonsapObjectId(nonsapVendorId) {
   return /^[a-fA-F0-9]{24}$/.test(String(nonsapVendorId).trim());
 }
 
-export default function VendorGroupMapping({ vendorCode, vendorName, nonsapVendorId, onSaveSuccess }) {
+export default function VendorGroupMapping({ vendorCode, vendorName, nonsapVendorId, onSaveSuccess, preselectedSubgroupId }) {
   const [groups, setGroups] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -35,25 +35,28 @@ export default function VendorGroupMapping({ vendorCode, vendorName, nonsapVendo
         const groupsResponse = await fetch('/api/materialgroups');
         const groupsData = await groupsResponse.json();
 
+        const buildOptions = (gData) => gData.flatMap((group) =>
+          group.subgroups.map((subgroup) => ({
+            value: subgroup._id,
+            label: `${group.name} - ${subgroup.name}`,
+            groupName: group.name,
+            subgroupName: subgroup.name,
+            isService: group.isService,
+          }))
+        );
+
         if (useNonsap) {
           const id = String(nonsapVendorId).trim();
           const mappingsResponse = await fetch(
             `/api/nonsapvendorgroupmap?nonsapVendorId=${encodeURIComponent(id)}`
           );
           const mappingsData = await mappingsResponse.json();
-          const options = groupsData.flatMap((group) =>
-            group.subgroups.map((subgroup) => ({
-              value: subgroup._id,
-              label: `${group.name} - ${subgroup.name}`,
-              groupName: group.name,
-              subgroupName: subgroup.name,
-              isService: group.isService,
-            }))
-          );
+          const options = buildOptions(groupsData);
           setGroups(options);
           setFilteredOptions(options);
           const initialSelections = options.filter((option) =>
-            mappingsData.some((mapping) => String(mapping.subgroupId) === String(option.value))
+            mappingsData.some((mapping) => String(mapping.subgroupId) === String(option.value)) ||
+            (preselectedSubgroupId && String(option.value) === String(preselectedSubgroupId))
           );
           setSelectedOptions(initialSelections);
           setIsLoading(false);
@@ -71,19 +74,12 @@ export default function VendorGroupMapping({ vendorCode, vendorName, nonsapVendo
           }
           const mappingsResponse = await fetch(`/api/unregisteredvendorgroupmap?vendorName=${encodeURIComponent(effectiveVendorName)}`);
           const mappingsData = await mappingsResponse.json();
-          const options = groupsData.flatMap(group =>
-            group.subgroups.map(subgroup => ({
-              value: subgroup._id,
-              label: `${group.name} - ${subgroup.name}`,
-              groupName: group.name,
-              subgroupName: subgroup.name,
-              isService: group.isService
-            }))
-          );
+          const options = buildOptions(groupsData);
           setGroups(options);
           setFilteredOptions(options);
           const initialSelections = options.filter(option =>
-            mappingsData.some(mapping => String(mapping.subgroupId) === String(option.value))
+            mappingsData.some(mapping => String(mapping.subgroupId) === String(option.value)) ||
+            (preselectedSubgroupId && String(option.value) === String(preselectedSubgroupId))
           );
           setSelectedOptions(initialSelections);
           setIsLoading(false);
@@ -93,19 +89,12 @@ export default function VendorGroupMapping({ vendorCode, vendorName, nonsapVendo
         // Registered vendor (SAP code): use vendorgroupmap
         const mappingsResponse = await fetch(`/api/vendorgroupmap?vendorCode=${encodeURIComponent(vendorCode)}`);
         const mappingsData = await mappingsResponse.json();
-        const options = groupsData.flatMap(group =>
-          group.subgroups.map(subgroup => ({
-            value: subgroup._id,
-            label: `${group.name} - ${subgroup.name}`,
-            groupName: group.name,
-            subgroupName: subgroup.name,
-            isService: group.isService
-          }))
-        );
+        const options = buildOptions(groupsData);
         setGroups(options);
         setFilteredOptions(options);
         const initialSelections = options.filter(option =>
-          mappingsData.some(mapping => String(mapping.subgroupId) === String(option.value))
+          mappingsData.some(mapping => String(mapping.subgroupId) === String(option.value)) ||
+          (preselectedSubgroupId && String(option.value) === String(preselectedSubgroupId))
         );
         setSelectedOptions(initialSelections);
       } catch (err) {
@@ -117,7 +106,7 @@ export default function VendorGroupMapping({ vendorCode, vendorName, nonsapVendo
     };
 
     fetchData();
-  }, [vendorCode, vendorName, useUnregistered, useNonsap, nonsapVendorId, effectiveVendorName]);
+  }, [vendorCode, vendorName, useUnregistered, useNonsap, nonsapVendorId, effectiveVendorName, preselectedSubgroupId]);
 
   // Filter options based on search term
   useEffect(() => {

@@ -6,69 +6,51 @@ const Matdocument = React.forwardRef(({ matdoc }, ref) => {
     return null;
   }
 
+  const accountText = matdoc.account?.wbs || matdoc.account?.network || matdoc.account?.["cost-center"] || matdoc.account?.["sale-order"] || "*****";
+
   const MatdocContent = (
-    <div className="w-full">
-      <div>
-        <tr
-          className="bg-white border-b dark:bg-gray-800 text-[12px] dark:border-gray-700 grid grid-cols-12"
-          ref={ref}
-          key={matdoc._id}
-        >
-          <td
-            scope="row"
-            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white col-span-1 shadow-sm shadow-slate-600 "
-          >
-            {matdoc["doc-number"]}
-          </td>
-          <td
-            scope="row"
-            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white col-span-1 shadow-sm shadow-lime-500 "
-          >
-            {matdoc["doc-item"]}
-          </td>
-          <td className="px-6 py-2 font-medium text-stone-800 col-span-1 shadow-sm shadow-purple-400">
-            {moment(matdoc["doc-date"]).format("MM-DD-YYYY")}
-          </td>
-          <td className="px-6 py-2 font-medium text-stone-800 col-span-1 shadow-sm shadow-purple-400">
-            {matdoc["material-code"]}
-          </td>
-          <td className="px-6 py-2 font-bold  text-stone-800 col-span-3 shadow-md shadow-zinc-400">
-            {matdoc["material-text"]}
-          </td>
-          <td className="px-6 py-2 font-medium text-stone-800 col-span-1 shadow shadow-zinc-400">
-            {matdoc["doc-qty"]?.$numberDecimal}
-          </td>
-          <td className="px-6 py-2 font-black text-stone-800 col-span-1 shadow-md  shadow-zinc-400">
-            {matdoc["doc-amount"]}
-          </td>
-
-          <td className="px-6 py-2 font-medium text-stone-800 col-span-2 flex justify-evenly shadow-sm shadow-emerald-400">
-            <span className="px-1"> {matdoc["plant-code"]}</span>
-            <span className="px-1"> {matdoc.sloc || "****"}</span>
-            <span className="px-1"> {matdoc["mvt-type"]}</span>
-          </td>
-          <td className="px-6 py-2 font-medium text-stone-800 col-span-1 shadow-sm shadow-teal-400">
-            {matdoc.account?.["wbs"]
-              ? matdoc.account?.["wbs"]
-              : matdoc.account?.["network"]
-              ? matdoc.account?.["network"]
-              : matdoc.account?.["cost-center"]
-              ? matdoc.account?.["cost-center"]
-              : matdoc.account?.["sale-order"]
-              ? matdoc.account?.["sale-order"]
-              : "*****"}
-          </td>
-        </tr>
-      </div>
-    </div>
+    <tr
+      className="bg-slate-900/50 border-b border-slate-800 hover:bg-slate-800/50 transition-colors duration-150 group text-sm"
+      ref={ref}
+      key={matdoc._id}
+    >
+      <td className="px-4 py-3 font-semibold text-cyan-400 break-words">
+        {matdoc.documentnumber || matdoc["doc-number"]}
+      </td>
+      <td className="px-4 py-3 font-medium text-slate-300 break-words">
+        {matdoc.documentlineitem || matdoc["doc-item"]}
+      </td>
+      <td className="px-4 py-3 font-medium text-slate-400 break-words">
+        {moment(matdoc.documentdate || matdoc["doc-date"]).format("MM-DD-YYYY")}
+      </td>
+      <td className="px-4 py-3 font-medium text-slate-300 break-words">
+        {matdoc.material || matdoc["material-code"]}
+      </td>
+      <td className="px-4 py-3 font-medium text-slate-200">
+        <div className="w-full whitespace-normal break-words">
+          {matdoc.materialdescription || matdoc["material-text"]}
+        </div>
+      </td>
+      <td className="px-4 py-3 font-bold text-white break-words">
+        {matdoc.documentqty?.$numberDecimal || matdoc["doc-qty"]?.$numberDecimal}
+      </td>
+      <td className="px-4 py-3 font-bold text-emerald-400 break-words">
+        {matdoc.documentvalue || matdoc["doc-amount"]}
+      </td>
+      <td className="px-4 py-3 font-medium text-slate-400">
+        <div className="flex flex-wrap gap-1">
+          <span className="px-2 py-0.5 bg-slate-800 rounded">{matdoc.plant || matdoc["plant-code"]}</span>
+          <span className="px-2 py-0.5 bg-slate-800 rounded">{matdoc.sloc || "****"}</span>
+          <span className="px-2 py-0.5 bg-slate-800 rounded text-cyan-300">{matdoc.movementtype || matdoc["mvt-type"]}</span>
+        </div>
+      </td>
+      <td className="px-4 py-3 font-medium text-slate-300 break-words">
+        {accountText}
+      </td>
+    </tr>
   );
 
-  const content = ref ? (
-    <div ref={ref}>{MatdocContent}</div>
-  ) : (
-    <div>{MatdocContent}</div>
-  );
-  return content;
+  return MatdocContent;
 });
 
 export default Matdocument;

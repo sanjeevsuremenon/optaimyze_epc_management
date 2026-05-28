@@ -6,17 +6,25 @@ const handler = async (req, res) => {
     switch (req.method) {
       case "GET": {
         const { db } = await connectToDatabase();
-        const { search } = req.query;
+        const { search, skip = 0, limit = 50 } = req.query;
 
         let query = {};
-        if (search && search.length >= 4) {
+        if (search && search.length >= 3) {
           query = {
             vendorname: { $regex: search, $options: 'i' }
           };
         }
 
-        const vendorlist = await db.collection("registeredvendors").find(query).toArray();
-        return res.json(vendorlist);
+        const vendorlist = await db.collection("registeredvendors")
+          .find(query)
+          .sort({ created_at: -1 })
+          .skip(parseInt(skip))
+          .limit(parseInt(limit))
+          .toArray();
+
+        const totalCount = await db.collection("registeredvendors").countDocuments(query);
+        
+        return res.json({ vendors: vendorlist, hasMore: skip + vendorlist.length < totalCount, total: totalCount });
       }
 
       case "POST": {

@@ -1,18 +1,18 @@
 import { connectToDatabase } from "../../../lib/mongoconnect";
 
 const handler = async (req, res) => {
-  
-  // handle different methods
   try {
     switch (req.method) {
-      
       case "GET": {
         const { db } = await connectToDatabase();
-        const str = req.query.str
+        const str = req.query.str;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+        const skip = (page - 1) * limit;
         
         let condition = {};
         
-        if(str){
+        if (str) {
           // Clean the string: remove leading/trailing asterisks
           let cleanedStr = str.trim().replace(/^\*+|\*+$/g, '');
           
@@ -22,9 +22,8 @@ const handler = async (req, res) => {
             .filter(term => term.length > 0)
             .slice(0, 4); // Limit to maximum 4 search terms
           
-          if(searchTerms.length > 0){
+          if (searchTerms.length > 0) {
             // Escape special regex characters for each term
-            // Special characters that need escaping: . * + ? ^ $ { } [ ] ( ) | \ /
             const escapeRegex = (string) => {
               return string.replace(/[.*+?^${}()[\]\\/]/g, '\\$&');
             };
@@ -32,7 +31,7 @@ const handler = async (req, res) => {
             // Build regex pattern: each term must appear anywhere in the description
             // Using positive lookahead to ensure all terms are present
             let regexPattern = '';
-            searchTerms.forEach((term, index) => {
+            searchTerms.forEach((term) => {
               const escapedTerm = escapeRegex(term);
               regexPattern += `(?=.*${escapedTerm})`;
             });
@@ -40,20 +39,37 @@ const handler = async (req, res) => {
             // Match the entire string with all terms present
             regexPattern = `^${regexPattern}.*$`;
             
-            var regexsearchstring = new RegExp(regexPattern, 'i');
-            condition = {'vendor-name': {'$regex': regexsearchstring}};
+            const regexsearchstring = new RegExp(regexPattern, 'i');
+            
+            // Search in both vendor-name and vendor-code
+            condition = {
+              $or: [
+                { 'vendor-name': { '$regex': regexsearchstring } },
+                { 'vendor-code': { '$regex': regexsearchstring } }
+              ]
+            };
           }
         }
         
-          const vendorlist = await db
-            .collection("vendors")
-            // .find({$expr: { $lt: [0.8, { $rand: {} }] }})
-            .find(condition)
-            .sort({ 'created_date': -1 })            
-            .limit(50)
-            .toArray();
-          return res.json(vendorlist);
-        
+        const vendorlist = await db
+          .collection("vendors")
+          .find(condition)
+          .sort({ 'created_date': -1, 'vendor-name': 1 })            
+          .skip(skip)
+          .limit(limit)
+          .toArray();
+
+        // Also get total count for pagination metadata
+        const totalCount = await db.collection("vendors").countDocuments(condition);
+        const hasMore = skip + vendorlist.length < totalCount;
+
+        return res.json({
+          vendors: vendorlist,
+          hasMore,
+          totalCount,
+          page,
+          limit
+        });
       }
 
       case "POST": {
@@ -71,7 +87,9 @@ const handler = async (req, res) => {
         return res.json({ error: "Method not supported" });
     }
   } catch (error) {
-    console.log(error);
+    console.error("API /vendors error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 export default handler;

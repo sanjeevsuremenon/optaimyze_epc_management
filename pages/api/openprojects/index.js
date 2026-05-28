@@ -11,13 +11,54 @@ const handler = async (req, res) => {
           .collection("purchaseorders")
           .aggregate([
             {
-              $match: {
-                "account.wbs": { $exists: true, $ne: null }
+              $lookup: {
+                from: "networks",
+                localField: "account.network",
+                foreignField: "network-num",
+                as: "network_info"
               }
             },
             {
               $addFields: {
-                projectId: { $substr: ["$account.wbs", 0, 12] }
+                projectId: {
+                  $cond: {
+                    if: {
+                      $and: [
+                        { $ifNull: ["$account.wbs", false] },
+                        { $ne: ["$account.wbs", ""] }
+                      ]
+                    },
+                    then: { $substr: ["$account.wbs", 0, 12] },
+                    else: {
+                      $cond: {
+                        if: {
+                          $and: [
+                            { $ifNull: ["$account.network", false] },
+                            { $ne: ["$account.network", ""] }
+                          ]
+                        },
+                        then: {
+                          $cond: {
+                            if: { $gt: [{ $size: "$network_info" }, 0] },
+                            then: { $substr: [{ $arrayElemAt: ["$network_info.project-wbs", 0] }, 0, 12] },
+                            else: "ignore"
+                          }
+                        },
+                        else: "unassigned"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              $project: {
+                network_info: 0
+              }
+            },
+            {
+              $match: {
+                projectId: { $ne: "ignore" }
               }
             },
             {

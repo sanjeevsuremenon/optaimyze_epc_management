@@ -153,13 +153,24 @@ export default function Projects1() {
         const nJson = nRes.ok ? await nRes.json() : null;
         const poJson = poRes.ok ? await poRes.json() : [];
         setNetwork(nJson);
-        setPurchaseOrders(poJson || []);
+        
         if (nJson?.['network-num']) {
           const netRes = await fetch(`/api/purchaseorders/project/consolidated/network/${nJson['network-num']}`, { signal: controller.signal });
           const netJson = netRes.ok ? await netRes.json() : [];
           setNetworkPOs(netJson || []);
+          
+          // Combine project POs and network POs, avoiding duplicates
+          const combined = [...(poJson || [])];
+          const existing = new Set(combined.map(po => po.ponum));
+          (netJson || []).forEach(po => {
+            if (!existing.has(po.ponum)) {
+              combined.push(po);
+            }
+          });
+          setPurchaseOrders(combined);
         } else {
           setNetworkPOs([]);
+          setPurchaseOrders(poJson || []);
         }
       } catch (err) {
         if (err.name !== 'AbortError') console.error('Error loading project data', err);

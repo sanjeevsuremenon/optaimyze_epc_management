@@ -1,559 +1,455 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { useSession, getSession } from "next-auth/react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { getSession } from "next-auth/react";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import moment from "moment";
-import { FiSearch, FiArrowUp, FiArrowDown, FiFileText, FiDollarSign, FiMapPin, FiUsers, FiShoppingCart, FiClipboard, FiPackage, FiX, FiGrid, FiList } from 'react-icons/fi';
+import { 
+  FiSearch, FiUsers, FiPieChart, FiFolder, FiStar, 
+  FiGrid, FiList, FiShoppingCart, FiCalendar, 
+  FiMessageSquare, FiEye, FiArrowUp, FiArrowDown 
+} from 'react-icons/fi';
+import POCommentModal from '../../components/PO/POCommentModal';
 
-function Vendors1() {
+export default function Vendors1() {
+  const router = useRouter();
+  
+  // Vendors State
   const [vendors, setVendors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [layoutMode, setLayoutMode] = useState('table'); // 'table' or 'card'
+  
+  // PO State
   const [selectedVendor, setSelectedVendor] = useState(null);
   const [purchaseOrders, setPurchaseOrders] = useState([]);
-  const [selectedPO, setSelectedPO] = useState(null);
-  const [poDetails, setPODetails] = useState(null);
-  const [deliveryHistory, setDeliveryHistory] = useState([]);
-  const [selectedPOCardRef, setSelectedPOCardRef] = useState(null);
-  const [poLayoutMode, setPOLayoutMode] = useState('card'); // 'card' or 'table'
-  const [sortConfig, setSortConfig] = useState({
-    key: 'vendor-name',
-    direction: 'asc'
-  });
-  const [poSortConfig, setPOSortConfig] = useState({
-    key: null,
-    direction: 'asc'
-  });
+  const [poLoading, setPoLoading] = useState(false);
+  const [poSortConfig, setPOSortConfig] = useState({ key: null, direction: 'asc' });
 
-  const { data: session } = useSession();
+  // Comment Modal State
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+  const [selectedPoNumber, setSelectedPoNumber] = useState(null);
 
-  // Create refs for PO cards
-  const poCardRefs = useRef({});
-
-  // Sort vendors based on current sort configuration
-  const sortedVendors = React.useMemo(() => {
-    let sortableItems = [...vendors];
-    if (sortConfig.key) {
-      sortableItems.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableItems;
-  }, [vendors, sortConfig]);
-
-  // Handle sort request
-  const requestSort = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
-    }
-    setSortConfig({ key, direction });
-  };
-
-  // Handle PO sort request
-  const requestPOSort = (key) => {
-    let direction = 'asc';
-    if (poSortConfig.key === key && poSortConfig.direction === 'asc') {
-      direction = 'desc';
-    }
-    setPOSortConfig({ key, direction });
-  };
-
-  // Sort purchase orders based on current sort configuration
-  const sortedPurchaseOrders = useMemo(() => {
-    if (!poSortConfig.key) return purchaseOrders;
-    
-    let sortableItems = [...purchaseOrders];
-    
-    sortableItems.sort((a, b) => {
-      // Special handling for status sorting
-      if (poSortConfig.key === 'status') {
-        const aStatus = a.balgrval === 0 ? 'complete' : 'pending';
-        const bStatus = b.balgrval === 0 ? 'complete' : 'pending';
-        
-        // Pending should always be on top, complete at bottom
-        // When descending, we still keep pending on top but can sort within groups
-        if (aStatus === 'pending' && bStatus === 'complete') {
-          return -1; // Pending always comes first
-        }
-        if (aStatus === 'complete' && bStatus === 'pending') {
-          return 1; // Complete always comes after pending
-        }
-        // If same status, sort by date as secondary sort
-        const aDate = new Date(a.podate);
-        const bDate = new Date(b.podate);
-        if (aDate < bDate) {
-          return poSortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (aDate > bDate) {
-          return poSortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
+  // Observer for Infinite Scroll
+  const observer = useRef();
+  const lastVendorElementRef = useCallback(node => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prevPage => prevPage + 1);
       }
-      
-      // Handle podate sorting
-      if (poSortConfig.key === 'podate') {
-        const aDate = new Date(a.podate);
-        const bDate = new Date(b.podate);
-        if (aDate < bDate) {
-          return poSortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (aDate > bDate) {
-          return poSortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-      }
-      
-      // Handle delivery-date sorting
-      if (poSortConfig.key === 'delivery-date') {
-        const aDate = a["delivery-date"] ? new Date(a["delivery-date"]) : null;
-        const bDate = b["delivery-date"] ? new Date(b["delivery-date"]) : null;
-        // Handle null dates
-        if (aDate === null && bDate === null) return 0;
-        if (aDate === null) return 1;
-        if (bDate === null) return -1;
-        if (aDate < bDate) {
-          return poSortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (aDate > bDate) {
-          return poSortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-      }
-      
-      // Handle poval sorting
-      if (poSortConfig.key === 'poval') {
-        const aVal = a.poval || 0;
-        const bVal = b.poval || 0;
-        if (aVal < bVal) {
-          return poSortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (aVal > bVal) {
-          return poSortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-      }
-      
-      return 0;
     });
-    
-    return sortableItems;
-  }, [purchaseOrders, poSortConfig]);
+    if (node) observer.current.observe(node);
+  }, [loading, hasMore]);
 
-  // Handle PO click - open in new tab
-  const handlePOClick = (ponum, e) => {
-    e.stopPropagation(); // Prevent event bubbling
-    window.open(`/purchaseorders/${ponum}`, '_blank');
-  };
-
-  // Fetch vendors based on search term
-  useEffect(() => {
-    const fetchVendors = async () => {
-      if (!searchTerm || !searchTerm.trim()) {
-        setVendors([]);
-        return;
-      }
-      setLoading(true);
-      try {
-        const encodedSearchTerm = encodeURIComponent(searchTerm.trim());
-        const response = await fetch(`/api/vendors?str=${encodedSearchTerm}`);
-        const data = await response.json();
-        
-        // Fetch PO counts for each vendor
-        const vendorsWithPOs = await Promise.all(
-          data.map(async (vendor) => {
+  // Fetch Vendors
+  const fetchVendors = async (pageNum, search, isNewSearch = false) => {
+    setLoading(true);
+    try {
+      const url = `/api/vendors?page=${pageNum}&limit=20${search ? `&str=${encodeURIComponent(search)}` : ''}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      // Lazily fetch PO counts for the new batch
+      const vendorsWithPOs = await Promise.all(
+        data.vendors.map(async (vendor) => {
+          try {
             const poResponse = await fetch(`/api/purchaseorders/vendor/${vendor["vendor-code"]}`);
             const poData = await poResponse.json();
-            return {
-              ...vendor,
-              poCount: poData.length
-            };
-          })
-        );
-        
-        setVendors(vendorsWithPOs);
-      } catch (error) {
-        console.error('Error fetching vendors:', error);
-        setVendors([]);
-      }
+            return { ...vendor, poCount: poData.length };
+          } catch {
+            return { ...vendor, poCount: 0 };
+          }
+        })
+      );
+      
+      setVendors(prev => isNewSearch ? vendorsWithPOs : [...prev, ...vendorsWithPOs]);
+      setHasMore(data.hasMore);
+    } catch (error) {
+      console.error('Error fetching vendors:', error);
+    } finally {
       setLoading(false);
-    };
+    }
+  };
 
-    // Increased debounce delay to avoid multiple fetches when user types/deletes
-    const debounceTimer = setTimeout(fetchVendors, 500);
-    return () => clearTimeout(debounceTimer);
+  // Trigger search reset when searchTerm changes (with debounce)
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setPage(1);
+      fetchVendors(1, searchTerm, true);
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
 
-  // Fetch purchase orders when vendor is selected
+  // Trigger next page fetch
+  useEffect(() => {
+    if (page > 1) {
+      fetchVendors(page, searchTerm, false);
+    }
+  }, [page]);
+
+  // Fetch POs when vendor selected
   useEffect(() => {
     const fetchPurchaseOrders = async () => {
       if (!selectedVendor) return;
+      setPoLoading(true);
       try {
-        console.log('Fetching POs for vendor:', selectedVendor);
         const response = await fetch(`/api/purchaseorders/vendor/${selectedVendor}`);
         const data = await response.json();
-        console.log('Received PO data:', data);
         setPurchaseOrders(data);
-        // Reset selected PO when vendor changes
-        setSelectedPO(null);
-        setPODetails(null);
       } catch (error) {
         console.error('Error fetching purchase orders:', error);
+      } finally {
+        setPoLoading(false);
       }
     };
-
     fetchPurchaseOrders();
   }, [selectedVendor]);
 
-  // Fetch PO details when PO is selected
-  useEffect(() => {
-    const fetchPODetails = async () => {
-      if (!selectedPO) {
-        setPODetails(null);
-        setDeliveryHistory([]);
-        return;
-      }
-      try {
-        console.log('Fetching details for PO:', selectedPO);
-        const response = await fetch(`/api/purchaseorders/porder/${selectedPO}`);
-        const data = await response.json();
-        console.log('Received PO details:', data);
-        setPODetails(data);
-      } catch (error) {
-        console.error('Error fetching PO details:', error);
-      }
-    };
-
-    fetchPODetails();
-  }, [selectedPO]);
-
-  // Fetch delivery history when PO is selected
-  useEffect(() => {
-    const fetchDeliveryHistory = async () => {
-      if (!selectedPO) {
-        setDeliveryHistory([]);
-        return;
-      }
-      try {
-        console.log('Fetching delivery history for PO:', selectedPO);
-        const response = await fetch(`/api/materialdocumentsforpo/${selectedPO}`);
-        const data = await response.json();
-        console.log('Received delivery history:', data);
-        setDeliveryHistory(data);
-      } catch (error) {
-        console.error('Error fetching delivery history:', error);
-        setDeliveryHistory([]);
-      }
-    };
-
-    fetchDeliveryHistory();
-  }, [selectedPO]);
-
-  // Sort indicator component
-  const SortIndicator = ({ columnKey }) => {
-    if (sortConfig.key !== columnKey) return null;
-    return sortConfig.direction === 'asc' ? 
-      <FiArrowUp className="inline ml-1" /> : 
-      <FiArrowDown className="inline ml-1" />;
+  const requestPOSort = (key) => {
+    let direction = 'asc';
+    if (poSortConfig.key === key && poSortConfig.direction === 'asc') direction = 'desc';
+    setPOSortConfig({ key, direction });
   };
 
-  // PO Sort indicator component
+  const sortedPurchaseOrders = React.useMemo(() => {
+    if (!poSortConfig.key) return purchaseOrders;
+    let sortableItems = [...purchaseOrders];
+    sortableItems.sort((a, b) => {
+      if (poSortConfig.key === 'status') {
+        const aStatus = a.balgrval === 0 ? 'Complete' : 'Pending';
+        const bStatus = b.balgrval === 0 ? 'Complete' : 'Pending';
+        if (aStatus < bStatus) return poSortConfig.direction === 'asc' ? -1 : 1;
+        if (aStatus > bStatus) return poSortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      }
+
+      let aVal = a[poSortConfig.key];
+      let bVal = b[poSortConfig.key];
+      
+      if (poSortConfig.key === 'podate' || poSortConfig.key === 'delivery-date') {
+        aVal = aVal ? new Date(aVal) : null;
+        bVal = bVal ? new Date(bVal) : null;
+      }
+      
+      if (aVal === null && bVal === null) return 0;
+      if (aVal === null) return 1;
+      if (bVal === null) return -1;
+      
+      if (aVal < bVal) return poSortConfig.direction === 'asc' ? -1 : 1;
+      if (aVal > bVal) return poSortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+    return sortableItems;
+  }, [purchaseOrders, poSortConfig]);
+
   const POSortIndicator = ({ columnKey }) => {
     if (poSortConfig.key !== columnKey) return null;
-    return poSortConfig.direction === 'asc' ? 
-      <FiArrowUp className="inline ml-1" /> : 
-      <FiArrowDown className="inline ml-1" />;
+    return poSortConfig.direction === 'asc' ? <FiArrowUp className="inline ml-1" /> : <FiArrowDown className="inline ml-1" />;
   };
 
-  // Calculate top position for PO details based on selected card
-  const getPODetailsTopPosition = () => {
-    if (!selectedPOCardRef) return 0;
-    const cardRect = selectedPOCardRef.getBoundingClientRect();
-    const containerRect = selectedPOCardRef.closest('.po-container')?.getBoundingClientRect();
-    if (!containerRect) return 0;
-    return cardRect.top - containerRect.top;
+  const handleOpenComment = (poNumber, e) => {
+    e.stopPropagation();
+    setSelectedPoNumber(poNumber);
+    setIsCommentModalOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
-      
-      <main className="container mx-auto px-4 py-8">
-        {/* Search Section */}
-        <div className="max-w-2xl mx-auto mb-8">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search vendors (e.g., vendor*name*term or single term)..."
-              className="w-full px-4 py-3 pl-12 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 shadow-md hover:shadow-lg transition-shadow duration-300"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          </div>
-          <p className="text-sm text-gray-500 mt-2 text-center">
-            Use * to separate up to 4 search terms. All terms must appear in the vendor name.
-          </p>
-        </div>
-
-        {/* Main Content */}
-        {loading ? (
-          <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {/* Vendors Table */}
-            <div className="bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.16)] transition-all duration-300 overflow-hidden">
-              <div className="p-4 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
-                <h2 className="text-xl font-semibold text-gray-800">Vendors</h2>
+    <div className="min-h-screen bg-slate-950 flex-1 flex flex-col font-sans">
+      <Head>
+        <title>Master Vendors Hub | MM Portal</title>
+      </Head>
+      <main className="w-full max-w-full px-4 py-8">
+        <div className="mx-auto" style={{ maxWidth: '1400px' }}>
+          
+          {/* Header & Search */}
+          <div className="mb-8 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div>
+                <h1 className="text-3xl font-extrabold text-slate-100 tracking-tight mb-2">Master Vendors Hub</h1>
+                <p className="text-slate-400">Search and manage vendor qualifications, evaluations, and purchase orders.</p>
               </div>
+              <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 p-1 rounded-lg">
+                <button
+                  onClick={() => setLayoutMode('table')}
+                  className={`p-2 rounded-md transition-colors ${layoutMode === 'table' ? 'bg-slate-800 text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
+                  title="Table View"
+                >
+                  <FiList className="text-lg" />
+                </button>
+                <button
+                  onClick={() => setLayoutMode('card')}
+                  className={`p-2 rounded-md transition-colors ${layoutMode === 'card' ? 'bg-slate-800 text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
+                  title="Card View"
+                >
+                  <FiGrid className="text-lg" />
+                </button>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search vendors by name or code..."
+                className="w-full bg-slate-950 border border-slate-700 text-slate-200 text-lg rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 placeholder-slate-600 transition-colors shadow-inner"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <FiSearch className="absolute left-5 top-1/2 transform -translate-y-1/2 text-slate-500 text-xl" />
+            </div>
+          </div>
+
+          {/* Vendors List Section */}
+          <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-xl overflow-hidden mb-8">
+            {vendors.length === 0 && !loading ? (
+              <div className="flex flex-col items-center justify-center p-12 text-center">
+                <FiUsers className="w-16 h-16 text-slate-700 mb-4" />
+                <h3 className="text-xl font-bold text-slate-300 mb-2">No Vendors Found</h3>
+                <p className="text-slate-500">Try adjusting your search criteria.</p>
+              </div>
+            ) : layoutMode === 'table' ? (
               <div className="overflow-x-auto">
-                {sortedVendors.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center p-8 text-center">
-                    <FiUsers className="w-16 h-16 text-gray-300 mb-4" />
-                    <h3 className="text-lg font-medium text-gray-600 mb-2">Search for Vendors</h3>
-                    <p className="text-gray-500">Enter a vendor name in the search box above to view the list of vendors.</p>
-                  </div>
-                ) : (
-                  <table className="w-full">
-                    <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
-                      <tr>
-                        <th 
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                          onClick={() => requestSort('vendor-code')}
-                        >
-                          Code <SortIndicator columnKey="vendor-code" />
-                        </th>
-                        <th 
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                          onClick={() => requestSort('vendor-name')}
-                        >
-                          Name <SortIndicator columnKey="vendor-name" />
-                        </th>
-                        <th 
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
-                        >
-                          PO Count
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {sortedVendors.map((vendor, index) => (
+                <table className="w-full text-left">
+                  <thead className="bg-slate-950 border-b border-slate-800">
+                    <tr>
+                      <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Vendor Code</th>
+                      <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Vendor Name</th>
+                      <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">PO Count</th>
+                      <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/60">
+                    {vendors.map((vendor, index) => {
+                      const isSelected = selectedVendor === vendor["vendor-code"];
+                      const isLast = index === vendors.length - 1;
+                      return (
                         <tr 
-                          key={index}
-                          onClick={() => setSelectedVendor(vendor["vendor-code"])}
-                          className={`cursor-pointer hover:bg-blue-50 transition-colors duration-200 ${
-                            selectedVendor === vendor["vendor-code"] ? 'bg-blue-100' : ''
-                          }`}
+                          key={vendor["vendor-code"]}
+                          ref={isLast ? lastVendorElementRef : null}
+                          onClick={() => setSelectedVendor(isSelected ? null : vendor["vendor-code"])}
+                          className={`cursor-pointer transition-colors group ${isSelected ? 'bg-cyan-900/20 border-l-4 border-cyan-500' : 'hover:bg-slate-800/50 border-l-4 border-transparent'}`}
                         >
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-cyan-400">
                             {vendor["vendor-code"]}
                           </td>
-                          <td className="px-6 py-4 text-[12px] font-semibold text-gray-600">
-                            {vendor["vendor-name"]}
+                          <td className="px-5 py-4 text-sm font-bold text-slate-200 capitalize">
+                            {vendor["vendor-name"]?.toLowerCase()}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-slate-400 text-right">
                             {vendor.poCount || 0}
+                          </td>
+                          <td className="px-5 py-4">
+                            <div className="flex items-center justify-center gap-2">
+                              <button
+                                onClick={(e) => { e.stopPropagation(); window.open(`/vendor-dashboard?vendorcode=${vendor["vendor-code"]}`, '_blank'); }}
+                                className="p-2 bg-slate-800 hover:bg-violet-600 text-slate-300 hover:text-white rounded-lg transition-all shadow-sm border border-slate-700 hover:border-violet-500"
+                                title="Vendor Dashboard"
+                              >
+                                <FiPieChart />
+                              </button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); window.open(`/vendordocview/${vendor["vendor-code"]}`, '_blank'); }}
+                                className="p-2 bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white rounded-lg transition-all shadow-sm border border-slate-700 hover:border-emerald-500"
+                                title="Qualification & Documents"
+                              >
+                                <FiFolder />
+                              </button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); window.open(`/vendorevaluation/webformat/${vendor["vendor-code"]}`, '_blank'); }}
+                                className="p-2 bg-slate-800 hover:bg-amber-600 text-slate-300 hover:text-white rounded-lg transition-all shadow-sm border border-slate-700 hover:border-amber-500"
+                                title="Vendor Evaluation"
+                              >
+                                <FiStar />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                {vendors.map((vendor, index) => {
+                  const isSelected = selectedVendor === vendor["vendor-code"];
+                  const isLast = index === vendors.length - 1;
+                  return (
+                    <div 
+                      key={vendor["vendor-code"]}
+                      ref={isLast ? lastVendorElementRef : null}
+                      onClick={() => setSelectedVendor(isSelected ? null : vendor["vendor-code"])}
+                      className={`cursor-pointer p-5 rounded-xl border transition-all duration-200 ${isSelected ? 'bg-cyan-900/10 border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.15)]' : 'bg-slate-950 border-slate-800 hover:border-slate-600 shadow-md'}`}
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-950 px-2 py-1 rounded border border-cyan-900">
+                          {vendor["vendor-code"]}
+                        </span>
+                        <span className="text-xs font-bold text-slate-500 bg-slate-900 px-2 py-1 rounded border border-slate-800">
+                          {vendor.poCount || 0} POs
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-slate-200 capitalize mb-6 line-clamp-2 min-h-[56px]">
+                        {vendor["vendor-name"]?.toLowerCase()}
+                      </h3>
+                      <div className="flex justify-between pt-4 border-t border-slate-800/80">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); window.open(`/vendor-dashboard?vendorcode=${vendor["vendor-code"]}`, '_blank'); }}
+                          className="flex-1 flex justify-center py-2 text-slate-400 hover:text-violet-400 transition-colors"
+                          title="Dashboard"
+                        >
+                          <FiPieChart className="text-xl" />
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); window.open(`/vendordocview/${vendor["vendor-code"]}`, '_blank'); }}
+                          className="flex-1 flex justify-center py-2 text-slate-400 hover:text-emerald-400 transition-colors"
+                          title="Qualification"
+                        >
+                          <FiFolder className="text-xl" />
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); window.open(`/vendorevaluation/webformat/${vendor["vendor-code"]}`, '_blank'); }}
+                          className="flex-1 flex justify-center py-2 text-slate-400 hover:text-amber-400 transition-colors"
+                          title="Evaluation"
+                        >
+                          <FiStar className="text-xl" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            
+            {/* Loading Indicator for Infinite Scroll */}
+            {loading && (
+              <div className="flex justify-center p-6 bg-slate-900">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
+              </div>
+            )}
+          </div>
+
+          {/* PO List Section */}
+          {selectedVendor && (
+            <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-xl overflow-hidden mt-8 animate-fade-in-up">
+              <div className="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-950/50">
+                <div>
+                  <h2 className="text-xl font-bold text-slate-100 flex items-center">
+                    <FiShoppingCart className="mr-3 text-cyan-500" />
+                    Vendor Purchase Orders
+                  </h2>
+                  <p className="text-sm text-slate-500 mt-1">Viewing all POs for <span className="text-slate-300 font-mono font-bold">{selectedVendor}</span></p>
+                </div>
+              </div>
+
+              {poLoading ? (
+                <div className="flex justify-center p-12">
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-500"></div>
+                </div>
+              ) : purchaseOrders.length === 0 ? (
+                <div className="flex flex-col items-center justify-center p-12 text-center">
+                  <FiShoppingCart className="w-12 h-12 text-slate-700 mb-4" />
+                  <p className="text-slate-400">This vendor has no purchase orders.</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto p-4">
+                  <table className="w-full text-left">
+                    <thead className="bg-slate-950 border-b border-slate-800">
+                      <tr>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">PO Number</th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-cyan-400" onClick={() => requestPOSort('podate')}>
+                          Date <POSortIndicator columnKey="podate" />
+                        </th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-cyan-400" onClick={() => requestPOSort('delivery-date')}>
+                          Delivery <POSortIndicator columnKey="delivery-date" />
+                        </th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right cursor-pointer hover:text-cyan-400" onClick={() => requestPOSort('poval')}>
+                          Value (SAR) <POSortIndicator columnKey="poval" />
+                        </th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Balance</th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center cursor-pointer hover:text-cyan-400" onClick={() => requestPOSort('status')}>
+                          Status <POSortIndicator columnKey="status" />
+                        </th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60">
+                      {sortedPurchaseOrders.map((po, index) => (
+                        <tr key={index} className="hover:bg-slate-800/40 transition-colors group">
+                          <td className="px-5 py-4 whitespace-nowrap text-sm font-bold text-cyan-400">
+                            {po.ponum}
+                          </td>
+                          <td className="px-5 py-4 whitespace-nowrap text-sm text-slate-300">
+                            {po.podate ? moment(po.podate).format('MMM D, YYYY') : '—'}
+                          </td>
+                          <td className="px-5 py-4 whitespace-nowrap text-sm text-slate-300">
+                            {po["delivery-date"] ? moment(po["delivery-date"]).format('MMM D, YYYY') : '—'}
+                          </td>
+                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-slate-300 text-right">
+                            {po.poval ? po.poval.toLocaleString() : '0'}
+                          </td>
+                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-slate-400 text-right">
+                            {po.balgrval ? po.balgrval.toLocaleString() : '0'}
+                          </td>
+                          <td className="px-5 py-4 text-center">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-[10px] font-bold border ${po.balgrval === 0 ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-amber-400 bg-amber-500/10 border-amber-500/20'}`}>
+                              {po.balgrval === 0 ? 'Complete' : 'Pending'}
+                            </span>
+                          </td>
+                          <td className="px-5 py-4">
+                            <div className="flex items-center justify-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
+                              <button
+                                onClick={(e) => { e.stopPropagation(); window.open(`/openpurchaseorders1/schedule/${po.ponum}`, '_blank'); }}
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-violet-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-violet-500"
+                                title="Update Schedule"
+                              >
+                                <FiCalendar size={12} /> Schedule
+                              </button>
+                              <button
+                                onClick={(e) => handleOpenComment(po.ponum, e)}
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-blue-500"
+                                title="View/Add Comments"
+                              >
+                                <FiMessageSquare size={12} /> Comment
+                              </button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); window.open(`/openpurchaseorders1/view/${po.ponum}`, '_blank'); }}
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-cyan-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-cyan-500"
+                                title="View PO Details & Timeline"
+                              >
+                                <FiEye size={12} /> View
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                )}
-              </div>
+                </div>
+              )}
             </div>
-
-            {/* Purchase Orders and Details Section */}
-            {selectedVendor && (
-              <div className="bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.16)] transition-all duration-300 overflow-hidden">
-                <div className="p-4 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h2 className="text-xl font-semibold text-gray-800">Purchase Orders</h2>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Vendor: {selectedVendor}
-                      </p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm text-gray-600">Layout:</span>
-                      <div className="flex bg-gray-100 rounded-lg p-1">
-                        <button
-                          onClick={() => setPOLayoutMode('card')}
-                          className={`p-2 rounded-md transition-colors duration-200 ${
-                            poLayoutMode === 'card' 
-                              ? 'bg-white shadow-sm text-blue-600' 
-                              : 'text-gray-500 hover:text-gray-700'
-                          }`}
-                          title="Card Layout"
-                        >
-                          <FiGrid className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => setPOLayoutMode('table')}
-                          className={`p-2 rounded-md transition-colors duration-200 ${
-                            poLayoutMode === 'table' 
-                              ? 'bg-white shadow-sm text-blue-600' 
-                              : 'text-gray-500 hover:text-gray-700'
-                          }`}
-                          title="Table Layout"
-                        >
-                          <FiList className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="relative po-container">
-                  {/* Left Side - PO Lists */}
-                  <div className="p-4">
-                    {purchaseOrders.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center p-8 text-center">
-                        <FiShoppingCart className="w-16 h-16 text-gray-300 mb-4" />
-                        <h3 className="text-lg font-medium text-gray-600 mb-2">No Purchase Orders</h3>
-                        <p className="text-gray-500">This vendor has no purchase orders in the system.</p>
-                      </div>
-                    ) : poLayoutMode === 'card' ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {purchaseOrders.map((po, index) => (
-                          <div 
-                            ref={el => poCardRefs.current[po.ponum] = el}
-                            key={po.ponum || index}
-                            className="p-4 border rounded-lg transition-all duration-200 hover:shadow-md border-gray-200 hover:border-blue-300"
-                          >
-                            <div className="flex justify-between items-start mb-2">
-                              <h4 
-                                onClick={(e) => handlePOClick(po.ponum, e)}
-                                className="font-semibold text-sky-600 text-sm cursor-pointer hover:text-blue-800 hover:underline"
-                              >
-                                {po.ponum}
-                              </h4>
-                              <span className={`px-2 py-1 rounded-full text-xs ${
-                                po.balgrval === 0 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                              }`}>
-                                {po.balgrval === 0 ? 'Complete' : 'Pending'}
-                              </span>
-                            </div>
-                            <div className="space-y-1 text-xs text-gray-600">
-                              <p><span className="font-medium">Date:</span> {moment(po.podate).format('MM/DD/YYYY')}</p>
-                              <p><span className="font-medium">Delivery Date:</span> {po["delivery-date"] ? moment(po["delivery-date"]).format('MM/DD/YYYY') : 'N/A'}</p>
-                              <p><span className="font-medium">Value:</span> {po.poval ? po.poval.toLocaleString() : '0'} SAR</p>
-                              <p><span className="font-medium">Balance:</span> {po.balgrval ? po.balgrval.toLocaleString() : '0'} SAR</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="overflow-x-auto">
-                        <table className="w-full">
-                          <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
-                            <tr>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">PO Number</th>
-                              <th 
-                                className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                                onClick={() => requestPOSort('podate')}
-                              >
-                                Date <POSortIndicator columnKey="podate" />
-                              </th>
-                              <th 
-                                className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                                onClick={() => requestPOSort('delivery-date')}
-                              >
-                                Delivery Date <POSortIndicator columnKey="delivery-date" />
-                              </th>
-                              <th 
-                                className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                                onClick={() => requestPOSort('poval')}
-                              >
-                                Value (SAR) <POSortIndicator columnKey="poval" />
-                              </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Balance (SAR)</th>
-                              <th 
-                                className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                                onClick={() => requestPOSort('status')}
-                              >
-                                Status <POSortIndicator columnKey="status" />
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody className="bg-white divide-y divide-gray-200">
-                            {sortedPurchaseOrders.map((po, index) => (
-                              <tr 
-                                key={po.ponum || index}
-                                className="hover:bg-blue-50 transition-colors duration-200"
-                              >
-                                <td 
-                                  onClick={(e) => handlePOClick(po.ponum, e)}
-                                  className="px-4 py-3 whitespace-nowrap text-sm font-medium text-sky-600 cursor-pointer hover:text-blue-800 hover:underline"
-                                >
-                                  {po.ponum}
-                                </td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                                  {moment(po.podate).format('MM/DD/YYYY')}
-                                </td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                                  {po["delivery-date"] ? moment(po["delivery-date"]).format('MM/DD/YYYY') : 'N/A'}
-                                </td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                                  {po.poval ? po.poval.toLocaleString() : '0'}
-                                </td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                                  {po.balgrval ? po.balgrval.toLocaleString() : '0'}
-                                </td>
-                                <td className="px-4 py-3 whitespace-nowrap">
-                                  <span className={`px-2 py-1 rounded-full text-xs ${
-                                    po.balgrval === 0 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                                  }`}>
-                                    {po.balgrval === 0 ? 'Complete' : 'Pending'}
-                                  </span>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* No Vendor Selected State */}
-            {!selectedVendor && (
-              <div className="bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.16)] transition-all duration-300 p-6">
-                <div className="flex flex-col items-center justify-center p-8 text-center">
-                  <FiShoppingCart className="w-16 h-16 text-gray-300 mb-4" />
-                  <h3 className="text-lg font-medium text-gray-600 mb-2">Select a Vendor</h3>
-                  <p className="text-gray-500">Choose a vendor from the list above to view their purchase orders.</p>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </main>
+
+      <POCommentModal
+        isOpen={isCommentModalOpen}
+        onClose={() => {
+          setIsCommentModalOpen(false);
+          setSelectedPoNumber(null);
+        }}
+        poNumber={selectedPoNumber}
+      />
     </div>
   );
 }
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-
   if (!session) {
-    return {
-      redirect: {
-        destination: "/auth/login",
-        permanent: false,
-      },
-    };
+    return { redirect: { destination: "/auth/login", permanent: false } };
   }
-
-  return {
-    props: { session },
-  };
+  return { props: { session } };
 }
-
-export default Vendors1; 

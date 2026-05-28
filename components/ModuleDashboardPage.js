@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Link from "next/link";
-import ModulePageNav from "./ModulePageNav";
 import { moduleDashboards } from "./moduleData";
 
 export default function ModuleDashboardPage({ currentModuleKey }) {
@@ -16,8 +15,6 @@ export default function ModuleDashboardPage({ currentModuleKey }) {
           content={`Access dashboards and sub-modules for ${currentModule.label}.`}
         />
       </Head>
-
-      <ModulePageNav currentModuleKey={currentModuleKey} />
 
       <main className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">

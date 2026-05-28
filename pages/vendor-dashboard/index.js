@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import useDebounce from '../../lib/useDebounce';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -62,9 +63,9 @@ function VendorProfileOverviewDisplay({ vendorOverview }) {
   let otherContactLine = 0;
   const contactLineStyles = contactParts.map((part) => {
     const kind = getContactSegmentType(part);
-    if (kind === 'email') return 'text-emerald-700 font-semibold';
+    if (kind === 'email') return 'text-emerald-400 font-semibold';
     if (kind === 'phone') return 'text-amber-800 font-semibold';
-    const cls = otherContactLine % 2 === 0 ? 'text-blue-700 font-medium' : 'text-slate-900 font-medium';
+    const cls = otherContactLine % 2 === 0 ? 'text-cyan-400 font-medium' : 'text-white font-medium';
     otherContactLine += 1;
     return cls;
   });
@@ -72,14 +73,14 @@ function VendorProfileOverviewDisplay({ vendorOverview }) {
   return (
     <div className="space-y-6">
       <div>
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Vendor name</span>
-        <p className="mt-1 text-[0.825rem] md:text-[0.99rem] font-bold text-blue-700 leading-snug tracking-[0.1em] md:tracking-[0.12em]">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Vendor name</span>
+        <p className="mt-1 text-[0.825rem] md:text-[0.99rem] font-bold text-cyan-400 leading-snug tracking-[0.1em] md:tracking-[0.12em]">
           {recordName}
         </p>
       </div>
 
       <div>
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Website</span>
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Website</span>
         <div className="mt-1 text-sm">
           {website ? (
             <a
@@ -91,13 +92,13 @@ function VendorProfileOverviewDisplay({ vendorOverview }) {
               {website}
             </a>
           ) : (
-            <span className="text-slate-500">N/A</span>
+            <span className="text-slate-400">N/A</span>
           )}
         </div>
       </div>
 
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Contact information</h4>
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Contact information</h4>
         {contactParts.length ? (
           <ul className="flex flex-col gap-1.5">
             {contactParts.map((part, idx) => {
@@ -121,12 +122,12 @@ function VendorProfileOverviewDisplay({ vendorOverview }) {
             })}
           </ul>
         ) : (
-          <p className="text-slate-500 text-sm">N/A</p>
+          <p className="text-slate-400 text-sm">N/A</p>
         )}
       </div>
 
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">Services and materials</h4>
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Services and materials</h4>
         {serviceItems.length ? (
           <div className="flex flex-wrap gap-3">
             {serviceItems.map((item, idx) => {
@@ -142,7 +143,7 @@ function VendorProfileOverviewDisplay({ vendorOverview }) {
             })}
           </div>
         ) : (
-          <p className="text-slate-500 text-sm">N/A</p>
+          <p className="text-slate-400 text-sm">N/A</p>
         )}
       </div>
     </div>
@@ -150,6 +151,7 @@ function VendorProfileOverviewDisplay({ vendorOverview }) {
 }
 
 export default function VendorDashboard() {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
@@ -176,6 +178,38 @@ export default function VendorDashboard() {
     setEditingGroupMappings(false);
     setEditingVendorOverview(false);
   }, [selectedVendor?.vendorcode]);
+
+  // Handle vendorcode from URL
+  useEffect(() => {
+    if (router.isReady && router.query.vendorcode) {
+      const vendorcodeFromQuery = String(router.query.vendorcode);
+      const searchVendors = async () => {
+        setIsLoading(true);
+        try {
+          // Use the enhanced search API to try to find the vendor record
+          const response = await fetch(`/api/vendors/search-enhanced?term=${encodeURIComponent(vendorcodeFromQuery)}`);
+          const data = await response.json();
+          // Find exact match
+          const match = Array.isArray(data) ? data.find(v => String(v.vendorcode) === vendorcodeFromQuery || String(v['vendor-code']) === vendorcodeFromQuery) : null;
+          
+          if (match) {
+            handleVendorSelect(match);
+          } else {
+            // Fallback: If not found in search, try to construct a dummy vendor object
+            // This is useful if the search API fails but the dashboard API still has it.
+            const fallbackVendor = { vendorcode: vendorcodeFromQuery, vendorname: 'Vendor', source: 'vendors' };
+            handleVendorSelect(fallbackVendor);
+          }
+        } catch (error) {
+          console.error('Error loading vendor from query:', error);
+          // Fallback on error
+          handleVendorSelect({ vendorcode: vendorcodeFromQuery, vendorname: 'Vendor', source: 'vendors' });
+        }
+      };
+      
+      searchVendors();
+    }
+  }, [router.isReady, router.query.vendorcode]);
 
   // Search for vendors
   useEffect(() => {
@@ -395,7 +429,7 @@ export default function VendorDashboard() {
 
   return (
     
-    <div className="min-h-screen p-6 bg-slate-900/5" style={{
+    <div className="min-h-screen p-6 bg-slate-950" style={{
       backgroundImage: `
         radial-gradient(circle at 0 0, rgba(59,130,246,0.16) 0, transparent 55%),
         radial-gradient(circle at 100% 0, rgba(236,72,153,0.12) 0, transparent 55%),
@@ -408,17 +442,17 @@ export default function VendorDashboard() {
       
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 mb-2 drop-shadow-sm">
+        <h1 className="text-4xl font-extrabold tracking-tight text-white mb-2 drop-shadow-sm">
           Vendor Dashboard
         </h1>
-        <p className="text-slate-600 text-sm md:text-base">
+        <p className="text-slate-400 text-sm md:text-base">
           Search and manage vendor information, purchase orders, and evaluations
         </p>
       </div>
       <div className="container mx-auto px-4 py-8 min-h-screen">
       {/* Search Section */}
       <div
-        className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_18px_45px_rgba(15,23,42,0.18)] p-6 mb-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(15,23,42,0.35)]"
+        className="bg-slate-900/80 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_18px_45px_rgba(0,0,0,0.4)] p-6 mb-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(0,0,0,0.6)]"
       >
         <div className="relative">
           <input
@@ -426,7 +460,7 @@ export default function VendorDashboard() {
             placeholder="Search vendors (minimum 3 characters)..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white/80 shadow-inner focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base md:text-lg placeholder:text-slate-400"
+            className="w-full px-4 py-3 border border-slate-700 rounded-xl bg-slate-900/80 shadow-inner focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-base md:text-lg placeholder:text-slate-400"
           />
           {searchTerm.length > 0 && searchTerm.length < 3 && (
             <p className="text-sm text-red-500 mt-2">Please enter at least 3 characters to search</p>
@@ -436,20 +470,20 @@ export default function VendorDashboard() {
         {/* Search Results */}
         {searchResults.length > 0 && (
           <div className="mt-4 space-y-2">
-            <h3 className="text-lg font-semibold text-gray-700">Search Results:</h3>
+            <h3 className="text-lg font-semibold text-slate-300">Search Results:</h3>
             {searchResults.map((vendor, index) => (
               <div
                 key={index}
                 onClick={() => handleVendorSelect(vendor)}
-                className="p-4 rounded-2xl border border-slate-100 bg-white/90 shadow-[0_10px_25px_rgba(15,23,42,0.12)] hover:bg-blue-50/70 hover:border-blue-200 cursor-pointer transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(37,99,235,0.35)]"
+                className="p-4 rounded-2xl border border-slate-800 bg-slate-900/90 shadow-[0_10px_25px_rgba(15,23,42,0.12)] hover:bg-cyan-900/30 hover:border-cyan-800 cursor-pointer transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(37,99,235,0.35)]"
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <h4 className="font-semibold text-gray-900">{vendor.vendorname}</h4>
-                    <p className="text-sm text-gray-600">Code: {vendor.vendorcode}</p>
-                    <p className="text-xs text-gray-500">Source: {vendor.source}</p>
+                    <h4 className="font-semibold text-white">{vendor.vendorname}</h4>
+                    <p className="text-sm text-slate-400">Code: {vendor.vendorcode}</p>
+                    <p className="text-xs text-slate-400">Source: {vendor.source}</p>
                   </div>
-                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                  <span className="text-xs bg-cyan-900/50 text-cyan-400 px-2 py-1 rounded">
                     Click to view details
                   </span>
                 </div>
@@ -462,7 +496,7 @@ export default function VendorDashboard() {
       {/* Loading State */}
       {isLoading && (
         <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
         </div>
       )}
 
@@ -480,16 +514,16 @@ export default function VendorDashboard() {
           {(() => { return null; })()}
           {/**/}
           {/* Vendor Header */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+          <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{vendorData.vendor?.vendorname || 'N/A'}</h2>
-                <p className="text-slate-600 text-sm md:text-base">Vendor Code: {vendorData.vendor?.vendorcode || 'N/A'}</p>
-                <p className="text-xs md:text-sm text-slate-500 mt-1">Source: {vendorData.vendor?.source || 'N/A'}</p>
+                <h2 className="text-2xl font-bold text-white tracking-tight">{vendorData.vendor?.vendorname || 'N/A'}</h2>
+                <p className="text-slate-400 text-sm md:text-base">Vendor Code: {vendorData.vendor?.vendorcode || 'N/A'}</p>
+                <p className="text-xs md:text-sm text-slate-400 mt-1">Source: {vendorData.vendor?.source || 'N/A'}</p>
               </div>
               <button
                 onClick={() => setShowDashboard(false)}
-                className="text-slate-400 hover:text-slate-600 transition-colors"
+                className="text-slate-400 hover:text-slate-400 transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -499,9 +533,9 @@ export default function VendorDashboard() {
 
               {/* Vendor profile overview (Mongo: vendorsdata, hyphen field names) */}
           {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
-            <div className="bg-gradient-to-br from-blue-50/90 via-white/95 to-violet-50/80 backdrop-blur-sm rounded-2xl border border-blue-100/80 shadow-[0_20px_55px_rgba(37,99,235,0.12)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_28px_70px_rgba(37,99,235,0.18)]">
+            <div className="bg-gradient-to-br from-slate-900 via-white/95 to-slate-800 backdrop-blur-sm rounded-2xl border border-cyan-900/50 shadow-[0_20px_55px_rgba(6,182,212,0.1)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_28px_70px_rgba(6,182,212,0.2)]">
               <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                <h3 className="text-xl font-bold text-slate-900 tracking-tight bg-gradient-to-r from-blue-700 to-violet-700 bg-clip-text text-transparent">
+                <h3 className="text-xl font-bold text-white tracking-tight bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent">
                   Vendor profile overview
                 </h3>
                 {!editingVendorOverview && (
@@ -510,7 +544,7 @@ export default function VendorDashboard() {
                       <button
                         type="button"
                         onClick={() => setEditingVendorOverview(true)}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(37,99,235,0.45)] hover:bg-blue-500 hover:-translate-y-0.5 transition-all"
+                        className="px-4 py-2 bg-cyan-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(6,182,212,0.3)] hover:bg-cyan-500 hover:-translate-y-0.5 transition-all"
                       >
                         Edit
                       </button>
@@ -518,7 +552,7 @@ export default function VendorDashboard() {
                       <button
                         type="button"
                         onClick={() => setEditingVendorOverview(true)}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(16,185,129,0.45)] hover:bg-emerald-500 hover:-translate-y-0.5 transition-all"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(16,185,129,0.3)] hover:bg-emerald-500 hover:-translate-y-0.5 transition-all"
                         title="Add vendor profile overview"
                       >
                         <span className="text-lg leading-none font-bold">+</span>
@@ -528,10 +562,10 @@ export default function VendorDashboard() {
                   </div>
                 )}
               </div>
-              <p className="text-sm text-slate-600 mb-4">
+              <p className="text-sm text-slate-400 mb-4">
                 Public-style summary: website, contact details, and services or materials.
               </p>
-              <div className="bg-white/95 rounded-2xl border border-blue-100/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_12px_40px_rgba(59,130,246,0.06)] px-6 py-5 md:px-8 md:py-6">
+              <div className="bg-slate-900/95 rounded-2xl border border-blue-100/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_12px_40px_rgba(0,0,0,0.2)] px-6 py-5 md:px-8 md:py-6">
                 {editingVendorOverview ? (
                   <VendorProfileOverviewForm
                     key={`overview-${selectedVendor.vendorcode}`}
@@ -546,14 +580,14 @@ export default function VendorDashboard() {
                   />
                 ) : vendorOverviewLoading ? (
                   <div className="flex items-center justify-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
-                    <span className="ml-2 text-gray-600">Loading overview…</span>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-600" />
+                    <span className="ml-2 text-slate-400">Loading overview…</span>
                   </div>
                 ) : vendorOverview ? (
                   <VendorProfileOverviewDisplay vendorOverview={vendorOverview} />
                 ) : (
-                  <p className="text-gray-500 text-center py-6">
-                    No profile overview yet. Use <span className="font-medium text-slate-700">+ Add overview</span> to create a record for this vendor code.
+                  <p className="text-slate-400 text-center py-6">
+                    No profile overview yet. Use <span className="font-medium text-slate-300">+ Add overview</span> to create a record for this vendor code.
                   </p>
                 )}
               </div>
@@ -563,35 +597,35 @@ export default function VendorDashboard() {
             {/* Quick Stats */}
             {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100/90 p-4 rounded-2xl shadow-[0_14px_35px_rgba(37,99,235,0.32)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(37,99,235,0.48)]">
-                  <h3 className="text-sm font-medium text-blue-600">Total PO Value</h3>
-                  <p className="text-2xl font-bold text-blue-900">
+              <div className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 p-4 rounded-2xl shadow-[0_14px_35px_rgba(6,182,212,0.15)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(6,182,212,0.25)]">
+                  <h3 className="text-sm font-medium text-cyan-400">Total PO Value</h3>
+                  <p className="text-2xl font-bold text-white">
                     {formatCurrency(vendorData.poSummary?.totalValue || 0)}
                   </p>
                 </div>
-              <div className="bg-gradient-to-br from-green-50 to-emerald-100/90 p-4 rounded-2xl shadow-[0_14px_35px_rgba(22,163,74,0.3)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(22,163,74,0.46)]">
-                  <h3 className="text-sm font-medium text-green-600">Number of POs</h3>
-                  <p className="text-2xl font-bold text-green-900">{vendorData.poSummary?.poCount || 0}</p>
+              <div className="bg-gradient-to-br from-emerald-950/40 to-emerald-900/20 p-4 rounded-2xl shadow-[0_14px_35px_rgba(16,185,129,0.15)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(16,185,129,0.25)]">
+                  <h3 className="text-sm font-medium text-emerald-400">Number of POs</h3>
+                  <p className="text-2xl font-bold text-emerald-100">{vendorData.poSummary?.poCount || 0}</p>
                 </div>
               </div>
             )}
           </div>
 
           {/* Material & service groups (vendorgroupmap / unregisteredvendorgroupmap) */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+          <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
             <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-              <h3 className="text-xl font-semibold text-slate-900 tracking-tight">Material &amp; service groups</h3>
+              <h3 className="text-xl font-semibold text-white tracking-tight">Material &amp; service groups</h3>
               {!editingGroupMappings && (
                 <button
                   type="button"
                   onClick={() => setEditingGroupMappings(true)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(37,99,235,0.45)] hover:bg-blue-500 hover:-translate-y-0.5 transition-all"
+                  className="px-4 py-2 bg-cyan-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(6,182,212,0.3)] hover:bg-cyan-500 hover:-translate-y-0.5 transition-all"
                 >
                   Edit groups
                 </button>
               )}
             </div>
-            <p className="text-sm text-slate-600 mb-4">
+            <p className="text-sm text-slate-400 mb-4">
               Subgroups mapped to this vendor in{' '}
               {vendorData.groupMappingsSource === 'unregistered'
                 ? 'unregistered vendor group map'
@@ -599,7 +633,7 @@ export default function VendorDashboard() {
               . Use edit to add or remove mappings.
             </p>
             {editingGroupMappings ? (
-              <div className="bg-white/90 rounded-2xl border border-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] px-2 py-2 md:px-4">
+              <div className="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] px-2 py-2 md:px-4">
                 <VendorGroupMapping
                   key={`vgm-${selectedVendor.vendorcode}-${selectedVendor.vendorname}`}
                   vendorCode={selectedVendor.usesUnregisteredGroupMap ? '' : selectedVendor.vendorcode}
@@ -618,30 +652,30 @@ export default function VendorDashboard() {
                   <button
                     type="button"
                     onClick={() => setEditingGroupMappings(false)}
-                    className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50"
+                    className="px-4 py-2 border border-slate-600 text-slate-300 rounded-lg text-sm font-medium hover:bg-slate-800"
                   >
                     Cancel
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="bg-white/90 rounded-2xl border border-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] px-6 py-5 md:px-8 md:py-6">
+              <div className="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] px-6 py-5 md:px-8 md:py-6">
                 {vendorData.groupMappings?.length > 0 ? (
                   <ul className="flex flex-wrap gap-2">
                     {vendorData.groupMappings.map((m) => (
                       <li
                         key={`${m.subgroupId}-${m.mappingId}`}
-                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm bg-slate-100 text-slate-800 border border-slate-200/80"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm bg-slate-100 text-slate-200 border border-slate-700/80"
                       >
-                        <span className="font-medium text-slate-900">{m.groupName}</span>
+                        <span className="font-medium text-white">{m.groupName}</span>
                         <span className="text-slate-400">·</span>
                         <span>{m.subgroupName}</span>
                         {m.isService ? (
-                          <span className="text-xs font-semibold uppercase tracking-wide text-violet-700 bg-violet-100/80 px-2 py-0.5 rounded-full">
+                          <span className="text-xs font-semibold uppercase tracking-wide text-violet-400 bg-violet-900/40 px-2 py-0.5 rounded-full">
                             Service
                           </span>
                         ) : (
-                          <span className="text-xs font-semibold uppercase tracking-wide text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-full">
+                          <span className="text-xs font-semibold uppercase tracking-wide text-emerald-400 bg-emerald-900/40 px-2 py-0.5 rounded-full">
                             Material
                           </span>
                         )}
@@ -649,8 +683,8 @@ export default function VendorDashboard() {
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-slate-500 text-center py-6">
-                    No material or service groups mapped yet. Click <span className="font-medium text-slate-700">Edit groups</span> to add mappings.
+                  <p className="text-slate-400 text-center py-6">
+                    No material or service groups mapped yet. Click <span className="font-medium text-slate-300">Edit groups</span> to add mappings.
                   </p>
                 )}
               </div>
@@ -659,12 +693,12 @@ export default function VendorDashboard() {
 
           {/* Vendor Details */}
           {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
-              <h3 className="text-xl font-semibold text-slate-900 mb-4 tracking-tight">Vendor Details</h3>
-              <div className="bg-white/90 rounded-2xl border border-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] px-6 py-5 md:px-8 md:py-6">
+            <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+              <h3 className="text-xl font-semibold text-white mb-4 tracking-tight">Vendor Details</h3>
+              <div className="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] px-6 py-5 md:px-8 md:py-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <h4 className="font-semibold text-slate-800 mb-2 text-sm uppercase tracking-wide">Company Information</h4>
+                    <h4 className="font-semibold text-slate-200 mb-2 text-sm uppercase tracking-wide">Company Information</h4>
                     <div className="space-y-2 text-sm">
                       <p><span className="font-medium">Registration Number:</span> {vendorData.vendor.companyregistrationnumber || 'N/A'}</p>
                       <p><span className="font-medium">Email:</span> {vendorData.vendor.companyemail || 'N/A'}</p>
@@ -674,7 +708,7 @@ export default function VendorDashboard() {
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-800 mb-2 text-sm uppercase tracking-wide">Address</h4>
+                    <h4 className="font-semibold text-slate-200 mb-2 text-sm uppercase tracking-wide">Address</h4>
                     <div className="space-y-2 text-sm">
                       <p><span className="font-medium">City:</span> {vendorData.vendor.address?.city || 'N/A'}</p>
                       <p><span className="font-medium">Country:</span> {vendorData.vendor.address?.countrycode || 'N/A'}</p>
@@ -686,7 +720,7 @@ export default function VendorDashboard() {
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-800 mb-2 text-sm uppercase tracking-wide">System Information</h4>
+                    <h4 className="font-semibold text-slate-200 mb-2 text-sm uppercase tracking-wide">System Information</h4>
                     <div className="space-y-2 text-sm">
                       <p><span className="font-medium">Created Date:</span> {vendorData.vendor.created_date ? formatDate(vendorData.vendor.created_date) : 'N/A'}</p>
                       <p><span className="font-medium">Created By:</span> {vendorData.vendor.created_by || 'N/A'}</p>
@@ -701,18 +735,18 @@ export default function VendorDashboard() {
 
           {/* Contact Details */}
           {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+            <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold text-slate-900 tracking-tight">Contact Details</h3>
+                <h3 className="text-xl font-semibold text-white tracking-tight">Contact Details</h3>
                 <button
                   onClick={handleContactEdit}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(37,99,235,0.45)] hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(37,99,235,0.6)] transition-all"
+                  className="px-4 py-2 bg-cyan-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(6,182,212,0.3)] hover:bg-cyan-500 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(6,182,212,0.4)] transition-all"
                 >
                   Edit Contact
                 </button>
               </div>
               
-              <div className="bg-white/90 rounded-2xl border border-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] px-6 py-5 md:px-8 md:py-6">
+              <div className="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] px-6 py-5 md:px-8 md:py-6">
                 {editingContact ? (
                   <ContactEditForm
                     contact={vendorData.vendor?.contact || {}}
@@ -722,7 +756,7 @@ export default function VendorDashboard() {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2 text-sm uppercase tracking-wide">Phone & Fax</h4>
+                      <h4 className="font-semibold text-slate-200 mb-2 text-sm uppercase tracking-wide">Phone & Fax</h4>
                       <div className="space-y-2 text-sm">
                         <p><span className="font-medium">Telephone 1:</span> {vendorData.vendor?.contact?.telephone1 || vendorData.vendor?.contact?.telelphone1 || 'N/A'}</p>
                         <p><span className="font-medium">Telephone 2:</span> {vendorData.vendor?.contact?.telephone2 || 'N/A'}</p>
@@ -730,7 +764,7 @@ export default function VendorDashboard() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2 text-sm uppercase tracking-wide">Sales Contact</h4>
+                      <h4 className="font-semibold text-slate-200 mb-2 text-sm uppercase tracking-wide">Sales Contact</h4>
                       <div className="space-y-2 text-sm">
                         <p><span className="font-medium">Sales Name:</span> {vendorData.vendor?.contact?.salesname || 'N/A'}</p>
                         <p><span className="font-medium">Sales Email:</span> {vendorData.vendor?.contact?.salesemail || 'N/A'}</p>
@@ -751,30 +785,30 @@ export default function VendorDashboard() {
           
 
           {/* Vendor Uploaded Documents (from /vendordocupload) */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
-            <h3 className="text-xl font-semibold text-slate-900 mb-4 tracking-tight">Vendor Uploaded Documents</h3>
+          <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+            <h3 className="text-xl font-semibold text-white mb-4 tracking-tight">Vendor Uploaded Documents</h3>
             {uploadedDocsLoading ? (
               <div className="flex items-center justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                <span className="ml-2 text-gray-600">Loading documents...</span>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-600"></div>
+                <span className="ml-2 text-slate-400">Loading documents...</span>
               </div>
             ) : uploadedDocuments.length > 0 ? (
               <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
                 {uploadedDocuments.map((document) => (
-                  <div key={document._id} className="bg-slate-50/80 border border-slate-100 rounded-2xl p-3 shadow-[0_8px_22px_rgba(15,23,42,0.1)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.2)] transition-shadow duration-300">
+                  <div key={document._id} className="bg-slate-800/50 border border-slate-800 rounded-2xl p-3 shadow-[0_8px_22px_rgba(15,23,42,0.1)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.2)] transition-shadow duration-300">
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center space-x-2 mb-1">
-                          <span className="text-sm font-medium text-gray-900 truncate">{document.filename}</span>
+                          <span className="text-sm font-medium text-white truncate">{document.filename}</span>
                           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-800">{document.documentType}</span>
                         </div>
                         {document.description && (
-                          <p className="text-xs text-gray-600 mb-1">{document.description}</p>
+                          <p className="text-xs text-slate-400 mb-1">{document.description}</p>
                         )}
-                        <div className="text-xs text-gray-500">Uploaded by {document.uploadedBy} on {new Date(document.uploadedAt).toLocaleDateString()}</div>
+                        <div className="text-xs text-slate-400">Uploaded by {document.uploadedBy} on {new Date(document.uploadedAt).toLocaleDateString()}</div>
                       </div>
                       <div className="flex space-x-1 ml-2">
-                        <a href={`/${selectedVendor.vendorcode}/${document.filename}`} target="_blank" rel="noopener noreferrer" className="px-2 py-1 text-xs bg-blue-500 text-white rounded-full shadow hover:bg-blue-400 hover:-translate-y-0.5 hover:shadow-[0_10px_22px_rgba(37,99,235,0.6)] transition-all">View</a>
+                        <a href={`/${selectedVendor.vendorcode}/${document.filename}`} target="_blank" rel="noopener noreferrer" className="px-2 py-1 text-xs bg-blue-500 text-white rounded-full shadow hover:bg-blue-400 hover:-translate-y-0.5 hover:shadow-[0_10px_22px_rgba(6,182,212,0.4)] transition-all">View</a>
                         <a href={`/${selectedVendor.vendorcode}/${document.filename}`} download={document.originalName || document.filename} className="px-2 py-1 text-xs bg-emerald-500 text-white rounded-full shadow hover:bg-emerald-400 hover:-translate-y-0.5 hover:shadow-[0_10px_22px_rgba(16,185,129,0.6)] transition-all">Download</a>
                       </div>
                     </div>
@@ -782,22 +816,22 @@ export default function VendorDashboard() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-8">No uploaded documents found</p>
+              <p className="text-slate-400 text-center py-8">No uploaded documents found</p>
             )}
           </div>
 
           {/* Additional Company Information */}
           {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+            <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
               <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                <h3 className="text-xl font-semibold text-slate-900 tracking-tight">Additional Company Information</h3>
+                <h3 className="text-xl font-semibold text-white tracking-tight">Additional Company Information</h3>
                 {!editingAdditionalInfo && (
                   <div className="flex items-center gap-2">
                     {additionalInfo ? (
                       <button
                         type="button"
                         onClick={() => setEditingAdditionalInfo(true)}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(37,99,235,0.45)] hover:bg-blue-500 hover:-translate-y-0.5 transition-all"
+                        className="px-4 py-2 bg-cyan-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(6,182,212,0.3)] hover:bg-cyan-500 hover:-translate-y-0.5 transition-all"
                       >
                         Edit
                       </button>
@@ -805,7 +839,7 @@ export default function VendorDashboard() {
                       <button
                         type="button"
                         onClick={() => setEditingAdditionalInfo(true)}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(16,185,129,0.45)] hover:bg-emerald-500 hover:-translate-y-0.5 transition-all"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(16,185,129,0.3)] hover:bg-emerald-500 hover:-translate-y-0.5 transition-all"
                         title="Add company information"
                       >
                         <span className="text-lg leading-none font-bold">+</span>
@@ -815,7 +849,7 @@ export default function VendorDashboard() {
                   </div>
                 )}
               </div>
-              <div className="bg-white/90 rounded-2xl border border-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] px-6 py-5 md:px-8 md:py-6">
+              <div className="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] px-6 py-5 md:px-8 md:py-6">
                 {editingAdditionalInfo ? (
                   <VendorAdditionalInfoForm
                     key={`addinfo-${selectedVendor.vendorcode}`}
@@ -829,35 +863,35 @@ export default function VendorDashboard() {
                   />
                 ) : additionalInfoLoading ? (
                   <div className="flex items-center justify-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                    <span className="ml-2 text-gray-600">Loading information...</span>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-600"></div>
+                    <span className="ml-2 text-slate-400">Loading information...</span>
                   </div>
                 ) : additionalInfo ? (
                   <div className="space-y-4 text-sm">
                     <div>
-                      <span className="font-medium text-slate-800">Company Type:</span>
+                      <span className="font-medium text-slate-200">Company Type:</span>
                       <div className="mt-1 flex flex-wrap gap-2">
                         {additionalInfo.companyTypes?.length ? (
                           additionalInfo.companyTypes.map((t, idx) => (
-                            <span key={idx} className="px-2 py-1 bg-slate-100 text-slate-800 rounded-full text-xs">{t}</span>
+                            <span key={idx} className="px-2 py-1 bg-slate-100 text-slate-200 rounded-full text-xs">{t}</span>
                           ))
                         ) : (
-                          <span className="text-gray-500">N/A</span>
+                          <span className="text-slate-400">N/A</span>
                         )}
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <p><span className="font-medium text-slate-800">Year Established:</span> {additionalInfo.yearEstablished || 'N/A'}</p>
-                      <p><span className="font-medium text-slate-800">Company Legal Type:</span> {additionalInfo.companyLegalType || 'N/A'}{additionalInfo.companyLegalType === 'others' && additionalInfo.companyLegalTypeOther ? ` - ${additionalInfo.companyLegalTypeOther}` : ''}</p>
-                      <p><span className="font-medium text-slate-800">Employees:</span> {additionalInfo.numEmployees ?? 'N/A'}</p>
-                      <p><span className="font-medium text-slate-800">Technical/Engineering Staff:</span> {additionalInfo.numTechnicalStaff ?? 'N/A'}</p>
-                      <p><span className="font-medium text-slate-800">Skilled Labor:</span> {additionalInfo.numSkilledLabor ?? 'N/A'}</p>
-                      <p><span className="font-medium text-slate-800">Unskilled Labor:</span> {additionalInfo.numUnskilledLabor ?? 'N/A'}</p>
-                      <p><span className="font-medium text-slate-800">Annual Turnover Avg (SAR):</span> {additionalInfo.annualTurnoverAvgSAR ?? 'N/A'}</p>
-                      <p><span className="font-medium text-slate-800">Total Area (SQM):</span> {additionalInfo.totalAreaSqm ?? 'N/A'}</p>
+                      <p><span className="font-medium text-slate-200">Year Established:</span> {additionalInfo.yearEstablished || 'N/A'}</p>
+                      <p><span className="font-medium text-slate-200">Company Legal Type:</span> {additionalInfo.companyLegalType || 'N/A'}{additionalInfo.companyLegalType === 'others' && additionalInfo.companyLegalTypeOther ? ` - ${additionalInfo.companyLegalTypeOther}` : ''}</p>
+                      <p><span className="font-medium text-slate-200">Employees:</span> {additionalInfo.numEmployees ?? 'N/A'}</p>
+                      <p><span className="font-medium text-slate-200">Technical/Engineering Staff:</span> {additionalInfo.numTechnicalStaff ?? 'N/A'}</p>
+                      <p><span className="font-medium text-slate-200">Skilled Labor:</span> {additionalInfo.numSkilledLabor ?? 'N/A'}</p>
+                      <p><span className="font-medium text-slate-200">Unskilled Labor:</span> {additionalInfo.numUnskilledLabor ?? 'N/A'}</p>
+                      <p><span className="font-medium text-slate-200">Annual Turnover Avg (SAR):</span> {additionalInfo.annualTurnoverAvgSAR ?? 'N/A'}</p>
+                      <p><span className="font-medium text-slate-200">Total Area (SQM):</span> {additionalInfo.totalAreaSqm ?? 'N/A'}</p>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2 text-sm uppercase tracking-wide">Financial References</h4>
+                      <h4 className="font-semibold text-slate-200 mb-2 text-sm uppercase tracking-wide">Financial References</h4>
                       {additionalInfo.financialReferences?.length ? (
                         <div className="space-y-2">
                           {additionalInfo.financialReferences.map((ref, idx) => (
@@ -870,11 +904,11 @@ export default function VendorDashboard() {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-gray-500">No financial references</p>
+                        <p className="text-slate-400">No financial references</p>
                       )}
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-800 mb-2 text-sm uppercase tracking-wide">Client References</h4>
+                      <h4 className="font-semibold text-slate-200 mb-2 text-sm uppercase tracking-wide">Client References</h4>
                       {additionalInfo.clientReferences?.length ? (
                         <div className="space-y-2">
                           {additionalInfo.clientReferences.map((ref, idx) => (
@@ -887,18 +921,18 @@ export default function VendorDashboard() {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-gray-500">No client references</p>
+                        <p className="text-slate-400">No client references</p>
                       )}
                     </div>
                     {additionalInfo.remarks ? (
                       <div>
-                        <h4 className="font-semibold text-slate-800 mb-2 text-sm uppercase tracking-wide">Remarks</h4>
-                        <p className="text-slate-800">{additionalInfo.remarks}</p>
+                        <h4 className="font-semibold text-slate-200 mb-2 text-sm uppercase tracking-wide">Remarks</h4>
+                        <p className="text-slate-200">{additionalInfo.remarks}</p>
                       </div>
                     ) : null}
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-center py-6">No additional information yet. Use <span className="font-medium text-slate-700">+ Add information</span> above to create a record.</p>
+                  <p className="text-slate-400 text-center py-6">No additional information yet. Use <span className="font-medium text-slate-300">+ Add information</span> above to create a record.</p>
                 )}
               </div>
             </div>
@@ -906,19 +940,19 @@ export default function VendorDashboard() {
 
           {/* Vendor Feedback (read-only) */}
           {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
-              <h3 className="text-xl font-semibold text-slate-900 mb-4 tracking-tight">User Feedback</h3>
+            <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+              <h3 className="text-xl font-semibold text-white mb-4 tracking-tight">User Feedback</h3>
               {vendorFeedbackLoading ? (
                 <div className="flex items-center justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                  <span className="ml-2 text-gray-600">Loading feedback...</span>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-600"></div>
+                  <span className="ml-2 text-slate-400">Loading feedback...</span>
                 </div>
               ) : vendorFeedback.length > 0 ? (
                 <div className="space-y-4">
                   {vendorFeedback.map((feedback) => (
                     <div
                       key={feedback._id}
-                      className="bg-slate-50/80 border border-slate-100 rounded-2xl p-4 shadow-[0_10px_26px_rgba(15,23,42,0.12)] hover:shadow-[0_18px_40px_rgba(15,23,42,0.22)] transition-shadow duration-300"
+                      className="bg-slate-800/50 border border-slate-800 rounded-2xl p-4 shadow-[0_10px_26px_rgba(15,23,42,0.12)] hover:shadow-[0_18px_40px_rgba(15,23,42,0.22)] transition-shadow duration-300"
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
@@ -929,7 +963,7 @@ export default function VendorDashboard() {
                             <span className="font-semibold text-gray-800">
                               {feedback.username}
                             </span>
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-slate-400">
                               {new Date(feedback.createdAt).toLocaleDateString('en-US', {
                                 year: 'numeric',
                                 month: 'short',
@@ -943,55 +977,55 @@ export default function VendorDashboard() {
                       </div>
                       
                       {feedback.vendorName && (
-                        <div className="mb-3 p-2 bg-blue-50/80 rounded-xl border border-blue-200">
-                          <div className="text-sm text-blue-700">
+                        <div className="mb-3 p-2 bg-blue-50/80 rounded-xl border border-cyan-800">
+                          <div className="text-sm text-cyan-400">
                             <span className="font-medium">Vendor:</span> {feedback.vendorName}
                           </div>
                         </div>
                       )}
                       
-                      <div className="text-slate-700 text-sm leading-relaxed">
+                      <div className="text-slate-300 text-sm leading-relaxed">
                         {feedback.comment}
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-8">No feedback available for this vendor</p>
+                <p className="text-slate-400 text-center py-8">No feedback available for this vendor</p>
               )}
             </div>
           )}
 
           {/* Purchase Orders */}
           {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
-              <h3 className="text-xl font-semibold text-slate-900 mb-4 tracking-tight">Purchase Orders</h3>
+            <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+              <h3 className="text-xl font-semibold text-white mb-4 tracking-tight">Purchase Orders</h3>
               {vendorData.poSummary?.poList?.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PO Number</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">PO Number</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Date</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Value</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Balance</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-slate-900 divide-y divide-gray-200">
                       {vendorData.poSummary?.poList?.map((po, index) => {
                         const hasPendingValue = po.balgrval && po.balgrval > 0;
                         return (
                           <tr key={index} className={`hover:bg-gray-50 ${hasPendingValue ? 'bg-red-50 hover:bg-red-100' : ''}`}>
-                            <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${hasPendingValue ? 'text-red-900 font-bold' : 'text-gray-900'}`}>
+                            <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${hasPendingValue ? 'text-red-900 font-bold' : 'text-white'}`}>
                               {po.ponum}
                             </td>
-                            <td className={`px-6 py-4 whitespace-nowrap text-sm ${hasPendingValue ? 'text-red-700 font-bold' : 'text-gray-500'}`}>
+                            <td className={`px-6 py-4 whitespace-nowrap text-sm ${hasPendingValue ? 'text-red-700 font-bold' : 'text-slate-400'}`}>
                               {formatDate(po.podate)}
                             </td>
-                            <td className={`px-6 py-4 whitespace-nowrap text-sm ${hasPendingValue ? 'text-red-900 font-bold' : 'text-gray-900'}`}>
+                            <td className={`px-6 py-4 whitespace-nowrap text-sm ${hasPendingValue ? 'text-red-900 font-bold' : 'text-white'}`}>
                               {formatCurrency(po.poval)}
                             </td>
-                            <td className={`px-6 py-4 whitespace-nowrap text-sm ${hasPendingValue ? 'text-red-900 font-bold' : 'text-gray-900'}`}>
+                            <td className={`px-6 py-4 whitespace-nowrap text-sm ${hasPendingValue ? 'text-red-900 font-bold' : 'text-white'}`}>
                               {formatCurrency(po.balgrval)}
                             </td>
                           </tr>
@@ -1001,7 +1035,7 @@ export default function VendorDashboard() {
                   </table>
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-8">No purchase orders found for this vendor</p>
+                <p className="text-slate-400 text-center py-8">No purchase orders found for this vendor</p>
               )}
             </div>
           )}
@@ -1036,57 +1070,57 @@ function ContactEditForm({ contact, onSave, onCancel }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Telephone 1</label>
+          <label className="block text-sm font-medium text-slate-300 mb-1">Telephone 1</label>
           <input
             type="text"
             value={formData.telephone1}
             onChange={(e) => setFormData({...formData, telephone1: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Telephone 2</label>
+          <label className="block text-sm font-medium text-slate-300 mb-1">Telephone 2</label>
           <input
             type="text"
             value={formData.telephone2}
             onChange={(e) => setFormData({...formData, telephone2: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Fax</label>
+          <label className="block text-sm font-medium text-slate-300 mb-1">Fax</label>
           <input
             type="text"
             value={formData.fax}
             onChange={(e) => setFormData({...formData, fax: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Sales Name</label>
+          <label className="block text-sm font-medium text-slate-300 mb-1">Sales Name</label>
           <input
             type="text"
             value={formData.salesname}
             onChange={(e) => setFormData({...formData, salesname: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Sales Email</label>
+          <label className="block text-sm font-medium text-slate-300 mb-1">Sales Email</label>
           <input
             type="email"
             value={formData.salesemail}
             onChange={(e) => setFormData({...formData, salesemail: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Sales Mobile</label>
+          <label className="block text-sm font-medium text-slate-300 mb-1">Sales Mobile</label>
           <input
             type="text"
             value={formData.salesmobile}
             onChange={(e) => setFormData({...formData, salesmobile: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
           />
         </div>
       </div>
@@ -1094,13 +1128,13 @@ function ContactEditForm({ contact, onSave, onCancel }) {
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+          className="px-4 py-2 border border-gray-300 text-slate-300 rounded-lg hover:bg-gray-50"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-cyan-600"
         >
           Save Changes
         </button>
@@ -1114,9 +1148,9 @@ function ContactEditForm({ contact, onSave, onCancel }) {
 function VendorEvaluationSection({ evaluation }) {
   if (!evaluation || (!evaluation.marks && !evaluation.fixed)) {
     return (
-      <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
-        <h3 className="text-xl font-semibold text-slate-900 mb-4 tracking-tight">Vendor Evaluation</h3>
-        <p className="text-slate-500 text-center py-8">No evaluation data available for this vendor</p>
+      <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+        <h3 className="text-xl font-semibold text-white mb-4 tracking-tight">Vendor Evaluation</h3>
+        <p className="text-slate-400 text-center py-8">No evaluation data available for this vendor</p>
       </div>
     );
   }
@@ -1133,12 +1167,12 @@ function VendorEvaluationSection({ evaluation }) {
   ];
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
-      <h3 className="text-xl font-semibold text-slate-900 mb-6 tracking-tight">Vendor Evaluation</h3>
+    <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+      <h3 className="text-xl font-semibold text-white mb-6 tracking-tight">Vendor Evaluation</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Summary Scores Card */}
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 shadow-[0_16px_40px_rgba(37,99,235,0.32)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(37,99,235,0.5)]" style={{
+        <div className="bg-gradient-to-br from-cyan-950/40 to-blue-100 rounded-2xl p-6 shadow-[0_16px_40px_rgba(6,182,212,0.15)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(37,99,235,0.5)]" style={{
           backgroundImage: `radial-gradient(circle at 2px 2px, rgba(59, 130, 246, 0.1) 1px, transparent 0)`,
           backgroundSize: '20px 20px'
         }}>
@@ -1148,29 +1182,29 @@ function VendorEvaluationSection({ evaluation }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h4 className="text-lg font-bold text-blue-900">Summary Scores</h4>
+            <h4 className="text-lg font-bold text-white">Summary Scores</h4>
           </div>
           <div className="space-y-3">
-            <div className="bg-white rounded-lg p-3 shadow-sm">
-              <div className="text-xs text-blue-600 font-medium">Fixed Score</div>
-              <div className="text-sm font-bold text-blue-900">
+            <div className="bg-slate-900 rounded-lg p-3 shadow-sm">
+              <div className="text-xs text-cyan-400 font-medium">Fixed Score</div>
+              <div className="text-sm font-bold text-white">
                 {evalmarks?.finalfixedscore?.$numberDecimal || evalmarks?.finalfixedscore || 'N/A'}
               </div>
             </div>
             {evalmarks.finalscore2022 && (
-              <div className="bg-white rounded-lg p-3 shadow-sm">
-                <div className="text-xs text-green-600 font-medium">2022 Score</div>
-                <div className="text-sm font-bold text-green-900">{evalmarks.finalscore2022.toFixed(2)}</div>
+              <div className="bg-slate-900 rounded-lg p-3 shadow-sm">
+                <div className="text-xs text-emerald-400 font-medium">2022 Score</div>
+                <div className="text-sm font-bold text-emerald-100">{evalmarks.finalscore2022.toFixed(2)}</div>
               </div>
             )}
             {evalmarks.finalscore2023 && (
-              <div className="bg-white rounded-lg p-3 shadow-sm">
+              <div className="bg-slate-900 rounded-lg p-3 shadow-sm">
                 <div className="text-xs text-teal-600 font-medium">2023 Score</div>
                 <div className="text-sm font-bold text-teal-900">{evalmarks.finalscore2023.toFixed(2)}</div>
               </div>
             )}
             {evalmarks.finalscore2024 && (
-              <div className="bg-white rounded-lg p-3 shadow-sm">
+              <div className="bg-slate-900 rounded-lg p-3 shadow-sm">
                 <div className="text-xs text-emerald-600 font-medium">2024 Score</div>
                 <div className="text-sm font-bold text-emerald-900">{evalmarks.finalscore2024.toFixed(2)}</div>
               </div>
@@ -1180,7 +1214,7 @@ function VendorEvaluationSection({ evaluation }) {
 
         {/* Past Scores Card */}
         {evalmarks2?.past && evalmarks2.past.length > 0 && (
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 shadow-[0_16px_40px_rgba(22,163,74,0.32)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(22,163,74,0.5)]" style={{
+          <div className="bg-gradient-to-br from-emerald-950/40 to-green-100 rounded-2xl p-6 shadow-[0_16px_40px_rgba(22,163,74,0.32)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(22,163,74,0.5)]" style={{
             backgroundImage: `radial-gradient(circle at 2px 2px, rgba(34, 197, 94, 0.1) 1px, transparent 0)`,
             backgroundSize: '20px 20px'
           }}>
@@ -1190,15 +1224,15 @@ function VendorEvaluationSection({ evaluation }) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h4 className="text-lg font-bold text-green-900">Past Scores</h4>
+              <h4 className="text-lg font-bold text-emerald-100">Past Scores</h4>
             </div>
             <div className="space-y-2">
               {evalmarks2.past.map((past, index) =>
                 past.pastyearscore > 0 ? (
-                  <div key={index} className="bg-white rounded-lg p-3 shadow-sm">
+                  <div key={index} className="bg-slate-900 rounded-lg p-3 shadow-sm">
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium text-green-700">Year {past.pastyear}</span>
-                      <span className="text-sm font-bold text-green-900">{past.pastyearscore}</span>
+                      <span className="text-sm font-bold text-emerald-100">{past.pastyearscore}</span>
                     </div>
                   </div>
                 ) : null
@@ -1223,7 +1257,7 @@ function VendorEvaluationSection({ evaluation }) {
             </div>
             <div className="space-y-2">
               {evalmarks2.fixedevalyear1.fixedeval.map((fixed, index) => (
-                <div key={index} className="bg-white rounded-lg p-3 shadow-sm">
+                <div key={index} className="bg-slate-900 rounded-lg p-3 shadow-sm">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-sky-400">{fixedscoretext[index]}</span>
                     <span className="text-[16px] italic font-bold text-sky-500">{fixed}</span>
@@ -1250,7 +1284,7 @@ function VendorEvaluationSection({ evaluation }) {
             </div>
             <div className="space-y-2">
               {evalmarks2.powiseevalyear1.powiserating.map((po, index) => (
-                <div key={index} className="bg-white rounded-lg p-3 shadow-sm">
+                <div key={index} className="bg-slate-900 rounded-lg p-3 shadow-sm">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-orange-700">{po.ponumber}</span>
                     <span className="text-sm font-bold text-orange-900">{po.povalue}</span>
@@ -1277,7 +1311,7 @@ function VendorEvaluationSection({ evaluation }) {
             </div>
             <div className="space-y-2">
               {evalmarks2.powiseevalyear2.powiserating.map((po, index) => (
-                <div key={index} className="bg-white rounded-lg p-3 shadow-sm">
+                <div key={index} className="bg-slate-900 rounded-lg p-3 shadow-sm">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-cyan-700">{po.ponumber}</span>
                     <span className="text-sm font-bold text-cyan-900">{po.povalue}</span>
@@ -1304,7 +1338,7 @@ function VendorEvaluationSection({ evaluation }) {
             </div>
             <div className="space-y-2">
               {evalmarks2.powiseevalyear3.powiserating.map((po, index) => (
-                <div key={index} className="bg-white rounded-lg p-3 shadow-sm">
+                <div key={index} className="bg-slate-900 rounded-lg p-3 shadow-sm">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-pink-700">{po.ponumber}</span>
                     <span className="text-sm font-bold text-pink-900">{po.povalue}</span>
