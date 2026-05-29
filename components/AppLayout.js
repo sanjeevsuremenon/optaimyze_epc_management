@@ -42,7 +42,7 @@ export default function AppLayout({ children }) {
     '/materialsdashboard',
     '/purchaseordersdashboard',
     '/vendorsdashboard',
-    '/dailymeetingdashboard',
+    '/projectdocumentsdashboard',
     '/assetdashboard'
   ];
   const isDashboard = dashboardPaths.includes(router.pathname);

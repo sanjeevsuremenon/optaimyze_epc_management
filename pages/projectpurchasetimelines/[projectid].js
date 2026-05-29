@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import moment from "moment";
-import { FiArrowUp, FiArrowDown } from 'react-icons/fi';
+import { FiArrowUp, FiArrowDown, FiTrendingUp, FiList } from 'react-icons/fi';
 
 function ProjectPurchaseTimelines() {
   const { data: session } = useSession();
@@ -341,6 +341,26 @@ function ProjectPurchaseTimelines() {
                     </span>
                   )}
                 </div>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <button
+                  disabled
+                  className="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-semibold py-2 px-4 rounded-lg flex items-center cursor-default gap-1.5 shadow-sm"
+                >
+                  <FiTrendingUp className="w-4 h-4" />
+                  View PO timelines
+                </button>
+                <button
+                  onClick={() => {
+                    const targetId = network ? network : projectid;
+                    router.push(`/projects1?project=${encodeURIComponent(targetId)}`);
+                  }}
+                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold py-2 px-4 rounded-lg transition-all duration-200 flex items-center gap-1.5 shadow-sm hover:shadow"
+                >
+                  <FiList className="w-4 h-4" />
+                  View PO list
+                </button>
               </div>
             </div>
           </div>

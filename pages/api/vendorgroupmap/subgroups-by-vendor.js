@@ -46,13 +46,17 @@ export default async function handler(req, res) {
       .find({ _id: { $in: groupIds.map((id) => new ObjectId(id)) } })
       .toArray();
 
-    const groupMap = Object.fromEntries(groups.map((g) => [g._id.toString(), g.name]));
+    const groupMap = Object.fromEntries(groups.map((g) => [g._id.toString(), { name: g.name, isService: g.isService }]));
 
-    const result = subgroups.map((sg) => ({
-      subgroupId: sg._id.toString(),
-      subgroupName: sg.name || '',
-      groupName: groupMap[sg.groupId?.toString()] || '',
-    }));
+    const result = subgroups.map((sg) => {
+      const g = groupMap[sg.groupId?.toString()] || {};
+      return {
+        subgroupId: sg._id.toString(),
+        subgroupName: sg.name || '',
+        groupName: g.name || '',
+        isService: g.isService || false,
+      };
+    });
 
     return res.status(200).json(result);
   } catch (error) {

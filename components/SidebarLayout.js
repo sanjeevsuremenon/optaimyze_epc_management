@@ -13,10 +13,20 @@ function prettify(path) {
 const MODULES = [
   { id: 'projects', label: 'Projects', subs: [{ label: 'Projects', path: '/projects' }, { label: 'Projects (new)', path: '/projects1' }, { label: 'Project Dashboard', path: '/projectsdashboard' }] },
   { id: 'purchaseorders', label: 'Purchase Orders', subs: [{ label: 'PO Search', path: '/purchaseordersearch' }, { label: 'Purchase Orders', path: '/purchaseorders' }, { label: 'POs Dashboard', path: '/purchaseordersdashboard' }] },
-  { id: 'vendors', label: 'Vendors', subs: [{ label: 'Vendors', path: '/vendors' }, { label: 'Vendors (legacy)', path: '/vendors1' }, { label: 'Vendors Dashboard', path: '/vendorsdashboard' }] },
+  { id: 'vendors', label: 'Vendors', subs: [
+    { label: 'Vendors', path: '/vendors1' },
+    { label: 'Vendor Dashboard', path: '/vendor-dashboard' },
+    { label: 'Non SAP Vendors', path: '/nonsapvendors' },
+    { label: 'Vendor Feedback', path: '/vendor-feedback' },
+    { label: 'Vendor Evaluation', path: '/vendorevaluation/webformat' }
+  ] },
   { id: 'materials', label: 'Materials', subs: [{ label: 'Materials', path: '/materials' }, { label: 'Materials (alt)', path: '/materials1' }, { label: 'Material Groups', path: '/material-groups' }, { label: 'Material Dashboard', path: '/materialsdashboard' }] },
   { id: 'tracking', label: 'Tracking', subs: [{ label: 'Tracking', path: '/tracking' }] },
   { id: 'reports', label: 'Reports', subs: [{ label: 'All Purchases', path: '/all-purchases-report' }, { label: 'Import Purchases', path: '/import-purchases-report' }, { label: 'Domestic Purchases', path: '/domestic-purchases-report' }] },
+  { id: 'assets', label: 'Asset Management', subs: [{ label: 'Dashboard', path: '/assetdashboard' }, { label: 'Asset Masters', path: '/assetmanagement/masters' }, { label: 'MME Equipment', path: '/assets/mme' }, { label: 'Fixed Assets', path: '/assets/fixedassets' }, { label: 'PPE Dashboard', path: '/assets/ppe-dashboard' }] },
+  { id: 'globalmasters', label: 'Global Masters', subs: [
+    { label: 'Global Masters', path: '/global-masters' }
+  ] },
 ];
 
 export default function SidebarLayout({ children }) {
@@ -72,7 +82,7 @@ export default function SidebarLayout({ children }) {
                     <div className="mt-2 ml-2">
                       {mod.subs.map((s) => (
                         <Link key={s.path} href={s.path} legacyBehavior>
-                          <a className={`block px-3 py-2 rounded-md text-sm text-slate-300 hover:bg-slate-800/50 ${router.pathname === s.path ? 'bg-slate-800 text-slate-100 font-medium' : ''}`}>{s.label || prettify(s.path)}</a>
+                           <a className={`block px-3 py-2 rounded-md text-sm text-slate-300 hover:bg-slate-800/50 ${(router.pathname === s.path || router.pathname.startsWith(s.path + '/')) ? 'bg-slate-800 text-slate-100 font-medium' : ''}`}>{s.label || prettify(s.path)}</a>
                         </Link>
                       ))}
                     </div>

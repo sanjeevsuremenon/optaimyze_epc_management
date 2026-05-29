@@ -18,6 +18,7 @@ import {
   faKey,
   faUser,
   faCalendar,
+  faGlobe,
 } from "@fortawesome/free-solid-svg-icons";
 
 function HeaderNewComponent() {
@@ -83,7 +84,7 @@ function HeaderNewComponent() {
         { href: "/vendorswithpo", label: "Vendor Details" },
         { href: "/vendorswithpo/not-evaluated-fixed", label: "Not Evaluated (Fixed Scores)" },
         { href: "/vendorevaluation/webformat", label: "Vendor Evaluation" },
-        { href: "/vendors", label: "Non SAP Vendors" },
+        { href: "/nonsapvendors", label: "Non SAP Vendors" },
         { href: "/vendors/group-mapping", label: "Vendor Mapping" },
         { href: "/vendors/with-po-mapping", label: "Vendors with PO – Map Groups" },
         { href: "/vendor-feedback", label: "Vendor Feedback" },
@@ -95,6 +96,14 @@ function HeaderNewComponent() {
         
         {href: "/vendorevaluation/pdf/new", label: "Vendor Evaluation PDF"},
         { href: "#", label: "View Documents" },
+      ]
+    },
+    {
+      label: "Global Masters",
+      icon: faGlobe,
+      href: "/globalmastersdashboard",
+      sublinks: [
+        { href: "/global-masters", label: "Global Masters" }
       ]
     }
   ];
@@ -140,15 +149,15 @@ function HeaderNewComponent() {
                   Home
               </Link>
 
-              {/* Daily Meeting Link */}
+              {/* Project Document Link */}
               <Link 
-                href="/dailymeeting"
+                href="/projectmeetings"
                 onClick={handleLinkClick}
                 className="px-4 py-2 rounded font-bold text-sm text-sky-900 bg-sky-300 hover:bg-sky-100 flex items-center gap-2 transition-all shadow-sm"
                 style={{ fontFamily: 'Montserrat, sans-serif', letterSpacing: '0.04em' }}
               >
                   <FontAwesomeIcon icon={faCalendar} className="text-sky-800 font-bold text-sm" />
-                  Daily Meeting
+                  Project Document
               </Link>
 
               {/* Main Navigation Items with Dropdowns */}

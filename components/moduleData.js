@@ -11,6 +11,7 @@ import {
   faChartLine,
   faGavel,
   faPlus,
+  faGlobe,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const moduleDashboards = {
@@ -66,16 +67,18 @@ export const moduleDashboards = {
       { href: "/vendors1", label: "Vendors" },
       { href: "/vendor-dashboard", label: "Vendor Dashboard" },
       { href: "/nonsapvendors", label: "Non SAP Vendors" },
+      { href: "/vendor-feedback", label: "Vendor Feedback" },
+      { href: "/vendorevaluation/webformat", label: "Vendor Evaluation" },
     ],
   },
-  dailymeetings: {
-    key: "dailymeetings",
-    label: "Daily Meetings",
-    href: "/dailymeetingdashboard",
-    description: "Capture daily meeting actions, follow-up items, and reviews.",
+  projectdocumentss: {
+    key: "projectdocumentss",
+    label: "Project Documents",
+    href: "/projectdocumentsdashboard",
+    description: "Capture Project Document actions, follow-up items, and reviews.",
     icon: faCalendarAlt,
     sublinks: [
-      { href: "/dailymeeting", label: "Daily Meetings" },
+      { href: "/projectdocuments", label: "Project Documents" },
     ],
   },
   assets: {
@@ -86,10 +89,21 @@ export const moduleDashboards = {
     icon: faHeadset,
     sublinks: [
       { href: "/assets/dashboard", label: "Assets Dashboard" },
+      { href: "/assetmanagement/masters", label: "Asset Masters" },
       { href: "/assets/mme", label: "MME Equipment" },
       { href: "/assets/fixedassets", label: "Fixed Assets" },
       { href: "/assets/ppe-dashboard", label: "PPE Dashboard" },
       { href: "/assets/reports", label: "Reports" },
+    ],
+  },
+  globalmasters: {
+    key: "globalmasters",
+    label: "Global Masters",
+    href: "/globalmastersdashboard",
+    description: "Manage global master data including employees, departments, and configurations.",
+    icon: faGlobe,
+    sublinks: [
+      { href: "/global-masters", label: "Global Masters" },
     ],
   },
 };
@@ -99,8 +113,9 @@ export const moduleCards = [
   moduleDashboards.materials,
   moduleDashboards.purchaseorders,
   moduleDashboards.vendors,
-  moduleDashboards.dailymeetings,
+  moduleDashboards.projectdocumentss,
   moduleDashboards.assets,
+  moduleDashboards.globalmasters,
   {
     label: "Inventory Tags",
     href: "#",

@@ -9,7 +9,7 @@ import Tablecomponent, {
   Boldstyle4,
   Numberstyle,
 } from "../../components/Tablecomponent";
-import { FiArrowUp, FiArrowDown, FiFolder, FiShoppingCart, FiTrendingUp } from 'react-icons/fi';
+import { FiArrowUp, FiArrowDown, FiFolder, FiShoppingCart, FiTrendingUp, FiList } from 'react-icons/fi';
 
 function OpenProjects() {
   const router = useRouter();
@@ -106,10 +106,17 @@ function OpenProjects() {
     }
   };
 
-  // Handle view POs click - open in new tab
-  const handleViewPOs = (projectId) => {
+  // Handle view PO timelines click - open in new tab
+  const handleViewPOTimelines = (projectId) => {
     const targetId = (!projectId || projectId === "unassigned") ? "unassigned" : projectId;
     const url = `/projectpurchasetimelines/${encodeURIComponent(targetId)}`;
+    window.open(url, '_blank');
+  };
+
+  // Handle view PO list click - open in new tab
+  const handleViewPOList = (projectId) => {
+    const targetId = (!projectId || projectId === "unassigned") ? "unassigned" : projectId;
+    const url = `/projects1?project=${encodeURIComponent(targetId)}`;
     window.open(url, '_blank');
   };
 
@@ -203,16 +210,23 @@ function OpenProjects() {
         ),
       },
       {
-        Header: () => <div className="text-xs uppercase tracking-wider text-slate-400 font-bold">Actions</div>,
+        Header: () => <div className="text-xs uppercase tracking-wider text-slate-400 font-bold text-center">Actions</div>,
         accessor: 'actions',
         Cell: ({ row }) => (
-          <div className="flex gap-2 justify-end">
+          <div className="flex gap-2 justify-center">
             <button
-              onClick={() => handleViewPOs(row.original.projectId)}
-              className="bg-cyan-500 hover:bg-cyan-400 text-slate-900 transition-all duration-200 text-sm font-semibold py-1.5 px-4 rounded-lg shadow-sm hover:shadow flex items-center"
+              onClick={() => handleViewPOTimelines(row.original.projectId)}
+              className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyan-400 hover:text-cyan-300 transition-all duration-200 text-xs font-semibold py-1.5 px-3 rounded-lg shadow-sm hover:shadow flex items-center whitespace-nowrap"
             >
-              <FiShoppingCart className="mr-2" />
-              View POs
+              <FiTrendingUp className="mr-1.5" />
+              View PO timelines
+            </button>
+            <button
+              onClick={() => handleViewPOList(row.original.projectId)}
+              className="bg-cyan-500 hover:bg-cyan-400 text-slate-900 transition-all duration-200 text-xs font-semibold py-1.5 px-3 rounded-lg shadow-sm hover:shadow flex items-center whitespace-nowrap"
+            >
+              <FiList className="mr-1.5" />
+              View PO list
             </button>
           </div>
         ),

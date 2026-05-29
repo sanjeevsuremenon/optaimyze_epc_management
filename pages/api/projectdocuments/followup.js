@@ -3,7 +3,7 @@ import { connectToDatabase } from '../../../lib/mongoconnect';
 
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
-  const collection = db.collection('dailymeetings');
+  const collection = db.collection('projectdocumentss');
 
   if (req.method === 'POST') {
     try {

@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import { FiSearch, FiArrowUp, FiArrowDown, FiFolder, FiShoppingCart, FiBarChart2, FiGrid, FiList, FiDownload } from 'react-icons/fi';
+import { FiSearch, FiArrowUp, FiArrowDown, FiFolder, FiShoppingCart, FiBarChart2, FiGrid, FiList, FiDownload, FiEye, FiMessageSquare, FiCalendar } from 'react-icons/fi';
+import { useRouter } from "next/router";
+import POCommentModal from "../../components/PO/POCommentModal";
 
 export default function Projects1() {
   const { data: session } = useSession();
+  const router = useRouter();
   const [projects, setProjects] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: 'project-name', direction: 'asc' });
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,6 +19,10 @@ export default function Projects1() {
 
   const poCardRefs = useRef({});
   const [poSortConfig, setPOSortConfig] = useState({ key: 'ponum', direction: 'asc' });
+
+  // Comment Modal State
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+  const [selectedCommentPO, setSelectedCommentPO] = useState(null);
 
   const formatDate = useCallback((dateStr) => {
     if (!dateStr) return 'N/A';
@@ -37,6 +44,14 @@ export default function Projects1() {
     const ss = String(d.getSeconds()).padStart(2, '0');
     return `${YYYY}-${MM}-${DD}_${hh}-${mm}-${ss}`;
   }, []);
+
+  // Handle pre-selected project from query param
+  useEffect(() => {
+    if (router.isReady && router.query.project) {
+      const proj = router.query.project;
+      setSelectedProject(proj.replace('/', '%2F'));
+    }
+  }, [router.isReady, router.query.project]);
 
   // Debounced search with abort
   useEffect(() => {
@@ -276,16 +291,44 @@ export default function Projects1() {
                 ) : poLayoutMode === 'card' ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {purchaseOrders.map((po) => (
-                      <div key={po.ponum} className="p-4 bg-slate-800/60 border border-slate-700 rounded-lg shadow-2xl hover:shadow-2xl transition-transform transform hover:-translate-y-1">
-                        <div className="flex justify-between items-center mb-2">
-                          <div className="text-cyan-300 font-semibold cursor-pointer" onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}>{po.ponum}</div>
-                          <div className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${po.balgrval===0 ? 'bg-gradient-to-r from-emerald-400 to-green-300 text-slate-900' : 'bg-gradient-to-r from-yellow-300 to-amber-400 text-slate-900'}`}>{po.balgrval===0?'Complete':'Pending'}</div>
+                      <div key={po.ponum} className="p-4 bg-slate-800/60 border border-slate-700 rounded-lg shadow-2xl hover:shadow-2xl transition-transform transform hover:-translate-y-1 flex flex-col justify-between">
+                        <div>
+                          <div className="flex justify-between items-center mb-2">
+                            <div className="text-cyan-300 font-semibold cursor-pointer" onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}>{po.ponum}</div>
+                            <div className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${po.balgrval===0 ? 'bg-gradient-to-r from-emerald-400 to-green-300 text-slate-900' : 'bg-gradient-to-r from-yellow-300 to-amber-400 text-slate-900'}`}>{po.balgrval===0?'Complete':'Pending'}</div>
+                          </div>
+                          <div className="text-slate-300 text-xs space-y-1 mb-4">
+                            <div><strong>Date:</strong> {formatDate(po.podate)}</div>
+                            <div><strong>Delivery:</strong> {po['delivery-date'] ? formatDate(po['delivery-date']) : 'N/A'}</div>
+                            <div><strong>Vendor:</strong> {po.vendorname || po.vendorcode}</div>
+                            <div><strong>Value:</strong> {po.poval ? po.poval.toLocaleString() : '0'} SAR</div>
+                          </div>
                         </div>
-                        <div className="text-slate-300 text-xs space-y-1">
-                          <div><strong>Date:</strong> {formatDate(po.podate)}</div>
-                          <div><strong>Delivery:</strong> {po['delivery-date'] ? formatDate(po['delivery-date']) : 'N/A'}</div>
-                          <div><strong>Vendor:</strong> {po.vendorname || po.vendorcode}</div>
-                          <div><strong>Value:</strong> {po.poval ? po.poval.toLocaleString() : '0'} SAR</div>
+                        <div className="pt-3 border-t border-slate-700/50 flex justify-end gap-1.5 mt-auto">
+                          <button
+                            title="View PO Details"
+                            onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}
+                            className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-slate-300 bg-slate-800 hover:bg-slate-300 hover:text-slate-900 transition-all gap-1"
+                          >
+                            <FiEye className="w-3 h-3" />
+                            <span>View</span>
+                          </button>
+                          <button
+                            title="Update Schedule"
+                            onClick={(e) => { e.stopPropagation(); window.open(`/openpurchaseorders1/schedule/${po.ponum}`, '_blank'); }}
+                            className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-cyan-400 bg-slate-800 hover:bg-cyan-500 hover:text-slate-900 transition-all gap-1"
+                          >
+                            <FiCalendar className="w-3 h-3" />
+                            <span>Schedule</span>
+                          </button>
+                          <button
+                            title="Comments"
+                            onClick={(e) => { e.stopPropagation(); setSelectedCommentPO(po.ponum); setIsCommentModalOpen(true); }}
+                            className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-blue-400 bg-slate-800 hover:bg-blue-500 hover:text-slate-900 transition-all gap-1"
+                          >
+                            <FiMessageSquare className="w-3 h-3" />
+                            <span>Comment</span>
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -301,6 +344,7 @@ export default function Projects1() {
                           <th className="px-4 py-2 text-left">Vendor</th>
                           <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestPOSort('poval')}>Value <SortIndicator config={poSortConfig} columnKey="poval" /></th>
                           <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestPOSort('status')}>Status <SortIndicator config={poSortConfig} columnKey="status" /></th>
+                          <th className="px-4 py-2 text-center">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="text-slate-200">
@@ -312,6 +356,34 @@ export default function Projects1() {
                             <td className="px-4 py-2">{po.vendorname}</td>
                             <td className="px-4 py-2">{po.poval ? po.poval.toLocaleString() : '0'}</td>
                             <td className="px-4 py-2"><span className={`px-3 py-1 rounded-full text-sm font-semibold ${po.balgrval===0 ? 'bg-gradient-to-r from-emerald-400 to-green-300 text-slate-900 shadow-sm' : 'bg-gradient-to-r from-yellow-300 to-amber-400 text-slate-900 shadow-sm'}`}>{po.balgrval===0?'Complete':'Pending'}</span></td>
+                            <td className="px-4 py-2">
+                              <div className="flex items-center justify-center space-x-1.5">
+                                <button
+                                  title="View PO Details"
+                                  onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}
+                                  className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-slate-300 bg-slate-800 hover:bg-slate-300 hover:text-slate-900 transition-all gap-1"
+                                >
+                                  <FiEye className="w-3 h-3" />
+                                  <span>View</span>
+                                </button>
+                                <button
+                                  title="Update Schedule"
+                                  onClick={(e) => { e.stopPropagation(); window.open(`/openpurchaseorders1/schedule/${po.ponum}`, '_blank'); }}
+                                  className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-cyan-400 bg-slate-800 hover:bg-cyan-500 hover:text-slate-900 transition-all gap-1"
+                                >
+                                  <FiCalendar className="w-3 h-3" />
+                                  <span>Schedule</span>
+                                </button>
+                                <button
+                                  title="Comments"
+                                  onClick={(e) => { e.stopPropagation(); setSelectedCommentPO(po.ponum); setIsCommentModalOpen(true); }}
+                                  className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-blue-400 bg-slate-800 hover:bg-blue-500 hover:text-slate-900 transition-all gap-1"
+                                >
+                                  <FiMessageSquare className="w-3 h-3" />
+                                  <span>Comment</span>
+                                </button>
+                              </div>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -323,6 +395,15 @@ export default function Projects1() {
 
           </div>
         )}
+
+        <POCommentModal 
+          isOpen={isCommentModalOpen} 
+          onClose={() => {
+            setIsCommentModalOpen(false);
+            setSelectedCommentPO(null);
+          }} 
+          poNumber={selectedCommentPO} 
+        />
       </main>
     </div>
   );

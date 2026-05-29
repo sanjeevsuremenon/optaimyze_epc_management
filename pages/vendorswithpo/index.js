@@ -521,7 +521,7 @@ function Vendorswithpo() {
   function handleEdit(row) {
     const vendor = row.original;
     router.push(
-      `/vendorswithpo/vendorevaluation1?vendornumber=${vendor["vendor-code"]}`
+      `/vendorevaluation/webformat/${vendor["vendor-code"]}`
     );
   }
 

@@ -6,7 +6,7 @@ pages/api/calibequipmentcustody/[equipid].js
 pages/api/calibequipmentcustody/date/[todate].js
 pages/api/calibequipmentcustody/index.js
 pages/api/calibprojects/index.js
-pages/api/dailymeetings/projects.js
+pages/api/projectdocumentss/projects.js
 pages/api/equipment/index.js
 pages/api/equipmentlist/index.js
 pages/api/fixedassetlist/index.js

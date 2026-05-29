@@ -3,7 +3,7 @@ import { connectToDatabase } from '../../../lib/mongoconnect';
 
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
-  const collection = db.collection('dailymeetings');
+  const collection = db.collection('projectdocumentss');
 
   if (req.method === 'GET') {
     try {
@@ -14,8 +14,8 @@ export default async function handler(req, res) {
         .toArray();
       return res.status(200).json(tasks);
     } catch (error) {
-      console.error('Error fetching daily meetings:', error);
-      return res.status(500).json({ error: 'Failed to fetch daily meetings' });
+      console.error('Error fetching Project Documents:', error);
+      return res.status(500).json({ error: 'Failed to fetch Project Documents' });
     }
   }
 
@@ -41,8 +41,8 @@ export default async function handler(req, res) {
       const result = await collection.insertOne(meetingData);
       return res.status(201).json({ _id: result.insertedId, ...meetingData });
     } catch (error) {
-      console.error('Error creating daily meeting:', error);
-      return res.status(500).json({ error: 'Failed to create daily meeting' });
+      console.error('Error creating Project Document:', error);
+      return res.status(500).json({ error: 'Failed to create Project Document' });
     }
   }
 
@@ -80,8 +80,8 @@ export default async function handler(req, res) {
       );
       return res.status(200).json({ message: 'Updated successfully' });
     } catch (error) {
-      console.error('Error updating daily meeting:', error);
-      return res.status(500).json({ error: 'Failed to update daily meeting' });
+      console.error('Error updating Project Document:', error);
+      return res.status(500).json({ error: 'Failed to update Project Document' });
     }
   }
 
@@ -94,8 +94,8 @@ export default async function handler(req, res) {
       await collection.deleteOne({ _id: new ObjectId(_id) });
       return res.status(200).json({ message: 'Deleted successfully' });
     } catch (error) {
-      console.error('Error deleting daily meeting:', error);
-      return res.status(500).json({ error: 'Failed to delete daily meeting' });
+      console.error('Error deleting Project Document:', error);
+      return res.status(500).json({ error: 'Failed to delete Project Document' });
     }
   }
 

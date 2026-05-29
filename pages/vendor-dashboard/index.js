@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import useDebounce from '../../lib/useDebounce';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import VendorAdditionalInfoForm from '../../components/Vendor/VendorAdditionalInfoForm';
 import VendorProfileOverviewForm from '../../components/Vendor/VendorProfileOverviewForm';
 import VendorGroupMapping from '../../components/VendorGroupMapping';
+import { FiCalendar, FiMessageSquare, FiEye } from 'react-icons/fi';
+import POCommentModal from '../../components/PO/POCommentModal';
+import moment from 'moment';
 
 const SERVICE_OVERVIEW_CARD_STYLES = [
   'bg-violet-50 border-violet-200/90 text-violet-950 shadow-[0_8px_24px_rgba(124,58,237,0.12)]',
@@ -170,6 +174,15 @@ export default function VendorDashboard() {
   const [vendorOverview, setVendorOverview] = useState(null);
   const [vendorOverviewLoading, setVendorOverviewLoading] = useState(false);
   const [editingVendorOverview, setEditingVendorOverview] = useState(false);
+  
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+  const [selectedPoNumber, setSelectedPoNumber] = useState(null);
+
+  const handleOpenComment = (poNumber, e) => {
+    e.stopPropagation();
+    setSelectedPoNumber(poNumber);
+    setIsCommentModalOpen(true);
+  };
   
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -659,31 +672,39 @@ export default function VendorDashboard() {
                 </div>
               </div>
             ) : (
-              <div className="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] px-6 py-5 md:px-8 md:py-6">
+              <div className="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] p-5">
                 {vendorData.groupMappings?.length > 0 ? (
-                  <ul className="flex flex-wrap gap-2">
-                    {vendorData.groupMappings.map((m) => (
-                      <li
-                        key={`${m.subgroupId}-${m.mappingId}`}
-                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm bg-slate-100 text-slate-200 border border-slate-700/80"
-                      >
-                        <span className="font-medium text-white">{m.groupName}</span>
-                        <span className="text-slate-400">·</span>
-                        <span>{m.subgroupName}</span>
-                        {m.isService ? (
-                          <span className="text-xs font-semibold uppercase tracking-wide text-violet-400 bg-violet-900/40 px-2 py-0.5 rounded-full">
-                            Service
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {vendorData.groupMappings.map((m, idx) => {
+                      const bgClass = idx % 2 === 0 ? "bg-slate-950/60 hover:bg-slate-950/90" : "bg-slate-900/40 hover:bg-slate-900/70";
+                      return (
+                        <div
+                          key={`${m.subgroupId}-${m.mappingId}`}
+                          className={`px-4 py-3 rounded-xl border border-slate-850/60 flex flex-col gap-1 transition-all ${bgClass}`}
+                        >
+                          <div className="flex justify-between items-center">
+                            <span className="text-[9px] font-black text-cyan-400 uppercase tracking-widest leading-none">
+                              {m.groupName}
+                            </span>
+                            {m.isService ? (
+                              <span className="text-[8px] font-bold uppercase tracking-wider text-violet-400 bg-violet-950 border border-violet-800/30 px-1.5 py-0.5 rounded">
+                                Service
+                              </span>
+                            ) : (
+                              <span className="text-[8px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950 border border-emerald-800/30 px-1.5 py-0.5 rounded">
+                                Material
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-xs font-semibold text-slate-200 leading-normal">
+                            {m.subgroupName}
                           </span>
-                        ) : (
-                          <span className="text-xs font-semibold uppercase tracking-wide text-emerald-400 bg-emerald-900/40 px-2 py-0.5 rounded-full">
-                            Material
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
+                        </div>
+                      );
+                    })}
+                  </div>
                 ) : (
-                  <p className="text-slate-400 text-center py-6">
+                  <p className="text-slate-400 text-center py-6 text-xs">
                     No material or service groups mapped yet. Click <span className="font-medium text-slate-300">Edit groups</span> to add mappings.
                   </p>
                 )}
@@ -779,7 +800,7 @@ export default function VendorDashboard() {
 
           {/* Vendor Evaluation */}
           {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
-            <VendorEvaluationSection evaluation={vendorData.evaluation} />
+            <VendorEvaluationSection evaluation={vendorData.evaluation} vendorcode={vendorData.vendor?.vendorcode} />
           )}
 
           
@@ -994,39 +1015,75 @@ export default function VendorDashboard() {
                 <p className="text-slate-400 text-center py-8">No feedback available for this vendor</p>
               )}
             </div>
-          )}
-
-          {/* Purchase Orders */}
+          )}          {/* Purchase Orders */}
           {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
             <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
               <h3 className="text-xl font-semibold text-white mb-4 tracking-tight">Purchase Orders</h3>
               {vendorData.poSummary?.poList?.length > 0 ? (
                 <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                  <table className="w-full text-left border-collapse">
+                    <thead className="bg-slate-950 border-b border-slate-800">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">PO Number</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Date</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Value</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Balance</th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">PO Number</th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Date</th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Value (SAR)</th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Balance</th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center">Status</th>
+                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-slate-900 divide-y divide-gray-200">
+                    <tbody className="divide-y divide-slate-800/60 bg-slate-900">
                       {vendorData.poSummary?.poList?.map((po, index) => {
                         const hasPendingValue = po.balgrval && po.balgrval > 0;
+                        const rowClass = hasPendingValue 
+                          ? 'bg-rose-950/10 hover:bg-rose-950/20 border-l-2 border-l-rose-500' 
+                          : 'hover:bg-slate-800/40 border-l-2 border-l-transparent';
                         return (
-                          <tr key={index} className={`hover:bg-gray-50 ${hasPendingValue ? 'bg-red-50 hover:bg-red-100' : ''}`}>
-                            <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${hasPendingValue ? 'text-red-900 font-bold' : 'text-white'}`}>
+                          <tr key={index} className={`transition-colors group ${rowClass}`}>
+                            <td className="px-5 py-4 whitespace-nowrap text-sm font-bold text-cyan-400">
                               {po.ponum}
                             </td>
-                            <td className={`px-6 py-4 whitespace-nowrap text-sm ${hasPendingValue ? 'text-red-700 font-bold' : 'text-slate-400'}`}>
-                              {formatDate(po.podate)}
+                            <td className="px-5 py-4 whitespace-nowrap text-sm text-slate-300">
+                              {po.podate ? moment(po.podate).format('MMM D, YYYY') : '—'}
                             </td>
-                            <td className={`px-6 py-4 whitespace-nowrap text-sm ${hasPendingValue ? 'text-red-900 font-bold' : 'text-white'}`}>
-                              {formatCurrency(po.poval)}
+                            <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-slate-300 text-right">
+                              {po.poval ? po.poval.toLocaleString() : '0'}
                             </td>
-                            <td className={`px-6 py-4 whitespace-nowrap text-sm ${hasPendingValue ? 'text-red-900 font-bold' : 'text-white'}`}>
-                              {formatCurrency(po.balgrval)}
+                            <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-slate-400 text-right">
+                              {po.balgrval ? po.balgrval.toLocaleString() : '0'}
+                            </td>
+                            <td className="px-5 py-4 text-center">
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-[10px] font-bold border ${po.balgrval === 0 ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-amber-400 bg-amber-500/10 border-amber-500/20'}`}>
+                                {po.balgrval === 0 ? 'Complete' : 'Pending'}
+                              </span>
+                            </td>
+                            <td className="px-5 py-4">
+                              <div className="flex items-center justify-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
+                                <button
+                                  type="button"
+                                  onClick={(e) => { e.stopPropagation(); window.open(`/openpurchaseorders1/schedule/${po.ponum}`, '_blank'); }}
+                                  className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-violet-600 border border-slate-700 hover:border-violet-500 text-slate-300 hover:text-white rounded text-[10px] font-semibold transition-all shadow-sm"
+                                  title="Update Schedule"
+                                >
+                                  <FiCalendar size={11} /> Schedule
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={(e) => handleOpenComment(po.ponum, e)}
+                                  className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-blue-600 border border-slate-700 hover:border-blue-500 text-slate-300 hover:text-white rounded text-[10px] font-semibold transition-all shadow-sm"
+                                  title="View/Add Comments"
+                                >
+                                  <FiMessageSquare size={11} /> Comment
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={(e) => { e.stopPropagation(); window.open(`/openpurchaseorders1/view/${po.ponum}`, '_blank'); }}
+                                  className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-cyan-600 border border-slate-700 hover:border-cyan-500 text-slate-300 hover:text-white rounded text-[10px] font-semibold transition-all shadow-sm"
+                                  title="View PO Details & Timeline"
+                                >
+                                  <FiEye size={11} /> View
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         );
@@ -1040,8 +1097,14 @@ export default function VendorDashboard() {
             </div>
           )}
 
-         
-          
+          <POCommentModal
+            isOpen={isCommentModalOpen}
+            onClose={() => {
+              setIsCommentModalOpen(false);
+              setSelectedPoNumber(null);
+            }}
+            poNumber={selectedPoNumber}
+          />
         </div>
       )}
     
@@ -1145,11 +1208,18 @@ function ContactEditForm({ contact, onSave, onCancel }) {
 }
 
 // Vendor Evaluation Section Component
-function VendorEvaluationSection({ evaluation }) {
+function VendorEvaluationSection({ evaluation, vendorcode }) {
   if (!evaluation || (!evaluation.marks && !evaluation.fixed)) {
     return (
       <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
-        <h3 className="text-xl font-semibold text-white mb-4 tracking-tight">Vendor Evaluation</h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-semibold text-white tracking-tight">Vendor Evaluation</h3>
+          {vendorcode && (
+            <Link href={`/vendorevaluation/webformat/${vendorcode}`} className="text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1">
+              View Full Evaluation →
+            </Link>
+          )}
+        </div>
         <p className="text-slate-400 text-center py-8">No evaluation data available for this vendor</p>
       </div>
     );
@@ -1168,7 +1238,14 @@ function VendorEvaluationSection({ evaluation }) {
 
   return (
     <div className="bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-slate-800 shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
-      <h3 className="text-xl font-semibold text-white mb-6 tracking-tight">Vendor Evaluation</h3>
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-xl font-semibold text-white tracking-tight">Vendor Evaluation</h3>
+        {vendorcode && (
+          <Link href={`/vendorevaluation/webformat/${vendorcode}`} className="text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1">
+            View Full Evaluation →
+          </Link>
+        )}
+      </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Summary Scores Card */}
