@@ -181,10 +181,37 @@ apiRoute.get(async (req, res) => {
   }
 });
 
+const parseJsonBody = (req) => {
+  return new Promise((resolve) => {
+    if (req.body && typeof req.body === "object") {
+      return resolve(req.body);
+    }
+    let data = "";
+    req.on("data", (chunk) => {
+      data += chunk;
+    });
+    req.on("end", () => {
+      try {
+        resolve(data ? JSON.parse(data) : {});
+      } catch (e) {
+        resolve({});
+      }
+    });
+    req.on("error", () => {
+      resolve({});
+    });
+  });
+};
+
 // DELETE: Delete a document
 apiRoute.delete(async (req, res) => {
   try {
-    const { id } = req.body;
+    let id = req.query.id;
+    if (!id) {
+      const body = await parseJsonBody(req);
+      id = body.id;
+    }
+
     if (!id) {
       return res.status(400).json({ error: "Document ID is required" });
     }

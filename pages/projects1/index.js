@@ -12,6 +12,7 @@ export default function Projects1() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [projectData, setProjectData] = useState(null);
   const [purchaseOrders, setPurchaseOrders] = useState([]);
   const [networkPOs, setNetworkPOs] = useState([]);
   const [network, setNetwork] = useState(null);
@@ -47,15 +48,19 @@ export default function Projects1() {
 
   // Handle pre-selected project from query param
   useEffect(() => {
+    console.log('router.isReady:', router.isReady, 'router.query:', router.query);
     if (router.isReady && router.query.project) {
       const proj = router.query.project;
-      setSelectedProject(proj.replace('/', '%2F'));
+      console.log('Setting selectedProject to:', proj.replace(/\//g, '%2F'));
+      setSelectedProject(proj.replace(/\//g, '%2F'));
     }
   }, [router.isReady, router.query.project]);
 
   // Debounced search with abort
   useEffect(() => {
+    console.log('searchTerm useEffect triggered with searchTerm:', searchTerm);
     if (!searchTerm || !searchTerm.trim()) {
+      console.log('Clearing projects in searchTerm useEffect');
       setProjects([]);
       return;
     }
@@ -63,6 +68,7 @@ export default function Projects1() {
     const controller = new AbortController();
     const t = setTimeout(async () => {
       try {
+        console.log('Searching projects with query:', searchTerm.trim());
         const res = await fetch(`/api/projects?str=${encodeURIComponent(searchTerm.trim())}`, { signal: controller.signal });
         const data = await res.json();
         setProjects(data || []);
@@ -104,8 +110,12 @@ export default function Projects1() {
   };
 
   const sortedProjects = useMemo(() => {
-    if (!projects) return [];
-    const items = [...projects];
+    console.log('Recalculating sortedProjects. projects count:', projects?.length);
+    let list = projects || [];
+    if (list.length === 0 && projectData) {
+      list = [projectData];
+    }
+    const items = [...list];
     const key = sortConfig.key;
     items.sort((a, b) => {
       const va = (a[key] || '').toString().toLowerCase();
@@ -115,7 +125,7 @@ export default function Projects1() {
       return 0;
     });
     return items;
-  }, [projects, sortConfig]);
+  }, [projects, projectData, sortConfig]);
 
   const sortedPurchaseOrders = useMemo(() => {
     if (!purchaseOrders) return [];
@@ -154,22 +164,41 @@ export default function Projects1() {
 
   // Fetch POs + network when project selected
   useEffect(() => {
-    if (!selectedProject) return;
+    console.log('Fetch POs useEffect triggered. selectedProject:', selectedProject);
+    if (!selectedProject) {
+      setProjectData(null);
+      return;
+    }
     const controller = new AbortController();
     const load = async () => {
       try {
+        console.log('Loading project data for:', selectedProject);
         const [pRes, nRes, poRes] = await Promise.all([
           fetch(`/api/projects/${selectedProject}`, { signal: controller.signal }),
           fetch(`/api/networks/${selectedProject}`, { signal: controller.signal }),
           fetch(`/api/purchaseorders/project/consolidated/${selectedProject}`, { signal: controller.signal })
         ]);
-        // ignore non-critical failures
+        console.log('Fetch responses:', { pResOk: pRes.ok, nResOk: nRes.ok, poResOk: poRes.ok });
+        
         const pJson = pRes.ok ? await pRes.json() : null;
         const nJson = nRes.ok ? await nRes.json() : null;
         const poJson = poRes.ok ? await poRes.json() : [];
+        console.log('Parsed JSON results:', { pJson, nJson, poJsonCount: poJson?.length });
+        
         setNetwork(nJson);
         
+        if (pJson) {
+          setProjectData(pJson);
+          setProjects(prev => {
+            const exists = prev.some(p => p['project-wbs'] === pJson['project-wbs']);
+            const next = exists ? prev : [pJson];
+            console.log('Setting projects state to:', next);
+            return next;
+          });
+        }
+        
         if (nJson?.['network-num']) {
+          console.log('Fetching network POs for:', nJson['network-num']);
           const netRes = await fetch(`/api/purchaseorders/project/consolidated/network/${nJson['network-num']}`, { signal: controller.signal });
           const netJson = netRes.ok ? await netRes.json() : [];
           setNetworkPOs(netJson || []);
@@ -254,13 +283,24 @@ export default function Projects1() {
                       </tr>
                     </thead>
                     <tbody className="text-slate-200">
-                      {sortedProjects.map((p, i) => (
-                        <tr key={i} onClick={() => setSelectedProject(p['project-wbs'].replace('/', '%2F'))} className="cursor-pointer odd:bg-slate-900 even:bg-slate-800 hover:shadow-md transform hover:-translate-y-0.5 transition-shadow duration-150">
-                          <td className="px-4 py-2 font-mono text-slate-200">{p['project-wbs']}</td>
-                          <td className="px-4 py-2 font-semibold text-slate-100 tracking-tight">{p['project-name']}</td>
-                          <td className="px-4 py-2 text-slate-300">{p['project-incharge']}</td>
-                        </tr>
-                      ))}
+                      {sortedProjects.map((p, i) => {
+                        const isSelected = selectedProject && p['project-wbs'].replace('/', '%2F') === selectedProject;
+                        return (
+                          <tr 
+                            key={i} 
+                            onClick={() => setSelectedProject(p['project-wbs'].replace('/', '%2F'))} 
+                            className={`cursor-pointer transition-all duration-150 border-l-2 hover:shadow-md transform hover:-translate-y-0.5 ${
+                              isSelected 
+                                ? 'bg-cyan-950/40 border-l-cyan-500 font-bold text-white' 
+                                : 'odd:bg-slate-900 even:bg-slate-800 hover:bg-slate-850/50 border-l-transparent'
+                            }`}
+                          >
+                            <td className="px-4 py-2 font-mono">{p['project-wbs']}</td>
+                            <td className="px-4 py-2 font-semibold tracking-tight">{p['project-name']}</td>
+                            <td className="px-4 py-2 text-slate-300">{p['project-incharge']}</td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -271,11 +311,24 @@ export default function Projects1() {
               <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 shadow-lg">
                 <div className="flex justify-between items-center mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-white">Purchase Orders</h3>
-                    {network && <div className="text-sm text-slate-400">Network: {network['network-num']}</div>}
+                    <h3 className="text-lg font-semibold text-white flex items-center gap-2 flex-wrap">
+                      Purchase Orders
+                      {projectData && (
+                        <span className="text-xs font-semibold bg-cyan-900/30 text-cyan-400 border border-cyan-800/50 px-2.5 py-0.5 rounded-full">
+                          {projectData['project-name']}
+                        </span>
+                      )}
+                    </h3>
+                    {network && <div className="text-sm text-slate-400 mt-1">Network: {network['network-num']}</div>}
                   </div>
                   <div className="flex items-center gap-2">
-                    <button onClick={handleDownloadExcel} className="px-3 py-2 bg-green-600 rounded-md text-white">Download Excel</button>
+                    <button 
+                      onClick={() => window.open(`/projectpurchasetimelines/${selectedProject}`, '_blank')} 
+                      className="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 rounded-md text-slate-950 font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md shadow-cyan-500/10"
+                    >
+                      <FiBarChart2 size={14} /> View Timelines
+                    </button>
+                    <button onClick={handleDownloadExcel} className="px-3 py-1.5 bg-green-600 hover:bg-green-500 rounded-md text-white text-xs font-semibold transition-colors">Download Excel</button>
                     <div className="flex items-center bg-slate-800/60 rounded-md p-1">
                       <button onClick={() => setPOLayoutMode('card')} className={`p-2 rounded ${poLayoutMode==='card'? 'bg-slate-700 text-cyan-300' : 'text-slate-300'}`}><FiGrid /></button>
                       <button onClick={() => setPOLayoutMode('table')} className={`p-2 rounded ${poLayoutMode==='table'? 'bg-slate-700 text-cyan-300' : 'text-slate-300'}`}><FiList /></button>

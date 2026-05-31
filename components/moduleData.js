@@ -104,6 +104,7 @@ export const moduleDashboards = {
     icon: faGlobe,
     sublinks: [
       { href: "/global-masters", label: "Global Masters" },
+      { href: "/data-load", label: "Data Load", adminOnly: true },
     ],
   },
 };

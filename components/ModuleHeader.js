@@ -149,22 +149,24 @@ export default function ModuleHeader() {
         <div className="w-full border-t border-slate-800/50 bg-slate-900/50">
           <div className="mx-auto flex w-full max-w-[1400px] overflow-x-auto px-4 py-2 lg:px-8 custom-scrollbar">
             <nav className="flex items-center gap-2">
-              {currentModule.sublinks.map((link) => {
-                const isActive = router.asPath === link.href || router.asPath.startsWith(link.href + "?") || router.asPath.startsWith(link.href + "/");
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
-                      isActive
-                        ? "bg-sky-500/20 text-sky-400 border border-sky-500/30"
-                        : "text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-transparent"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
+              {currentModule.sublinks
+                .filter(link => !link.adminOnly || session?.user?.role === "admin")
+                .map((link) => {
+                  const isActive = router.asPath === link.href || router.asPath.startsWith(link.href + "?") || router.asPath.startsWith(link.href + "/");
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                        isActive
+                          ? "bg-sky-500/20 text-sky-400 border border-sky-500/30"
+                          : "text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-transparent"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
             </nav>
           </div>
           <style jsx>{`

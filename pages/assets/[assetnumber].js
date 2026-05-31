@@ -6,11 +6,18 @@ import { QRCodeSVG } from 'qrcode.react';
 export default function AssetDetailsPage() {
   const router = useRouter();
   const { assetnumber } = router.query;
+  const [origin, setOrigin] = useState('');
   const [asset, setAsset] = useState(null);
   const [calibrations, setCalibrations] = useState([]);
   const [custodyRecords, setCustodyRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setOrigin(window.location.origin);
+    }
+  }, []);
 
   useEffect(() => {
     if (!assetnumber) return;
@@ -75,7 +82,7 @@ export default function AssetDetailsPage() {
           <p className="text-lg text-slate-300">{asset.assetdescription}</p>
         </div>
         <div className="bg-white p-2 rounded-lg shadow-lg">
-          <QRCodeSVG value={`https://app.jalinternational.com/assets/${asset.assetnumber}`} size={80} />
+          <QRCodeSVG value={`${origin}/assets/publicdata/${asset.assetnumber}`} size={80} />
         </div>
       </div>
 

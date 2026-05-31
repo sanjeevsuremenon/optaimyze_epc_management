@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]";
-import getMongoClient from "../../../lib/mongodb";
+import { authOptions } from "../../auth/[...nextauth]";
+import getMongoClient from "../../../../lib/mongodb";
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -17,9 +17,7 @@ export default async function handler(req, res) {
     process.env.NEXTAUTH_URL = `${protocol}://${host}`;
 
     const session = await getServerSession(req, res, authOptions);
-    if (!session?.user?.email) {
-      return res.status(401).json({ success: false, error: 'Unauthorized' });
-    }
+    const isLoggedIn = !!session?.user?.email;
 
     const { assetnumber } = req.query;
 
@@ -30,7 +28,6 @@ export default async function handler(req, res) {
     const db = await getMongoClient();
 
     let asset = await db.collection('asset_equipmentandtools').findOne({ assetnumber });
-    
     if (!asset) {
       asset = await db.collection('asset_fixedassets').findOne({ assetnumber });
     }
@@ -39,9 +36,22 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'Asset not found' });
     }
 
+    // Convert BSON _id to string for clean serialization
+    if (asset._id) {
+      asset._id = String(asset._id);
+    }
+
+    // Strip price info if the user is not authenticated
+    if (!isLoggedIn) {
+      delete asset.acquiredvalue;
+      asset.priceHidden = true;
+    } else {
+      asset.priceHidden = false;
+    }
+
     return res.status(200).json(asset);
   } catch (err) {
-    console.error('Failed to fetch asset details:', err);
-    return res.status(500).json({ error: 'Failed to fetch asset details' });
+    console.error('Failed to fetch public asset details:', err);
+    return res.status(500).json({ error: 'Failed to fetch public asset details' });
   }
 }

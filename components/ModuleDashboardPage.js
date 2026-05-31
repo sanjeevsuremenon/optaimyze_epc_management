@@ -1,8 +1,10 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { moduleDashboards } from "./moduleData";
 
 export default function ModuleDashboardPage({ currentModuleKey }) {
+  const { data: session } = useSession();
   const currentModule = moduleDashboards[currentModuleKey];
   if (!currentModule) return null;
 
@@ -30,20 +32,22 @@ export default function ModuleDashboardPage({ currentModuleKey }) {
             </div>
 
             <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {currentModule.sublinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="group rounded-3xl border border-slate-800 bg-slate-900/85 p-6 transition hover:border-cyan-500 hover:bg-slate-900"
-                >
-                  <p className="text-lg font-semibold text-white group-hover:text-cyan-300">
-                    {link.label}
-                  </p>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">
-                    Open the current page for {link.label.toLowerCase()} details and actions.
-                  </p>
-                </Link>
-              ))}
+              {currentModule.sublinks
+                .filter((link) => !link.adminOnly || session?.user?.role === "admin")
+                .map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="group rounded-3xl border border-slate-800 bg-slate-900/85 p-6 transition hover:border-cyan-500 hover:bg-slate-900"
+                  >
+                    <p className="text-lg font-semibold text-white group-hover:text-cyan-300">
+                      {link.label}
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-slate-400">
+                      Open the current page for {link.label.toLowerCase()} details and actions.
+                    </p>
+                  </Link>
+                ))}
             </section>
           </div>
 

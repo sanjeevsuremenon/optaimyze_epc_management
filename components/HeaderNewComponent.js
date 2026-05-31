@@ -19,6 +19,7 @@ import {
   faUser,
   faCalendar,
   faGlobe,
+  faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 
 function HeaderNewComponent() {
@@ -105,7 +106,15 @@ function HeaderNewComponent() {
       sublinks: [
         { href: "/global-masters", label: "Global Masters" }
       ]
-    }
+    },
+    ...(session?.user?.role === "admin" ? [{
+      label: "Data Load",
+      icon: faUpload,
+      href: "/data-load",
+      sublinks: [
+        { href: "/data-load", label: "Data Load" }
+      ]
+    }] : [])
   ];
 
   const handleDropdownToggle = (index) => {

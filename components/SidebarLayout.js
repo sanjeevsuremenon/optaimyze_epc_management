@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
+import { FiChevronDown, FiChevronRight, FiChevronLeft, FiMenu } from 'react-icons/fi';
 
 function prettify(path) {
   if (!path) return '';
@@ -62,7 +62,19 @@ export default function SidebarLayout({ children }) {
         {showSidebar && (
           <aside className="w-72 hidden md:block shrink-0 bg-slate-900/80 border-r border-slate-800 p-4">
             <div className="mb-6 px-2">
-              <div className="text-sm text-slate-400 uppercase tracking-wider mb-2">Modules</div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-sm text-slate-400 uppercase tracking-wider">Modules</div>
+                <button
+                  onClick={() => {
+                    setShowSidebar(false);
+                    localStorage.setItem('opt_sidebar_open', 'false');
+                  }}
+                  className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-center"
+                  title="Collapse Sidebar"
+                >
+                  <FiChevronLeft size={18} />
+                </button>
+              </div>
               {MODULES.map((mod) => (
                 <div key={mod.id} className="mb-2">
                   <div className="flex items-center justify-between">
@@ -102,7 +114,19 @@ export default function SidebarLayout({ children }) {
           </aside>
         )}
 
-        <div className={`flex-1 p-6 ${showSidebar ? '' : ''}`}>
+        <div className={`flex-1 p-6 relative ${showSidebar ? '' : 'pl-16'}`}>
+          {!showSidebar && (
+            <button
+              onClick={() => {
+                setShowSidebar(true);
+                localStorage.setItem('opt_sidebar_open', 'true');
+              }}
+              className="absolute top-6 left-4 p-2 bg-slate-900 border border-slate-800 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-all shadow-md z-40 flex items-center justify-center hover:scale-105 active:scale-95"
+              title="Show Sidebar"
+            >
+              <FiMenu size={18} />
+            </button>
+          )}
           {children}
         </div>
       </div>

@@ -17,6 +17,27 @@ function ProjectPurchaseTimelines() {
     direction: 'desc'
   });
 
+  const [projectData, setProjectData] = useState(null);
+
+  useEffect(() => {
+    if (!projectid || projectid === 'unassigned') {
+      setProjectData(null);
+      return;
+    }
+    const fetchProjectData = async () => {
+      try {
+        const res = await fetch(`/api/projects/${encodeURIComponent(projectid)}`);
+        if (res.ok) {
+          const data = await res.json();
+          setProjectData(data);
+        }
+      } catch (err) {
+        console.error('Error fetching project details:', err);
+      }
+    };
+    fetchProjectData();
+  }, [projectid]);
+
   useEffect(() => {
     if (!projectid) return;
 
@@ -330,11 +351,16 @@ function ProjectPurchaseTimelines() {
                 <h1 className="text-3xl font-extrabold text-white mb-2 tracking-tight">
                   Purchase Order Timelines
                 </h1>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 flex-wrap gap-y-2">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-cyan-900/30 text-cyan-400 border border-cyan-800">
                     <span className="w-2 h-2 rounded-full bg-cyan-500 mr-2"></span>
-                    {network ? `Network: ${network}` : `Project: ${projectid}`}
+                    {projectData ? `${projectData['project-name']} (${projectid})` : `Project: ${projectid}`}
                   </span>
+                  {network && (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-900/30 text-slate-400 border border-slate-800">
+                      Network: {network}
+                    </span>
+                  )}
                   {timelineRange.start && timelineRange.end && (
                     <span className="text-slate-400 text-sm flex items-center font-medium">
                       {timelineRange.start.format('MMM YYYY')} — {timelineRange.end.format('MMM YYYY')}
@@ -393,7 +419,11 @@ function ProjectPurchaseTimelines() {
                       {poList.length} total
                     </span>
                   </h2>
-                  {projectid && (
+                  {projectData ? (
+                    <p className="text-sm text-slate-400 mt-1 ml-4.5">
+                      Tracking deliveries and timelines for {projectData['project-name']}
+                    </p>
+                  ) : projectid && (
                     <p className="text-sm text-slate-400 mt-1 ml-4.5">
                       Tracking deliveries and timelines
                     </p>

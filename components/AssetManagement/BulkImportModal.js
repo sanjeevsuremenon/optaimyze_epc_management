@@ -268,16 +268,27 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
     setResult(null);
 
     try {
-      const success = await onImport(parsedData);
-      if (success) {
-        setResult({
-          success: true,
-          message: `Successfully processed ${parsedData.length} records in bulk upsert.`
-        });
+      const res = await onImport(parsedData);
+      const isSuccess = res === true || (res && typeof res === 'object' && res.success !== false);
+      
+      if (isSuccess) {
+        let statsMsg = "";
+        if (res && typeof res === 'object') {
+          const matched = res.matchedCount !== undefined ? res.matchedCount : null;
+          const modified = res.modifiedCount !== undefined ? res.modifiedCount : null;
+          const upserted = res.upsertedCount !== undefined ? res.upsertedCount : null;
+          
+          if (matched !== null || modified !== null || upserted !== null) {
+            statsMsg = `\n- Matched: ${matched ?? 0}\n- Modified: ${modified ?? 0}\n- Upserted/Inserted: ${upserted ?? 0}`;
+          }
+        }
+        alert(`Bulk import completed successfully!${statsMsg}`);
+        onClose();
       } else {
+        const errorMsg = (res && typeof res === 'object' && res.error) ? res.error : "Failed to perform bulk import. Please check connection and try again.";
         setResult({
           success: false,
-          message: "Failed to perform bulk import. Please check connection and try again."
+          message: errorMsg
         });
       }
     } catch (err) {

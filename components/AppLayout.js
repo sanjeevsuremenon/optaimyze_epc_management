@@ -5,7 +5,7 @@ import ModuleHeader from "./ModuleHeader";
 import FooterComponent from "./FooterComponent";
 import SidebarLayout from "./SidebarLayout";
 
-const publicPaths = ["/", "/auth/login", "/auth/register"];
+const publicPaths = ["/", "/auth/login", "/auth/register", "/assets/publicdata/[assetnumber]"];
 
 export default function AppLayout({ children }) {
   const { status } = useSession();
@@ -23,6 +23,14 @@ export default function AppLayout({ children }) {
   }, [requiresAuth, router, status]);
 
   if (!ready) return null;
+
+  if (router.pathname === "/assets/publicdata/[assetnumber]") {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100">
+        <main>{children}</main>
+      </div>
+    );
+  }
 
   if (requiresAuth && status === "loading") {
     return (

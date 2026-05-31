@@ -133,15 +133,16 @@ export default function AssetManagementMasters() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bulk: true, data: importedData })
       });
+      const json = await res.json();
       if (res.ok) {
         fetchData();
         loadGlobalDependencies();
-        return true;
+        return { success: true, ...json };
       }
-      return false;
+      return { success: false, error: json.error };
     } catch (err) {
       console.error("Bulk import failed:", err);
-      return false;
+      return { success: false, error: err.message };
     }
   };
 
