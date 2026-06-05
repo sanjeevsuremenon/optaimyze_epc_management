@@ -438,9 +438,17 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const sanitizedSession = {
+    ...session,
+    user: {
+      ...session.user,
+      image: session.user?.image ?? null,
+    },
+  };
+
   return {
     props: {
-      session,
+      session: sanitizedSession,
     },
   };
 }

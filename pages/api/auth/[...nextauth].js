@@ -88,6 +88,7 @@ const authOptions = {
         session.user.email = token.email;
         session.user.name = token.name;
       }
+      session.user.image = session.user.image ?? null;
       return session;
     },
   },
