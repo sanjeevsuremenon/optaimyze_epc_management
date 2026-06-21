@@ -182,7 +182,7 @@ function Reqmatcode() {
                   Sorry, you do not have authorization to request new material
                   codes{" "}
                 </p>
-                <h4 className="bg-sky-800 text-white p-3"> Please mail to <span className="bg-white text-slate-900"> <br /> suresh.n@jalint.com.sa</span> <br />to get access to this page </h4>
+                <h4 className="bg-sky-800 text-app-text p-3"> Please mail to <span className="bg-white text-slate-900"> <br /> suresh.n@jalint.com.sa</span> <br />to get access to this page </h4>
               </div>
             </div>
           </div>
@@ -213,7 +213,7 @@ function Reqmatcode() {
       {session.user.role == "admin" || session.user.role == "project" ? (
         <div>
           <div className="flex justify-center align-middle bg-teal-600 p-3 mb-5">
-            <h3 className="text-white uppercase font font-semibold text-[12px]">
+            <h3 className="text-app-text uppercase font font-semibold text-[12px]">
               Welcome{" "}
               <span className="font-black text-[14px] italic">
                 {session?.user.name}
@@ -514,7 +514,7 @@ function Reqmatcode() {
                       </label>
                       <input
                         type="text"
-                        className="w-1/2 py-2 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder:text-[10px] placeholder:text-gray-600"
+                        className="w-1/2 py-2 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-app-text dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder:text-[10px] placeholder:text-gray-600"
                         placeholder="EA/Lot/Box/PAC/...."
                         name="uom"
                         id="uom"
@@ -536,7 +536,7 @@ function Reqmatcode() {
                           type="text"
                           name="primary"
                           id="primary"
-                          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-app-text dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                           placeholder=" "
                           required
                           onBlur={(e) => {
@@ -571,7 +571,7 @@ function Reqmatcode() {
                           type="text"
                           name="secondary"
                           id="secondary"
-                          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-app-text dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                           placeholder=" "
                           required
                           onBlur={(e) => {
@@ -606,7 +606,7 @@ function Reqmatcode() {
                           type="text"
                           name="tertiary"
                           id="tertiary"
-                          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-app-text dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                           placeholder=" "
                           required
                           onBlur={(e) => {
@@ -622,7 +622,7 @@ function Reqmatcode() {
                         />
                         <label
                           htmlFor="tertiary"
-                          className="peer-focus:font-medium opacity-30   absolute text-[12px]  text-gray-900 font-bold dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-800 peer-focus:dark:text-sky-800 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                          className="peer-focus:font-medium opacity-30   absolute text-[12px]  text-gray-900 font-bold dark:text-app-text-secondary duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-800 peer-focus:dark:text-sky-800 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                         >
                           {mattypes
                             .filter(
@@ -641,7 +641,7 @@ function Reqmatcode() {
                           type="text"
                           name="other"
                           id="other"
-                          className="block py-2.5 px-0 w-3/5 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                          className="block py-2.5 px-0 w-3/5 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-app-text dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                           placeholder=" "
                           required
                           onFocus={() => setMaxlimit(40 - length)}
@@ -669,7 +669,7 @@ function Reqmatcode() {
                   <div className="w-11/12 px-6 mb-1 flex flex-col align-middle justify-center  ">
                     <label
                       htmlFor="longtext"
-                      className="block text-[10px] font-extrabold uppercase text-stone-900 dark:text-white mb-3"
+                      className="block text-[10px] font-extrabold uppercase text-stone-900 dark:text-app-text mb-3"
                     >
                       Large Text Description:{" "}
                     </label>
@@ -743,7 +743,7 @@ function Reqmatcode() {
                     >
                       <th
                         scope="row"
-                        className="font-medium text-gray-900 whitespace-nowrap dark:text-white "
+                        className="font-medium text-gray-900 whitespace-nowrap dark:text-app-text "
                       >
                         <p className="text-[12px] text-blue-900 font-Montserrat font-semibold mx-auto">
                           {mreq._id.substr(5, 9)}
@@ -751,7 +751,7 @@ function Reqmatcode() {
                       </th>
                       <th
                         scope="row"
-                        className="font-medium text-gray-900 whitespace-nowrap dark:text-white mx-auto"
+                        className="font-medium text-gray-900 whitespace-nowrap dark:text-app-text mx-auto"
                       >
                         <p className="text-[12px] text-blue-900 font-Montserrat font-semibold">
                           {mreq.newdescription}
@@ -763,7 +763,7 @@ function Reqmatcode() {
                       </th>
                       <th
                         scope="row"
-                        className="py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        className="py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-app-text"
                       >
                         <p
                           className="text-[12px] text-blue-900 font-Montserrat font-semibold"
@@ -772,7 +772,7 @@ function Reqmatcode() {
                       </th>
                       <th
                         scope="row"
-                        className="py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        className="py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-app-text"
                       >
                         <p className="text-[12px] text-blue-900 font-Montserrat font-semibold">
                           {moment(mreq.created_at).format("DD/MM/YYYY")}
@@ -780,7 +780,7 @@ function Reqmatcode() {
                       </th>
                       <th
                         scope="row"
-                        className="flex flex-col py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        className="flex flex-col py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-app-text"
                       >
                         <p className="text-[12px] text-blue-900 font-Montserrat font-semibold">
                           {mreq.mattypeselected}

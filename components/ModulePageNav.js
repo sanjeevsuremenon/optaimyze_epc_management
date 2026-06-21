@@ -8,13 +8,13 @@ export default function ModulePageNav({ currentModuleKey }) {
   const navigationModules = Object.values(moduleDashboards);
 
   return (
-    <div className="sticky top-[88px] z-40 border-b border-slate-800 bg-slate-950/95 backdrop-blur-xl">
+    <div className="sticky top-[88px] z-40 border-b border-app-border bg-app-bg/95 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-6 py-4 lg:px-8">
         <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">Module dashboard</p>
-            <h2 className="text-2xl font-semibold text-white">{currentModule.label}</h2>
-            <p className="max-w-2xl text-sm text-slate-400">{currentModule.description}</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-app-accent">Module dashboard</p>
+            <h2 className="text-2xl font-semibold text-app-text">{currentModule.label}</h2>
+            <p className="max-w-2xl text-sm text-app-text-muted">{currentModule.description}</p>
           </div>
           <div className="flex flex-wrap gap-2">
             {navigationModules.map((module) => (
@@ -23,8 +23,8 @@ export default function ModulePageNav({ currentModuleKey }) {
                 href={module.href}
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                   module.key === currentModuleKey
-                    ? "bg-cyan-500 text-slate-950"
-                    : "bg-slate-800 text-slate-200 hover:bg-slate-700"
+                    ? "bg-app-accent text-slate-950"
+                    : "bg-app-surface text-app-text hover:bg-app-surface-muted"
                 }`}
               >
                 {module.label}
@@ -42,8 +42,8 @@ export default function ModulePageNav({ currentModuleKey }) {
                 href={link.href}
                 className={`rounded-full px-4 py-2 text-sm transition ${
                   isActive
-                    ? "bg-sky-500 text-white"
-                    : "bg-slate-900 text-slate-300 hover:bg-slate-800"
+                    ? "bg-sky-500 text-app-text"
+                    : "bg-app-surface text-app-text-secondary hover:bg-app-surface"
                 }`}
               >
                 {link.label}

@@ -26,7 +26,7 @@ export default function AppLayout({ children }) {
 
   if (router.pathname === "/assets/publicdata/[assetnumber]") {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100">
+      <div className="app-page">
         <main>{children}</main>
       </div>
     );
@@ -34,9 +34,9 @@ export default function AppLayout({ children }) {
 
   if (requiresAuth && status === "loading") {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-6">
-        <div className="rounded-3xl border border-slate-700 bg-slate-900/95 px-6 py-4 text-sm text-slate-200 shadow-lg shadow-slate-950/20">
-          Checking login session...
+      <div className="app-page flex min-h-screen items-center justify-center px-6">
+        <div className="app-card px-6 py-4 text-sm text-app-text-secondary shadow-md">
+          Checking login session…
         </div>
       </div>
     );
@@ -45,18 +45,18 @@ export default function AppLayout({ children }) {
   if (requiresAuth && status === "unauthenticated") return null;
 
   const dashboardPaths = [
-    '/',
-    '/projectsdashboard',
-    '/materialsdashboard',
-    '/purchaseordersdashboard',
-    '/vendorsdashboard',
-    '/projectdocumentsdashboard',
-    '/assetdashboard'
+    "/",
+    "/projectsdashboard",
+    "/materialsdashboard",
+    "/purchaseordersdashboard",
+    "/vendorsdashboard",
+    "/projectdocumentsdashboard",
+    "/assetdashboard",
   ];
   const isDashboard = dashboardPaths.includes(router.pathname);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="app-page min-h-screen">
       <ModuleHeader />
       {isDashboard ? (
         <main className="min-h-[calc(100vh-12rem)]">{children}</main>

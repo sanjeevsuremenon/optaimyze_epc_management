@@ -106,7 +106,7 @@ export default function Projects1() {
 
   const SortIndicator = ({ config, columnKey }) => {
     if (config.key !== columnKey) return null;
-    return config.direction === 'asc' ? <FiArrowUp className="inline ml-1 text-slate-300" /> : <FiArrowDown className="inline ml-1 text-slate-300" />;
+    return config.direction === 'asc' ? <FiArrowUp className="inline ml-1 text-app-text-secondary" /> : <FiArrowDown className="inline ml-1 text-app-text-secondary" />;
   };
 
   const sortedProjects = useMemo(() => {
@@ -245,7 +245,7 @@ export default function Projects1() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="app-page min-h-screen">
       <main className="container mx-auto px-6 py-8">
         <div className="max-w-2xl mx-auto mb-8">
           <div className="relative">
@@ -253,36 +253,36 @@ export default function Projects1() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search projects by name or WBS"
-              className="w-full pl-12 pr-4 py-3 rounded-lg bg-slate-800/60 border border-slate-700 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-500"
+              className="w-full pl-12 pr-4 py-3 rounded-lg bg-app-surface-muted border border-app-border text-app-text placeholder-app-text-disabled focus:outline-none focus:border-app-accent"
             />
-            <FiSearch className="absolute left-4 top-3 text-slate-400" />
+            <FiSearch className="absolute left-4 top-3 text-app-text-muted" />
           </div>
         </div>
 
         {loading ? (
           <div className="flex justify-center">
-            <div className="animate-spin h-10 w-10 border-b-2 border-cyan-500 rounded-full" />
+            <div className="animate-spin h-10 w-10 border-b-2 border-app-accent rounded-full" />
           </div>
         ) : (
           <div className="space-y-6">
-            <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 shadow-lg">
-              <h2 className="text-lg font-semibold text-white mb-3">Projects</h2>
+            <div className="rounded-2xl bg-app-surface/80 border border-app-border p-4 shadow-lg">
+              <h2 className="text-lg font-semibold text-app-text mb-3">Projects</h2>
               {sortedProjects.length === 0 ? (
-                <div className="text-center py-8 text-slate-400">
+                <div className="text-center py-8 text-app-text-muted">
                   <FiFolder className="mx-auto w-12 h-12 mb-3" />
                   <div>No projects - try searching</div>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
-                    <thead className="text-slate-300 text-xs">
+                    <thead className="text-app-text-secondary text-xs">
                       <tr>
                         <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestSort('project-wbs')}>WBS <SortIndicator config={sortConfig} columnKey="project-wbs" /></th>
                         <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestSort('project-name')}>Name <SortIndicator config={sortConfig} columnKey="project-name" /></th>
                         <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestSort('project-incharge')}>Manager <SortIndicator config={sortConfig} columnKey="project-incharge" /></th>
                       </tr>
                     </thead>
-                    <tbody className="text-slate-200">
+                    <tbody className="text-app-text">
                       {sortedProjects.map((p, i) => {
                         const isSelected = selectedProject && p['project-wbs'].replace('/', '%2F') === selectedProject;
                         return (
@@ -291,13 +291,13 @@ export default function Projects1() {
                             onClick={() => setSelectedProject(p['project-wbs'].replace('/', '%2F'))} 
                             className={`cursor-pointer transition-all duration-150 border-l-2 hover:shadow-md transform hover:-translate-y-0.5 ${
                               isSelected 
-                                ? 'bg-cyan-950/40 border-l-cyan-500 font-bold text-white' 
-                                : 'odd:bg-slate-900 even:bg-slate-800 hover:bg-slate-850/50 border-l-transparent'
+                                ? 'bg-cyan-950/40 border-l-cyan-500 font-bold text-app-text' 
+                                : 'odd:bg-app-surface even:bg-app-surface hover:bg-slate-850/50 border-l-transparent'
                             }`}
                           >
                             <td className="px-4 py-2 font-mono">{p['project-wbs']}</td>
                             <td className="px-4 py-2 font-semibold tracking-tight">{p['project-name']}</td>
-                            <td className="px-4 py-2 text-slate-300">{p['project-incharge']}</td>
+                            <td className="px-4 py-2 text-app-text-secondary">{p['project-incharge']}</td>
                           </tr>
                         );
                       })}
@@ -308,60 +308,60 @@ export default function Projects1() {
             </div>
 
             {selectedProject && (
-              <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 shadow-lg">
+              <div className="rounded-2xl bg-app-surface/80 border border-app-border p-4 shadow-lg">
                 <div className="flex justify-between items-center mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-white flex items-center gap-2 flex-wrap">
+                    <h3 className="text-lg font-semibold text-app-text flex items-center gap-2 flex-wrap">
                       Purchase Orders
                       {projectData && (
-                        <span className="text-xs font-semibold bg-cyan-900/30 text-cyan-400 border border-cyan-800/50 px-2.5 py-0.5 rounded-full">
+                        <span className="text-xs font-semibold bg-cyan-900/30 text-app-accent border border-cyan-800/50 px-2.5 py-0.5 rounded-full">
                           {projectData['project-name']}
                         </span>
                       )}
                     </h3>
-                    {network && <div className="text-sm text-slate-400 mt-1">Network: {network['network-num']}</div>}
+                    {network && <div className="text-sm text-app-text-muted mt-1">Network: {network['network-num']}</div>}
                   </div>
                   <div className="flex items-center gap-2">
                     <button 
                       onClick={() => window.open(`/projectpurchasetimelines/${selectedProject}`, '_blank')} 
-                      className="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 rounded-md text-slate-950 font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md shadow-cyan-500/10"
+                      className="px-3 py-1.5 bg-app-accent hover:bg-app-accent rounded-md text-slate-950 font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md shadow-cyan-500/10"
                     >
                       <FiBarChart2 size={14} /> View Timelines
                     </button>
                     <button onClick={handleDownloadExcel} className="px-3 py-1.5 bg-green-600 hover:bg-green-500 rounded-md text-white text-xs font-semibold transition-colors">Download Excel</button>
-                    <div className="flex items-center bg-slate-800/60 rounded-md p-1">
-                      <button onClick={() => setPOLayoutMode('card')} className={`p-2 rounded ${poLayoutMode==='card'? 'bg-slate-700 text-cyan-300' : 'text-slate-300'}`}><FiGrid /></button>
-                      <button onClick={() => setPOLayoutMode('table')} className={`p-2 rounded ${poLayoutMode==='table'? 'bg-slate-700 text-cyan-300' : 'text-slate-300'}`}><FiList /></button>
+                    <div className="flex items-center bg-app-surface-muted rounded-md p-1">
+                      <button onClick={() => setPOLayoutMode('card')} className={`p-2 rounded ${poLayoutMode==='card'? 'bg-slate-700 text-app-accent' : 'text-app-text-secondary'}`}><FiGrid /></button>
+                      <button onClick={() => setPOLayoutMode('table')} className={`p-2 rounded ${poLayoutMode==='table'? 'bg-slate-700 text-app-accent' : 'text-app-text-secondary'}`}><FiList /></button>
                     </div>
                   </div>
                 </div>
 
                 {sortedPurchaseOrders.length === 0 ? (
-                  <div className="text-center py-8 text-slate-400">
+                  <div className="text-center py-8 text-app-text-muted">
                     <FiShoppingCart className="mx-auto w-12 h-12 mb-3" />
                     No purchase orders for this project.
                   </div>
                 ) : poLayoutMode === 'card' ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {purchaseOrders.map((po) => (
-                      <div key={po.ponum} className="p-4 bg-slate-800/60 border border-slate-700 rounded-lg shadow-2xl hover:shadow-2xl transition-transform transform hover:-translate-y-1 flex flex-col justify-between">
+                      <div key={po.ponum} className="p-4 bg-app-surface-muted border border-app-border rounded-lg shadow-2xl hover:shadow-2xl transition-transform transform hover:-translate-y-1 flex flex-col justify-between">
                         <div>
                           <div className="flex justify-between items-center mb-2">
-                            <div className="text-cyan-300 font-semibold cursor-pointer" onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}>{po.ponum}</div>
+                            <div className="text-app-accent font-semibold cursor-pointer" onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}>{po.ponum}</div>
                             <div className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${po.balgrval===0 ? 'bg-gradient-to-r from-emerald-400 to-green-300 text-slate-900' : 'bg-gradient-to-r from-yellow-300 to-amber-400 text-slate-900'}`}>{po.balgrval===0?'Complete':'Pending'}</div>
                           </div>
-                          <div className="text-slate-300 text-xs space-y-1 mb-4">
+                          <div className="text-app-text-secondary text-xs space-y-1 mb-4">
                             <div><strong>Date:</strong> {formatDate(po.podate)}</div>
                             <div><strong>Delivery:</strong> {po['delivery-date'] ? formatDate(po['delivery-date']) : 'N/A'}</div>
                             <div><strong>Vendor:</strong> {po.vendorname || po.vendorcode}</div>
                             <div><strong>Value:</strong> {po.poval ? po.poval.toLocaleString() : '0'} SAR</div>
                           </div>
                         </div>
-                        <div className="pt-3 border-t border-slate-700/50 flex justify-end gap-1.5 mt-auto">
+                        <div className="pt-3 border-t border-app-border/50 flex justify-end gap-1.5 mt-auto">
                           <button
                             title="View PO Details"
                             onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}
-                            className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-slate-300 bg-slate-800 hover:bg-slate-300 hover:text-slate-900 transition-all gap-1"
+                            className="inline-flex items-center px-2 py-1 border border-app-border text-[10px] font-semibold rounded text-app-text-secondary bg-app-surface hover:bg-slate-300 hover:text-slate-900 transition-all gap-1"
                           >
                             <FiEye className="w-3 h-3" />
                             <span>View</span>
@@ -369,7 +369,7 @@ export default function Projects1() {
                           <button
                             title="Update Schedule"
                             onClick={(e) => { e.stopPropagation(); window.open(`/openpurchaseorders1/schedule/${po.ponum}`, '_blank'); }}
-                            className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-cyan-400 bg-slate-800 hover:bg-cyan-500 hover:text-slate-900 transition-all gap-1"
+                            className="inline-flex items-center px-2 py-1 border border-app-border text-[10px] font-semibold rounded text-app-accent bg-app-surface hover:bg-app-accent hover:text-slate-900 transition-all gap-1"
                           >
                             <FiCalendar className="w-3 h-3" />
                             <span>Schedule</span>
@@ -377,7 +377,7 @@ export default function Projects1() {
                           <button
                             title="Comments"
                             onClick={(e) => { e.stopPropagation(); setSelectedCommentPO(po.ponum); setIsCommentModalOpen(true); }}
-                            className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-blue-400 bg-slate-800 hover:bg-blue-500 hover:text-slate-900 transition-all gap-1"
+                            className="inline-flex items-center px-2 py-1 border border-app-border text-[10px] font-semibold rounded text-blue-400 bg-app-surface hover:bg-blue-500 hover:text-slate-900 transition-all gap-1"
                           >
                             <FiMessageSquare className="w-3 h-3" />
                             <span>Comment</span>
@@ -389,7 +389,7 @@ export default function Projects1() {
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full">
-                      <thead className="text-slate-300 text-xs">
+                      <thead className="text-app-text-secondary text-xs">
                         <tr>
                           <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestPOSort('ponum')}>PO <SortIndicator config={poSortConfig} columnKey="ponum" /></th>
                           <th className="px-4 py-2 text-left cursor-pointer" onClick={() => requestPOSort('podate')}>Date <SortIndicator config={poSortConfig} columnKey="podate" /></th>
@@ -400,10 +400,10 @@ export default function Projects1() {
                           <th className="px-4 py-2 text-center">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="text-slate-200">
+                      <tbody className="text-app-text">
                         {sortedPurchaseOrders.map((po) => (
-                          <tr key={po.ponum} className="odd:bg-slate-900 even:bg-slate-800 hover:shadow-md transform hover:-translate-y-0.5 transition-shadow duration-150 cursor-pointer">
-                            <td className="px-4 py-2 text-cyan-300 font-mono" onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}>{po.ponum}</td>
+                          <tr key={po.ponum} className="odd:bg-app-surface even:bg-app-surface hover:shadow-md transform hover:-translate-y-0.5 transition-shadow duration-150 cursor-pointer">
+                            <td className="px-4 py-2 text-app-accent font-mono" onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}>{po.ponum}</td>
                             <td className="px-4 py-2">{formatDate(po.podate)}</td>
                             <td className="px-4 py-2">{po['delivery-date'] ? formatDate(po['delivery-date']) : 'N/A'}</td>
                             <td className="px-4 py-2">{po.vendorname}</td>
@@ -414,7 +414,7 @@ export default function Projects1() {
                                 <button
                                   title="View PO Details"
                                   onClick={(e) => { e.stopPropagation(); window.open(`/purchaseorders/${po.ponum}`, '_blank'); }}
-                                  className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-slate-300 bg-slate-800 hover:bg-slate-300 hover:text-slate-900 transition-all gap-1"
+                                  className="inline-flex items-center px-2 py-1 border border-app-border text-[10px] font-semibold rounded text-app-text-secondary bg-app-surface hover:bg-slate-300 hover:text-slate-900 transition-all gap-1"
                                 >
                                   <FiEye className="w-3 h-3" />
                                   <span>View</span>
@@ -422,7 +422,7 @@ export default function Projects1() {
                                 <button
                                   title="Update Schedule"
                                   onClick={(e) => { e.stopPropagation(); window.open(`/openpurchaseorders1/schedule/${po.ponum}`, '_blank'); }}
-                                  className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-cyan-400 bg-slate-800 hover:bg-cyan-500 hover:text-slate-900 transition-all gap-1"
+                                  className="inline-flex items-center px-2 py-1 border border-app-border text-[10px] font-semibold rounded text-app-accent bg-app-surface hover:bg-app-accent hover:text-slate-900 transition-all gap-1"
                                 >
                                   <FiCalendar className="w-3 h-3" />
                                   <span>Schedule</span>
@@ -430,7 +430,7 @@ export default function Projects1() {
                                 <button
                                   title="Comments"
                                   onClick={(e) => { e.stopPropagation(); setSelectedCommentPO(po.ponum); setIsCommentModalOpen(true); }}
-                                  className="inline-flex items-center px-2 py-1 border border-slate-700 text-[10px] font-semibold rounded text-blue-400 bg-slate-800 hover:bg-blue-500 hover:text-slate-900 transition-all gap-1"
+                                  className="inline-flex items-center px-2 py-1 border border-app-border text-[10px] font-semibold rounded text-blue-400 bg-app-surface hover:bg-blue-500 hover:text-slate-900 transition-all gap-1"
                                 >
                                   <FiMessageSquare className="w-3 h-3" />
                                   <span>Comment</span>

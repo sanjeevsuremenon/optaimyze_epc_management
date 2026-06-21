@@ -116,7 +116,7 @@ const PaymentScheduleData = ({ ponumber }) => {
       {/* Vertical Title Band */}
       <div 
         onClick={() => setIsExpanded(!isExpanded)}
-        className="bg-teal-600 text-white px-2 py-4 rounded-l-lg cursor-pointer hover:bg-teal-700 transition-colors duration-150 flex items-center"
+        className="bg-teal-600 text-app-text px-2 py-4 rounded-l-lg cursor-pointer hover:bg-teal-700 transition-colors duration-150 flex items-center"
       >
         <div className="transform -rotate-180 whitespace-nowrap" style={{ writingMode: 'vertical-rl' }}>
           <span className="text-lg font-extrabold tracking-wider">
@@ -219,7 +219,7 @@ const PaymentScheduleData = ({ ponumber }) => {
                     <button
                       type="submit"
                       className="inline-flex justify-center py-2 px-4 border border-transparent 
-                               shadow-sm text-sm font-medium rounded-md text-white 
+                               shadow-sm text-sm font-medium rounded-md text-app-text 
                                bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 
                                focus:ring-offset-2 focus:ring-teal-500"
                     >

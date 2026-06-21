@@ -317,15 +317,15 @@ export default function POTimeline({ ponumber }) {
 
   if (loading) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 shadow-lg flex justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
+      <div className="bg-app-surface border border-app-border rounded-xl p-8 shadow-lg flex justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-app-accent"></div>
       </div>
     );
   }
 
   if (!timeline.startDate || !timeline.endDate) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 shadow-lg flex justify-center text-slate-500 italic">
+      <div className="bg-app-surface border border-app-border rounded-xl p-8 shadow-lg flex justify-center text-app-text-muted italic">
         Not enough PO data available to generate a timeline.
       </div>
     );
@@ -348,11 +348,11 @@ export default function POTimeline({ ponumber }) {
   };
 
   return (
-    <div className="bg-slate-900/80 rounded-xl shadow-lg overflow-hidden border-l-4 border-cyan-600 p-6 text-slate-100">
-      <h2 className="text-2xl font-bold text-cyan-300 mb-6">PO Timeline</h2>
+    <div className="bg-app-surface/80 rounded-xl shadow-lg overflow-hidden border-l-4 border-cyan-600 p-6 text-app-text">
+      <h2 className="text-2xl font-bold text-app-accent mb-6">PO Timeline</h2>
       
       <div className="relative mb-8" style={{ height: '120px' }}>
-        <div className="absolute top-0 left-0 right-0 h-2 bg-slate-800/40 rounded-full"></div>
+        <div className="absolute top-0 left-0 right-0 h-2 bg-app-surface/40 rounded-full"></div>
         
         {months.map((month, idx) => {
           const position = (idx / (months.length - 1)) * 100;
@@ -383,11 +383,11 @@ export default function POTimeline({ ponumber }) {
           
           let iconElement = null;
           if (event.icon === 'gear') {
-            iconElement = <FontAwesomeIcon icon={faCog} className="text-white text-xs" />;
+            iconElement = <FontAwesomeIcon icon={faCog} className="text-app-text text-xs" />;
           } else if (event.icon === 'dollar') {
-            iconElement = <FontAwesomeIcon icon={faDollarSign} className="text-white text-xs" />;
+            iconElement = <FontAwesomeIcon icon={faDollarSign} className="text-app-text text-xs" />;
           } else if (event.icon === 'ship') {
-            iconElement = <FontAwesomeIcon icon={faShip} className="text-white text-xs" />;
+            iconElement = <FontAwesomeIcon icon={faShip} className="text-app-text text-xs" />;
           }
           
           return (
@@ -398,15 +398,15 @@ export default function POTimeline({ ponumber }) {
             >
               <div className={`w-6 h-6 rounded-full border-2 ${colorClasses[event.color] || 'bg-gray-500'} relative group flex items-center justify-center`}>
                 {iconElement}
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-slate-100 text-xs rounded px-3 py-2 whitespace-nowrap z-10 shadow-lg">
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-app-surface text-app-text text-xs rounded px-3 py-2 whitespace-nowrap z-10 shadow-lg">
                   <div className="font-semibold mb-1">{event.milestone || event.label}</div>
-                  <div className="text-slate-300">{event.date.format('MM/DD/YYYY')}</div>
+                  <div className="text-app-text-secondary">{event.date.format('MM/DD/YYYY')}</div>
                   {event.label !== event.milestone && (
-                    <div className="text-slate-300 mt-1">{event.label}</div>
+                    <div className="text-app-text-secondary mt-1">{event.label}</div>
                   )}
                 </div>
               </div>
-              <div className="text-xs text-slate-300 mt-2 text-center" style={{ width: '80px', marginLeft: '-40px' }}>
+              <div className="text-xs text-app-text-secondary mt-2 text-center" style={{ width: '80px', marginLeft: '-40px' }}>
                 {event.date.format('MM/DD')}
               </div>
             </div>
@@ -416,8 +416,8 @@ export default function POTimeline({ ponumber }) {
 
       <div className="flex flex-wrap gap-4 text-sm mt-12">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-cyan-500 border-2 border-cyan-600"></div>
-          <span className="text-cyan-300">PO Date</span>
+          <div className="w-4 h-4 rounded-full bg-app-accent border-2 border-cyan-600"></div>
+          <span className="text-app-accent">PO Date</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-emerald-500 border-2 border-emerald-600"></div>
@@ -425,21 +425,21 @@ export default function POTimeline({ ponumber }) {
         </div>
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-full bg-violet-500 border-2 border-violet-600 flex items-center justify-center">
-            <FontAwesomeIcon icon={faCog} className="text-white text-xs" />
+            <FontAwesomeIcon icon={faCog} className="text-app-text text-xs" />
           </div>
           <span className="text-violet-300">Design Related</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-full bg-emerald-500 border-2 border-emerald-600 flex items-center justify-center">
-            <FontAwesomeIcon icon={faDollarSign} className="text-white text-xs" />
+            <FontAwesomeIcon icon={faDollarSign} className="text-app-text text-xs" />
           </div>
           <span className="text-emerald-300">Payment</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-cyan-500 border-2 border-cyan-600 flex items-center justify-center">
-            <FontAwesomeIcon icon={faShip} className="text-white text-xs" />
+          <div className="w-6 h-6 rounded-full bg-app-accent border-2 border-cyan-600 flex items-center justify-center">
+            <FontAwesomeIcon icon={faShip} className="text-app-text text-xs" />
           </div>
-          <span className="text-cyan-300">LC Related</span>
+          <span className="text-app-accent">LC Related</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-orange-500 border-2 border-orange-600"></div>

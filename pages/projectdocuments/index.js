@@ -355,10 +355,10 @@ export default function ProjectDocuments() {
       <Head>
         <title>Project Documents</title>
       </Head>
-      <div className="flex flex-col bg-slate-900 min-h-screen text-slate-200">
+      <div className="app-page min-h-screen flex flex-col">
         
         {/* Horizontal Tabs - Same style as Asset Masters */}
-        <div className="w-full bg-slate-900 border-b border-slate-800 flex justify-center px-2 sm:px-6 py-2 shrink-0">
+        <div className="w-full bg-app-surface border-b border-app-border flex justify-center px-2 sm:px-6 py-2 shrink-0">
           <nav className="flex flex-wrap items-center justify-center gap-1.5 max-w-7xl">
             {documentTabs.map((tab) => {
               const Icon = tab.icon;
@@ -368,8 +368,8 @@ export default function ProjectDocuments() {
                   onClick={() => setActiveTab(tab)}
                   className={`flex items-center gap-1 px-2.5 py-1 rounded-full transition-colors text-[10px] md:text-xs font-medium ${
                     activeTab.id === tab.id
-                      ? "bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20"
-                      : "bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-700/50"
+                      ? "bg-app-accent text-slate-950 shadow-md shadow-cyan-500/20"
+                      : "bg-app-surface-muted text-app-text-muted hover:bg-app-surface hover:text-app-text border border-app-border/50"
                   }`}
                 >
                   <Icon size={12} className="shrink-0" />
@@ -384,49 +384,49 @@ export default function ProjectDocuments() {
         <div className="flex-1 p-4 md:p-6 lg:px-8 xl:px-12 w-full max-w-7xl mx-auto flex flex-col gap-6">
           
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 bg-slate-850 p-4 rounded-xl border border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 bg-slate-850 p-4 rounded-xl border border-app-border">
             <div>
-              <h1 className="text-xl font-bold text-white flex items-center gap-2">
-                <activeTab.icon className="text-cyan-400" size={22} />
+              <h1 className="text-xl font-bold text-app-text flex items-center gap-2">
+                <activeTab.icon className="text-app-accent" size={22} />
                 {activeTab.label}
               </h1>
-              <p className="text-xs text-slate-400 mt-0.5">Manage and view your {activeTab.label.toLowerCase()} files</p>
+              <p className="text-xs text-app-text-muted mt-0.5">Manage and view your {activeTab.label.toLowerCase()} files</p>
             </div>
 
             {/* Searchable Combobox Project Selector */}
             <div className="relative w-full sm:w-80 z-30">
-              <span className="block text-[10px] text-slate-400 uppercase tracking-wider font-bold mb-1">Project Context</span>
+              <span className="block text-[10px] text-app-text-muted uppercase tracking-wider font-bold mb-1">Project Context</span>
               <div 
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 cursor-pointer hover:border-slate-700 transition-colors"
+                className="flex items-center justify-between bg-app-surface border border-app-border rounded-lg px-3 py-1.5 cursor-pointer hover:border-slate-700 transition-colors"
               >
                 <div className="truncate pr-2">
                   {loadingProjects ? (
-                    <span className="text-xs text-slate-500">Loading projects...</span>
+                    <span className="text-xs text-app-text-muted">Loading projects...</span>
                   ) : selectedProject ? (
-                    <span className="text-xs font-semibold text-cyan-400">
-                      {selectedProject["project-wbs"]} <span className="text-slate-400">- {selectedProject["project-name"]}</span>
+                    <span className="text-xs font-semibold text-app-accent">
+                      {selectedProject["project-wbs"]} <span className="text-app-text-muted">- {selectedProject["project-name"]}</span>
                     </span>
                   ) : (
-                    <span className="text-xs text-slate-500">No project selected</span>
+                    <span className="text-xs text-app-text-muted">No project selected</span>
                   )}
                 </div>
-                <ChevronDown size={14} className="text-slate-500 shrink-0" />
+                <ChevronDown size={14} className="text-app-text-muted shrink-0" />
               </div>
 
               {isOpen && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
-                  <div className="absolute right-0 mt-1 w-full bg-slate-900 border border-slate-800 rounded-lg shadow-2xl z-20 max-h-64 overflow-y-auto flex flex-col p-2">
+                  <div className="absolute right-0 mt-1 w-full bg-app-surface border border-app-border rounded-lg shadow-2xl z-20 max-h-64 overflow-y-auto flex flex-col p-2">
                     <div className="relative mb-2 shrink-0">
-                      <Search size={12} className="absolute left-2.5 top-2.5 text-slate-500" />
+                      <Search size={12} className="absolute left-2.5 top-2.5 text-app-text-muted" />
                       <input
                         type="text"
                         placeholder="Search WBS or name..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onClick={(e) => e.stopPropagation()}
-                        className="w-full bg-slate-950 border border-slate-850 rounded-md px-2 py-1.5 pl-8 text-xs text-white focus:outline-none focus:border-cyan-500"
+                        className="w-full bg-app-bg border border-slate-850 rounded-md px-2 py-1.5 pl-8 text-xs text-app-text focus:outline-none focus:border-app-accent"
                       />
                     </div>
                     <div className="overflow-y-auto flex-1 custom-scrollbar max-h-48 divide-y divide-slate-850/50">
@@ -439,18 +439,18 @@ export default function ProjectDocuments() {
                               setIsOpen(false);
                               setSearchTerm("");
                             }}
-                            className={`px-2.5 py-2 cursor-pointer hover:bg-slate-800/80 transition-colors text-left ${
+                            className={`px-2.5 py-2 cursor-pointer hover:bg-app-surface/80 transition-colors text-left ${
                               selectedProject && selectedProject["project-wbs"] === p["project-wbs"]
-                                ? "bg-cyan-500/10 text-cyan-400 font-semibold"
-                                : "text-slate-300"
+                                ? "bg-app-accent/10 text-app-accent font-semibold"
+                                : "text-app-text-secondary"
                             }`}
                           >
                             <div className="text-xs font-bold">{p["project-wbs"]}</div>
-                            <div className="truncate text-[10px] text-slate-400 mt-0.5">{p["project-name"]}</div>
+                            <div className="truncate text-[10px] text-app-text-muted mt-0.5">{p["project-name"]}</div>
                           </div>
                         ))
                       ) : (
-                        <div className="text-xs text-slate-500 p-3 text-center">No projects found</div>
+                        <div className="text-xs text-app-text-muted p-3 text-center">No projects found</div>
                       )}
                     </div>
                   </div>
@@ -464,8 +464,8 @@ export default function ProjectDocuments() {
             
             {/* Left Column: File Upload Area */}
             <div className="lg:col-span-1 flex flex-col gap-4">
-              <div className="bg-slate-800/40 border border-slate-800 rounded-xl p-5 shadow-lg flex flex-col gap-4">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">Upload Files</h2>
+              <div className="bg-app-surface/40 border border-app-border rounded-xl p-5 shadow-lg flex flex-col gap-4">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-app-text-muted">Upload Files</h2>
                 
                 {/* Drag & Drop Area */}
                 <div
@@ -490,10 +490,10 @@ export default function ProjectDocuments() {
                   }}
                   className={`border-2 border-dashed rounded-lg p-6 text-center transition-all flex flex-col items-center justify-center gap-2 min-h-[170px] ${
                     !selectedProject
-                      ? "border-slate-800 bg-slate-900/10 cursor-not-allowed opacity-50"
+                      ? "border-slate-800 bg-app-surface/10 cursor-not-allowed opacity-50"
                       : isDragActive 
-                        ? "border-cyan-500 bg-cyan-950/20 shadow-[0_0_15px_rgba(6,182,212,0.15)] cursor-pointer" 
-                        : "border-slate-700 hover:border-slate-600 bg-slate-900/30 hover:bg-slate-900/50 cursor-pointer"
+                        ? "border-app-accent bg-cyan-950/20 shadow-[0_0_15px_rgba(6,182,212,0.15)] cursor-pointer" 
+                        : "border-slate-700 hover:border-slate-600 bg-app-surface-muted hover:bg-app-surface-muted cursor-pointer"
                   }`}
                 >
                   <input
@@ -509,11 +509,11 @@ export default function ProjectDocuments() {
                     accept={constraints.accept}
                     className="hidden"
                   />
-                  <UploadCloud size={30} className={isDragActive ? "text-cyan-400 animate-bounce" : "text-slate-500"} />
-                  <span className="text-xs font-semibold text-slate-200">
+                  <UploadCloud size={30} className={isDragActive ? "text-app-accent animate-bounce" : "text-app-text-muted"} />
+                  <span className="text-xs font-semibold text-app-text">
                     {!selectedProject ? "Select project to upload" : "Drag & drop files, or browse"}
                   </span>
-                  <span className="text-[10px] text-slate-400 max-w-[200px] leading-tight">
+                  <span className="text-[10px] text-app-text-muted max-w-[200px] leading-tight">
                     Accepts {constraints.allowedDesc} up to {constraints.maxSizeMB}MB
                   </span>
                 </div>
@@ -532,19 +532,19 @@ export default function ProjectDocuments() {
                 {/* Selected Files Queue */}
                 {selectedFiles.length > 0 && (
                   <div className="flex flex-col gap-2">
-                    <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Selected Queue ({selectedFiles.length})</span>
+                    <span className="text-[9px] uppercase font-bold text-app-text-muted tracking-wider">Selected Queue ({selectedFiles.length})</span>
                     <div className="max-h-40 overflow-y-auto flex flex-col gap-1.5 pr-1 custom-scrollbar">
                       {selectedFiles.map((file, idx) => (
-                        <div key={idx} className="flex justify-between items-center bg-slate-900/60 border border-slate-800 rounded px-2.5 py-1.5 text-xs">
+                        <div key={idx} className="flex justify-between items-center bg-app-surface-muted/80 border border-app-border rounded px-2.5 py-1.5 text-xs">
                           <div className="flex items-center gap-2 truncate flex-1 min-w-0 mr-2">
-                            <File size={12} className="text-cyan-400 shrink-0" />
-                            <span className="truncate text-slate-300 font-medium">{file.name}</span>
-                            <span className="text-[10px] text-slate-500 shrink-0">({formatBytes(file.size)})</span>
+                            <File size={12} className="text-app-accent shrink-0" />
+                            <span className="truncate text-app-text-secondary font-medium">{file.name}</span>
+                            <span className="text-[10px] text-app-text-muted shrink-0">({formatBytes(file.size)})</span>
                           </div>
                           <button 
                             type="button" 
                             onClick={() => removeSelectedFile(idx)}
-                            className="text-slate-500 hover:text-rose-400 text-[10px] font-semibold transition-colors uppercase shrink-0"
+                            className="text-app-text-muted hover:text-rose-400 text-[10px] font-semibold transition-colors uppercase shrink-0"
                           >
                             Cancel
                           </button>
@@ -555,7 +555,7 @@ export default function ProjectDocuments() {
                     <button
                       onClick={handleUpload}
                       disabled={uploading || !selectedProject}
-                      className="w-full mt-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2 rounded-lg text-xs shadow-md shadow-cyan-500/10 hover:shadow-cyan-500/20 disabled:opacity-50 disabled:pointer-events-none transition-all flex items-center justify-center gap-1.5 uppercase tracking-wider"
+                      className="w-full mt-2 bg-app-accent hover:bg-app-accent-hover text-slate-950 font-bold py-2 rounded-lg text-xs shadow-md shadow-cyan-500/10 hover:shadow-cyan-500/20 disabled:opacity-50 disabled:pointer-events-none transition-all flex items-center justify-center gap-1.5 uppercase tracking-wider"
                     >
                       {uploading ? (
                         <>
@@ -573,24 +573,24 @@ export default function ProjectDocuments() {
 
             {/* Right Column: Uploaded Documents Table */}
             <div className="lg:col-span-2 flex flex-col gap-4 h-full">
-              <div className="bg-slate-800/40 border border-slate-800 rounded-xl p-5 shadow-lg flex-1 flex flex-col min-h-[400px]">
-                <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-800">
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+              <div className="bg-app-surface/40 border border-app-border rounded-xl p-5 shadow-lg flex-1 flex flex-col min-h-[400px]">
+                <div className="flex justify-between items-center mb-4 pb-2 border-b border-app-border">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-app-text-muted flex items-center gap-2">
                     Uploaded Documents
                     {!loadingDocs && selectedProject && (
-                      <span className="bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full text-[10px] text-cyan-400">
+                      <span className="bg-app-surface border border-app-border px-2 py-0.5 rounded-full text-[10px] text-app-accent">
                         {documents.length}
                       </span>
                     )}
                   </h2>
-                  {loadingDocs && <Loader size={14} className="animate-spin text-cyan-400" />}
+                  {loadingDocs && <Loader size={14} className="animate-spin text-app-accent" />}
                 </div>
 
                 {!selectedProject ? (
                   <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
                     <Info className="text-slate-600 mb-2" size={32} />
-                    <h3 className="text-xs font-bold text-slate-400">No Project Context Selected</h3>
-                    <p className="text-[11px] text-slate-500 max-w-xs mt-1 leading-normal">
+                    <h3 className="text-xs font-bold text-app-text-muted">No Project Context Selected</h3>
+                    <p className="text-[11px] text-app-text-muted max-w-xs mt-1 leading-normal">
                       Please select a project from the dropdown at the top right of the page to view and upload files.
                     </p>
                   </div>
@@ -598,14 +598,14 @@ export default function ProjectDocuments() {
                   <div className="flex-1 flex items-center justify-center">
                     <div className="text-center">
                       <Loader size={20} className="animate-spin text-cyan-500 mx-auto mb-2" />
-                      <span className="text-xs text-slate-400">Loading documents...</span>
+                      <span className="text-xs text-app-text-muted">Loading documents...</span>
                     </div>
                   </div>
                 ) : documents.length === 0 ? (
-                  <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border border-dashed border-slate-850 rounded-lg bg-slate-900/10">
+                  <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border border-dashed border-slate-850 rounded-lg bg-app-surface/10">
                     <FolderOpen size={32} className="text-slate-700 mb-2" />
-                    <h3 className="text-xs font-bold text-slate-400">No Files Uploaded</h3>
-                    <p className="text-[11px] text-slate-500 max-w-xs mt-1 leading-normal">
+                    <h3 className="text-xs font-bold text-app-text-muted">No Files Uploaded</h3>
+                    <p className="text-[11px] text-app-text-muted max-w-xs mt-1 leading-normal">
                       No documents are currently uploaded for <strong>{activeTab.label}</strong> in this project.
                     </p>
                   </div>
@@ -613,7 +613,7 @@ export default function ProjectDocuments() {
                   <div className="overflow-x-auto w-full flex-1 custom-scrollbar">
                     <table className="w-full text-left text-xs border-collapse">
                       <thead>
-                        <tr className="border-b border-slate-800 text-slate-500 font-semibold uppercase tracking-wider text-[9px]">
+                        <tr className="border-b border-app-border text-app-text-muted font-semibold uppercase tracking-wider text-[9px]">
                           <th className="py-2 px-3">File Name</th>
                           <th className="py-2 px-3">Size</th>
                           <th className="py-2 px-3">Uploaded By</th>
@@ -626,24 +626,24 @@ export default function ProjectDocuments() {
                           <tr key={doc._id} className="hover:bg-slate-850/40 transition-colors">
                             <td className="py-2.5 px-3">
                               <div className="flex items-center gap-2 max-w-[200px] md:max-w-[300px]">
-                                <FileIcon ext={pathExt(doc.originalName)} className="shrink-0 text-cyan-400/80" size={14} />
+                                <FileIcon ext={pathExt(doc.originalName)} className="shrink-0 text-app-accent/80" size={14} />
                                 <a
                                   href={doc.filePath}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="font-semibold text-slate-200 hover:text-cyan-400 transition-colors truncate text-xs"
+                                  className="font-semibold text-app-text hover:text-app-accent transition-colors truncate text-xs"
                                   title={doc.originalName}
                                 >
                                   {doc.originalName}
                                 </a>
                               </div>
                             </td>
-                            <td className="py-2.5 px-3 text-slate-400 whitespace-nowrap">{formatBytes(doc.fileSize)}</td>
-                            <td className="py-2.5 px-3 text-slate-300 whitespace-nowrap">
-                              <div className="font-medium text-slate-300">{doc.uploadedBy}</div>
-                              <div className="text-[9px] text-slate-500">{doc.uploadedByEmail}</div>
+                            <td className="py-2.5 px-3 text-app-text-muted whitespace-nowrap">{formatBytes(doc.fileSize)}</td>
+                            <td className="py-2.5 px-3 text-app-text-secondary whitespace-nowrap">
+                              <div className="font-medium text-app-text-secondary">{doc.uploadedBy}</div>
+                              <div className="text-[9px] text-app-text-muted">{doc.uploadedByEmail}</div>
                             </td>
-                            <td className="py-2.5 px-3 text-slate-400 whitespace-nowrap">
+                            <td className="py-2.5 px-3 text-app-text-muted whitespace-nowrap">
                               {new Date(doc.uploadedAt).toLocaleDateString(undefined, {
                                 month: "short",
                                 day: "numeric",
@@ -655,14 +655,14 @@ export default function ProjectDocuments() {
                                 <a
                                   href={doc.filePath}
                                   download={doc.originalName}
-                                  className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-cyan-400 transition-all"
+                                  className="p-1 hover:bg-app-surface rounded text-app-text-muted hover:text-app-accent transition-all"
                                   title="Download"
                                 >
                                   <Download size={13} />
                                 </a>
                                 <button
                                   onClick={() => setDeleteTarget(doc)}
-                                  className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-rose-400 transition-all"
+                                  className="p-1 hover:bg-app-surface rounded text-app-text-muted hover:text-rose-400 transition-all"
                                   title="Delete"
                                 >
                                   <Trash2 size={13} />
@@ -686,16 +686,16 @@ export default function ProjectDocuments() {
 
       {/* Delete Confirmation Modal */}
       {deleteTarget && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-850 rounded-2xl max-w-sm w-full p-5 shadow-2xl flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 bg-app-bg/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-app-surface border border-slate-850 rounded-2xl max-w-sm w-full p-5 shadow-2xl flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex gap-3 items-start">
               <div className="w-9 h-9 bg-rose-500/10 border border-rose-500/20 rounded-full flex items-center justify-center text-rose-500 shrink-0">
                 <AlertCircle size={18} />
               </div>
               <div className="min-w-0">
-                <h3 className="text-sm font-bold text-white">Delete Document</h3>
-                <p className="text-xs text-slate-400 mt-1 leading-relaxed break-words">
-                  Are you sure you want to delete <strong className="text-slate-200">"{deleteTarget.originalName}"</strong>? This will permanently delete the file.
+                <h3 className="text-sm font-bold text-app-text">Delete Document</h3>
+                <p className="text-xs text-app-text-muted mt-1 leading-relaxed break-words">
+                  Are you sure you want to delete <strong className="text-app-text">"{deleteTarget.originalName}"</strong>? This will permanently delete the file.
                 </p>
               </div>
             </div>
@@ -703,7 +703,7 @@ export default function ProjectDocuments() {
               <button
                 onClick={() => setDeleteTarget(null)}
                 disabled={deleting}
-                className="px-3.5 py-1.5 bg-slate-850 hover:bg-slate-800 border border-slate-800 text-slate-300 font-semibold rounded-lg text-xs transition-colors disabled:opacity-50"
+                className="px-3.5 py-1.5 bg-slate-850 hover:bg-app-surface border border-app-border text-app-text-secondary font-semibold rounded-lg text-xs transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>

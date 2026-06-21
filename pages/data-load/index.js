@@ -223,26 +223,26 @@ export default function DataLoad() {
   // Render Access Checking States
   if (status === "loading") {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+      <div className="app-page min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-accent"></div>
       </div>
     );
   }
 
   if (!session || session.user.role !== "admin") {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-6 text-center">
-        <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-md">
+      <div className="app-page min-h-screen flex flex-col items-center justify-center p-6 text-center">
+        <div className="bg-app-surface border border-app-border p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-md">
           <div className="w-16 h-16 bg-rose-500/10 border border-rose-500/30 text-rose-500 rounded-full flex items-center justify-center mb-6">
             <AlertOctagon size={32} />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">Access Denied</h1>
-          <p className="text-slate-400 text-sm leading-relaxed mb-6">
+          <h1 className="text-2xl font-bold text-app-text mb-2">Access Denied</h1>
+          <p className="text-app-text-muted text-sm leading-relaxed mb-6">
             You do not have permission to access the Data Load module. This area is restricted to accounts with administrator role privileges.
           </p>
           <button 
             onClick={() => router.push("/")}
-            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold rounded-md border border-slate-700 hover:border-slate-600 transition-colors shadow-lg"
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-app-surface hover:bg-app-surface-muted text-app-text text-sm font-semibold rounded-md border border-app-border hover:border-slate-600 transition-colors shadow-lg"
           >
             <ArrowLeft size={16} /> Go Back Home
           </button>
@@ -256,10 +256,10 @@ export default function DataLoad() {
       <Head>
         <title>Data Load | EPC Portal</title>
       </Head>
-      <div className="flex flex-col bg-slate-950 min-h-screen text-slate-200">
+      <div className="flex flex-col bg-app-bg min-h-screen text-app-text">
         
         {/* Navigation Tabs */}
-        <div className="w-full bg-slate-900 border-b border-slate-800 overflow-x-auto custom-scrollbar flex justify-center px-4 sm:px-12">
+        <div className="w-full bg-app-surface border-b border-app-border overflow-x-auto custom-scrollbar flex justify-center px-4 sm:px-12">
           <nav className="flex items-center gap-2 py-3 min-w-max">
             {masterTabs.map((tab) => {
               const Icon = tab.icon;
@@ -269,8 +269,8 @@ export default function DataLoad() {
                   onClick={() => setActiveTab(tab)}
                   className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-colors text-xs font-semibold ${
                     activeTab.id === tab.id
-                      ? "bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20"
-                      : "bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-700/50"
+                      ? "bg-app-accent text-slate-950 shadow-md shadow-cyan-500/20"
+                      : "bg-app-surface-muted text-app-text-muted hover:bg-app-surface hover:text-app-text border border-app-border/50"
                   }`}
                 >
                   <Icon size={14} />
@@ -285,11 +285,11 @@ export default function DataLoad() {
         <div className="flex-1 p-6 md:px-12 lg:px-24 xl:px-32 overflow-x-hidden w-full max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                <activeTab.icon className="text-cyan-400" size={24} />
+              <h1 className="text-2xl font-bold text-app-text flex items-center gap-2">
+                <activeTab.icon className="text-app-accent" size={24} />
                 Data Load — {activeTab.label}
               </h1>
-              <p className="text-sm text-slate-400 mt-1">
+              <p className="text-sm text-app-text-muted mt-1">
                 Import, upsert, and manage reference records for {activeTab.label.toLowerCase()} (showing {data.length} of {totalCount} records)
               </p>
             </div>
@@ -301,12 +301,12 @@ export default function DataLoad() {
                   placeholder="Search records..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-64 px-4 py-2 border border-slate-700 rounded-md bg-slate-900/60 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500"
+                  className="w-64 px-4 py-2 border border-app-border rounded-md bg-app-surface-muted/80 text-sm text-app-text placeholder-app-text-disabled focus:outline-none focus:ring-2 focus:ring-app-accent/50 focus:border-app-accent"
                 />
                 {searchTerm && (
                   <button 
                     onClick={() => setSearchTerm("")} 
-                    className="absolute right-3 top-2 flex items-center justify-center w-5 h-5 rounded-full text-slate-400 hover:text-slate-200 font-bold"
+                    className="absolute right-3 top-2 flex items-center justify-center w-5 h-5 rounded-full text-app-text-muted hover:text-app-text font-bold"
                   >
                     ×
                   </button>
@@ -317,22 +317,22 @@ export default function DataLoad() {
               <div className="relative group">
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-750 text-slate-200 text-sm font-semibold rounded-md border border-slate-700 hover:border-slate-650 transition-colors shadow-md"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-app-surface hover:bg-app-surface-muted text-app-text text-sm font-semibold rounded-md border border-app-border hover:border-app-border transition-colors shadow-md"
                 >
                   <Download size={14} /> Export
                 </button>
-                <div className="absolute right-0 top-full mt-1.5 w-32 bg-slate-850 border border-slate-700 rounded-md shadow-xl hidden group-hover:block hover:block z-50 overflow-hidden">
+                <div className="absolute right-0 top-full mt-1.5 w-32 bg-slate-850 border border-app-border rounded-md shadow-xl hidden group-hover:block hover:block z-50 overflow-hidden">
                   <button
                     type="button"
                     onClick={() => handleExport('xlsx')}
-                    className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-350 hover:text-white hover:bg-slate-700 transition-colors"
+                    className="w-full text-left px-4 py-2 text-xs font-semibold text-app-text-secondary hover:text-app-text hover:bg-app-surface-muted transition-colors"
                   >
                     Excel (.xlsx)
                   </button>
                   <button
                     type="button"
                     onClick={() => handleExport('csv')}
-                    className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-350 hover:text-white hover:bg-slate-700 border-t border-slate-700/50 transition-colors"
+                    className="w-full text-left px-4 py-2 text-xs font-semibold text-app-text-secondary hover:text-app-text hover:bg-app-surface-muted border-t border-app-border/50 transition-colors"
                   >
                     CSV (.csv)
                   </button>
@@ -342,21 +342,21 @@ export default function DataLoad() {
               <button
                 type="button"
                 onClick={() => setIsImportModalOpen(true)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-750 text-slate-200 text-sm font-semibold rounded-md border border-slate-700 hover:border-slate-650 transition-colors shadow-md"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-app-surface hover:bg-app-surface-muted text-app-text text-sm font-semibold rounded-md border border-app-border hover:border-app-border transition-colors shadow-md"
               >
                 <Upload size={14} /> Bulk Import
               </button>
               
               <button
                 onClick={handleAdd}
-                className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-sm font-semibold rounded-md shadow-lg shadow-cyan-500/10 transition-colors"
+                className="px-4 py-2 bg-app-accent hover:bg-app-accent text-slate-950 text-sm font-semibold rounded-md shadow-lg shadow-cyan-500/10 transition-colors"
               >
                 + Add Record
               </button>
             </div>
           </div>
 
-          <div className="bg-slate-900/60 rounded-xl shadow-xl border border-slate-800 overflow-hidden">
+          <div className="bg-app-surface-muted/80 rounded-xl shadow-xl border border-app-border overflow-hidden">
             <MasterTable 
               data={data} 
               fields={activeTab.fields} 
@@ -364,13 +364,13 @@ export default function DataLoad() {
               onDelete={handleDelete}
               loading={loading && data.length === 0}
             />
-            <div ref={loadMoreRef} className="py-6 text-center border-t border-slate-800 bg-slate-900/20">
+            <div ref={loadMoreRef} className="py-6 text-center border-t border-app-border bg-app-surface/20">
               {loadingMore ? (
-                <span className="text-sm text-cyan-400 font-semibold animate-pulse">Loading more records...</span>
+                <span className="text-sm text-app-accent font-semibold animate-pulse">Loading more records...</span>
               ) : hasMore ? (
-                <span className="text-xs text-slate-500 font-medium">Scroll down to load more</span>
+                <span className="text-xs text-app-text-muted font-medium">Scroll down to load more</span>
               ) : data.length > 0 ? (
-                <span className="text-xs text-slate-500 font-medium">All {totalCount} records loaded.</span>
+                <span className="text-xs text-app-text-muted font-medium">All {totalCount} records loaded.</span>
               ) : null}
             </div>
           </div>

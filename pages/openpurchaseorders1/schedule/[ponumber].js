@@ -24,8 +24,8 @@ export default function POSchedulePage() {
 
   if (!ponumber) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
+      <div className="app-page min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-app-accent"></div>
       </div>
     );
   }
@@ -40,7 +40,7 @@ export default function POSchedulePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 flex flex-col pb-12">
+    <div className="app-page min-h-screen text-app-text flex flex-col pb-12">
       <Head>
         <title>Schedule PO: {ponumber}</title>
       </Head>
@@ -49,24 +49,24 @@ export default function POSchedulePage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-app-text flex items-center gap-3">
               <button 
                 onClick={() => isNewTab ? window.close() : router.back()}
-                className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-white"
+                className="p-2 hover:bg-app-surface rounded-lg transition-colors text-app-text-muted hover:text-app-text"
                 title={isNewTab ? "Close Tab" : "Back"}
               >
                 {isNewTab ? <FiX /> : <FiArrowLeft />}
               </button>
-              Update Schedule: <span className="text-cyan-400">{ponumber}</span>
+              Update Schedule: <span className="text-app-accent">{ponumber}</span>
             </h1>
-            <p className="text-sm text-slate-400 mt-1 ml-11">Fill out the schedule forms below. Each section saves independently.</p>
+            <p className="text-sm text-app-text-muted mt-1 ml-11">Fill out the schedule forms below. Each section saves independently.</p>
           </div>
         </div>
 
         {/* Main Content Area */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-2xl overflow-hidden flex flex-col">
+        <div className="bg-app-surface border border-app-border rounded-xl shadow-2xl overflow-hidden flex flex-col">
           {/* Tabs Navigation */}
-          <div className="border-b border-slate-800 px-6 bg-slate-900/50">
+          <div className="border-b border-app-border px-6 bg-app-surface-muted">
             <nav className="flex space-x-6 overflow-x-auto custom-scrollbar">
               {tabs.map(tab => (
                 <button
@@ -74,8 +74,8 @@ export default function POSchedulePage() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`py-4 px-2 border-b-2 font-semibold text-sm whitespace-nowrap transition-colors ${
                     activeTab === tab.id
-                      ? 'border-cyan-500 text-cyan-400'
-                      : 'border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                      ? 'border-app-accent text-app-accent'
+                      : 'border-transparent text-app-text-muted hover:text-app-text hover:border-slate-700'
                   }`}
                 >
                   {tab.label}
@@ -85,7 +85,7 @@ export default function POSchedulePage() {
           </div>
 
           {/* Tab Content */}
-          <div className="p-6 bg-slate-950/30">
+          <div className="p-6 bg-app-bg/30">
             {activeTab === 'general' && <GeneralPOData ponumber={ponumber} />}
             {activeTab === 'payment' && <PaymentScheduleData ponumber={ponumber} />}
             {activeTab === 'bank' && <BankGuaranteeData ponumber={ponumber} />}

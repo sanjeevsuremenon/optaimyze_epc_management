@@ -234,9 +234,9 @@ export default function AssetManagementMasters() {
       <Head>
         <title>Asset Management - Masters</title>
       </Head>
-      <div className="flex flex-col bg-slate-900 min-h-screen text-slate-200">
+      <div className="app-page min-h-screen flex flex-col">
         {/* Horizontal Tabs */}
-        <div className="w-full bg-slate-900 border-b border-slate-800 overflow-x-auto custom-scrollbar flex justify-center px-4 sm:px-12">
+        <div className="w-full bg-app-surface border-b border-app-border overflow-x-auto custom-scrollbar flex justify-center px-4 sm:px-12">
           <nav className="flex items-center gap-2 py-3 min-w-max">
             {masterTabs.map((tab) => {
               const Icon = tab.icon;
@@ -246,8 +246,8 @@ export default function AssetManagementMasters() {
                   onClick={() => setActiveTab(tab)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-colors text-xs font-medium ${
                     activeTab.id === tab.id
-                      ? "bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20"
-                      : "bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-700/50"
+                      ? "bg-app-accent text-slate-950 shadow-md shadow-cyan-500/20"
+                      : "bg-app-surface-muted text-app-text-muted hover:bg-app-surface hover:text-app-text border border-app-border/50"
                   }`}
                 >
                   <Icon size={14} />
@@ -262,33 +262,33 @@ export default function AssetManagementMasters() {
         <div className="flex-1 p-6 md:px-12 lg:px-24 xl:px-32 overflow-x-hidden w-full max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                <activeTab.icon className="text-cyan-400" size={24} />
+              <h1 className="text-2xl font-bold text-app-text flex items-center gap-2">
+                <activeTab.icon className="text-app-accent" size={24} />
                 {activeTab.label}
               </h1>
-              <p className="text-sm text-slate-400 mt-1">Manage all reference data for {activeTab.label.toLowerCase()}</p>
+              <p className="text-sm text-app-text-muted mt-1">Manage all reference data for {activeTab.label.toLowerCase()}</p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
               {/* Export Button Dropdown */}
               <div className="relative group">
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-750 text-slate-200 text-sm font-semibold rounded-md border border-slate-700 hover:border-slate-650 transition-colors shadow-md"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-app-surface hover:bg-app-surface-muted text-app-text text-sm font-semibold rounded-md border border-app-border hover:border-app-border transition-colors shadow-md"
                 >
                   <Download size={14} /> Export
                 </button>
-                <div className="absolute right-0 top-full mt-1.5 w-32 bg-slate-800 border border-slate-700 rounded-md shadow-xl hidden group-hover:block hover:block z-50 overflow-hidden">
+                <div className="absolute right-0 top-full mt-1.5 w-32 app-card rounded-md shadow-xl hidden group-hover:block hover:block z-50 overflow-hidden">
                   <button
                     type="button"
                     onClick={() => handleExport('xlsx')}
-                    className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-350 hover:text-white hover:bg-slate-700 transition-colors"
+                    className="w-full text-left px-4 py-2 text-xs font-semibold text-app-text-secondary hover:text-app-text hover:bg-app-surface-muted transition-colors"
                   >
                     Excel (.xlsx)
                   </button>
                   <button
                     type="button"
                     onClick={() => handleExport('csv')}
-                    className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-350 hover:text-white hover:bg-slate-700 border-t border-slate-700/50 transition-colors"
+                    className="w-full text-left px-4 py-2 text-xs font-semibold text-app-text-secondary hover:text-app-text hover:bg-app-surface-muted border-t border-app-border/50 transition-colors"
                   >
                     CSV (.csv)
                   </button>
@@ -298,21 +298,21 @@ export default function AssetManagementMasters() {
               <button
                 type="button"
                 onClick={() => setIsImportModalOpen(true)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-750 text-slate-200 text-sm font-semibold rounded-md border border-slate-700 hover:border-slate-650 transition-colors shadow-md"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-app-surface hover:bg-app-surface-muted text-app-text text-sm font-semibold rounded-md border border-app-border hover:border-app-border transition-colors shadow-md"
               >
                 <Upload size={14} /> Bulk Import
               </button>
 
               <button
                 onClick={handleAdd}
-                className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-sm font-semibold rounded-md shadow-lg shadow-cyan-500/10 transition-colors"
+                className="px-4 py-2 bg-app-accent hover:bg-app-accent text-slate-950 text-sm font-semibold rounded-md shadow-lg shadow-cyan-500/10 transition-colors"
               >
                 + Add Record
               </button>
             </div>
           </div>
 
-          <div className="bg-slate-800 rounded-lg shadow-xl border border-slate-700">
+          <div className="app-card shadow-md">
             <MasterTable 
               data={data} 
               fields={activeTab.fields} 

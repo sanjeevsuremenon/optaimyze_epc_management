@@ -261,16 +261,16 @@ export default function MapVendorToSubgroup() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-12">
+    <div className="app-page min-h-screen flex flex-col pb-12">
       <ToastContainer theme="dark" />
       <div className="container mx-auto px-4 py-8 max-w-5xl">
         <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center">
+          <h1 className="text-2xl font-bold text-app-text tracking-tight flex items-center">
             Map Vendor to{' '}
             {loadingGroup ? (
-              <span className="ml-2 h-6 w-48 bg-slate-800 rounded animate-pulse inline-block"></span>
+              <span className="ml-2 h-6 w-48 bg-app-surface rounded animate-pulse inline-block"></span>
             ) : groupInfo ? (
-              <span className="text-cyan-400 ml-2">
+              <span className="text-app-accent ml-2">
                 {groupInfo.groupName} - {groupInfo.subgroupName}
               </span>
             ) : (
@@ -279,7 +279,7 @@ export default function MapVendorToSubgroup() {
           </h1>
           <button 
             onClick={() => router.push('/material-groups')}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-semibold transition-colors border border-slate-700 flex items-center shadow-md"
+            className="px-4 py-2 bg-app-surface hover:bg-app-surface-muted text-app-text-secondary rounded-lg text-sm font-semibold transition-colors border border-app-border flex items-center shadow-md"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             Back
@@ -287,10 +287,10 @@ export default function MapVendorToSubgroup() {
         </div>
 
         {/* Search Section */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-lg p-6 mb-8">
-          <h2 className="text-lg font-semibold text-slate-100 mb-4">Search and Select Vendor</h2>
+        <div className="bg-app-surface border border-app-border rounded-xl shadow-lg p-6 mb-8">
+          <h2 className="text-lg font-semibold text-app-text mb-4">Search and Select Vendor</h2>
           <div className="mb-6 relative">
-            <label className="block text-sm font-medium text-slate-400 mb-2">
+            <label className="block text-sm font-medium text-app-text-muted mb-2">
               Search Vendor (minimum 3 characters):
             </label>
             <div className="relative">
@@ -302,26 +302,26 @@ export default function MapVendorToSubgroup() {
                   if (selectedVendor) setSelectedVendor(null);
                 }}
                 placeholder="Type vendor name or code..."
-                className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-slate-200 placeholder-slate-600 transition-colors shadow-inner"
+                className="w-full px-4 py-3 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors shadow-inner"
               />
               {isSearching && (
                 <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-cyan-500 border-t-transparent"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-app-accent border-t-transparent"></div>
                 </div>
               )}
             </div>
 
             {vendors.length > 0 && !selectedVendor && (
-              <div className="absolute z-50 w-full left-0 mt-2 bg-slate-800 border border-slate-700 rounded-lg shadow-2xl max-h-60 overflow-y-auto">
+              <div className="absolute z-50 w-full left-0 mt-2 app-card rounded-lg shadow-2xl max-h-60 overflow-y-auto">
                 {vendors.map((vendor) => (
                   <div
                     key={`${vendor.vendorcode}-${vendor.source}`}
                     onClick={() => handleVendorSelect(vendor)}
-                    className="p-3 hover:bg-slate-700 cursor-pointer border-b border-slate-700/50 last:border-b-0 transition-colors duration-150"
+                    className="p-3 hover:bg-app-surface-muted cursor-pointer border-b border-app-border/50 last:border-b-0 transition-colors duration-150"
                   >
-                    <div className="font-medium text-slate-200">{vendor.vendorname}</div>
-                    <div className="text-sm text-slate-400 mt-0.5">
-                      Code: <span className="font-mono text-cyan-400">{vendor.vendorcode}</span> | Source: {vendor.source}
+                    <div className="font-medium text-app-text">{vendor.vendorname}</div>
+                    <div className="text-sm text-app-text-muted mt-0.5">
+                      Code: <span className="font-mono text-app-accent">{vendor.vendorcode}</span> | Source: {vendor.source}
                     </div>
                   </div>
                 ))}
@@ -329,7 +329,7 @@ export default function MapVendorToSubgroup() {
             )}
             
             {searchTerm.length >= 3 && vendors.length === 0 && !isSearching && !selectedVendor && (
-              <div className="absolute z-50 w-full left-0 mt-2 bg-slate-800 border border-slate-700 rounded-lg shadow-2xl p-4 text-center text-slate-400 text-sm">
+              <div className="absolute z-50 w-full left-0 mt-2 app-card rounded-lg shadow-2xl p-4 text-center text-app-text-muted text-sm">
                 No vendors found.
               </div>
             )}
@@ -341,15 +341,15 @@ export default function MapVendorToSubgroup() {
               disabled={!selectedVendor || isMapping}
               className={`px-6 py-2.5 rounded-lg text-sm font-semibold shadow-md transition-all ${
                 selectedVendor && !isMapping
-                  ? 'bg-cyan-600 hover:bg-cyan-500 text-white shadow-cyan-900/50'
-                  : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                  ? 'bg-app-accent hover:bg-app-accent text-white shadow-cyan-900/50'
+                  : 'bg-app-surface text-app-text-muted cursor-not-allowed'
               }`}
             >
               {isMapping ? 'Mapping...' : 'Map Vendor'}
             </button>
             <button
               onClick={handleCancel}
-              className="px-6 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm font-semibold transition-colors border border-slate-600 shadow-md"
+              className="px-6 py-2.5 bg-slate-700 hover:bg-slate-600 text-app-text rounded-lg text-sm font-semibold transition-colors border border-slate-600 shadow-md"
             >
               Cancel
             </button>
@@ -357,9 +357,9 @@ export default function MapVendorToSubgroup() {
         </div>
 
         {/* Already Mapped Vendors */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-lg overflow-hidden">
-          <div className="p-5 border-b border-slate-800 flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-slate-100">
+        <div className="bg-app-surface border border-app-border rounded-xl shadow-lg overflow-hidden">
+          <div className="p-5 border-b border-app-border flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-app-text">
               Already Mapped Vendors ({loadingMappedVendors ? '...' : mappedVendors.length})
             </h2>
           </div>
@@ -367,26 +367,26 @@ export default function MapVendorToSubgroup() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-800/50">
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Vendor Name</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Vendor Code</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-center">Actions</th>
+                <tr className="bg-app-surface-muted">
+                  <th className="px-6 py-4 text-xs font-semibold text-app-text-muted uppercase tracking-wider">Vendor Name</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-app-text-muted uppercase tracking-wider">Vendor Code</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-app-text-muted uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-app-text-muted uppercase tracking-wider text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80">
+              <tbody className="divide-y divide-app-border/80">
                 {loadingMappedVendors ? (
                   <tr>
-                    <td colSpan="4" className="px-6 py-8 text-center text-slate-500">
+                    <td colSpan="4" className="px-6 py-8 text-center text-app-text-muted">
                       <div className="flex justify-center items-center">
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-cyan-500 border-t-transparent mr-2"></div>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-app-accent border-t-transparent mr-2"></div>
                         Loading mapped vendors...
                       </div>
                     </td>
                   </tr>
                 ) : mappedVendors.length === 0 ? (
                   <tr>
-                    <td colSpan="4" className="px-6 py-8 text-center text-slate-500 italic">
+                    <td colSpan="4" className="px-6 py-8 text-center text-app-text-muted italic">
                       No vendors mapped to this subgroup yet.
                     </td>
                   </tr>
@@ -396,11 +396,11 @@ export default function MapVendorToSubgroup() {
                     const vendorCode = vendor['vendor-code'] || vendor.vendorCode;
                     
                     return (
-                      <tr key={idx} className="hover:bg-slate-800/30 transition-colors">
-                        <td className="px-6 py-4 font-medium text-slate-200">
+                      <tr key={idx} className="hover:bg-app-surface/30 transition-colors">
+                        <td className="px-6 py-4 font-medium text-app-text">
                           {vendorName}
                         </td>
-                        <td className="px-6 py-4 text-slate-400 font-mono text-sm">
+                        <td className="px-6 py-4 text-app-text-muted font-mono text-sm">
                           {vendorCode}
                         </td>
                         <td className="px-6 py-4 text-sm">

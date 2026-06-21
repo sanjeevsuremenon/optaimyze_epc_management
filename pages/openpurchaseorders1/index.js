@@ -130,7 +130,7 @@ export default function Openpurchaseorders1() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col">
+    <div className="app-page min-h-screen flex flex-col">
       <main className="w-full px-4 py-8 flex-1 flex flex-col">
         {/* Search Section */}
         <div className="max-w-4xl mx-auto mb-8 w-full">
@@ -139,15 +139,15 @@ export default function Openpurchaseorders1() {
               <input
                 type="text"
                 placeholder="Search by PO number, vendor name, or vendor code..."
-                className="w-full px-4 py-3 pl-12 text-slate-200 bg-slate-900 border border-slate-800 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 shadow-sm transition-all"
+                className="w-full px-4 py-3 pl-12 text-app-text bg-app-surface border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent shadow-sm transition-all"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" />
+              <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
             </div>
-            <div className="bg-slate-900 px-6 py-3 rounded-lg shadow-sm border border-slate-800 shrink-0">
-              <span className="text-cyan-400 font-semibold tracking-wide">
-                {sortedAndFilteredData.length} <span className="text-slate-400 font-normal">Open PO{sortedAndFilteredData.length !== 1 ? 's' : ''}</span>
+            <div className="bg-app-surface px-6 py-3 rounded-lg shadow-sm border border-app-border shrink-0">
+              <span className="text-app-accent font-semibold tracking-wide">
+                {sortedAndFilteredData.length} <span className="text-app-text-muted font-normal">Open PO{sortedAndFilteredData.length !== 1 ? 's' : ''}</span>
               </span>
             </div>
           </div>
@@ -156,12 +156,12 @@ export default function Openpurchaseorders1() {
         {/* Main Content */}
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-accent"></div>
           </div>
         ) : (
-          <div className="bg-slate-900 rounded-xl shadow-xl border border-slate-800 overflow-hidden flex-1 flex flex-col">
-            <div className="p-4 border-b border-slate-800 bg-slate-900/50 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-slate-100">Open Purchase Orders</h2>
+          <div className="bg-app-surface rounded-xl shadow-xl border border-app-border overflow-hidden flex-1 flex flex-col">
+            <div className="p-4 border-b border-app-border bg-app-surface-muted flex items-center justify-between">
+              <h2 className="text-lg font-bold text-app-text">Open Purchase Orders</h2>
             </div>
             
             {/* Table wrapper with custom scrollbar */}
@@ -179,80 +179,80 @@ export default function Openpurchaseorders1() {
                   <col className="w-[10%]" />
                   <col className="w-[21%]" />
                 </colgroup>
-                <thead className="bg-slate-950 sticky top-0 z-10 shadow-sm border-b border-slate-800">
+                <thead className="bg-app-bg sticky top-0 z-10 shadow-sm border-b border-app-border">
                   <tr>
                     <th 
-                      className="px-2 py-2 font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-800 transition-colors truncate"
+                      className="px-2 py-2 font-semibold text-app-text-muted uppercase tracking-wider cursor-pointer hover:bg-app-surface transition-colors truncate"
                       onClick={() => requestSort('po-number')}
                     >
                       PO Number <SortIndicator columnKey="po-number" />
                     </th>
                     <th 
-                      className="px-2 py-2 font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-800 transition-colors truncate"
+                      className="px-2 py-2 font-semibold text-app-text-muted uppercase tracking-wider cursor-pointer hover:bg-app-surface transition-colors truncate"
                       onClick={() => requestSort('po-date')}
                     >
                       PO Date <SortIndicator columnKey="po-date" />
                     </th>
                     <th 
-                      className="px-2 py-2 font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-800 transition-colors truncate"
+                      className="px-2 py-2 font-semibold text-app-text-muted uppercase tracking-wider cursor-pointer hover:bg-app-surface transition-colors truncate"
                       onClick={() => requestSort('delivery-date')}
                     >
                       Dely Date <SortIndicator columnKey="delivery-date" />
                     </th>
                     <th 
-                      className="px-2 py-2 font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-800 transition-colors truncate"
+                      className="px-2 py-2 font-semibold text-app-text-muted uppercase tracking-wider cursor-pointer hover:bg-app-surface transition-colors truncate"
                       onClick={() => requestSort('plant')}
                     >
                       Plant <SortIndicator columnKey="plant" />
                     </th>
                     <th 
-                      className="px-2 py-2 font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-800 transition-colors truncate"
+                      className="px-2 py-2 font-semibold text-app-text-muted uppercase tracking-wider cursor-pointer hover:bg-app-surface transition-colors truncate"
                       onClick={() => requestSort('vendorcode')}
                     >
                       Vendor Code <SortIndicator columnKey="vendorcode" />
                     </th>
                     <th 
-                      className="px-2 py-2 font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-800 transition-colors truncate"
+                      className="px-2 py-2 font-semibold text-app-text-muted uppercase tracking-wider cursor-pointer hover:bg-app-surface transition-colors truncate"
                       onClick={() => requestSort('vendorname')}
                     >
                       Vendor Name <SortIndicator columnKey="vendorname" />
                     </th>
                     <th 
-                      className="px-2 py-2 font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-800 transition-colors truncate text-right"
+                      className="px-2 py-2 font-semibold text-app-text-muted uppercase tracking-wider cursor-pointer hover:bg-app-surface transition-colors truncate text-right"
                       onClick={() => requestSort('povalue')}
                     >
                       PO Value <SortIndicator columnKey="povalue" />
                     </th>
                     <th 
-                      className="px-2 py-2 font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-800 transition-colors truncate text-right"
+                      className="px-2 py-2 font-semibold text-app-text-muted uppercase tracking-wider cursor-pointer hover:bg-app-surface transition-colors truncate text-right"
                       onClick={() => requestSort('openvalue')}
                     >
                       Open Value <SortIndicator columnKey="openvalue" />
                     </th>
-                    <th className="px-2 py-2 text-center font-semibold text-slate-400 uppercase tracking-wider truncate">
+                    <th className="px-2 py-2 text-center font-semibold text-app-text-muted uppercase tracking-wider truncate">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-slate-900 divide-y divide-slate-800/60">
+                <tbody className="bg-app-surface divide-y divide-app-border/60">
                   {sortedAndFilteredData.map((po, index) => (
-                    <tr key={index} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="px-2 py-2 whitespace-nowrap font-bold text-slate-200">
+                    <tr key={index} className="hover:bg-app-surface/40 transition-colors">
+                      <td className="px-2 py-2 whitespace-nowrap font-bold text-app-text">
                         {po._id["po-number"]}
                       </td>
-                      <td className="px-2 py-2 whitespace-nowrap text-slate-400">
+                      <td className="px-2 py-2 whitespace-nowrap text-app-text-muted">
                         {po["po-date"] ? moment(po["po-date"]).format('MM/DD/YY') : 'N/A'}
                       </td>
-                      <td className="px-2 py-2 whitespace-nowrap text-slate-400">
+                      <td className="px-2 py-2 whitespace-nowrap text-app-text-muted">
                         {po["delivery-date"] ? moment(po["delivery-date"]).format('MM/DD/YY') : 'N/A'}
                       </td>
-                      <td className="px-2 py-2 whitespace-nowrap text-slate-400">
+                      <td className="px-2 py-2 whitespace-nowrap text-app-text-muted">
                         {po._id.plant}
                       </td>
-                      <td className="px-2 py-2 whitespace-nowrap font-mono text-slate-500">
+                      <td className="px-2 py-2 whitespace-nowrap font-mono text-app-text-muted">
                         {po._id.vendorcode}
                       </td>
-                      <td className="px-2 py-2 font-medium text-slate-300 break-words leading-tight">
+                      <td className="px-2 py-2 font-medium text-app-text-secondary break-words leading-tight">
                         {po._id.vendorname.replace(
                           /\w\S*/g,
                           function(txt) {
@@ -260,18 +260,18 @@ export default function Openpurchaseorders1() {
                           }
                         )}
                       </td>
-                      <td className="px-2 py-2 whitespace-nowrap text-slate-400 font-medium text-right">
+                      <td className="px-2 py-2 whitespace-nowrap text-app-text-muted font-medium text-right">
                         {po.povalue ? po.povalue.toLocaleString() : '0'} SAR
                       </td>
                       <td className="px-2 py-2 whitespace-nowrap text-emerald-400 font-bold text-right">
                         {po.openvalue.toLocaleString()} SAR
                       </td>
-                      <td className="px-2 py-2 whitespace-nowrap text-slate-500">
+                      <td className="px-2 py-2 whitespace-nowrap text-app-text-muted">
                         <div className="flex justify-center space-x-1">
                           <button
                             title="Update Schedule"
                             onClick={() => handleScheduleClick(po)}
-                            className="inline-flex items-center px-1.5 py-1 border border-slate-700 text-[10px] font-semibold rounded text-cyan-400 bg-slate-800 hover:bg-cyan-500 hover:text-slate-900 transition-all"
+                            className="inline-flex items-center px-1.5 py-1 border border-app-border text-[10px] font-semibold rounded text-app-accent bg-app-surface hover:bg-app-accent hover:text-slate-900 transition-all"
                           >
                             <FiCalendar className="mr-1" />
                             <span className="hidden sm:inline">Schedule</span>
@@ -279,7 +279,7 @@ export default function Openpurchaseorders1() {
                           <button
                             title="Comments"
                             onClick={() => handleCommentClick(po._id["po-number"])}
-                            className="inline-flex items-center px-1.5 py-1 border border-slate-700 text-[10px] font-semibold rounded text-blue-400 bg-slate-800 hover:bg-blue-500 hover:text-slate-900 transition-all"
+                            className="inline-flex items-center px-1.5 py-1 border border-app-border text-[10px] font-semibold rounded text-blue-400 bg-app-surface hover:bg-blue-500 hover:text-slate-900 transition-all"
                           >
                             <FiMessageSquare className="mr-1" />
                             <span className="hidden sm:inline">Comments</span>
@@ -287,7 +287,7 @@ export default function Openpurchaseorders1() {
                           <button
                             title="View PO Dashboard"
                             onClick={() => handleViewPO(po._id["po-number"])}
-                            className="inline-flex items-center px-1.5 py-1 border border-slate-700 text-[10px] font-semibold rounded text-slate-300 bg-slate-800 hover:bg-slate-300 hover:text-slate-900 transition-all"
+                            className="inline-flex items-center px-1.5 py-1 border border-app-border text-[10px] font-semibold rounded text-app-text-secondary bg-app-surface hover:bg-slate-300 hover:text-slate-900 transition-all"
                           >
                             <FiEye className="mr-1" />
                             <span className="hidden sm:inline">View</span>
@@ -298,7 +298,7 @@ export default function Openpurchaseorders1() {
                   ))}
                   {sortedAndFilteredData.length === 0 && !loading && (
                     <tr>
-                      <td colSpan="9" className="px-2 py-8 text-center text-slate-500 italic">
+                      <td colSpan="9" className="px-2 py-8 text-center text-app-text-muted italic">
                         No purchase orders found matching your search.
                       </td>
                     </tr>

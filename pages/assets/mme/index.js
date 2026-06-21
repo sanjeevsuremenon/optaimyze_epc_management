@@ -194,7 +194,7 @@ export default function MMEPage() {
 
   const getCalibrationStatus = (records) => {
     if (!records || records.length === 0) {
-      return { required: false, status: 'Not Configured', text: 'No calibration data', color: 'text-slate-400 bg-slate-800' };
+      return { required: false, status: 'Not Configured', text: 'No calibration data', color: 'text-app-text-muted bg-app-surface' };
     }
     const isRequired = !records.every(c => c.calibrationRequired === 'Not Required');
     if (!isRequired) {
@@ -231,7 +231,7 @@ export default function MMEPage() {
         Header: "Asset Number",
         accessor: "assetnumber",
         Cell: ({ value }) => (
-          <Link href={`/assets/${value}`} className="text-cyan-400 hover:text-cyan-300 font-bold transition-colors">
+          <Link href={`/assets/${value}`} className="text-app-accent hover:text-app-accent font-bold transition-colors">
             {value}
           </Link>
         ),
@@ -239,17 +239,17 @@ export default function MMEPage() {
       {
         Header: "Description",
         accessor: "assetdescription",
-        Cell: ({ value }) => <span className="text-slate-200">{value}</span>,
+        Cell: ({ value }) => <span className="text-app-text">{value}</span>,
       },
       {
         Header: "Category",
         accessor: "assetcategory",
-        Cell: ({ value }) => <span className="text-slate-100 font-semibold text-xs bg-slate-800 px-2 py-0.5 rounded border border-slate-700">{value || 'N/A'}</span>,
+        Cell: ({ value }) => <span className="text-app-text font-semibold text-xs bg-app-surface px-2 py-0.5 rounded border border-app-border">{value || 'N/A'}</span>,
       },
       {
         Header: "Subcategory",
         accessor: "assetsubcategory",
-        Cell: ({ value }) => <span className="text-slate-300 font-medium text-xs">{value || 'N/A'}</span>,
+        Cell: ({ value }) => <span className="text-app-text-secondary font-medium text-xs">{value || 'N/A'}</span>,
       },
       {
         Header: "Status",
@@ -282,7 +282,7 @@ export default function MMEPage() {
                 <div tabIndex={0} className="dropdown-content z-[100] card card-compact w-48 p-2 shadow-2xl bg-white text-slate-800 rounded-lg border border-slate-200">
                   <div className="card-body items-center text-center p-2">
                     <QRCodeSVG value={`${origin}/assets/publicdata/${value}`} size={128} />
-                    <p className="text-[10px] font-mono mt-2 text-slate-500 font-bold">{value}</p>
+                    <p className="text-[10px] font-mono mt-2 text-app-text-muted font-bold">{value}</p>
                   </div>
                 </div>
               </div>
@@ -290,7 +290,7 @@ export default function MMEPage() {
               {/* Custody Button */}
               <button
                 onClick={() => handleOpenCustody(value)}
-                className="btn btn-sm btn-circle btn-outline border-slate-600 hover:border-cyan-500 text-slate-300 hover:text-cyan-400 hover:bg-cyan-500/10 transition-all duration-200"
+                className="btn btn-sm btn-circle btn-outline border-slate-600 hover:border-app-accent text-app-text-secondary hover:text-app-accent hover:bg-app-accent/10 transition-all duration-200"
                 title="View Custody"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -301,7 +301,7 @@ export default function MMEPage() {
               {/* Calibration Button */}
               <button
                 onClick={() => handleOpenCalibration(value)}
-                className="btn btn-sm btn-circle btn-outline border-slate-600 hover:border-amber-500 text-slate-300 hover:text-amber-400 hover:bg-amber-500/10 transition-all duration-200"
+                className="btn btn-sm btn-circle btn-outline border-slate-600 hover:border-amber-500 text-app-text-secondary hover:text-amber-400 hover:bg-amber-500/10 transition-all duration-200"
                 title="View Calibration"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -322,35 +322,35 @@ export default function MMEPage() {
         <title>MME Equipment - Asset Management</title>
       </Head>
 
-      <div className="mb-6 bg-slate-900/60 rounded-xl p-6 border border-slate-700 shadow-xl">
-        <h1 className="text-2xl font-bold text-white mb-2">MME Equipment</h1>
-        <p className="text-slate-400">Search and manage Machinery, Materials, and Equipment</p>
+      <div className="mb-6 bg-app-surface-muted/80 rounded-xl p-6 border border-app-border shadow-xl">
+        <h1 className="text-2xl font-bold text-app-text mb-2">MME Equipment</h1>
+        <p className="text-app-text-muted">Search and manage Machinery, Materials, and Equipment</p>
       </div>
 
-      <div className="mb-6 bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-lg">
+      <div className="mb-6 app-card rounded-xl p-6 border border-app-border shadow-lg">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label className="block text-xs text-slate-400 font-semibold uppercase mb-2">Asset Number</label>
+            <label className="block text-xs text-app-text-muted font-semibold uppercase mb-2">Asset Number</label>
             <input
               type="text"
               value={assetNumberSearch}
               onChange={(e) => setAssetNumberSearch(e.target.value)}
               placeholder="Search by number..."
-              className="input input-bordered bg-slate-900/50 text-white border-slate-600 focus:border-cyan-500 w-full text-sm"
+              className="input input-bordered bg-app-surface-muted text-app-text border-slate-600 focus:border-app-accent w-full text-sm"
             />
           </div>
           <div>
-            <label className="block text-xs text-slate-400 font-semibold uppercase mb-2">Asset Description</label>
+            <label className="block text-xs text-app-text-muted font-semibold uppercase mb-2">Asset Description</label>
             <input
               type="text"
               value={assetNameSearch}
               onChange={(e) => setAssetNameSearch(e.target.value)}
               placeholder="Search by description..."
-              className="input input-bordered bg-slate-900/50 text-white border-slate-600 focus:border-cyan-500 w-full text-sm"
+              className="input input-bordered bg-app-surface-muted text-app-text border-slate-600 focus:border-app-accent w-full text-sm"
             />
           </div>
           <div className="relative">
-            <label className="block text-xs text-slate-400 font-semibold uppercase mb-2">Acquired After Date</label>
+            <label className="block text-xs text-app-text-muted font-semibold uppercase mb-2">Acquired After Date</label>
             <DatePicker
               selected={minAcquiredDateSearch ? new Date(minAcquiredDateSearch) : null}
               onChange={(date) => {
@@ -364,43 +364,43 @@ export default function MMEPage() {
                 }
               }}
               placeholderText="Select date..."
-              className="input input-bordered bg-slate-900/50 text-white border-slate-600 focus:border-cyan-500 w-full text-sm"
+              className="input input-bordered bg-app-surface-muted text-app-text border-slate-600 focus:border-app-accent w-full text-sm"
               isClearable
               dateFormat="yyyy-MM-dd"
             />
           </div>
           <div>
-            <label className="block text-xs text-slate-400 font-semibold uppercase mb-2">Min Value (SAR)</label>
+            <label className="block text-xs text-app-text-muted font-semibold uppercase mb-2">Min Value (SAR)</label>
             <input
               type="number"
               value={minAcquiredValueSearch}
               onChange={(e) => setMinAcquiredValueSearch(e.target.value)}
               placeholder="Min acquired value..."
-              className="input input-bordered bg-slate-900/50 text-white border-slate-600 focus:border-cyan-500 w-full text-sm"
+              className="input input-bordered bg-app-surface-muted text-app-text border-slate-600 focus:border-app-accent w-full text-sm"
             />
           </div>
         </div>
       </div>
 
-      <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-xl min-h-[400px] flex flex-col justify-between">
+      <div className="app-card rounded-xl p-6 border border-app-border shadow-xl min-h-[400px] flex flex-col justify-between">
         <div className="flex-1">
           {!hasInteracted ? (
             <button
               onClick={() => setHasInteracted(true)}
-              className="flex flex-col items-center justify-center h-72 w-full text-slate-400 hover:text-cyan-400 group transition-all duration-300 border border-dashed border-slate-700/60 hover:border-cyan-500/40 rounded-xl bg-slate-900/10 cursor-pointer"
+              className="flex flex-col items-center justify-center h-72 w-full text-app-text-muted hover:text-app-accent group transition-all duration-300 border border-dashed border-slate-700/60 hover:border-app-accent/40 rounded-xl bg-app-surface/10 cursor-pointer"
             >
-              <svg className="w-12 h-12 mb-3 text-slate-500 group-hover:text-cyan-500 animate-bounce transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-12 h-12 mb-3 text-app-text-muted group-hover:text-cyan-500 animate-bounce transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
-              <p className="text-lg font-semibold text-slate-350">Scroll down, click, or search to load assets</p>
-              <p className="text-xs text-slate-550 mt-1.5">Lazy loading is active to optimize load performance</p>
+              <p className="text-lg font-semibold text-app-text-secondary">Scroll down, click, or search to load assets</p>
+              <p className="text-xs text-app-text-muted mt-1.5">Lazy loading is active to optimize load performance</p>
             </button>
           ) : loading && data.length === 0 ? (
             <div className="flex justify-center items-center h-64">
               <span className="loading loading-spinner loading-lg text-cyan-500"></span>
             </div>
           ) : data.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-64 text-slate-400">
+            <div className="flex flex-col items-center justify-center h-64 text-app-text-muted">
               <p className="text-lg">No assets found matching the search criteria</p>
             </div>
           ) : (
@@ -415,13 +415,13 @@ export default function MMEPage() {
         </div>
 
         {hasInteracted && data.length > 0 && (
-          <div ref={loadMoreRef} className="py-6 text-center border-t border-slate-700/30 mt-6">
+          <div ref={loadMoreRef} className="py-6 text-center border-t border-app-border/30 mt-6">
             {loadingMore ? (
-              <span className="text-sm text-cyan-400 font-semibold animate-pulse">Loading more assets...</span>
+              <span className="text-sm text-app-accent font-semibold animate-pulse">Loading more assets...</span>
             ) : hasMore ? (
-              <span className="text-xs text-slate-500 font-medium">Scroll down to load more</span>
+              <span className="text-xs text-app-text-muted font-medium">Scroll down to load more</span>
             ) : (
-              <span className="text-xs text-slate-500 font-medium">All {data.length} records loaded.</span>
+              <span className="text-xs text-app-text-muted font-medium">All {data.length} records loaded.</span>
             )}
           </div>
         )}
@@ -429,22 +429,22 @@ export default function MMEPage() {
 
       {/* Custody Modal */}
       {isCustodyOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-app-surface-muted backdrop-blur-sm">
+          <div className="bg-app-surface border border-app-border rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl flex flex-col">
             {/* Modal Header */}
-            <div className="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-950/40">
+            <div className="p-6 border-b border-app-border flex justify-between items-center bg-app-bg/40">
               <div>
-                <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                  <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <h3 className="text-xl font-bold text-app-text flex items-center gap-2">
+                  <svg className="w-5 h-5 text-app-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                   Custody Information
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Asset: <span className="font-mono text-cyan-400 font-semibold">{custodyAsset}</span></p>
+                <p className="text-xs text-app-text-muted mt-1">Asset: <span className="font-mono text-app-accent font-semibold">{custodyAsset}</span></p>
               </div>
               <button 
                 onClick={() => setIsCustodyOpen(false)}
-                className="btn btn-sm btn-circle btn-ghost text-slate-400 hover:text-white"
+                className="btn btn-sm btn-circle btn-ghost text-app-text-muted hover:text-app-text"
               >
                 ✕
               </button>
@@ -455,10 +455,10 @@ export default function MMEPage() {
               {loadingCustody ? (
                 <div className="flex flex-col items-center justify-center py-12">
                   <span className="loading loading-spinner loading-lg text-cyan-500 mb-2"></span>
-                  <span className="text-sm text-slate-400">Loading custody records...</span>
+                  <span className="text-sm text-app-text-muted">Loading custody records...</span>
                 </div>
               ) : custodyRecords.length === 0 ? (
-                <div className="text-center py-12 text-slate-500">
+                <div className="text-center py-12 text-app-text-muted">
                   <p className="text-lg">No custody records found for this asset.</p>
                 </div>
               ) : (
@@ -467,43 +467,43 @@ export default function MMEPage() {
                   {(() => {
                     const current = custodyRecords.find(r => !r.custodyto);
                     return (
-                      <div className="bg-slate-950/40 border border-slate-800 rounded-xl p-5 shadow-inner">
-                        <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Current Custody</h4>
+                      <div className="bg-app-bg/40 border border-app-border rounded-xl p-5 shadow-inner">
+                        <h4 className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-3">Current Custody</h4>
                         {current ? (
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                              <p className="text-xs text-slate-500 font-semibold uppercase">Custodian Employee</p>
-                              <p className="text-base font-bold text-white mt-1">{current.employeename || 'N/A'}</p>
+                              <p className="text-xs text-app-text-muted font-semibold uppercase">Custodian Employee</p>
+                              <p className="text-base font-bold text-app-text mt-1">{current.employeename || 'N/A'}</p>
                               {current.employeenumber && (
-                                <p className="text-xs text-slate-400 font-mono mt-0.5">ID: {current.employeenumber}</p>
+                                <p className="text-xs text-app-text-muted font-mono mt-0.5">ID: {current.employeenumber}</p>
                               )}
                             </div>
                             <div>
-                              <p className="text-xs text-slate-500 font-semibold uppercase">Location</p>
-                              <p className="text-base font-bold text-white mt-1 text-slate-200">
+                              <p className="text-xs text-app-text-muted font-semibold uppercase">Location</p>
+                              <p className="text-base font-bold text-app-text mt-1 text-app-text">
                                 {current.projectname || current.project || current.departmentLocation || current.campOfficeLocation || current.warehouseLocation || current.location || 'Unknown Location'}
                               </p>
                               {current.locationType && (
-                                <span className="inline-block mt-1 px-2.5 py-0.5 bg-cyan-950/50 border border-cyan-800/40 text-cyan-400 text-[10px] uppercase font-bold rounded">
+                                <span className="inline-block mt-1 px-2.5 py-0.5 bg-cyan-950/50 border border-cyan-800/40 text-app-accent text-[10px] uppercase font-bold rounded">
                                   {current.locationType.replace('_', ' ')}
                                 </span>
                               )}
                             </div>
-                            <div className="sm:col-span-2 grid grid-cols-2 gap-4 pt-4 border-t border-slate-800/50">
+                            <div className="sm:col-span-2 grid grid-cols-2 gap-4 pt-4 border-t border-app-border/50">
                               <div>
-                                <p className="text-xs text-slate-500 font-semibold uppercase">Assigned Date</p>
-                                <p className="text-sm font-semibold text-slate-300 mt-1">
+                                <p className="text-xs text-app-text-muted font-semibold uppercase">Assigned Date</p>
+                                <p className="text-sm font-semibold text-app-text-secondary mt-1">
                                   {current.custodyfrom ? new Date(current.custodyfrom).toLocaleDateString() : '—'}
                                 </p>
                               </div>
                               <div>
-                                <p className="text-xs text-slate-500 font-semibold uppercase">Document Number</p>
-                                <p className="text-sm font-mono font-semibold text-slate-300 mt-1">{current.documentnumber || '—'}</p>
+                                <p className="text-xs text-app-text-muted font-semibold uppercase">Document Number</p>
+                                <p className="text-sm font-mono font-semibold text-app-text-secondary mt-1">{current.documentnumber || '—'}</p>
                               </div>
                             </div>
                           </div>
                         ) : (
-                          <div className="text-slate-505 text-sm py-2">
+                          <div className="text-app-text-muted text-sm py-2">
                             No active custody assignment (Asset is currently in storage / unassigned).
                           </div>
                         )}
@@ -513,32 +513,32 @@ export default function MMEPage() {
 
                   {/* History List */}
                   <div>
-                    <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Custody History ({custodyRecords.length})</h4>
-                    <div className="border border-slate-800 rounded-xl overflow-hidden shadow-md">
+                    <h4 className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-3">Custody History ({custodyRecords.length})</h4>
+                    <div className="border border-app-border rounded-xl overflow-hidden shadow-md">
                       <table className="table w-full text-left">
                         <thead>
-                          <tr className="bg-slate-950/60 text-slate-400 border-b border-slate-800 text-xs">
+                          <tr className="bg-app-bg/60 text-app-text-muted border-b border-app-border text-xs">
                             <th className="font-semibold px-4 py-3">Employee</th>
                             <th className="font-semibold px-4 py-3">Location</th>
                             <th className="font-semibold px-4 py-3">Duration</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-800 bg-slate-900/20">
+                        <tbody className="divide-y divide-app-border bg-app-surface/20">
                           {custodyRecords.map((c, i) => (
-                            <tr key={c._id || i} className="hover:bg-slate-800/40 text-slate-350 transition-colors">
+                            <tr key={c._id || i} className="hover:bg-app-surface/40 text-app-text-secondary transition-colors">
                               <td className="px-4 py-3 text-sm">
-                                <span className="font-medium text-slate-200">{c.employeename || 'N/A'}</span>
-                                {c.employeenumber && <div className="text-slate-500 text-xs mt-0.5">ID: {c.employeenumber}</div>}
+                                <span className="font-medium text-app-text">{c.employeename || 'N/A'}</span>
+                                {c.employeenumber && <div className="text-app-text-muted text-xs mt-0.5">ID: {c.employeenumber}</div>}
                               </td>
-                              <td className="px-4 py-3 text-sm text-slate-200">
+                              <td className="px-4 py-3 text-sm text-app-text">
                                 {c.projectname || c.project || c.departmentLocation || c.campOfficeLocation || c.warehouseLocation || c.location || '—'}
                               </td>
                               <td className="px-4 py-3 text-sm">
                                 <div className="text-xs">
-                                  <span className="text-slate-400 font-medium">From:</span> {c.custodyfrom ? new Date(c.custodyfrom).toLocaleDateString() : '—'}
+                                  <span className="text-app-text-muted font-medium">From:</span> {c.custodyfrom ? new Date(c.custodyfrom).toLocaleDateString() : '—'}
                                 </div>
                                 <div className="text-xs mt-0.5">
-                                  <span className="text-slate-400 font-medium">To:</span> {c.custodyto ? new Date(c.custodyto).toLocaleDateString() : <span className="text-emerald-400 font-bold">Present</span>}
+                                  <span className="text-app-text-muted font-medium">To:</span> {c.custodyto ? new Date(c.custodyto).toLocaleDateString() : <span className="text-emerald-400 font-bold">Present</span>}
                                 </div>
                               </td>
                             </tr>
@@ -552,10 +552,10 @@ export default function MMEPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-6 border-t border-slate-800 flex justify-end bg-slate-950/40">
+            <div className="p-6 border-t border-app-border flex justify-end bg-app-bg/40">
               <button 
                 onClick={() => setIsCustodyOpen(false)}
-                className="btn btn-sm bg-slate-800 hover:bg-slate-700 text-white border-0 px-6 font-semibold"
+                className="btn btn-sm bg-app-surface hover:bg-app-surface-muted text-app-text border-0 px-6 font-semibold"
               >
                 Close
               </button>
@@ -566,22 +566,22 @@ export default function MMEPage() {
 
       {/* Calibration Modal */}
       {isCalibrationOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-app-surface-muted backdrop-blur-sm">
+          <div className="bg-app-surface border border-app-border rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl flex flex-col">
             {/* Modal Header */}
-            <div className="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-950/40">
+            <div className="p-6 border-b border-app-border flex justify-between items-center bg-app-bg/40">
               <div>
-                <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <h3 className="text-xl font-bold text-app-text flex items-center gap-2">
                   <svg className="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   Calibration Status
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Asset: <span className="font-mono text-cyan-400 font-semibold">{calibrationAsset}</span></p>
+                <p className="text-xs text-app-text-muted mt-1">Asset: <span className="font-mono text-app-accent font-semibold">{calibrationAsset}</span></p>
               </div>
               <button 
                 onClick={() => setIsCalibrationOpen(false)}
-                className="btn btn-sm btn-circle btn-ghost text-slate-400 hover:text-white"
+                className="btn btn-sm btn-circle btn-ghost text-app-text-muted hover:text-app-text"
               >
                 ✕
               </button>
@@ -592,12 +592,12 @@ export default function MMEPage() {
               {loadingCalibration ? (
                 <div className="flex flex-col items-center justify-center py-12">
                   <span className="loading loading-spinner loading-lg text-amber-500 mb-2"></span>
-                  <span className="text-sm text-slate-400">Loading calibration records...</span>
+                  <span className="text-sm text-app-text-muted">Loading calibration records...</span>
                 </div>
               ) : calibrationRecords.length === 0 ? (
-                <div className="bg-slate-950/40 border border-slate-800 p-6 rounded-xl text-center text-slate-400">
-                  <p className="text-base font-semibold text-slate-300">No calibration records configured.</p>
-                  <p className="text-xs text-slate-500 mt-1">This asset does not currently have any calibration records or certificates.</p>
+                <div className="bg-app-bg/40 border border-app-border p-6 rounded-xl text-center text-app-text-muted">
+                  <p className="text-base font-semibold text-app-text-secondary">No calibration records configured.</p>
+                  <p className="text-xs text-app-text-muted mt-1">This asset does not currently have any calibration records or certificates.</p>
                 </div>
               ) : (
                 <>
@@ -605,12 +605,12 @@ export default function MMEPage() {
                   {(() => {
                     const evalStatus = getCalibrationStatus(calibrationRecords);
                     return (
-                      <div className="bg-slate-950/40 border border-slate-800 rounded-xl p-5 shadow-inner">
-                        <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Calibration Status</h4>
+                      <div className="bg-app-bg/40 border border-app-border rounded-xl p-5 shadow-inner">
+                        <h4 className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-3">Calibration Status</h4>
                         
                         <div className="flex flex-col gap-4">
                           <div className="flex items-center gap-3">
-                            <span className="text-sm text-slate-300 font-medium">Requirement:</span>
+                            <span className="text-sm text-app-text-secondary font-medium">Requirement:</span>
                             <span className={`px-2.5 py-0.5 rounded text-xs font-bold ${evalStatus.required ? 'text-amber-400 bg-amber-400/10' : 'text-teal-400 bg-teal-400/10'}`}>
                               {evalStatus.required ? 'Required' : 'Not Required'}
                             </span>
@@ -618,7 +618,7 @@ export default function MMEPage() {
 
                           {evalStatus.required && (
                             <div className="flex items-center gap-3">
-                              <span className="text-sm text-slate-300 font-medium">Window Active:</span>
+                              <span className="text-sm text-app-text-secondary font-medium">Window Active:</span>
                               <span className={`px-2.5 py-0.5 rounded text-xs font-bold ${evalStatus.active ? 'text-emerald-400 bg-emerald-400/10' : 'text-rose-405 bg-rose-450/10'}`}>
                                 {evalStatus.active ? 'Yes' : 'No'}
                               </span>
@@ -635,23 +635,23 @@ export default function MMEPage() {
 
                   {/* Certificates List */}
                   <div>
-                    <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Certificate Logs ({calibrationRecords.length})</h4>
-                    <div className="border border-slate-800 rounded-xl overflow-hidden shadow-md">
+                    <h4 className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-3">Certificate Logs ({calibrationRecords.length})</h4>
+                    <div className="border border-app-border rounded-xl overflow-hidden shadow-md">
                       <table className="table w-full text-left">
                         <thead>
-                          <tr className="bg-slate-950/60 text-slate-400 border-b border-slate-800 text-xs">
+                          <tr className="bg-app-bg/60 text-app-text-muted border-b border-app-border text-xs">
                             <th className="font-semibold px-4 py-3">Company / Agency</th>
                             <th className="font-semibold px-4 py-3">Calibrated Date</th>
                             <th className="font-semibold px-4 py-3">Valid Until</th>
                             <th className="font-semibold px-4 py-3">Cert File / No.</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-800 bg-slate-900/20">
+                        <tbody className="divide-y divide-app-border bg-app-surface/20">
                           {calibrationRecords.map((c, i) => (
-                            <tr key={c._id || i} className="hover:bg-slate-800/40 text-slate-350 transition-colors">
+                            <tr key={c._id || i} className="hover:bg-app-surface/40 text-app-text-secondary transition-colors">
                               <td className="px-4 py-3 text-sm">
-                                <span className="font-medium text-slate-200">{c.calibrationcompany || '—'}</span>
-                                {c.calibratedby && <div className="text-slate-500 text-xs mt-0.5">By: {c.calibratedby}</div>}
+                                <span className="font-medium text-app-text">{c.calibrationcompany || '—'}</span>
+                                {c.calibratedby && <div className="text-app-text-muted text-xs mt-0.5">By: {c.calibratedby}</div>}
                               </td>
                               <td className="px-4 py-3 text-sm">
                                 {c.calibrationdate ? new Date(c.calibrationdate).toLocaleDateString() : '—'}
@@ -663,7 +663,7 @@ export default function MMEPage() {
                                   </span>
                                 ) : '—'}
                               </td>
-                              <td className="px-4 py-3 text-sm font-mono text-slate-400">
+                              <td className="px-4 py-3 text-sm font-mono text-app-text-muted">
                                 {c.certificatenumber || c.calibfile || '—'}
                               </td>
                             </tr>
@@ -677,10 +677,10 @@ export default function MMEPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-6 border-t border-slate-800 flex justify-end bg-slate-950/40">
+            <div className="p-6 border-t border-app-border flex justify-end bg-app-bg/40">
               <button 
                 onClick={() => setIsCalibrationOpen(false)}
-                className="btn btn-sm bg-slate-800 hover:bg-slate-700 text-white border-0 px-6 font-semibold"
+                className="btn btn-sm bg-app-surface hover:bg-app-surface-muted text-app-text border-0 px-6 font-semibold"
               >
                 Close
               </button>

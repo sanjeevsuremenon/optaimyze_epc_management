@@ -433,7 +433,7 @@ export default function POCommentsPage() {
                   setShowAnalysisModal(false);
                   setAnalysisResult(null);
                 }}
-                className="text-white hover:text-gray-200 text-2xl font-bold"
+                className="text-app-text hover:text-app-text text-2xl font-bold"
               >
                 ×
               </button>
@@ -459,7 +459,7 @@ export default function POCommentsPage() {
                 disabled={generatingAnalysisPdf}
                 className={`px-6 py-2 rounded font-semibold text-sm transition-all ${
                   generatingAnalysisPdf
-                    ? "bg-gray-400 cursor-not-allowed text-white"
+                    ? "bg-gray-400 cursor-not-allowed text-app-text"
                     : "bg-green-600 hover:bg-green-700 text-white"
                 }`}
               >

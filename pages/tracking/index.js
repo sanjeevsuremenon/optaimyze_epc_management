@@ -332,7 +332,7 @@ function TrackingPage() {
           <title>Access Denied - OPTAIMYZE Portal</title>
         </Head>
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-app-text mb-4">
             Access Denied
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
@@ -353,7 +353,7 @@ function TrackingPage() {
       <div className="container mx-auto px-4 py-8">
         {/* Header Section */}
         <div className="mb-8">
-          <h1 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-xl font-semibold text-gray-900 dark:text-app-text mb-2">
             Purchase Tracking Log
           </h1>
           <p className="text-gray-600 italic text-sm dark:text-gray-400">
@@ -371,7 +371,7 @@ function TrackingPage() {
                 <select
                   value={logScope}
                   onChange={(e) => setLogScope(e.target.value)}
-                  className="w-full sm:w-40 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full sm:w-40 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-app-text"
                 >
                   <option value="all logs">All Logs</option>
                   <option value="my logs">My Logs</option>
@@ -383,7 +383,7 @@ function TrackingPage() {
                 <select
                   value={selectedLogType}
                   onChange={(e) => setSelectedLogType(e.target.value)}
-                  className="w-full sm:w-48 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full sm:w-48 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-app-text"
                 >
                   <option value="All">All Log Types</option>
                   <option value="open PR">Open PR</option>
@@ -398,7 +398,7 @@ function TrackingPage() {
                 <select
                   value={selectedPriority}
                   onChange={(e) => setSelectedPriority(e.target.value)}
-                  className="w-full sm:w-48 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full sm:w-48 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-app-text"
                 >
                   <option value="All">All Priorities</option>
                   <option value="high">High</option>
@@ -415,7 +415,7 @@ function TrackingPage() {
                   placeholder="Search trackings..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-app-text"
                 />
               </div>
               
@@ -424,8 +424,8 @@ function TrackingPage() {
                   onClick={() => setViewMode("open")}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     viewMode === "open"
-                      ? "bg-grey-500 text-white"
-                      : "bg-teal-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      ? "bg-grey-500 text-app-text"
+                      : "bg-teal-100 text-gray-700 dark:bg-gray-700 dark:text-app-text-secondary hover:bg-gray-200 dark:hover:bg-gray-600"
                   }`}
                 >
                   <FiEye className="inline mr-2" />
@@ -436,8 +436,8 @@ function TrackingPage() {
                   onClick={() => setViewMode("closed")}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     viewMode === "closed"
-                      ? "bg-grey-500 text-white"
-                      : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      ? "bg-grey-500 text-app-text"
+                      : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-app-text-secondary hover:bg-gray-200 dark:hover:bg-gray-600"
                   }`}
                 >
                   <FiEyeOff className="inline mr-2" />
@@ -448,8 +448,8 @@ function TrackingPage() {
                   onClick={() => setViewMode("all")}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     viewMode === "all"
-                      ? "bg-gray-500 text-white"
-                      : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      ? "bg-gray-500 text-app-text"
+                      : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-app-text-secondary hover:bg-gray-200 dark:hover:bg-gray-600"
                   }`}
                 >
                   <FiFilter className="inline mr-2" />
@@ -479,7 +479,7 @@ function TrackingPage() {
           ) : filteredTrackings.length === 0 ? (
             <div className="p-8 text-center">
               <FiAlertCircle className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No trackings found</h3>
+              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-app-text">No trackings found</h3>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 {searchTerm ? "Try adjusting your search terms." : "Get started by creating a new tracking."}
               </p>
@@ -594,13 +594,13 @@ function TrackingPage() {
                         {/* Title - Top right */}
                         <div className="mb-3">
                           
-                          <h3 className="text-base font-semibold text-gray-900 dark:text-white text-left">
+                          <h3 className="text-base font-semibold text-gray-900 dark:text-app-text text-left">
                             {tracking.title}
                           </h3>
                         </div>
                         
                         {/* Description - Full width */}
-                        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        <p className="text-sm text-gray-700 dark:text-app-text-secondary leading-relaxed">
                           {tracking.requestInfo}
                         </p>
                         
@@ -644,12 +644,12 @@ function TrackingPage() {
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-app-text">
                     Create New Log
                   </h2>
                   <button
                     onClick={() => setShowNewTrackingModal(false)}
-                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    className="text-gray-400 hover:text-gray-600 dark:hover:text-app-text-secondary"
                   >
                     <FiXCircle size={24} />
                   </button>
@@ -676,7 +676,7 @@ function TrackingPage() {
                         <div className="flex items-center gap-3">
                           <IconComponent className={`text-${option.color}-500`} size={20} />
                           <div>
-                            <h3 className="font-medium text-gray-900 dark:text-white">
+                            <h3 className="font-medium text-gray-900 dark:text-app-text">
                               {option.type}
                             </h3>
                             <p className="text-sm text-gray-500 dark:text-gray-400">

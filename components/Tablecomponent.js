@@ -24,13 +24,13 @@ function GlobalFilter({
 
   return (
     <label className="flex gap-x-2 items-baseline">
-      <span className="text-slate-300 text-sm font-medium uppercase">
+      <span className="text-app-text-secondary text-sm font-medium uppercase">
         Search
       </span>
 
       <input
         type="text"
-        className="mt-1 px-3 py-2 block text-sm w-full rounded-md bg-slate-900/70 border border-slate-700 text-slate-100 shadow-sm focus:border-cyan-500 focus:ring focus:ring-cyan-500/20"
+        className="mt-1 px-3 py-2 block text-sm w-full rounded-md bg-app-surface/70 border border-app-border text-app-text shadow-sm focus:border-app-accent focus:ring focus:ring-app-accent/20"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
@@ -57,11 +57,11 @@ export function SelectColumnFilter({
 
   return (
     <label className="flex gap-x-1 items-baseline">
-      <span className="text-slate-300 text-sm font-bold uppercase">
+      <span className="text-app-text-secondary text-sm font-bold uppercase">
         {render("Header")}: {" "}
       </span>
       <select
-        className="mt-1 p-2 text-[11px] w-full rounded-md bg-slate-900/70 border border-slate-700 text-slate-100 shadow-sm focus:border-cyan-500 focus:ring focus:ring-cyan-500/20"
+        className="mt-1 p-2 text-[11px] w-full rounded-md bg-app-surface/70 border border-app-border text-app-text shadow-sm focus:border-app-accent focus:ring focus:ring-app-accent/20"
         name={id}
         id={id}
         value={filterValue}
@@ -110,7 +110,7 @@ export function Mattype({ value }) {
 
 export function Cellstyle({ value }) {
   return (
-    <span className="text-sm text-slate-100">
+    <span className="text-sm text-app-text">
       {value}
     </span>
   );
@@ -118,7 +118,7 @@ export function Cellstyle({ value }) {
 
 export function Datestyle({ value }) {
   return (
-    <span className="text-sm text-cyan-300 font-medium">
+    <span className="text-sm text-app-accent font-medium">
       {moment(value).format("DD MMM YYYY")}
     </span>
   );
@@ -220,7 +220,7 @@ export function Spstylesim({ value }) {
   return (
     <span
       className={classNames(
-        " text-white bg-teal-600 px-2 py-1 tracking-tight font-semibold text-[12px]"
+        " text-app-text bg-teal-600 px-2 py-1 tracking-tight font-semibold text-[12px]"
       )}
     >
       {value}
@@ -242,7 +242,7 @@ export function Normalstylesim1({ value }) {
 
 export function Boldstyle3({ value }) {
   return (
-    <span className="font-semibold text-sm text-slate-100">
+    <span className="font-semibold text-sm text-app-text">
       {value}
     </span>
   );
@@ -250,7 +250,7 @@ export function Boldstyle3({ value }) {
 
 export function Managerstyle({ value }) {
   return (
-    <span className="text-sm text-slate-300 font-normal italic">
+    <span className="text-sm text-app-text-secondary font-normal italic">
       {value}
     </span>
   );
@@ -258,7 +258,7 @@ export function Managerstyle({ value }) {
 
 export function Boldstyle4({ value }) {
   return (
-    <span className="italic font-medium text-sm text-slate-100">
+    <span className="italic font-medium text-sm text-app-text">
       {value}
     </span>
   );
@@ -386,13 +386,13 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
           <div className="flex gap-2 flex-shrink-0">
             <button
               onClick={() => onViewModeChange('table')}
-              className={`px-3 py-2 rounded-md text-sm font-semibold ${viewMode === 'table' ? 'bg-cyan-500 text-slate-900' : 'bg-slate-800/60 text-slate-200 hover:bg-slate-800'}`}
+              className={`px-3 py-2 rounded-md text-sm font-semibold ${viewMode === 'table' ? 'bg-app-accent text-slate-900' : 'bg-app-surface-muted text-app-text hover:bg-app-surface'}`}
             >
               Table
             </button>
             <button
               onClick={() => onViewModeChange('card')}
-              className={`px-3 py-2 rounded-md text-sm font-semibold ${viewMode === 'card' ? 'bg-cyan-500 text-slate-900' : 'bg-slate-800/60 text-slate-200 hover:bg-slate-800'}`}
+              className={`px-3 py-2 rounded-md text-sm font-semibold ${viewMode === 'card' ? 'bg-app-accent text-slate-900' : 'bg-app-surface-muted text-app-text hover:bg-app-surface'}`}
             >
               Cards
             </button>
@@ -401,11 +401,11 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
       </div>
 
       {enablePagination && (
-        <div className="sticky top-24 z-20 mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950/95 px-4 py-3 text-sm text-slate-300 shadow-lg shadow-slate-950/20">
-          <span className="font-medium text-slate-100">
+        <div className="sticky top-24 z-20 mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-app-border bg-app-bg/95 px-4 py-3 text-sm text-app-text-secondary shadow-lg shadow-slate-950/20">
+          <span className="font-medium text-app-text">
             Showing {visibleRows.length} of {rows.length} items
           </span>
-          <span className="text-slate-400">
+          <span className="text-app-text-muted">
             Scroll down to load more
           </span>
         </div>
@@ -413,14 +413,14 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
 
       {viewMode === 'table' ? (
         <div>
-          <table className="w-full divide-y divide-slate-700">
-            <thead className="sticky top-0 bg-slate-800/80 text-slate-100 font-bold" {...getTableProps()} border="1">
+          <table className="w-full divide-y divide-app-border">
+            <thead className="sticky top-0 bg-app-surface/80 text-app-text font-bold" {...getTableProps()} border="1">
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
                   {headerGroup.headers.map((column) => (
                     <th
                       scope="col"
-                      className="px-4 py-3 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider"
+                      className="px-4 py-3 text-left text-xs font-semibold text-app-text uppercase tracking-wider"
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       key={column.id}
                     >
@@ -429,9 +429,9 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
                         <span>
                           {column.isSorted ? (
                             column.isSortedDesc ? (
-                              <SortDownIcon className="w-3 h-3 text-cyan-400" />
+                              <SortDownIcon className="w-3 h-3 text-app-accent" />
                             ) : (
-                              <SortUpIcon className="w-3 h-3 text-cyan-400" />
+                              <SortUpIcon className="w-3 h-3 text-app-accent" />
                             )
                           ) : null}
                         </span>
@@ -441,19 +441,19 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
                 </tr>
               ))}
             </thead>
-            <tbody className="bg-slate-900/40 divide-y divide-slate-700" {...getTableBodyProps()}>
+            <tbody className="bg-app-surface-muted divide-y divide-app-border" {...getTableBodyProps()}>
               {visibleRows.map((row, i) => {
                 prepareRow(row);
                 return (
                   <tr
                     {...row.getRowProps()}
-                    className={`hover:bg-slate-800/60 transition-colors ${i % 2 === 0 ? 'bg-slate-900/20' : 'bg-slate-900/40'}`}
+                    className={`hover:bg-app-surface-muted transition-colors ${i % 2 === 0 ? 'bg-app-surface/20' : 'bg-app-surface-muted'}`}
                     key={row.id}
                   >
                     {row.cells.map((cell) => (
                       <td
                         {...cell.getCellProps()}
-                        className="px-4 py-3 text-sm text-slate-200 break-words"
+                        className="px-4 py-3 text-sm text-app-text break-words"
                         key={cell.column.id}
                       >
                         {cell.render("Cell")}
@@ -465,7 +465,7 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
             </tbody>
           </table>
           {enablePagination && displayedRows < rows.length && (
-            <div className="text-center py-4 text-slate-400 text-sm">
+            <div className="text-center py-4 text-app-text-muted text-sm">
               Showing {displayedRows} of {rows.length} rows (scroll to load more)
             </div>
           )}
@@ -477,14 +477,14 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
             return (
               <div
                 key={row.id}
-                className="rounded-lg bg-slate-800/60 border border-slate-700 p-4 hover:border-cyan-500/50 hover:bg-slate-800/80 transition-all shadow-md"
+                className="rounded-lg bg-app-surface-muted border border-app-border p-4 hover:border-app-accent/50 hover:bg-app-surface/80 transition-all shadow-md"
               >
                 {row.cells.map((cell) => (
-                  <div key={cell.column.id} className="mb-3 pb-3 border-b border-slate-700/50 last:border-0 last:mb-0 last:pb-0">
-                    <div className="text-xs text-slate-400 font-semibold uppercase tracking-wide mb-1">
+                  <div key={cell.column.id} className="mb-3 pb-3 border-b border-app-border/50 last:border-0 last:mb-0 last:pb-0">
+                    <div className="text-xs text-app-text-muted font-semibold uppercase tracking-wide mb-1">
                       {cell.column.Header}
                     </div>
-                    <div className="text-sm text-slate-100 break-words">
+                    <div className="text-sm text-app-text break-words">
                       {cell.render("Cell")}
                     </div>
                   </div>
@@ -495,13 +495,13 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
         </div>
       )}
       {enablePagination && displayedRows < rows.length && viewMode === 'card' && (
-        <div className="text-center py-4 text-slate-400 text-sm">
+        <div className="text-center py-4 text-app-text-muted text-sm">
           Showing {displayedRows} of {rows.length} rows (scroll to load more)
         </div>
       )}
 
       {enablePagination && isNearBottom && displayedRows < rows.length && (
-        <div className="fixed right-6 bottom-6 z-50 rounded-2xl border border-cyan-500 bg-slate-950/95 px-4 py-3 text-sm text-cyan-100 shadow-xl shadow-cyan-500/30 backdrop-blur-md">
+        <div className="fixed right-6 bottom-6 z-50 rounded-2xl border border-app-accent bg-app-bg/95 px-4 py-3 text-sm text-cyan-100 shadow-xl shadow-cyan-500/30 backdrop-blur-md">
           Loading more items...
         </div>
       )}

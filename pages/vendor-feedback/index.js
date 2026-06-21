@@ -365,7 +365,7 @@ export default function VendorFeedbackPage() {
   });
 
   if (status === 'loading') {
-    return <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">Loading...</div>;
+    return <div className="app-page min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
   if (!session) {
@@ -373,7 +373,7 @@ export default function VendorFeedbackPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-200">
+    <div className="min-h-screen flex flex-col bg-app-bg text-app-text">
       <Head>
         <title>Vendor Feedback - OPTAIMYZE Portal</title>
         <meta name="description" content="User feedback on vendors" />
@@ -382,13 +382,13 @@ export default function VendorFeedbackPage() {
       <div className="flex-1">
         <div className="flex flex-col">
           {/* Redesigned Header aligned with global style */}
-          <div className="flex-shrink-0 bg-slate-900 border-b border-slate-800 px-4 py-4 shrink-0">
+          <div className="flex-shrink-0 bg-app-surface border-b border-app-border px-4 py-4 shrink-0">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
               <div>
-                <h1 className="text-xl font-bold text-white flex items-center gap-2">
+                <h1 className="text-xl font-bold text-app-text flex items-center gap-2">
                   Vendor Feedback
                 </h1>
-                <p className="text-xs text-slate-400 mt-1">Submit and view subjective vendor evaluations and ratings</p>
+                <p className="text-xs text-app-text-muted mt-1">Submit and view subjective vendor evaluations and ratings</p>
               </div>
             </div>
           </div>
@@ -397,21 +397,21 @@ export default function VendorFeedbackPage() {
             <div className="max-w-7xl mx-auto px-4 py-6 pb-16 mb-24 w-full flex flex-col gap-6">
 
               {/* Redesigned search & submit panel */}
-              <div className="mb-4 p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl">
-                <h2 className="text-base font-bold text-white mb-2">Give feedback for a vendor</h2>
-                <p className="text-xs text-slate-400 mb-4">Search by vendor name (minimum 4 characters), then select a vendor to add tier, rating and comments.</p>
+              <div className="mb-4 p-6 bg-app-surface border border-app-border rounded-2xl shadow-xl">
+                <h2 className="text-base font-bold text-app-text mb-2">Give feedback for a vendor</h2>
+                <p className="text-xs text-app-text-muted mb-4">Search by vendor name (minimum 4 characters), then select a vendor to add tier, rating and comments.</p>
                 <div className="relative max-w-xl">
                   <input
                     type="text"
                     value={vendorFeedbackSearchTerm}
                     onChange={(e) => setVendorFeedbackSearchTerm(e.target.value)}
                     placeholder="Type vendor name (min 4 characters)..."
-                    className="w-full px-3 py-2 pl-10 pr-4 bg-slate-950 border border-slate-800 rounded-lg focus:outline-none focus:border-cyan-500 text-slate-100 text-sm focus:ring-1 focus:ring-cyan-500"
+                    className="w-full px-3 py-2 pl-10 pr-4 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent text-app-text text-sm focus:ring-1 focus:ring-app-accent"
                   />
-                  <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                  <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
                   {vendorFeedbackSearchLoading && (
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-500" />
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-app-accent" />
                     </div>
                   )}
                 </div>
@@ -420,7 +420,7 @@ export default function VendorFeedbackPage() {
                 )}
                 {vendorFeedbackResults.length > 0 && !selectedVendorForFeedback && (
                   <div
-                    className="mt-2 bg-slate-900 border border-slate-800 rounded-lg shadow-2xl max-h-60 overflow-y-auto z-50 relative custom-scrollbar divide-y divide-slate-850"
+                    className="mt-2 bg-app-surface border border-app-border rounded-lg shadow-2xl max-h-60 overflow-y-auto z-50 relative custom-scrollbar divide-y divide-slate-850"
                     role="listbox"
                     aria-label="Vendor search results"
                   >
@@ -445,54 +445,54 @@ export default function VendorFeedbackPage() {
                             setVendorFeedbackResults([]);
                             setVendorFeedbackSearchTerm('');
                           }}
-                          className="px-4 py-3 hover:bg-slate-800/80 cursor-pointer focus:bg-slate-800/80 outline-none text-left"
+                          className="px-4 py-3 hover:bg-app-surface/80 cursor-pointer focus:bg-app-surface/80 outline-none text-left"
                         >
-                          <div className="font-bold text-slate-200 text-sm">{name || '—'}</div>
-                          <div className="text-xs text-slate-400 mt-0.5">Code: {code || '—'}</div>
+                          <div className="font-bold text-app-text text-sm">{name || '—'}</div>
+                          <div className="text-xs text-app-text-muted mt-0.5">Code: {code || '—'}</div>
                         </div>
                       );
                     })}
                   </div>
                 )}
                 {vendorFeedbackResults.length === 0 && vendorFeedbackSearchTerm.trim().length >= MIN_VENDOR_SEARCH_LENGTH && !vendorFeedbackSearchLoading && !selectedVendorForFeedback && (
-                  <div className="mt-2 bg-slate-950 border border-slate-850 rounded-lg p-4 text-center text-slate-500 text-xs">
+                  <div className="mt-2 bg-app-bg border border-slate-850 rounded-lg p-4 text-center text-app-text-muted text-xs">
                     No vendors found. Try a different name.
                   </div>
                 )}
 
                 {/* Selected vendor feedback panel (tier, stars, comment, save, summary) */}
                 {selectedVendorForFeedback && (
-                  <div className="mt-6 pt-6 border-t border-slate-800">
+                  <div className="mt-6 pt-6 border-t border-app-border">
                     <div className="flex justify-between items-start mb-4">
-                      <h3 className="text-base font-bold text-white">Feedback for: {selectedVendorForFeedback.vendorName || selectedVendorForFeedback.vendorCode}</h3>
+                      <h3 className="text-base font-bold text-app-text">Feedback for: {selectedVendorForFeedback.vendorName || selectedVendorForFeedback.vendorCode}</h3>
                       <button
                         type="button"
                         onClick={clearSelectedVendorForFeedback}
-                        className="text-slate-400 hover:text-white flex items-center gap-1 text-xs font-semibold"
+                        className="text-app-text-muted hover:text-app-text flex items-center gap-1 text-xs font-semibold"
                         title="Choose different vendor"
                       >
                         <FontAwesomeIcon icon={faTimesCircle} /> Choose different vendor
                       </button>
                     </div>
                     <div className="flex flex-col gap-4 w-full mb-5">
-                      <div className="bg-slate-950 rounded-lg px-3 py-1.5 border border-slate-850 self-start text-xs text-slate-400">
-                        <span className="font-bold text-slate-400 uppercase tracking-wider text-[10px]">Vendor Code:</span> <span className="font-bold text-cyan-400 ml-1">{selectedVendorForFeedback.vendorCode}</span>
+                      <div className="bg-app-bg rounded-lg px-3 py-1.5 border border-slate-850 self-start text-xs text-app-text-muted">
+                        <span className="font-bold text-app-text-muted uppercase tracking-wider text-[10px]">Vendor Code:</span> <span className="font-bold text-app-accent ml-1">{selectedVendorForFeedback.vendorCode}</span>
                       </div>
                       
                       {subgroups.length > 0 && (
                         <div className="w-full">
-                          <span className="block text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-2">Subgroups Mapped ({subgroups.length})</span>
+                          <span className="block text-[10px] text-app-text-muted font-bold uppercase tracking-wider mb-2">Subgroups Mapped ({subgroups.length})</span>
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full">
                             {subgroups.map((sg, idx) => {
                               // Alternate colors based on index for contrast
-                              const bgClass = idx % 2 === 0 ? "bg-slate-950/60 hover:bg-slate-950/90" : "bg-slate-900/40 hover:bg-slate-900/70";
+                              const bgClass = idx % 2 === 0 ? "bg-app-bg/60 hover:bg-app-bg/90" : "bg-app-surface-muted hover:bg-app-surface/70";
                               return (
                                 <div 
                                   key={idx}
                                   className={`px-4 py-2.5 rounded-xl border border-slate-850/70 flex flex-col gap-1 transition-all ${bgClass}`}
                                 >
                                   <div className="flex justify-between items-center">
-                                    <span className="text-[9px] font-black text-cyan-400 uppercase tracking-widest leading-none">{sg.groupName}</span>
+                                    <span className="text-[9px] font-black text-app-accent uppercase tracking-widest leading-none">{sg.groupName}</span>
                                     {sg.isService ? (
                                       <span className="text-[8px] font-bold uppercase tracking-wider text-violet-400 bg-violet-950 border border-violet-850/30 px-1.5 py-0.5 rounded">
                                         Service
@@ -503,7 +503,7 @@ export default function VendorFeedbackPage() {
                                       </span>
                                     )}
                                   </div>
-                                  <span className="text-slate-200 font-semibold text-xs leading-normal">{sg.subgroupName}</span>
+                                  <span className="text-app-text font-semibold text-xs leading-normal">{sg.subgroupName}</span>
                                 </div>
                               );
                             })}
@@ -519,12 +519,12 @@ export default function VendorFeedbackPage() {
                         </p>
                       )}
                       <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Tier</label>
+                        <label className="block text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1">Tier</label>
                         <select
                           value={tier}
                           onChange={(e) => setTier(e.target.value)}
                           disabled={userHasAlreadySubmitted}
-                          className="w-full max-w-xs px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg focus:outline-none focus:border-cyan-500 text-slate-100 text-xs focus:ring-1 focus:ring-cyan-500"
+                          className="w-full max-w-xs px-3 py-1.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent text-app-text text-xs focus:ring-1 focus:ring-app-accent"
                         >
                           {TIER_OPTIONS.map((opt) => (
                             <option key={opt.value || 'empty'} value={opt.value}>{opt.label}</option>
@@ -532,7 +532,7 @@ export default function VendorFeedbackPage() {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Rating (1–5 stars per parameter)</label>
+                        <label className="block text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1">Rating (1–5 stars per parameter)</label>
                         <VendorFeedbackRatingCard
                           ratingMaterials={ratingMaterials}
                           ratingServices={ratingServices}
@@ -543,27 +543,27 @@ export default function VendorFeedbackPage() {
                           disableServices={isServiceDisabled && !fillServicesAnyway}
                         />
                         {/* Bypass checkboxes at the bottom of the rating form */}
-                        <div className="flex flex-col sm:flex-row gap-4 mt-3 p-3 bg-slate-950 border border-slate-850 rounded-lg">
+                        <div className="flex flex-col sm:flex-row gap-4 mt-3 p-3 bg-app-bg border border-slate-850 rounded-lg">
                           {isMaterialDisabled && (
-                            <label className="flex items-center gap-2 text-xs font-semibold text-slate-400 cursor-pointer hover:text-slate-300 transition-colors">
+                            <label className="flex items-center gap-2 text-xs font-semibold text-app-text-muted cursor-pointer hover:text-app-text-secondary transition-colors">
                               <input
                                 type="checkbox"
                                 checked={fillMaterialsAnyway}
                                 onChange={(e) => setFillMaterialsAnyway(e.target.checked)}
                                 disabled={userHasAlreadySubmitted}
-                                className="rounded text-cyan-500 focus:ring-cyan-500 bg-slate-900 border-slate-800 w-4 h-4 cursor-pointer"
+                                className="rounded text-cyan-500 focus:ring-app-accent bg-app-surface border-slate-800 w-4 h-4 cursor-pointer"
                               />
                               Fill Materials anyway (bypass group mapping restriction)
                             </label>
                           )}
                           {isServiceDisabled && (
-                            <label className="flex items-center gap-2 text-xs font-semibold text-slate-400 cursor-pointer hover:text-slate-300 transition-colors">
+                            <label className="flex items-center gap-2 text-xs font-semibold text-app-text-muted cursor-pointer hover:text-app-text-secondary transition-colors">
                               <input
                                 type="checkbox"
                                 checked={fillServicesAnyway}
                                 onChange={(e) => setFillServicesAnyway(e.target.checked)}
                                 disabled={userHasAlreadySubmitted}
-                                className="rounded text-cyan-500 focus:ring-cyan-500 bg-slate-900 border-slate-800 w-4 h-4 cursor-pointer"
+                                className="rounded text-cyan-500 focus:ring-app-accent bg-app-surface border-slate-800 w-4 h-4 cursor-pointer"
                               />
                               Fill Services anyway (bypass group mapping restriction)
                             </label>
@@ -571,21 +571,21 @@ export default function VendorFeedbackPage() {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Feedback (optional)</label>
+                        <label className="block text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1">Feedback (optional)</label>
                         <textarea
                           value={comment}
                           onChange={(e) => setComment(e.target.value)}
                           disabled={userHasAlreadySubmitted}
                           placeholder="Your feedback on the vendor's services..."
                           rows={3}
-                          className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg focus:outline-none focus:border-cyan-500 text-slate-100 text-xs focus:ring-1 focus:ring-cyan-500 disabled:opacity-50"
+                          className="w-full px-3 py-2 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent text-app-text text-xs focus:ring-1 focus:ring-app-accent disabled:opacity-50"
                         />
                       </div>
                       <button
                         type="button"
                         onClick={handleSaveMaterialFeedback}
                         disabled={materialSaving || userHasAlreadySubmitted}
-                        className="bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-slate-950 px-4 py-2 rounded-lg flex items-center gap-1.5 transition-all text-xs font-bold shadow-md shadow-cyan-500/10 hover:shadow-cyan-500/20 uppercase tracking-wider"
+                        className="bg-app-accent hover:bg-app-accent-hover disabled:opacity-50 text-slate-950 px-4 py-2 rounded-lg flex items-center gap-1.5 transition-all text-xs font-bold shadow-md shadow-cyan-500/10 hover:shadow-cyan-500/20 uppercase tracking-wider"
                         title={userHasAlreadySubmitted ? 'You have already submitted feedback' : ''}
                       >
                         <FontAwesomeIcon icon={faSave} />
@@ -594,28 +594,28 @@ export default function VendorFeedbackPage() {
                     </div>
 
                     <hr className="my-6 border-slate-800" />
-                    <h3 className="text-base font-bold text-white mb-3 border-b border-slate-800 pb-2">Feedback Summary</h3>
+                    <h3 className="text-base font-bold text-app-text mb-3 border-b border-app-border pb-2">Feedback Summary</h3>
                     {materialFeedbackLoading ? (
-                      <p className="text-xs text-slate-500">Loading...</p>
+                      <p className="text-xs text-app-text-muted">Loading...</p>
                     ) : (
                       <>
-                        <div className="p-3.5 bg-slate-950 border border-slate-850 rounded-lg mb-4 text-xs flex justify-between flex-wrap gap-4">
+                        <div className="p-3.5 bg-app-bg border border-slate-850 rounded-lg mb-4 text-xs flex justify-between flex-wrap gap-4">
                           <p className="mb-0"><strong>Average rating:</strong> <span className="text-amber-400 ml-1 font-bold">{materialAverageRating > 0 ? `${materialAverageRating} / 5` : 'No ratings yet'}</span>
-                            {materialFeedbacks.length > 0 && <span className="text-slate-500 ml-2">({materialFeedbacks.length} rating{materialFeedbacks.length !== 1 ? 's' : ''})</span>}
+                            {materialFeedbacks.length > 0 && <span className="text-app-text-muted ml-2">({materialFeedbacks.length} rating{materialFeedbacks.length !== 1 ? 's' : ''})</span>}
                           </p>
                           <p className="mb-0"><strong>Tier votes:</strong> Top: {materialTierVotes.top} · Middle: {materialTierVotes.middle} · Lower: {materialTierVotes.lower}</p>
                         </div>
                         {materialFeedbacks.length === 0 ? (
-                          <p className="text-xs text-slate-500">No feedback yet. Be the first to submit.</p>
+                          <p className="text-xs text-app-text-muted">No feedback yet. Be the first to submit.</p>
                         ) : (
                           <div className="space-y-2">
                             {materialFeedbacks.map((f) => (
-                              <div key={f._id} className="p-4 bg-slate-900/60 border border-slate-800 rounded-xl text-xs flex flex-col gap-2">
-                                <div className="flex justify-between text-slate-400 border-b border-slate-800/50 pb-1.5 font-bold">
-                                  <span className="text-slate-300 font-bold text-xs">{f.username || 'Unknown'}</span>
+                              <div key={f._id} className="p-4 bg-app-surface-muted/80 border border-app-border rounded-xl text-xs flex flex-col gap-2">
+                                <div className="flex justify-between text-app-text-muted border-b border-app-border/50 pb-1.5 font-bold">
+                                  <span className="text-app-text-secondary font-bold text-xs">{f.username || 'Unknown'}</span>
                                   <span>{f.createdAt ? new Date(f.createdAt).toLocaleString() : ''}</span>
                                 </div>
-                                {f.tier && <p className="text-slate-400 font-semibold mb-0 text-[11px] uppercase tracking-wider">Tier: {f.tier}</p>}
+                                {f.tier && <p className="text-app-text-muted font-semibold mb-0 text-[11px] uppercase tracking-wider">Tier: {f.tier}</p>}
                                 {(() => {
                                   const matO = computeCategoryOverall(f.ratingMaterials || {});
                                   const srvO = computeCategoryOverall(f.ratingServices || {});
@@ -625,7 +625,7 @@ export default function VendorFeedbackPage() {
                                     <p className="text-amber-400 font-bold text-xs mb-0">
                                       Rating: {Number(overall).toFixed(1)} / 5
                                       {(matO != null || srvO != null) && (
-                                        <span className="ml-2 text-slate-500 text-[10px] font-semibold uppercase tracking-wide">
+                                        <span className="ml-2 text-app-text-muted text-[10px] font-semibold uppercase tracking-wide">
                                           {matO != null && `Materials: ${matO.toFixed(1)}`}
                                           {matO != null && srvO != null && ' · '}
                                           {srvO != null && `Services: ${srvO.toFixed(1)}`}
@@ -634,7 +634,7 @@ export default function VendorFeedbackPage() {
                                     </p>
                                   );
                                 })()}
-                                {f.comment && <p className="mt-1 text-slate-300 whitespace-pre-wrap leading-relaxed">{f.comment}</p>}
+                                {f.comment && <p className="mt-1 text-app-text-secondary whitespace-pre-wrap leading-relaxed">{f.comment}</p>}
                               </div>
                             ))}
                           </div>
@@ -647,14 +647,14 @@ export default function VendorFeedbackPage() {
 
               {/* Feedback Form (Manual input, Edit/Add mode) */}
               {showForm && (
-                <div className="mb-6 p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl">
-                  <h3 className="text-base font-bold mb-4 text-white">
+                <div className="mb-6 p-6 bg-app-surface border border-app-border rounded-2xl shadow-xl">
+                  <h3 className="text-base font-bold mb-4 text-app-text">
                     {editingId ? 'Edit Feedback' : 'Add New Feedback'}
                   </h3>
                   <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Vendor Search Section */}
                     <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                      <label className="block text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1.5">
                         Search Vendor (Optional)
                       </label>
                       <div className="relative">
@@ -662,33 +662,33 @@ export default function VendorFeedbackPage() {
                           type="text"
                           value={searchTerm}
                           onChange={handleSearchChange}
-                          className="w-full px-3 py-2 pl-10 bg-slate-950 border border-slate-800 rounded-md focus:outline-none focus:border-cyan-500 text-slate-100 text-xs focus:ring-1 focus:ring-cyan-500"
+                          className="w-full px-3 py-2 pl-10 bg-app-bg border border-app-border rounded-md focus:outline-none focus:border-app-accent text-app-text text-xs focus:ring-1 focus:ring-app-accent"
                           placeholder="Search for vendor by name..."
                         />
                         <FontAwesomeIcon 
                           icon={faSearch} 
-                          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"
+                          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted"
                         />
                         {vendorSearchLoading && (
                           <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-500"></div>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-app-accent"></div>
                           </div>
                         )}
                       </div>
                       
                       {/* Vendor Search Results */}
                       {showVendorResults && vendors.length > 0 && (
-                        <div className="mt-2 bg-slate-900 border border-slate-800 rounded-md shadow-lg max-h-60 overflow-y-auto divide-y divide-slate-850">
+                        <div className="mt-2 bg-app-surface border border-app-border rounded-md shadow-lg max-h-60 overflow-y-auto divide-y divide-slate-850">
                           {vendors.map((vendor, index) => (
                             <div
                               key={index}
                               onClick={() => handleVendorSelect(vendor)}
-                              className="px-4 py-3 hover:bg-slate-800/80 cursor-pointer"
+                              className="px-4 py-3 hover:bg-app-surface/80 cursor-pointer"
                             >
-                              <div className="font-bold text-slate-200 text-xs">
+                              <div className="font-bold text-app-text text-xs">
                                 {vendor["vendor-name"]}
                               </div>
-                              <div className="text-[10px] text-slate-400 mt-0.5">
+                              <div className="text-[10px] text-app-text-muted mt-0.5">
                                 Code: {vendor["vendor-code"]}
                               </div>
                             </div>
@@ -697,7 +697,7 @@ export default function VendorFeedbackPage() {
                       )}
                       
                       {showVendorResults && vendors.length === 0 && !vendorSearchLoading && searchTerm && (
-                        <div className="mt-2 bg-slate-950 border border-slate-850 rounded-md p-4 text-center text-slate-500 text-xs">
+                        <div className="mt-2 bg-app-bg border border-slate-850 rounded-md p-4 text-center text-app-text-muted text-xs">
                           No vendors found matching "{searchTerm}"
                         </div>
                       )}
@@ -705,11 +705,11 @@ export default function VendorFeedbackPage() {
 
                     {/* Pre-filled Vendor Information Display */}
                     {(formData.vendorCode || formData.vendorName) && (
-                      <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-md p-3.5">
-                        <div className="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1">
+                      <div className="bg-app-accent/10 border border-app-accent/20 rounded-md p-3.5">
+                        <div className="text-xs font-bold text-app-accent uppercase tracking-wider mb-1">
                           Selected Vendor:
                         </div>
-                        <div className="text-xs text-slate-300 leading-normal">
+                        <div className="text-xs text-app-text-secondary leading-normal">
                           {formData.vendorName && (
                             <div><strong>Name:</strong> {formData.vendorName}</div>
                           )}
@@ -722,32 +722,32 @@ export default function VendorFeedbackPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                        <label className="block text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1.5">
                           Vendor Code (Manual Entry)
                         </label>
                         <input
                           type="text"
                           value={formData.vendorCode}
                           onChange={(e) => setFormData({ ...formData, vendorCode: e.target.value })}
-                          className="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-md focus:outline-none focus:border-cyan-500 text-slate-100 text-xs focus:ring-1 focus:ring-cyan-500"
+                          className="w-full px-3 py-1.5 bg-app-bg border border-app-border rounded-md focus:outline-none focus:border-app-accent text-app-text text-xs focus:ring-1 focus:ring-app-accent"
                           placeholder="Enter vendor code manually"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                        <label className="block text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1.5">
                           Vendor Name (Manual Entry)
                         </label>
                         <input
                           type="text"
                           value={formData.vendorName}
                           onChange={(e) => setFormData({ ...formData, vendorName: e.target.value })}
-                          className="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-md focus:outline-none focus:border-cyan-500 text-slate-100 text-xs focus:ring-1 focus:ring-cyan-500"
+                          className="w-full px-3 py-1.5 bg-app-bg border border-app-border rounded-md focus:outline-none focus:border-app-accent text-app-text text-xs focus:ring-1 focus:ring-app-accent"
                           placeholder="Enter vendor name manually"
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                      <label className="block text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1.5">
                         Feedback *
                       </label>
                       <textarea
@@ -755,14 +755,14 @@ export default function VendorFeedbackPage() {
                         onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
                         required
                         rows={4}
-                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-md focus:outline-none focus:border-cyan-500 text-slate-100 text-xs focus:ring-1 focus:ring-cyan-500"
+                        className="w-full px-3 py-2 bg-app-bg border border-app-border rounded-md focus:outline-none focus:border-app-accent text-app-text text-xs focus:ring-1 focus:ring-app-accent"
                         placeholder="Enter your feedback about the vendor..."
                       />
                     </div>
                     <div className="flex gap-2">
                       <button
                         type="submit"
-                        className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-4 py-1.5 rounded-lg text-xs font-bold transition-all shadow-md"
+                        className="bg-app-accent hover:bg-app-accent-hover text-slate-950 px-4 py-1.5 rounded-lg text-xs font-bold transition-all shadow-md"
                       >
                         <FontAwesomeIcon icon={faSave} />
                         {editingId ? 'Update' : 'Save'}
@@ -770,7 +770,7 @@ export default function VendorFeedbackPage() {
                       <button
                         type="button"
                         onClick={handleCancel}
-                        className="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-1.5 rounded-lg text-xs font-semibold transition-all border border-slate-700"
+                        className="bg-app-surface hover:bg-app-surface-muted text-app-text-secondary px-4 py-1.5 rounded-lg text-xs font-semibold transition-all border border-app-border"
                       >
                         <FontAwesomeIcon icon={faTimes} />
                         Cancel
@@ -784,16 +784,16 @@ export default function VendorFeedbackPage() {
               <div className="space-y-4">
                 {loading ? (
                   <div className="text-center py-12">
-                    <div className="inline-flex items-center px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg shadow-md">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-500 mr-3"></div>
-                      <span className="text-xs text-slate-400 font-semibold">Loading feedbacks...</span>
+                    <div className="inline-flex items-center px-4 py-2 bg-app-surface border border-app-border rounded-lg shadow-md">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-app-accent mr-3"></div>
+                      <span className="text-xs text-app-text-muted font-semibold">Loading feedbacks...</span>
                     </div>
                   </div>
                 ) : filteredFeedbacks.length === 0 ? (
                   feedbackSearchTerm ? (
                     <div className="text-center py-12">
-                      <div className="inline-block bg-slate-900 border border-slate-800 rounded-xl shadow-lg p-8">
-                        <div className="text-slate-500 text-sm">
+                      <div className="inline-block bg-app-surface border border-app-border rounded-xl shadow-lg p-8">
+                        <div className="text-app-text-muted text-sm">
                           No feedbacks found matching "{feedbackSearchTerm}"
                         </div>
                       </div>
@@ -803,20 +803,20 @@ export default function VendorFeedbackPage() {
                   filteredFeedbacks.map((feedback) => (
                     <div
                       key={feedback._id}
-                      className="w-full bg-slate-900 border-l-4 border-l-cyan-500 border-y border-r border-slate-800 rounded-xl shadow-lg hover:shadow-xl hover:border-slate-700 transition-all duration-300"
+                      className="w-full bg-app-surface border-l-4 border-l-cyan-500 border-y border-r border-app-border rounded-xl shadow-lg hover:shadow-xl hover:border-slate-700 transition-all duration-300"
                     >
                       <div className="p-6">
                         <div className="flex justify-between items-start">
                           <div className="flex-1 pr-4">
                             <div className="flex items-center gap-3 mb-3">
-                              <div className="w-9 h-9 bg-cyan-500 rounded-full flex items-center justify-center text-slate-950 font-bold text-sm">
+                              <div className="w-9 h-9 bg-app-accent rounded-full flex items-center justify-center text-slate-950 font-bold text-sm">
                                 {feedback.username?.charAt(0)?.toUpperCase() || 'U'}
                               </div>
                               <div>
-                                <span className="font-bold text-white text-sm">
+                                <span className="font-bold text-app-text text-sm">
                                   {feedback.username}
                                 </span>
-                                <div className="text-[10px] text-slate-500">
+                                <div className="text-[10px] text-app-text-muted">
                                   {new Date(feedback.createdAt).toLocaleDateString('en-US', {
                                     year: 'numeric',
                                     month: 'long',
@@ -829,25 +829,25 @@ export default function VendorFeedbackPage() {
                             </div>
                             
                             {(feedback.vendorCode || feedback.vendorName) && (
-                              <div className="mb-4 p-3 bg-slate-950 rounded-lg border border-slate-850">
-                                <div className="text-xs text-slate-400">
+                              <div className="mb-4 p-3 bg-app-bg rounded-lg border border-slate-850">
+                                <div className="text-xs text-app-text-muted">
                                   {feedback.vendorCode && (
                                     <div className="mb-1">
-                                      <span className="font-bold text-cyan-400/95 text-[10px] uppercase tracking-wider">Vendor Code:</span> 
-                                      <span className="ml-2 text-slate-300 font-semibold">{feedback.vendorCode}</span>
+                                      <span className="font-bold text-app-accent/95 text-[10px] uppercase tracking-wider">Vendor Code:</span> 
+                                      <span className="ml-2 text-app-text-secondary font-semibold">{feedback.vendorCode}</span>
                                     </div>
                                   )}
                                   {feedback.vendorName && (
                                     <div>
-                                      <span className="font-bold text-cyan-400/95 text-[10px] uppercase tracking-wider">Vendor Name:</span> 
-                                      <span className="ml-2 text-slate-300 font-semibold">{feedback.vendorName}</span>
+                                      <span className="font-bold text-app-accent/95 text-[10px] uppercase tracking-wider">Vendor Name:</span> 
+                                      <span className="ml-2 text-app-text-secondary font-semibold">{feedback.vendorName}</span>
                                     </div>
                                   )}
                                 </div>
                               </div>
                             )}
                             
-                            <div className="text-slate-300 leading-relaxed text-xs">
+                            <div className="text-app-text-secondary leading-relaxed text-xs">
                               {feedback.comment}
                             </div>
                           </div>
@@ -855,14 +855,14 @@ export default function VendorFeedbackPage() {
                           <div className="flex gap-1 flex-shrink-0">
                             <button
                               onClick={() => handleEdit(feedback)}
-                              className="p-1.5 text-cyan-400 hover:text-cyan-300 hover:bg-slate-800 rounded transition-all"
+                              className="p-1.5 text-app-accent hover:text-app-accent hover:bg-app-surface rounded transition-all"
                               title="Edit feedback"
                             >
                               <FontAwesomeIcon icon={faEdit} className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => handleDelete(feedback._id)}
-                              className="p-1.5 text-rose-400 hover:text-rose-300 hover:bg-slate-800 rounded transition-all"
+                              className="p-1.5 text-rose-400 hover:text-rose-300 hover:bg-app-surface rounded transition-all"
                               title="Delete feedback"
                             >
                               <FontAwesomeIcon icon={faTrash} className="w-3.5 h-3.5" />

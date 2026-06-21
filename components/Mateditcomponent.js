@@ -479,7 +479,7 @@ function Mateditcomponent({ material, matgroupdet, setShowModal, editmode }) {
                         type="text"
                         name="primary"
                         id="primary"
-                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-app-text dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                         placeholder=" "
                         required
                         onBlur={(e) => {
@@ -514,7 +514,7 @@ function Mateditcomponent({ material, matgroupdet, setShowModal, editmode }) {
                         type="text"
                         name="secondary"
                         id="secondary"
-                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-app-text dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                         placeholder=" "
                         required
                         onBlur={(e) => {
@@ -549,7 +549,7 @@ function Mateditcomponent({ material, matgroupdet, setShowModal, editmode }) {
                         type="text"
                         name="tertiary"
                         id="tertiary"
-                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-app-text dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                         placeholder=" "
                         required
                         onBlur={(e) => {
@@ -565,7 +565,7 @@ function Mateditcomponent({ material, matgroupdet, setShowModal, editmode }) {
                       />
                       <label
                         htmlFor="tertiary"
-                        className="peer-focus:font-medium opacity-30   absolute text-[12px]  text-gray-900 font-bold dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-800 peer-focus:dark:text-sky-800 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                        className="peer-focus:font-medium opacity-30   absolute text-[12px]  text-gray-900 font-bold dark:text-app-text-secondary duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-800 peer-focus:dark:text-sky-800 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                       >
                         {mattypes
                           .filter(
@@ -584,7 +584,7 @@ function Mateditcomponent({ material, matgroupdet, setShowModal, editmode }) {
                         type="text"
                         name="other"
                         id="other"
-                        className="block py-2.5 px-0 w-3/5 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        className="block py-2.5 px-0 w-3/5 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-app-text dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                         placeholder=" "
                         required
                         onFocus={() => setMaxlimit(40 - length)}
@@ -614,7 +614,7 @@ function Mateditcomponent({ material, matgroupdet, setShowModal, editmode }) {
                 <div className="w-11/12 px-6 mb-1 flex flex-col align-middle justify-center  ">
                   <label
                     htmlFor="longtext"
-                    className="block text-[10px] font-extrabold uppercase text-stone-900 dark:text-white mb-3"
+                    className="block text-[10px] font-extrabold uppercase text-stone-900 dark:text-app-text mb-3"
                   >
                     Large Text Description:{" "}
                   </label>
@@ -656,7 +656,7 @@ function Mateditcomponent({ material, matgroupdet, setShowModal, editmode }) {
         ) : (
           <div className="bg-sky-100 w-full h-96 grid grid-cols-4 gap-4  mt-15">
             {" "}
-            <h3 className="text-2xl  bg-red-300 p-6 text-white col-span-1 m-auto border-r-4  uppercase font-extrabold ">
+            <h3 className="text-2xl  bg-red-300 p-6 text-app-text col-span-1 m-auto border-r-4  uppercase font-extrabold ">
               {" "}
               already edited{" "}              
             </h3>

@@ -65,12 +65,12 @@ export default function VendorDocViewPage() {
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col font-sans">
+      <div className="app-page min-h-screen flex flex-col font-sans">
         <Head><title>Access Denied</title></Head>
         <div className="flex-1 flex flex-col items-center justify-center">
           <h1 className="text-3xl font-bold text-rose-500 mb-4">Access Denied</h1>
-          <p className="text-slate-400 mb-8">Please sign in to access this page.</p>
-          <Link href="/auth/signin" className="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg transition-colors font-medium">
+          <p className="text-app-text-muted mb-8">Please sign in to access this page.</p>
+          <Link href="/auth/signin" className="px-6 py-2 bg-app-accent hover:bg-app-accent text-white rounded-lg transition-colors font-medium">
             Sign In
           </Link>
         </div>
@@ -80,10 +80,10 @@ export default function VendorDocViewPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col font-sans">
+      <div className="app-page min-h-screen flex flex-col font-sans">
         <div className="flex-1 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
-          <span className="ml-4 text-slate-300 font-medium">Loading vendor documents...</span>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-accent"></div>
+          <span className="ml-4 text-app-text-secondary font-medium">Loading vendor documents...</span>
         </div>
       </div>
     );
@@ -91,16 +91,16 @@ export default function VendorDocViewPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col font-sans">
+      <div className="app-page min-h-screen flex flex-col font-sans">
         <Head><title>Error</title></Head>
         <div className="flex-1 flex flex-col items-center justify-center p-8">
           <div className="bg-rose-500/10 border border-rose-500/20 p-8 rounded-2xl text-center max-w-md w-full">
             <h1 className="text-2xl font-bold text-rose-400 mb-4">Error Loading Vendor</h1>
-            <p className="text-slate-300 mb-8">{error}</p>
+            <p className="text-app-text-secondary mb-8">{error}</p>
             <div className="flex justify-center space-x-4">
               <button
                 onClick={() => isNewTab ? window.close() : router.back()}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors border border-slate-700"
+                className="px-4 py-2 bg-app-surface hover:bg-app-surface-muted text-app-text-secondary rounded-lg transition-colors border border-app-border"
               >
                 {isNewTab ? 'Close Tab' : 'Go Back'}
               </button>
@@ -112,7 +112,7 @@ export default function VendorDocViewPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col font-sans">
+    <div className="app-page min-h-screen flex flex-col font-sans">
       <Head>
         <title>{vendorInfo.vendorname} - Documents | MM Portal</title>
       </Head>
@@ -120,12 +120,12 @@ export default function VendorDocViewPage() {
       <main className="w-full max-w-full px-4 py-8">
         <div className="mx-auto" style={{ maxWidth: '1200px' }}>
           
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8 shadow-xl relative overflow-hidden">
+          <div className="bg-app-surface border border-app-border rounded-2xl p-6 mb-8 shadow-xl relative overflow-hidden">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+              <h1 className="text-2xl font-bold text-app-text flex items-center gap-3">
                 <button 
                   onClick={() => isNewTab ? window.close() : router.back()}
-                  className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-white"
+                  className="p-2 hover:bg-app-surface rounded-lg transition-colors text-app-text-muted hover:text-app-text"
                   title={isNewTab ? "Close Tab" : "Go Back"}
                 >
                   {isNewTab ? <FiX size={24} /> : <FiArrowLeft size={24} />}
@@ -136,7 +136,7 @@ export default function VendorDocViewPage() {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-sm font-medium text-emerald-400 tracking-wider uppercase">Vendor Documents</span>
-                    <span className="text-slate-100">{vendorInfo.vendorname}</span>
+                    <span className="text-app-text">{vendorInfo.vendorname}</span>
                   </div>
                 </div>
               </h1>
@@ -150,7 +150,7 @@ export default function VendorDocViewPage() {
             </div>
           </div>
 
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+          <div className="bg-app-surface border border-app-border rounded-2xl p-6 shadow-xl">
             <VendorDocumentViewer
               vendorCode={vendorcode}
               refreshTrigger={refreshTrigger}
@@ -163,26 +163,26 @@ export default function VendorDocViewPage() {
       {/* Upload Modal */}
       {showUploadModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-6 animate-fade-in-up">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl">
-            <div className="flex items-center justify-between p-6 border-b border-slate-800">
+          <div className="bg-app-surface border border-app-border rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-app-border">
               <div>
-                <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
+                <h2 className="text-xl font-bold text-app-text flex items-center gap-2">
                   <FiUploadCloud className="text-emerald-400" />
                   Upload Documents
                 </h2>
-                <p className="text-slate-400 text-sm mt-1">
+                <p className="text-app-text-muted text-sm mt-1">
                   Upload files for {vendorInfo.vendorname} ({vendorcode})
                 </p>
               </div>
               <button
                 type="button"
-                className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+                className="p-2 text-app-text-muted hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
                 onClick={() => setShowUploadModal(false)}
               >
                 <FiX size={24} />
               </button>
             </div>
-            <div className="p-6 overflow-y-auto upload-modal-container bg-slate-900">
+            <div className="p-6 overflow-y-auto upload-modal-container bg-app-surface">
               <style jsx global>{`
                 /* Restyle the VendorDocumentUpload specifically for this dark modal without modifying the original component */
                 .upload-modal-container form label {

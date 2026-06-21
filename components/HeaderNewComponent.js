@@ -173,7 +173,7 @@ function HeaderNewComponent() {
               {navigationItems.map((item, index) => (
                 <div key={item.label} className="relative">
                   <button
-                    className="px-4 py-2 rounded font-black text-xs text-white hover:text-stone-900 bg-sky-600 hover:bg-sky-200 flex items-center gap-2 transition-all shadow-sm"
+                    className="px-4 py-2 rounded font-black text-xs text-app-text hover:text-stone-900 bg-sky-600 hover:bg-sky-200 flex items-center gap-2 transition-all shadow-sm"
                     style={{ fontFamily: 'Montserrat, sans-serif', letterSpacing: '0.04em' }}
                     onClick={() => handleDropdownToggle(index)}
                   >
@@ -217,7 +217,7 @@ function HeaderNewComponent() {
             {isAuthenticated ? (
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-2">
-                  <FontAwesomeIcon icon={faUser} className="text-white text-lg" />
+                  <FontAwesomeIcon icon={faUser} className="text-app-text text-lg" />
                   <div className="text-stone-50 tracking-wider text-sm truncate max-w-24">
                     {session.user.name || session.user.email}
                   </div>
@@ -225,26 +225,26 @@ function HeaderNewComponent() {
                 <div className="flex items-center gap-4">
                   <div className="relative group">
                     <button
-                      className="text-white hover:text-blue-200 transition-colors duration-200 p-1"
+                      className="text-app-text hover:text-blue-200 transition-colors duration-200 p-1"
                       onClick={() => router.push("/auth/change-password")}
                       title="Change Password"
                     >
                       <FontAwesomeIcon icon={faKey} className="text-lg" />
                     </button>
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-lg">
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-app-text text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-lg">
                       Change Password
                       <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
                     </div>
                   </div>
                   <div className="relative group">
                     <button
-                      className="text-white hover:text-red-300 transition-colors duration-200 p-1"
+                      className="text-app-text hover:text-red-300 transition-colors duration-200 p-1"
                       onClick={() => signOut()}
                       title="Sign Out"
                     >
                       <FontAwesomeIcon icon={faRightFromBracket} className="text-lg" />
                     </button>
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-lg">
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-app-text text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-lg">
                       Sign Out
                       <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
                     </div>
@@ -253,7 +253,7 @@ function HeaderNewComponent() {
               </div>
             ) : status === "loading" ? (
               <div className="flex items-center gap-3">
-                <span className="text-sm text-white">Checking session...</span>
+                <span className="text-sm text-app-text">Checking session...</span>
               </div>
             ) : (
               <div className="flex items-center gap-3">

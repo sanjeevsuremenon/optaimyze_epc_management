@@ -112,7 +112,7 @@ function HeaderComponent() {
                   className={`px-1.5 py-0.5 rounded font-medium text-[11px] transition-colors whitespace-nowrap flex items-center gap-1
                     ${item.highlight
                       ? "bg-amber-100 text-sky-900 hover:bg-amber-800 hover:text-white"
-                      : "text-white hover:bg-white hover:text-blue-700 bg-opacity-80"}
+                      : "text-app-text hover:bg-white hover:text-blue-700 bg-opacity-80"}
                   `}
                 >
                     <span>{item.label}</span>
@@ -128,7 +128,7 @@ function HeaderComponent() {
             </div>
             {isAuthenticated ? (
               <div className="flex flex-col items-end gap-1">
-                <span className="text-[10px] text-white font-semibold">
+                <span className="text-[10px] text-app-text font-semibold">
                   {session.user.name || session.user.email}
                 </span>
                 <button
@@ -140,11 +140,11 @@ function HeaderComponent() {
               </div>
             ) : status === "loading" ? (
               <div className="flex flex-col items-end">
-                <span className="text-xs text-white font-semibold">Checking session...</span>
+                <span className="text-xs text-app-text font-semibold">Checking session...</span>
               </div>
             ) : (
               <div className="flex flex-col items-end">
-                <span className="text-xs text-white font-semibold">Guest</span>
+                <span className="text-xs text-app-text font-semibold">Guest</span>
                 <button
                   className="bg-white text-blue-700 px-2 py-1 rounded hover:bg-blue-100 text-xs font-semibold"
                   onClick={() => signIn()}

@@ -466,7 +466,7 @@ function Projectdetails({ projects }) {
                       <path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"></path>
                     </svg>
                   </div>
-                  <h2 className="text-[14px] shadow-slate-600 shadow-md py-3 bg-slate-800 text-white flex justify-center font-medium title-font mb-2">
+                  <h2 className="text-[14px] shadow-slate-600 shadow-md py-3 bg-app-surface text-app-text flex justify-center font-medium title-font mb-2">
                     Purchase Orders for: {project["project-wbs"]}
                   </h2>
                   <div className="leading-relaxed text-base">
@@ -513,7 +513,7 @@ function Projectdetails({ projects }) {
                             >
                               <th
                                 scope="row"
-                                className="flex flex-col py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                className="flex flex-col py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-app-text"
                               >
                                 <p className="text-[10px] text-blue-900 font-Montserrat font-semibold">
                                   {purchase["ponum"]}
@@ -573,7 +573,7 @@ function Projectdetails({ projects }) {
                     </div>
                   </div>
 
-                  <h2 className="text-[14px] shadow-md py-3 flex justify-center bg-stone-800 text-white shadow-slate-800 font-medium title-font mb-2">
+                  <h2 className="text-[14px] shadow-md py-3 flex justify-center bg-stone-800 text-app-text shadow-slate-800 font-medium title-font mb-2">
                     Purchase Orders under network: {network["network-num"]}
                   </h2>
 
@@ -622,7 +622,7 @@ function Projectdetails({ projects }) {
                             >
                               <th
                                 scope="row"
-                                className="flex flex-col py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                className="flex flex-col py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-app-text"
                               >
                                 <p className="text-[10px] text-blue-900 font-Montserrat font-semibold">
                                   {purchase["ponum"]}
@@ -699,7 +699,7 @@ function Projectdetails({ projects }) {
                       <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                   </div>
-                  <div className="bg-stone-900 py-3  rounded text-[12px] text-white  font-semibold">
+                  <div className="bg-stone-900 py-3  rounded text-[12px] text-app-text  font-semibold">
                     {/* PO Details for:{currentPurchaseorder}{" "} */}
                     {selectedProject ? (
                       <div className="text-sm">
@@ -930,7 +930,7 @@ function Projectdetails({ projects }) {
                             >
                               <th
                                 scope="row"
-                                className="flex flex-col py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                className="flex flex-col py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-app-text"
                               >
                                 <p className="text-[12px] text-blue-900 font-Montserrat font-semibold">
                                   {purchase["pur-requisition"]} -{" "}
@@ -966,7 +966,7 @@ function Projectdetails({ projects }) {
                 </div>
               </div>
             </div>
-            {/* <button className="flex mx-auto mt-16 text-white bg-pink-500 border-0 py-2 px-8 focus:outline-none hover:bg-pink-600 rounded text-lg">
+            {/* <button className="flex mx-auto mt-16 text-app-text bg-pink-500 border-0 py-2 px-8 focus:outline-none hover:bg-pink-600 rounded text-lg">
             EDIT
           </button> */}
           </div>

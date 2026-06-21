@@ -51,7 +51,7 @@ const Navbar = () => {
           <h2 className="font-Rampart font-extrabold my-auto text-l  text-red-900 dark:text-red-300 pb-2">
             JAL SAP DAWP
           </h2>
-          <p className="font-Montserrat font-semibold pt-2 pl-2 pr-2 text-white text-xs dark:text-slate-900 bg-zinc-600 dark:bg-white">
+          <p className="font-Montserrat font-semibold pt-2 pl-2 pr-2 text-app-text text-xs dark:text-slate-900 bg-zinc-600 dark:bg-white">
             {" "}
             Data accessed from SAP for web
           </p>
@@ -130,7 +130,7 @@ const Navbar = () => {
         <div>
           {session?.user ? (
             <div className="flex">
-              <p className="pt-5 text-[12px]   dark:text-white  text-pink-900">
+              <p className="pt-5 text-[12px]   dark:text-app-text  text-pink-900">
                 Welcome <span className="font-bold">{session.user.id}</span>
               </p>
               <button
@@ -146,7 +146,7 @@ const Navbar = () => {
             </div>
           ) : (
             <button
-              className="bg-slate-500 hover:bg-slate-700 px-2 mx-3 rounded"
+              className="bg-slate-500 hover:bg-app-surface-muted px-2 mx-3 rounded"
               onClick={() => signIn()}
             >
               Welcome Guest Sign in

@@ -1,0 +1,173 @@
+/* Optaimyze Portal — light & dark design tokens */
+
+:root {
+  --app-bg: #f8fafc;
+  --app-surface: #ffffff;
+  --app-surface-muted: #f1f5f9;
+  --app-border: #e2e8f0;
+  --app-border-light: #f1f5f9;
+  --app-text: #0f172a;
+  --app-text-secondary: #475569;
+  --app-text-muted: #64748b;
+  --app-text-disabled: #94a3b8;
+  --app-accent: #0ea5e9;
+  --app-accent-hover: #0284c7;
+  --app-accent-soft: #e0f2fe;
+  --app-accent-text: #ffffff;
+  --app-header-bg: rgba(255, 255, 255, 0.95);
+  --app-sidebar-bg: #ffffff;
+  --app-overlay: rgba(15, 23, 42, 0.4);
+  --app-danger: #ef4444;
+  --app-success: #10b981;
+  --app-warning: #f59e0b;
+  --app-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --app-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --app-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.06);
+}
+
+.dark {
+  --app-bg: #020617;
+  --app-surface: #0f172a;
+  --app-surface-muted: #1e293b;
+  --app-border: #1e293b;
+  --app-border-light: #334155;
+  --app-text: #f1f5f9;
+  --app-text-secondary: #cbd5e1;
+  --app-text-muted: #94a3b8;
+  --app-text-disabled: #64748b;
+  --app-accent: #22d3ee;
+  --app-accent-hover: #06b6d4;
+  --app-accent-soft: rgba(34, 211, 238, 0.12);
+  --app-accent-text: #020617;
+  --app-header-bg: rgba(2, 6, 23, 0.95);
+  --app-sidebar-bg: rgba(15, 23, 42, 0.92);
+  --app-overlay: rgba(0, 0, 0, 0.6);
+  --app-danger: #f87171;
+  --app-success: #34d399;
+  --app-warning: #fbbf24;
+  --app-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --app-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+  --app-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+@theme inline {
+  --color-app-bg: var(--app-bg);
+  --color-app-surface: var(--app-surface);
+  --color-app-surface-muted: var(--app-surface-muted);
+  --color-app-border: var(--app-border);
+  --color-app-border-light: var(--app-border-light);
+  --color-app-text: var(--app-text);
+  --color-app-text-secondary: var(--app-text-secondary);
+  --color-app-text-muted: var(--app-text-muted);
+  --color-app-text-disabled: var(--app-text-disabled);
+  --color-app-accent: var(--app-accent);
+  --color-app-accent-hover: var(--app-accent-hover);
+  --color-app-accent-soft: var(--app-accent-soft);
+  --color-app-accent-text: var(--app-accent-text);
+  --color-app-danger: var(--app-danger);
+  --color-app-success: var(--app-success);
+  --color-app-warning: var(--app-warning);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--app-bg);
+    color: var(--app-text);
+  }
+}
+
+@layer components {
+  .app-page {
+    @apply min-h-full bg-app-bg text-app-text;
+  }
+
+  /* Headings on surface backgrounds should always use theme text color */
+  .app-page h1,
+  .app-page h2,
+  .app-page h3,
+  .app-page h4,
+  .app-card h1,
+  .app-card h2,
+  .app-card h3,
+  .app-card h4,
+  main h1,
+  main h2,
+  main h3 {
+    color: var(--app-text);
+  }
+
+  .app-card {
+    @apply rounded-xl border border-app-border bg-app-surface shadow-sm;
+  }
+
+  .app-card-muted {
+    @apply rounded-xl border border-app-border bg-app-surface-muted;
+  }
+
+  .app-input {
+    @apply h-10 w-full rounded-lg border border-app-border bg-app-surface px-3.5 text-sm text-app-text placeholder-app-text-disabled transition focus:border-app-accent focus:outline-none focus:ring-[3px] focus:ring-app-accent-soft;
+  }
+
+  .app-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-app-accent px-4 py-2 text-sm font-medium text-app-accent-text shadow-sm transition hover:bg-app-accent-hover focus:outline-none focus:ring-2 focus:ring-app-accent focus:ring-offset-2;
+  }
+
+  .app-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-app-border bg-app-surface px-4 py-2 text-sm font-medium text-app-text-secondary shadow-sm transition hover:border-app-border-light hover:bg-app-surface-muted focus:outline-none focus:ring-2 focus:ring-app-accent focus:ring-offset-2;
+  }
+
+  .app-tab-pill-active {
+    @apply rounded-full bg-app-accent px-5 py-2 text-sm font-medium text-app-accent-text shadow-sm;
+  }
+
+  .app-tab-pill {
+    @apply rounded-full px-5 py-2 text-sm font-medium text-app-text-secondary transition hover:bg-app-surface-muted hover:text-app-text;
+  }
+
+  .app-table-head {
+    @apply bg-app-surface-muted text-[11px] font-semibold uppercase tracking-wider text-app-text-secondary;
+  }
+
+  .app-table-row {
+    @apply border-b border-app-border-light transition hover:bg-app-surface-muted;
+  }
+
+  .sign-out-btn {
+    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition;
+    background-color: #fafaf9;
+    border-color: #fca5a5;
+    color: #dc2626;
+  }
+
+  .sign-out-btn:hover {
+    background-color: #ffffff;
+    border-color: #f87171;
+    color: #b91c1c;
+  }
+
+  .sign-out-btn svg {
+    color: inherit;
+  }
+
+  .dark .sign-out-btn {
+    background-color: rgba(69, 10, 10, 0.45);
+    border-color: rgba(153, 27, 27, 0.55);
+    color: #fca5a5;
+  }
+
+  .dark .sign-out-btn:hover {
+    background-color: rgba(69, 10, 10, 0.65);
+    border-color: rgba(185, 28, 28, 0.7);
+    color: #fecaca;
+  }
+}

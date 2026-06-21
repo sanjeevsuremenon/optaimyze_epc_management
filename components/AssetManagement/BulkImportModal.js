@@ -302,16 +302,16 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
   };
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm transition-opacity p-4 sm:p-6 mt-16 sm:mt-0">
-      <div className="bg-slate-800 border border-slate-700 rounded-xl shadow-2xl w-full max-w-4xl mx-auto flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-app-surface-muted backdrop-blur-sm transition-opacity p-4 sm:p-6 mt-16 sm:mt-0">
+      <div className="app-card rounded-xl shadow-2xl w-full max-w-4xl mx-auto flex flex-col max-h-[90vh]">
         
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-700 flex justify-between items-center bg-slate-800/50 rounded-t-xl shrink-0">
-          <h3 className="text-lg font-bold text-slate-100 flex items-center gap-2">
-            <Upload size={20} className="text-cyan-400" />
+        <div className="px-6 py-4 border-b border-app-border flex justify-between items-center bg-app-surface-muted rounded-t-xl shrink-0">
+          <h3 className="text-lg font-bold text-app-text flex items-center gap-2">
+            <Upload size={20} className="text-app-accent" />
             Bulk Import - {tabLabel}
           </h3>
-          <button onClick={onClose} className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+          <button onClick={onClose} className="p-1 rounded-md text-app-text-muted hover:text-app-text hover:bg-app-surface-muted transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -320,14 +320,14 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
         <div className="flex-1 overflow-y-auto px-6 py-5 custom-scrollbar space-y-6">
           
           {/* Instructions and templates */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-900/50 border border-slate-700/50 rounded-lg p-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-app-surface-muted border border-app-border/50 rounded-lg p-5">
             <div>
-              <h4 className="text-sm font-semibold text-slate-200 mb-2">Import Guidelines</h4>
-              <ul className="text-xs text-slate-400 space-y-2 list-disc list-inside">
+              <h4 className="text-sm font-semibold text-app-text mb-2">Import Guidelines</h4>
+              <ul className="text-xs text-app-text-muted space-y-2 list-disc list-inside">
                 <li>Download the Excel or CSV template, fill it with your data, and upload it below.</li>
                 <li>Mandatory fields are marked with <span className="text-rose-400 font-bold">*</span> in the table/template.</li>
                 <li>
-                  Columns marked as <span className="text-cyan-400 font-semibold">Primary Key/s</span> will be used to locate matches.
+                  Columns marked as <span className="text-app-accent font-semibold">Primary Key/s</span> will be used to locate matches.
                   If a record matches the primary key, it will be <span className="text-amber-400 font-medium">updated/overwritten</span>.
                   Otherwise, a new record is created.
                 </li>
@@ -336,7 +336,7 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
             </div>
             
             <div className="flex flex-col justify-center items-center gap-3 md:border-l md:border-slate-800 md:pl-6">
-              <span className="text-xs text-slate-400 font-medium mb-1">Download Suggestive Schema Templates:</span>
+              <span className="text-xs text-app-text-muted font-medium mb-1">Download Suggestive Schema Templates:</span>
               <div className="flex flex-wrap gap-3">
                 <button
                   type="button"
@@ -348,7 +348,7 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
                 <button
                   type="button"
                   onClick={downloadCSVTemplate}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/20 hover:border-cyan-500/40 rounded-md text-xs font-semibold transition-all"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-app-accent/20 hover:bg-app-accent/30 text-app-accent border border-app-accent/20 hover:border-app-accent/40 rounded-md text-xs font-semibold transition-all"
                 >
                   <Download size={14} /> CSV Template (.csv)
                 </button>
@@ -358,11 +358,11 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
 
           {/* Schema specifications */}
           <div>
-            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Schema Definitions</h4>
-            <div className="overflow-x-auto border border-slate-700/60 rounded-lg">
+            <h4 className="text-xs font-bold text-app-text-muted uppercase tracking-wider mb-2">Schema Definitions</h4>
+            <div className="overflow-x-auto border border-app-border/60 rounded-lg">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-slate-900/60 border-b border-slate-700 text-slate-300">
+                  <tr className="bg-app-surface-muted/80 border-b border-app-border text-app-text-secondary">
                     <th className="px-4 py-2 font-semibold">Column / Key</th>
                     <th className="px-4 py-2 font-semibold">Field Name</th>
                     <th className="px-4 py-2 font-semibold text-center">Required?</th>
@@ -370,26 +370,26 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
                     <th className="px-4 py-2 font-semibold">Field Details</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-700/40 bg-slate-900/20">
+                <tbody className="divide-y divide-app-border/40 bg-app-surface/20">
                   {fields.map(f => (
-                    <tr key={f.key} className="hover:bg-slate-800/10">
-                      <td className="px-4 py-2 font-mono text-cyan-400">{f.key}</td>
-                      <td className="px-4 py-2 text-slate-200">{f.label}</td>
+                    <tr key={f.key} className="hover:bg-app-surface/10">
+                      <td className="px-4 py-2 font-mono text-app-accent">{f.key}</td>
+                      <td className="px-4 py-2 text-app-text">{f.label}</td>
                       <td className="px-4 py-2 text-center">
                         {f.required ? (
                           <span className="text-rose-400 font-bold">Yes *</span>
                         ) : (
-                          <span className="text-slate-500">No</span>
+                          <span className="text-app-text-muted">No</span>
                         )}
                       </td>
                       <td className="px-4 py-2 text-center">
                         {f.isKey ? (
-                          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-400 border border-cyan-500/20">Primary Key</span>
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-app-accent border border-app-accent/20">Primary Key</span>
                         ) : (
                           <span className="text-slate-600">—</span>
                         )}
                       </td>
-                      <td className="px-4 py-2 text-slate-400 italic">
+                      <td className="px-4 py-2 text-app-text-muted italic">
                         {f.type === "select" && f.options ? `Options: ${f.options.map(o => o.label).join("/")}` : f.type === "dynamic-select" ? `Select from ${f.key} masters` : `Text entry`}
                       </td>
                     </tr>
@@ -400,18 +400,18 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
           </div>
 
           {/* Validation Strictness Toggle */}
-          <div className="flex items-start gap-3 bg-slate-900/40 p-4 border border-slate-700/60 rounded-xl">
+          <div className="flex items-start gap-3 bg-app-surface-muted p-4 border border-app-border/60 rounded-xl">
             <div className="flex items-center h-5 mt-0.5">
               <input
                 id="block-mismatches"
                 type="checkbox"
                 checked={blockMismatches}
                 onChange={(e) => setBlockMismatches(e.target.checked)}
-                className="w-4 h-4 rounded border-slate-700 bg-slate-950 text-cyan-500 focus:ring-cyan-500/50 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-700 bg-app-bg text-cyan-500 focus:ring-app-accent/50 cursor-pointer"
               />
             </div>
-            <label htmlFor="block-mismatches" className="text-xs text-slate-300 cursor-pointer select-none">
-              <span className="text-slate-100 font-bold block mb-0.5">Strict Validation Mode</span>
+            <label htmlFor="block-mismatches" className="text-xs text-app-text-secondary cursor-pointer select-none">
+              <span className="text-app-text font-bold block mb-0.5">Strict Validation Mode</span>
               If checked, unrecognized designations, departments, grades, or salary levels will be treated as <span className="text-rose-450 font-bold">blocking errors</span>. Otherwise, they will be reported as <span className="text-amber-400 font-semibold">warnings</span> and allowed to import.
             </label>
           </div>
@@ -424,10 +424,10 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
             onClick={() => fileInputRef.current.click()}
             className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200 ${
               isDragging
-                ? "border-cyan-400 bg-cyan-500/5"
+                ? "border-cyan-400 bg-app-accent/5"
                 : file
                 ? "border-emerald-500 bg-emerald-500/5 hover:border-emerald-400"
-                : "border-slate-600 bg-slate-900/30 hover:border-slate-500 hover:bg-slate-900/50"
+                : "border-slate-600 bg-app-surface-muted hover:border-slate-500 hover:bg-app-surface-muted"
             }`}
           >
             <input
@@ -438,16 +438,16 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
               className="hidden"
             />
             <div className="flex flex-col items-center justify-center gap-3">
-              <Upload size={32} className={file ? "text-emerald-400" : "text-slate-400"} />
+              <Upload size={32} className={file ? "text-emerald-400" : "text-app-text-muted"} />
               {file ? (
                 <div>
-                  <span className="text-sm font-semibold text-slate-200 block">{file.name}</span>
-                  <span className="text-xs text-slate-400 block mt-1">{(file.size / 1024).toFixed(1)} KB — Click or drag to change file</span>
+                  <span className="text-sm font-semibold text-app-text block">{file.name}</span>
+                  <span className="text-xs text-app-text-muted block mt-1">{(file.size / 1024).toFixed(1)} KB — Click or drag to change file</span>
                 </div>
               ) : (
                 <div>
-                  <span className="text-sm font-semibold text-slate-300 block">Drag & Drop file here, or click to browse</span>
-                  <span className="text-xs text-slate-500 block mt-1">Accepts CSV, XLSX or XLS formats</span>
+                  <span className="text-sm font-semibold text-app-text-secondary block">Drag & Drop file here, or click to browse</span>
+                  <span className="text-xs text-app-text-muted block mt-1">Accepts CSV, XLSX or XLS formats</span>
                 </div>
               )}
             </div>
@@ -456,10 +456,10 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
           {/* Validations & Parsing Results */}
           {validationRun && (
             <div className="space-y-4">
-              <div className="flex items-center gap-4 bg-slate-900/60 p-4 border border-slate-700/60 rounded-lg">
+              <div className="flex items-center gap-4 bg-app-surface-muted/80 p-4 border border-app-border/60 rounded-lg">
                 <div className="flex items-center gap-1.5">
                   <CheckCircle size={18} className="text-emerald-400" />
-                  <span className="text-sm font-semibold text-slate-200">{parsedData.length} records parsed</span>
+                  <span className="text-sm font-semibold text-app-text">{parsedData.length} records parsed</span>
                 </div>
                 {errors.length > 0 && (
                   <div className="flex items-center gap-1.5 text-rose-455">
@@ -519,11 +519,11 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-slate-700 flex justify-end gap-3 bg-slate-800/80 rounded-b-xl shrink-0">
+        <div className="px-6 py-4 border-t border-app-border flex justify-end gap-3 bg-app-surface/80 rounded-b-xl shrink-0">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 border border-slate-600 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+            className="px-4 py-2 border border-slate-600 rounded-md text-sm font-medium text-app-text-secondary hover:bg-app-surface-muted hover:text-app-text transition-colors"
           >
             Cancel
           </button>
@@ -532,7 +532,7 @@ export default function BulkImportModal({ isOpen, onClose, onImport, fields, tab
             type="button"
             disabled={parsedData.length === 0 || errors.length > 0 || importing || !!(result && result.success)}
             onClick={handleImportSubmit}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-md text-sm font-medium text-slate-950 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg shadow-cyan-500/20"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-md text-sm font-medium text-slate-950 bg-app-accent hover:bg-app-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg shadow-cyan-500/20"
           >
             {importing ? (
               <>

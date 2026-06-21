@@ -1,19 +1,83 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
-  Activity,
   AlertTriangle,
   BarChart3,
   Box,
   ClipboardList,
   Download,
+  FileText,
   Filter,
+  HardHat,
+  Package,
   Users,
   Wrench,
 } from "lucide-react";
 
 import { AssetStatusChart } from "../../components/assets/dashboard/AssetStatusChart";
 import { AssetTypeDistribution } from "../../components/assets/dashboard/AssetTypeDistribution";
+import { KpiCard } from "../../components/assets/dashboard/KpiCard";
 import { MaintenanceSchedule } from "../../components/assets/dashboard/MaintenanceSchedule";
+
+const TABS = [
+  { id: "overview", label: "Overview" },
+  { id: "analytics", label: "Analytics" },
+  { id: "reports", label: "Reports" },
+];
+
+function formatRelativeTime(iso) {
+  if (!iso) return "—";
+  const diff = Date.now() - new Date(iso).getTime();
+  if (diff < 0) return "Just now";
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "Just now";
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} hour${hrs > 1 ? "s" : ""} ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 30) return `${days} day${days > 1 ? "s" : ""} ago`;
+  return new Date(iso).toLocaleDateString(undefined, { dateStyle: "medium" });
+}
+
+
+function DashboardCard({ title, subtitle, viewAllHref, children, className = "" }) {
+  return (
+    <div className={`rounded-xl border border-app-border bg-app-surface p-6 shadow-sm ${className}`}>
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <h2 className="text-base font-semibold text-app-text">{title}</h2>
+          {subtitle && <p className="mt-0.5 text-[13px] text-app-text-muted">{subtitle}</p>}
+        </div>
+        {viewAllHref && (
+          <Link href={viewAllHref} className="shrink-0 text-[13px] font-medium text-app-accent hover:underline">
+            View All
+          </Link>
+        )}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function EmptyListState({ message, subtext }) {
+  return (
+    <div className="flex min-h-[160px] flex-col items-center justify-center py-6 text-center">
+      <ClipboardList className="mb-3 h-12 w-12 text-app-text-secondary" aria-hidden />
+      <p className="text-sm text-app-text-muted">{message}</p>
+      {subtext && <p className="mt-1 text-[13px] text-app-text-secondary">{subtext}</p>}
+    </div>
+  );
+}
+
+function getInitials(name) {
+  if (!name) return "?";
+  return name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+}
 
 export default function DashboardPage() {
   const [overview, setOverview] = useState(null);
@@ -25,15 +89,15 @@ export default function DashboardPage() {
     setOverviewLoading(true);
     setOverviewError(null);
     try {
-      const res = await fetch('/api/assets/dashboard/overview');
+      const res = await fetch("/api/assets/dashboard/overview");
       const json = await res.json();
       if (!res.ok || !json.success) {
-        throw new Error(json.error || 'Failed to load overview');
+        throw new Error(json.error || "Failed to load overview");
       }
       setOverview(json);
     } catch (e) {
       setOverview(null);
-      setOverviewError(e instanceof Error ? e.message : 'Failed to load overview');
+      setOverviewError(e instanceof Error ? e.message : "Failed to load overview");
     } finally {
       setOverviewLoading(false);
     }
@@ -48,242 +112,324 @@ export default function DashboardPage() {
     return overview.upcomingCalibrations.map((c, i) => ({
       id: `${c.assetnumber}-${i}`,
       asset: (c.assetdescription && c.assetdescription.trim()) || `Asset ${c.assetnumber}`,
+      assetId: c.assetnumber,
       subtitle: c.calibratedby
-        ? `Certificate valid to · Last calibrated by ${c.calibratedby}`
-        : 'Upcoming certificate expiry',
+        ? `Last calibrated by ${c.calibratedby}`
+        : "Upcoming certificate expiry",
       dateLabel: c.calibrationtodate
-        ? new Date(c.calibrationtodate).toLocaleDateString(undefined, { dateStyle: 'medium' })
-        : '—',
-      status: 'scheduled',
+        ? new Date(c.calibrationtodate).toLocaleDateString(undefined, { dateStyle: "medium" })
+        : "—",
+      expiryIso: c.calibrationtodate,
+      status: "scheduled",
     }));
   }, [overview]);
 
-  const fmtDateTime = (iso) =>
-    iso
-      ? new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
-      : '—';
+  const summary = overview?.summary;
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-6 space-y-6">
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
+    <div className="app-page min-h-full">
+      <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+        {/* Breadcrumb */}
+        <nav className="text-xs text-app-text-muted" aria-label="Breadcrumb">
+          <span>Asset Management</span>
+          <span className="mx-1.5 text-app-text-secondary">/</span>
+          <span className="font-medium text-app-accent">Dashboard</span>
+        </nav>
+
+        {/* Page header */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white">Asset Management Dashboard</h1>
-            <p className="text-slate-400 mt-1">Monitor and manage all your assets in one place</p>
+            <h1 className="text-[28px] font-bold leading-tight text-app-text">
+              Asset Management Dashboard
+            </h1>
+            <p className="mt-1 text-sm text-app-text-muted">
+              Monitor and manage all your assets in one place
+            </p>
           </div>
-          <div className="flex items-center gap-2">
-            <button className="btn btn-outline btn-sm gap-2">
-              <Filter className="h-4 w-4" /> Filter
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-lg border border-app-border bg-app-surface px-4 py-2 text-sm font-medium text-app-text-secondary shadow-sm transition hover:border-app-border hover:bg-app-surface-muted focus:outline-none focus:ring-2 focus:ring-app-accent focus:ring-offset-2"
+            >
+              <Filter className="h-4 w-4" aria-hidden />
+              Filter
             </button>
-            <button className="btn btn-outline btn-sm gap-2">
-              <Download className="h-4 w-4" /> Export
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-lg border border-app-border bg-app-surface px-4 py-2 text-sm font-medium text-app-text-secondary shadow-sm transition hover:border-app-border hover:bg-app-surface-muted focus:outline-none focus:ring-2 focus:ring-app-accent focus:ring-offset-2"
+            >
+              <Download className="h-4 w-4" aria-hidden />
+              Export
             </button>
-            <button className="btn btn-primary btn-sm">Generate Report</button>
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-lg bg-app-accent px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-app-accent-hover focus:outline-none focus:ring-2 focus:ring-app-accent focus:ring-offset-2"
+            >
+              <FileText className="h-4 w-4" aria-hidden />
+              Generate Report
+            </button>
           </div>
         </div>
 
-        <div role="tablist" className="tabs tabs-boxed bg-slate-800 w-fit">
-          <button role="tab" className={`tab ${activeTab === "overview" ? "tab-active" : "text-slate-300"}`} onClick={() => setActiveTab("overview")}>Overview</button>
-          <button role="tab" className={`tab ${activeTab === "analytics" ? "tab-active" : "text-slate-300"}`} onClick={() => setActiveTab("analytics")}>Analytics</button>
-          <button role="tab" className={`tab ${activeTab === "reports" ? "tab-active" : "text-slate-300"}`} onClick={() => setActiveTab("reports")}>Reports</button>
+        {/* Tabs */}
+        <div className="border-b border-app-border" role="tablist" aria-label="Dashboard sections">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              className={`mr-8 border-b-2 pb-3 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-app-accent focus:ring-offset-2 ${
+                activeTab === tab.id
+                  ? "-mb-px border-app-accent text-app-accent"
+                  : "border-transparent text-app-text-muted hover:text-app-text"
+              }`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {activeTab === "overview" && (
           <div className="space-y-6">
             {overviewError && (
-              <div className="alert alert-error shadow-lg">
-                <div>
-                  <AlertTriangle />
+              <div
+                className="flex items-center justify-between gap-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+                role="alert"
+              >
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden />
                   <span>{overviewError}</span>
                 </div>
-                <div className="flex-none">
-                  <button className="btn btn-sm btn-ghost" onClick={() => loadOverview()}>Retry</button>
-                </div>
+                <button
+                  type="button"
+                  className="shrink-0 rounded-lg px-3 py-1 text-sm font-medium text-red-700 hover:bg-red-100"
+                  onClick={() => loadOverview()}
+                >
+                  Retry
+                </button>
               </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-              <div className="card bg-slate-800 border border-slate-700">
-                <div className="card-body p-5">
-                  <div className="flex justify-between items-start">
-                    <h2 className="card-title text-sm text-slate-300">Total Assets</h2>
-                    <Box className="text-teal-400 h-5 w-5" />
-                  </div>
-                  <p className="text-3xl font-bold text-white mt-2">
-                    {overviewLoading ? '...' : overview ? overview.summary.totalAssets.toLocaleString() : '—'}
-                  </p>
-                  <p className="text-xs text-slate-400 mt-1">
-                    {overviewLoading
-                      ? 'Loading...'
-                      : `${overview?.summary.assetsAddedThisMonth ?? 0} added this month`}
-                  </p>
-                </div>
-              </div>
-
-              <div className="card bg-slate-800 border border-slate-700">
-                <div className="card-body p-5">
-                  <div className="flex justify-between items-start">
-                    <h2 className="card-title text-sm text-slate-300">In Custody</h2>
-                    <Users className="text-teal-400 h-5 w-5" />
-                  </div>
-                  <p className="text-3xl font-bold text-white mt-2">
-                    {overviewLoading ? '...' : overview ? overview.summary.assetsInCustody.toLocaleString() : '—'}
-                  </p>
-                  <p className="text-xs text-slate-400 mt-1">
-                    {overviewLoading
-                      ? 'Loading...'
-                      : `${overview?.summary.custodyPercent ?? 0}% active custody`}
-                  </p>
-                </div>
-              </div>
-
-              <div className="card bg-slate-800 border border-slate-700">
-                <div className="card-body p-5">
-                  <div className="flex justify-between items-start">
-                    <h2 className="card-title text-sm text-slate-300">Calibrations Due Soon</h2>
-                    <Wrench className="text-teal-400 h-5 w-5" />
-                  </div>
-                  <p className="text-3xl font-bold text-white mt-2">
-                    {overviewLoading ? '...' : overview ? overview.summary.calibrationsDueSoon : '—'}
-                  </p>
-                  <p className="text-xs text-slate-400 mt-1">Next 30 days</p>
-                </div>
-              </div>
-
-              <div className="card bg-slate-800 border border-slate-700">
-                <div className="card-body p-5">
-                  <div className="flex justify-between items-start">
-                    <h2 className="card-title text-sm text-slate-300">Expired Calibrations</h2>
-                    <AlertTriangle className="text-error h-5 w-5" />
-                  </div>
-                  <p className="text-3xl font-bold text-white mt-2">
-                    {overviewLoading ? '...' : overview ? overview.summary.expiredCalibrations : '—'}
-                  </p>
-                  <p className="text-xs text-slate-400 mt-1">Action required</p>
-                </div>
-              </div>
+            {/* KPI cards */}
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+              <KpiCard
+                label="Total Assets"
+                value={summary ? summary.totalAssets.toLocaleString() : "—"}
+                subLabel={
+                  overviewLoading
+                    ? "Loading…"
+                    : `${summary?.assetsAddedThisMonth ?? 0} added this month`
+                }
+                icon={Box}
+                iconBgClass="bg-app-accent-soft"
+                iconClass="text-app-accent"
+                loading={overviewLoading}
+              />
+              <KpiCard
+                label="In Custody"
+                value={summary ? summary.assetsInCustody.toLocaleString() : "—"}
+                subLabel={
+                  overviewLoading
+                    ? "Loading…"
+                    : `${summary?.custodyPercent ?? 0}% active custody`
+                }
+                icon={Users}
+                iconBgClass="bg-amber-50"
+                iconClass="text-amber-500"
+                loading={overviewLoading}
+              />
+              <KpiCard
+                label="Calibrations Due Soon"
+                value={summary ? String(summary.calibrationsDueSoon) : "—"}
+                subLabel="Next 30 days"
+                icon={Wrench}
+                iconBgClass="bg-orange-100"
+                iconClass="text-orange-500"
+                valueClass={
+                  summary?.calibrationsDueSoon > 0 ? "text-orange-500" : "text-app-text"
+                }
+                loading={overviewLoading}
+              />
+              <KpiCard
+                label="Expired Calibrations"
+                value={summary ? String(summary.expiredCalibrations) : "—"}
+                subLabel="Action required"
+                icon={AlertTriangle}
+                iconBgClass="bg-red-50"
+                iconClass="text-red-500"
+                valueClass={
+                  summary?.expiredCalibrations > 0 ? "text-red-500" : "text-app-text"
+                }
+                urgent={!overviewLoading && (summary?.expiredCalibrations ?? 0) > 0}
+                loading={overviewLoading}
+              />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-7 gap-6">
-              <div className="card bg-slate-800 border border-slate-700 lg:col-span-4">
-                <div className="card-body p-5">
-                  <h2 className="card-title text-lg">Asset Status Overview</h2>
-                  <p className="text-sm text-slate-400 mb-4">Counts by recorded status</p>
-                  <AssetStatusChart data={overview?.assetStatus ?? []} />
-                </div>
-              </div>
-              
-              <div className="card bg-slate-800 border border-slate-700 lg:col-span-3">
-                <div className="card-body p-5">
-                  <h2 className="card-title text-lg">Asset Type Distribution</h2>
-                  <p className="text-sm text-slate-400 mb-4">Merged categories</p>
-                  <AssetTypeDistribution segments={overview?.assetTypeDistribution ?? []} theme="dark" />
-                </div>
-              </div>
+            {/* Charts */}
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+              <DashboardCard title="Asset Status Overview" subtitle="Counts by recorded status">
+                <AssetStatusChart data={overview?.assetStatus ?? []} />
+              </DashboardCard>
+
+              <DashboardCard title="Asset Type Distribution" subtitle="Merged categories">
+                <AssetTypeDistribution
+                  segments={overview?.assetTypeDistribution ?? []}
+                  
+                />
+              </DashboardCard>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="card bg-slate-800 border border-slate-700">
-                <div className="card-body p-5">
-                  <h2 className="card-title text-lg">Recent Custody Activity</h2>
-                  <p className="text-sm text-slate-400 mb-4">Newest assignments</p>
-                  <div className="space-y-3">
-                    {overviewLoading ? (
-                      <p className="text-sm text-slate-500">Loading...</p>
-                    ) : overview?.recentCustody?.length ? (
-                      overview.recentCustody.map((row, idx) => (
-                        <div key={idx} className="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="font-semibold text-teal-400">{row.assetnumber}</span>
-                            <span className="text-xs text-slate-400">{fmtDateTime(row.custodyfrom)}</span>
-                          </div>
-                          <p className="text-sm">{row.employeename || '—'} {row.employeenumber ? `(${row.employeenumber})` : ''}</p>
-                          <p className="text-xs text-slate-500 mt-1">{row.locationType} - {row.location}</p>
+            {/* Custody + Calibration */}
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+              <DashboardCard
+                title="Recent Custody Activity"
+                subtitle="Newest assignments"
+                viewAllHref="/assets/mme"
+              >
+                {overviewLoading ? (
+                  <p className="text-sm text-app-text-muted">Loading…</p>
+                ) : overview?.recentCustody?.length ? (
+                  <ul className="divide-y divide-slate-100">
+                    {overview.recentCustody.slice(0, 5).map((row, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-center gap-3 rounded-lg px-2 py-3 transition-colors hover:bg-app-surface-muted"
+                      >
+                        <div
+                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-app-accent-soft text-xs font-semibold text-app-accent"
+                          aria-hidden
+                        >
+                          {getInitials(row.employeename)}
                         </div>
-                      ))
-                    ) : (
-                      <p className="text-sm text-slate-500">No recent custody activity.</p>
-                    )}
-                  </div>
-                </div>
-              </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm text-app-text">
+                            <span className="font-medium text-app-accent">{row.employeename || "—"}</span>
+                            {row.employeenumber ? ` (${row.employeenumber})` : ""}
+                            {" assigned "}
+                            <span className="font-medium">{row.assetnumber}</span>
+                            {row.location ? ` · ${row.location}` : ""}
+                          </p>
+                          <p className="text-xs text-app-text-muted">{formatRelativeTime(row.custodyfrom)}</p>
+                        </div>
+                        <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
+                          Active
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <EmptyListState
+                    message="No recent custody activity."
+                    subtext="Assignments will appear here when assets are transferred."
+                  />
+                )}
+              </DashboardCard>
 
-              <div className="card bg-slate-800 border border-slate-700">
-                <div className="card-body p-5">
-                  <h2 className="card-title text-lg">Upcoming Calibration Expiries</h2>
-                  <p className="text-sm text-slate-400 mb-4">Next certificate end date per asset</p>
-                  <MaintenanceSchedule items={calibrationScheduleItems} />
-                </div>
-              </div>
+              <DashboardCard
+                title="Upcoming Calibration Expiries"
+                subtitle="Next certificate end date per asset"
+                viewAllHref="/assets/mme"
+              >
+                {overviewLoading ? (
+                  <p className="text-sm text-app-text-muted">Loading…</p>
+                ) : (
+                  <MaintenanceSchedule
+                    items={calibrationScheduleItems}
+                    viewAllHref="/assets/mme"
+                  />
+                )}
+              </DashboardCard>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="card bg-slate-800 border border-slate-700">
-                <div className="card-body p-5">
-                  <h2 className="card-title text-lg">Latest PPE Transactions</h2>
-                  <div className="space-y-3 mt-4">
-                    {overviewLoading ? (
-                      <p className="text-sm text-slate-500">Loading...</p>
-                    ) : overview?.recentPpe?.length ? (
-                      overview.recentPpe.map((r, idx) => (
-                        <div key={idx} className="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="font-semibold">{r.ppeName}</span>
-                            <span className="text-xs text-slate-400">{fmtDateTime(r.dateOfIssue)}</span>
-                          </div>
-                          <p className="text-sm text-slate-300">Issued to {r.userEmpName} (Qty: {r.quantityIssued})</p>
+            {/* PPE + Project returns */}
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+              <DashboardCard title="Latest PPE Transactions" subtitle="Recent issuances">
+                {overviewLoading ? (
+                  <p className="text-sm text-app-text-muted">Loading…</p>
+                ) : overview?.recentPpe?.length ? (
+                  <ul className="divide-y divide-slate-100">
+                    {overview.recentPpe.slice(0, 5).map((r, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-start gap-3 rounded-lg px-2 py-3 transition-colors hover:bg-app-surface-muted"
+                      >
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-50">
+                          <HardHat className="h-4 w-4 text-orange-500" aria-hidden />
                         </div>
-                      ))
-                    ) : (
-                      <p className="text-sm text-slate-500">No PPE transactions.</p>
-                    )}
-                  </div>
-                </div>
-              </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="truncate text-sm font-medium text-app-text">{r.ppeName}</p>
+                            <span className="shrink-0 text-xs text-app-text-muted">
+                              {formatRelativeTime(r.dateOfIssue)}
+                            </span>
+                          </div>
+                          <p className="text-sm text-app-text-secondary">
+                            Issued to {r.userEmpName} · Qty {r.quantityIssued}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <EmptyListState message="No PPE transactions." />
+                )}
+              </DashboardCard>
 
-              <div className="card bg-slate-800 border border-slate-700">
-                <div className="card-body p-5">
-                  <h2 className="card-title text-lg">Recent Project Return Materials</h2>
-                  <div className="space-y-3 mt-4">
-                    {overviewLoading ? (
-                      <p className="text-sm text-slate-500">Loading...</p>
-                    ) : overview?.recentProjectReturns?.length ? (
-                      overview.recentProjectReturns.map((m, idx) => (
-                        <div key={idx} className="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="font-semibold">{m.materialDescription}</span>
-                            <span className="text-xs text-slate-400">{fmtDateTime(m.createdAt)}</span>
-                          </div>
-                          <p className="text-sm text-slate-300">Code: {m.materialCode} | Qty: {m.quantity} {m.uom}</p>
+              <DashboardCard title="Recent Project Return Materials" subtitle="Latest returns">
+                {overviewLoading ? (
+                  <p className="text-sm text-app-text-muted">Loading…</p>
+                ) : overview?.recentProjectReturns?.length ? (
+                  <ul className="divide-y divide-slate-100">
+                    {overview.recentProjectReturns.slice(0, 5).map((m, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-start gap-3 rounded-lg px-2 py-3 transition-colors hover:bg-app-surface-muted"
+                      >
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-50">
+                          <Package className="h-4 w-4 text-violet-500" aria-hidden />
                         </div>
-                      ))
-                    ) : (
-                      <p className="text-sm text-slate-500">No returns found.</p>
-                    )}
-                  </div>
-                </div>
-              </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="truncate text-sm font-medium text-app-text">
+                              {m.materialDescription}
+                            </p>
+                            <span className="shrink-0 text-xs text-app-text-muted">
+                              {formatRelativeTime(m.createdAt)}
+                            </span>
+                          </div>
+                          <p className="text-sm text-app-text-secondary">
+                            Code {m.materialCode} · Qty {m.quantity} {m.uom}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <EmptyListState message="No returns found." />
+                )}
+              </DashboardCard>
             </div>
-
           </div>
         )}
 
         {activeTab === "analytics" && (
-          <div className="card bg-slate-800 border border-slate-700 min-h-[400px] flex items-center justify-center">
+          <div className="flex min-h-[400px] items-center justify-center rounded-xl border border-app-border bg-app-surface p-12 shadow-sm">
             <div className="text-center">
-              <BarChart3 className="mx-auto h-12 w-12 text-teal-400 mb-4" />
-              <h2 className="text-xl font-bold">Analytics Dashboard</h2>
-              <p className="text-slate-400 mt-2">Detailed analytics coming soon...</p>
+              <BarChart3 className="mx-auto mb-4 h-12 w-12 text-app-accent" aria-hidden />
+              <h2 className="text-xl font-semibold text-app-text">Analytics Dashboard</h2>
+              <p className="mt-2 text-sm text-app-text-muted">Detailed analytics coming soon…</p>
             </div>
           </div>
         )}
-        
+
         {activeTab === "reports" && (
-          <div className="card bg-slate-800 border border-slate-700 min-h-[400px] flex items-center justify-center">
+          <div className="flex min-h-[400px] items-center justify-center rounded-xl border border-app-border bg-app-surface p-12 shadow-sm">
             <div className="text-center">
-              <ClipboardList className="mx-auto h-12 w-12 text-teal-400 mb-4" />
-              <h2 className="text-xl font-bold">Report Center</h2>
-              <p className="text-slate-400 mt-2">Generate custom reports coming soon...</p>
+              <ClipboardList className="mx-auto mb-4 h-12 w-12 text-app-accent" aria-hidden />
+              <h2 className="text-xl font-semibold text-app-text">Report Center</h2>
+              <p className="mt-2 text-sm text-app-text-muted">Generate custom reports coming soon…</p>
             </div>
           </div>
         )}

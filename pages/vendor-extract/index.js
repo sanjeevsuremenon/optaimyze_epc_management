@@ -53,7 +53,7 @@ export default function VendorExtract() {
 
   return (
     <div
-      className="min-h-screen p-6 bg-slate-900/5"
+      className="min-h-screen p-6 bg-app-surface/5"
       style={{
         backgroundImage: `
           radial-gradient(circle at 0 0, rgba(59,130,246,0.16) 0, transparent 55%),
@@ -97,7 +97,7 @@ export default function VendorExtract() {
 
             <div>
               <label htmlFor="vendorName" className="block text-sm font-medium text-slate-700 mb-1">
-                Vendor Name <span className="text-slate-400">(optional, for registered vendors)</span>
+                Vendor Name <span className="text-app-text-muted">(optional, for registered vendors)</span>
               </label>
               <input
                 id="vendorName"
@@ -149,15 +149,15 @@ export default function VendorExtract() {
               <h2 className="text-lg font-semibold text-slate-900 mb-4">Saved extract</h2>
               <dl className="space-y-2 text-sm">
                 <div>
-                  <dt className="text-slate-500">Vendor name</dt>
+                  <dt className="text-app-text-muted">Vendor name</dt>
                   <dd className="font-medium text-slate-900">{result.extract.vendorName}</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500">Number of POs</dt>
+                  <dt className="text-app-text-muted">Number of POs</dt>
                   <dd className="font-medium text-slate-900">{result.extract.numberOfPO}</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500">Value of purchase so far</dt>
+                  <dt className="text-app-text-muted">Value of purchase so far</dt>
                   <dd className="font-medium text-slate-900">
                     {typeof result.extract.valueOfPurchaseSoFar === 'number'
                       ? new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(result.extract.valueOfPurchaseSoFar)
@@ -165,7 +165,7 @@ export default function VendorExtract() {
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500">Record created</dt>
+                  <dt className="text-app-text-muted">Record created</dt>
                   <dd className="font-medium text-slate-900">
                     {result.extract.dateOfRecordCreated
                       ? new Date(result.extract.dateOfRecordCreated).toLocaleString()
@@ -184,19 +184,19 @@ export default function VendorExtract() {
                       <span className="px-2 py-1 bg-slate-100 rounded text-slate-800">
                         {item.group}
                       </span>
-                      <span className="text-slate-500">→</span>
+                      <span className="text-app-text-muted">→</span>
                       <span className="text-slate-900">{item.subgroup}</span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-slate-500 text-sm">No group/subgroup (gap &gt; 12 months or no materials).</p>
+                <p className="text-app-text-muted text-sm">No group/subgroup (gap &gt; 12 months or no materials).</p>
               )}
             </div>
 
             {result.debug && (
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">Debug</p>
+                <p className="text-xs font-medium text-app-text-muted uppercase tracking-wide mb-2">Debug</p>
                 <pre className="text-xs text-slate-700 overflow-x-auto">
                   {JSON.stringify(result.debug, null, 2)}
                 </pre>

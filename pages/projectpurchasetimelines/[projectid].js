@@ -266,7 +266,7 @@ function ProjectPurchaseTimelines() {
             style={{ left: `${poDatePos}%`, transform: 'translateX(-50%)' }}
           >
             <div className="w-3 h-3 rounded-full bg-blue-500 border-2 border-blue-600 relative group">
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-app-text text-xs rounded px-2 py-1 whitespace-nowrap z-10">
                 PO Date: {moment(po.podate).format('MM/DD/YYYY')}
               </div>
             </div>
@@ -280,7 +280,7 @@ function ProjectPurchaseTimelines() {
             style={{ left: `${deliveryDatePos}%`, transform: 'translateX(-50%)' }}
           >
             <div className="w-3 h-3 rounded-full bg-green-500 border-2 border-green-600 relative group">
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-app-text text-xs rounded px-2 py-1 whitespace-nowrap z-10">
                 Planned Delivery: {moment(po["delivery-date"]).format('MM/DD/YYYY')}
               </div>
           </div>
@@ -297,7 +297,7 @@ function ProjectPurchaseTimelines() {
               style={{ left: `${pos}%`, transform: 'translateX(-50%)' }}
             >
               <div className="w-3 h-3 rounded-full bg-orange-500 border-2 border-orange-600 relative group">
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-app-text text-xs rounded px-2 py-1 whitespace-nowrap z-10">
                   Delivery: {deliveryDate.format('MM/DD/YYYY')}
                 </div>
               </div>
@@ -330,39 +330,39 @@ function ProjectPurchaseTimelines() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
+      <div className="app-page min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto"></div>
-          <p className="mt-4 text-slate-400 font-medium">Loading timeline data...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-accent mx-auto"></div>
+          <p className="mt-4 text-app-text-muted font-medium">Loading timeline data...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-10">      
+    <div className="app-page min-h-screen py-10">      
       <main className="container mx-auto px-4 max-w-7xl">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Page Header */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg p-8 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-bl-full -mr-10 -mt-10 blur-3xl"></div>
+          <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg p-8 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-app-accent/5 rounded-bl-full -mr-10 -mt-10 blur-3xl"></div>
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-extrabold text-white mb-2 tracking-tight">
+                <h1 className="text-3xl font-extrabold text-app-text mb-2 tracking-tight">
                   Purchase Order Timelines
                 </h1>
                 <div className="flex items-center space-x-4 flex-wrap gap-y-2">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-cyan-900/30 text-cyan-400 border border-cyan-800">
-                    <span className="w-2 h-2 rounded-full bg-cyan-500 mr-2"></span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-cyan-900/30 text-app-accent border border-cyan-800">
+                    <span className="w-2 h-2 rounded-full bg-app-accent mr-2"></span>
                     {projectData ? `${projectData['project-name']} (${projectid})` : `Project: ${projectid}`}
                   </span>
                   {network && (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-900/30 text-slate-400 border border-slate-800">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-app-surface-muted text-app-text-muted border border-app-border">
                       Network: {network}
                     </span>
                   )}
                   {timelineRange.start && timelineRange.end && (
-                    <span className="text-slate-400 text-sm flex items-center font-medium">
+                    <span className="text-app-text-muted text-sm flex items-center font-medium">
                       {timelineRange.start.format('MMM YYYY')} — {timelineRange.end.format('MMM YYYY')}
                     </span>
                   )}
@@ -372,7 +372,7 @@ function ProjectPurchaseTimelines() {
               <div className="flex items-center gap-3">
                 <button
                   disabled
-                  className="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-semibold py-2 px-4 rounded-lg flex items-center cursor-default gap-1.5 shadow-sm"
+                  className="bg-app-accent/20 text-app-accent border border-app-accent/30 text-xs font-semibold py-2 px-4 rounded-lg flex items-center cursor-default gap-1.5 shadow-sm"
                 >
                   <FiTrendingUp className="w-4 h-4" />
                   View PO timelines
@@ -382,7 +382,7 @@ function ProjectPurchaseTimelines() {
                     const targetId = network ? network : projectid;
                     router.push(`/projects1?project=${encodeURIComponent(targetId)}`);
                   }}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold py-2 px-4 rounded-lg transition-all duration-200 flex items-center gap-1.5 shadow-sm hover:shadow"
+                  className="bg-app-surface hover:bg-app-surface-muted text-app-text border border-app-border text-xs font-semibold py-2 px-4 rounded-lg transition-all duration-200 flex items-center gap-1.5 shadow-sm hover:shadow"
                 >
                   <FiList className="w-4 h-4" />
                   View PO list
@@ -409,22 +409,22 @@ function ProjectPurchaseTimelines() {
 
           <div className="grid grid-cols-1 gap-6">
             {/* PO List with Timelines */}
-            <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg overflow-hidden">
-              <div className="px-6 py-5 border-b border-slate-800 bg-slate-800/50 flex justify-between items-center">
+            <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg overflow-hidden">
+              <div className="px-6 py-5 border-b border-app-border bg-app-surface-muted flex justify-between items-center">
                 <div>
-                  <h2 className="text-lg font-bold text-white flex items-center">
-                    <div className="w-1.5 h-6 bg-cyan-500 rounded-full mr-3"></div>
+                  <h2 className="text-lg font-bold text-app-text flex items-center">
+                    <div className="w-1.5 h-6 bg-app-accent rounded-full mr-3"></div>
                     Purchase Orders
-                    <span className="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300">
+                    <span className="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-app-surface text-app-text-secondary">
                       {poList.length} total
                     </span>
                   </h2>
                   {projectData ? (
-                    <p className="text-sm text-slate-400 mt-1 ml-4.5">
+                    <p className="text-sm text-app-text-muted mt-1 ml-4.5">
                       Tracking deliveries and timelines for {projectData['project-name']}
                     </p>
                   ) : projectid && (
-                    <p className="text-sm text-slate-400 mt-1 ml-4.5">
+                    <p className="text-sm text-app-text-muted mt-1 ml-4.5">
                       Tracking deliveries and timelines
                     </p>
                   )}
@@ -432,53 +432,53 @@ function ProjectPurchaseTimelines() {
               </div>
               <div className="overflow-x-auto custom-scrollbar">
                 <table className="w-full">
-                  <thead className="bg-slate-800/50 border-b border-slate-800">
+                  <thead className="bg-app-surface-muted border-b border-app-border">
                     <tr>
                       <th 
-                        className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-cyan-400 transition-colors group"
+                        className="px-6 py-4 text-left text-xs font-bold text-app-text-muted uppercase tracking-wider cursor-pointer hover:text-app-accent transition-colors group"
                         onClick={() => requestSort('ponum')}
                       >
                         <div className="flex items-center">PO Number <span className="text-slate-600 group-hover:text-cyan-500 ml-1"><SortIndicator columnKey="ponum" /></span></div>
                       </th>
                       <th 
-                        className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-cyan-400 transition-colors group"
+                        className="px-6 py-4 text-left text-xs font-bold text-app-text-muted uppercase tracking-wider cursor-pointer hover:text-app-accent transition-colors group"
                         onClick={() => requestSort('poval')}
                       >
                         <div className="flex items-center">PO Value (SAR) <span className="text-slate-600 group-hover:text-cyan-500 ml-1"><SortIndicator columnKey="poval" /></span></div>
                       </th>
                       <th 
-                        className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-cyan-400 transition-colors group"
+                        className="px-6 py-4 text-left text-xs font-bold text-app-text-muted uppercase tracking-wider cursor-pointer hover:text-app-accent transition-colors group"
                         onClick={() => requestSort('balgrval')}
                       >
                         <div className="flex items-center">Open Balance (SAR) <span className="text-slate-600 group-hover:text-cyan-500 ml-1"><SortIndicator columnKey="balgrval" /></span></div>
                       </th>
                       <th 
-                        className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-cyan-400 transition-colors group"
+                        className="px-6 py-4 text-left text-xs font-bold text-app-text-muted uppercase tracking-wider cursor-pointer hover:text-app-accent transition-colors group"
                         onClick={() => requestSort('podate')}
                       >
                         <div className="flex items-center">PO Date <span className="text-slate-600 group-hover:text-cyan-500 ml-1"><SortIndicator columnKey="podate" /></span></div>
                       </th>
                       <th 
-                        className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-cyan-400 transition-colors group"
+                        className="px-6 py-4 text-left text-xs font-bold text-app-text-muted uppercase tracking-wider cursor-pointer hover:text-app-accent transition-colors group"
                         onClick={() => requestSort('delivery-date')}
                       >
                         <div className="flex items-center">Planned Delivery <span className="text-slate-600 group-hover:text-cyan-500 ml-1"><SortIndicator columnKey="delivery-date" /></span></div>
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-bold text-app-text-muted uppercase tracking-wider">
                         Actual Deliveries
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider" style={{ minWidth: '400px' }}>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-app-text-muted uppercase tracking-wider" style={{ minWidth: '400px' }}>
                         Timeline
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-slate-900/50 divide-y divide-slate-800">
+                  <tbody className="bg-app-surface-muted divide-y divide-app-border">
                     {sortedPOList.length === 0 ? (
                       <tr>
-                        <td colSpan="6" className="px-6 py-12 text-center text-slate-500">
+                        <td colSpan="6" className="px-6 py-12 text-center text-app-text-muted">
                           <div className="flex flex-col items-center">
-                            <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mb-3">
-                              <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <div className="w-12 h-12 bg-app-surface rounded-full flex items-center justify-center mb-3">
+                              <svg className="w-6 h-6 text-app-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                             </div>
                             <p className="text-sm">{error ? error : 'No purchase orders found for this project'}</p>
                           </div>
@@ -486,14 +486,14 @@ function ProjectPurchaseTimelines() {
                       </tr>
                     ) : (
                       sortedPOList.map((po, index) => (
-                        <tr key={po.ponum || index} className="hover:bg-slate-800/50 transition-colors duration-200 group">
+                        <tr key={po.ponum || index} className="hover:bg-app-surface-muted transition-colors duration-200 group">
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-semibold text-cyan-400 group-hover:text-cyan-300">
+                            <div className="text-sm font-semibold text-app-accent group-hover:text-app-accent">
                               {po.ponum}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-white">
+                            <div className="text-sm font-medium text-app-text">
                               {formatCurrency(po.poval)}
                             </div>
                           </td>
@@ -503,12 +503,12 @@ function ProjectPurchaseTimelines() {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-slate-300">
+                            <div className="text-sm text-app-text-secondary">
                               {formatDate(po.podate)}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-slate-300">
+                            <div className="text-sm text-app-text-secondary">
                               {formatDate(po["delivery-date"])}
                             </div>
                           </td>
@@ -522,7 +522,7 @@ function ProjectPurchaseTimelines() {
                                 ))}
                               </div>
                             ) : (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-400">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-app-surface text-app-text-muted">
                                 No deliveries
                               </span>
                             )}
@@ -539,8 +539,8 @@ function ProjectPurchaseTimelines() {
             </div>
 
             {/* Legend */}
-            <div className="bg-slate-900/80 border border-slate-800 rounded-xl shadow-lg p-5 flex items-center justify-between">
-              <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mr-6">Timeline Legend</h3>
+            <div className="bg-app-surface/80 border border-app-border rounded-xl shadow-lg p-5 flex items-center justify-between">
+              <h3 className="text-sm font-bold text-app-text-secondary uppercase tracking-wider mr-6">Timeline Legend</h3>
               <div className="flex flex-wrap gap-6 text-sm flex-1">
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-900/30 border border-blue-800">
                   <div className="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></div>

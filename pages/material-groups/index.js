@@ -238,11 +238,11 @@ export default function MaterialGroupsPage() {
 
   if (showForm) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4">
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-8 max-w-lg w-full">
+      <div className="app-page min-h-screen flex items-center justify-center p-4">
+        <div className="bg-app-surface border border-app-border rounded-2xl shadow-2xl p-8 max-w-lg w-full">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-white">{editingItem ? 'Edit' : 'New'} {formType}</h2>
-            <button className="text-slate-400 hover:text-rose-400 transition-colors" onClick={handleCloseForm}>
+            <h2 className="text-2xl font-bold text-app-text">{editingItem ? 'Edit' : 'New'} {formType}</h2>
+            <button className="text-app-text-muted hover:text-rose-400 transition-colors" onClick={handleCloseForm}>
               <FiX size={24} />
             </button>
           </div>
@@ -273,18 +273,18 @@ export default function MaterialGroupsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-12">
+    <div className="app-page min-h-screen flex flex-col pb-12">
       <main className="container mx-auto px-4 py-8 flex-1 flex flex-col">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center">
-            <div className="w-1.5 h-8 bg-cyan-500 rounded-full mr-4"></div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">Material & Service Groups</h1>
+            <div className="w-1.5 h-8 bg-app-accent rounded-full mr-4"></div>
+            <h1 className="text-3xl font-bold text-app-text tracking-tight">Material & Service Groups</h1>
           </div>
           <div className="flex items-center gap-3">
             <button 
               onClick={handleSort}
-              className="px-4 py-2.5 text-sm font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors border border-slate-700 flex items-center shadow-md"
+              className="px-4 py-2.5 text-sm font-semibold text-app-text-secondary bg-app-surface hover:bg-app-surface-muted rounded-lg transition-colors border border-app-border flex items-center shadow-md"
             >
               <FiFilter className="mr-2" /> Sort by Type
             </button>
@@ -308,19 +308,19 @@ export default function MaterialGroupsPage() {
         </div>
 
         {/* Search Section */}
-        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg p-6 mb-8 relative">
-          <label className="block text-xs font-semibold text-cyan-400 mb-2 uppercase tracking-wider">
+        <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg p-6 mb-8 relative">
+          <label className="block text-xs font-semibold text-app-accent mb-2 uppercase tracking-wider">
             Search Material & Service Subgroups
           </label>
           <input
             type="text"
-            className="w-full px-5 py-3.5 bg-slate-950 border border-slate-700 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-slate-200 placeholder-slate-600 transition-colors shadow-inner"
+            className="w-full px-5 py-3.5 bg-app-bg border border-app-border rounded-xl focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors shadow-inner"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by name or description, use * to separate multiple terms..."
           />
           {debouncedSearchTerm && (
-            <div className="mt-3 text-sm font-medium text-slate-400">
+            <div className="mt-3 text-sm font-medium text-app-text-muted">
               {searchResults.length > 0
                 ? <span className="text-emerald-400">Found {searchResults.length} matching subgroups</span>
                 : <span className="text-rose-400">No matching subgroups found</span>
@@ -334,8 +334,8 @@ export default function MaterialGroupsPage() {
         {loading ? (
           <div className="flex justify-center p-12">
             <div className="flex items-center gap-3">
-              <div className="w-6 h-6 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
-              <span className="text-slate-400 font-medium">Loading groups...</span>
+              <div className="w-6 h-6 border-2 border-app-accent border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-app-text-muted font-medium">Loading groups...</span>
             </div>
           </div>
         ) : (
@@ -343,54 +343,54 @@ export default function MaterialGroupsPage() {
             
             {/* Search Results Table */}
             {searchResults.length > 0 && (
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg overflow-hidden">
-                <div className="px-6 py-4 bg-slate-800/50 border-b border-slate-700 flex items-center">
+              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg overflow-hidden">
+                <div className="px-6 py-4 bg-app-surface-muted border-b border-app-border flex items-center">
                   <div className="w-1.5 h-5 bg-emerald-500 rounded-full mr-3"></div>
-                  <h2 className="text-lg font-bold text-white">Matching Subgroups</h2>
+                  <h2 className="text-lg font-bold text-app-text">Matching Subgroups</h2>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
-                    <thead className="bg-slate-800/80 border-b border-slate-700">
+                    <thead className="bg-app-surface/80 border-b border-app-border">
                       <tr>
-                        <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Group</th>
-                        <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Subgroup</th>
-                        <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider w-1/3">Description</th>
-                        <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>
+                        <th className="px-6 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Group</th>
+                        <th className="px-6 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Subgroup</th>
+                        <th className="px-6 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider w-1/3">Description</th>
+                        <th className="px-6 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {searchResults.map(({ group, subgroup }) => (
                         <tr
                           key={subgroup._id}
-                          className="bg-slate-900/30 border-b border-slate-800 hover:bg-slate-800/50 transition-colors cursor-pointer"
+                          className="bg-app-surface-muted border-b border-app-border hover:bg-app-surface-muted transition-colors cursor-pointer"
                           onClick={() => setSelectedGroup(group)}
                         >
-                          <td className="px-6 py-4 font-medium text-slate-300 break-words">{toTitleCase(group.name)}</td>
-                          <td className="px-6 py-4 font-semibold text-cyan-400 break-words">{toTitleCase(subgroup.name)}</td>
-                          <td className="px-6 py-4 text-slate-400 break-words">{toTitleCase(subgroup.description)}</td>
+                          <td className="px-6 py-4 font-medium text-app-text-secondary break-words">{toTitleCase(group.name)}</td>
+                          <td className="px-6 py-4 font-semibold text-app-accent break-words">{toTitleCase(subgroup.name)}</td>
+                          <td className="px-6 py-4 text-app-text-muted break-words">{toTitleCase(subgroup.description)}</td>
                           <td className="px-6 py-4">
                             <div className="flex justify-end gap-2">
                               {isAdmin && (
                                 <>
-                                  <button onClick={(e) => { e.stopPropagation(); handleEditClick(e, 'subgroup', subgroup); }} className="p-2 text-slate-400 hover:text-cyan-400 bg-slate-800 hover:bg-slate-700 rounded transition-colors" title="Edit">
+                                  <button onClick={(e) => { e.stopPropagation(); handleEditClick(e, 'subgroup', subgroup); }} className="p-2 text-app-text-muted hover:text-app-accent bg-app-surface hover:bg-app-surface-muted rounded transition-colors" title="Edit">
                                     <FiEdit2 />
                                   </button>
-                                  <button onClick={(e) => { e.stopPropagation(); handleDelete('subgroup', subgroup._id); }} className="p-2 text-slate-400 hover:text-rose-400 bg-slate-800 hover:bg-slate-700 rounded transition-colors" title="Delete">
+                                  <button onClick={(e) => { e.stopPropagation(); handleDelete('subgroup', subgroup._id); }} className="p-2 text-app-text-muted hover:text-rose-400 bg-app-surface hover:bg-app-surface-muted rounded transition-colors" title="Delete">
                                     <FiTrash2 />
                                   </button>
                                 </>
                               )}
                               {(isAdmin || userRole === 'user' || userRole === 'project') && (
-                                <button onClick={(e) => { e.stopPropagation(); window.open(`/vendor-group-mapping?subgroupId=${subgroup._id}`, '_blank'); }} className="p-2 text-slate-400 hover:text-emerald-400 bg-slate-800 hover:bg-slate-700 rounded transition-colors" title="View Vendors">
+                                <button onClick={(e) => { e.stopPropagation(); window.open(`/vendor-group-mapping?subgroupId=${subgroup._id}`, '_blank'); }} className="p-2 text-app-text-muted hover:text-emerald-400 bg-app-surface hover:bg-app-surface-muted rounded transition-colors" title="View Vendors">
                                   <FiEye />
                                 </button>
                               )}
                               {isAdmin && (
                                 <>
-                                  <button onClick={(e) => { e.stopPropagation(); window.open(`/material-groups/map-vendor?subgroupId=${subgroup._id}`, '_blank'); }} className="p-2 text-slate-400 hover:text-amber-400 bg-slate-800 hover:bg-slate-700 rounded transition-colors" title="Map Vendor">
+                                  <button onClick={(e) => { e.stopPropagation(); window.open(`/material-groups/map-vendor?subgroupId=${subgroup._id}`, '_blank'); }} className="p-2 text-app-text-muted hover:text-amber-400 bg-app-surface hover:bg-app-surface-muted rounded transition-colors" title="Map Vendor">
                                     <FiLink />
                                   </button>
-                                  <button onClick={(e) => { e.stopPropagation(); const params = new URLSearchParams({ subgroupId: subgroup._id, groupName: group.name || '', subgroupName: subgroup.name || '', isService: String(!!group.isService) }); window.open(`/material-groups/print-vendors?${params.toString()}`, '_blank'); }} className="p-2 text-slate-400 hover:text-indigo-400 bg-slate-800 hover:bg-slate-700 rounded transition-colors" title="Print Vendors">
+                                  <button onClick={(e) => { e.stopPropagation(); const params = new URLSearchParams({ subgroupId: subgroup._id, groupName: group.name || '', subgroupName: subgroup.name || '', isService: String(!!group.isService) }); window.open(`/material-groups/print-vendors?${params.toString()}`, '_blank'); }} className="p-2 text-app-text-muted hover:text-indigo-400 bg-app-surface hover:bg-app-surface-muted rounded transition-colors" title="Print Vendors">
                                     <FiPrinter />
                                   </button>
                                 </>
@@ -408,33 +408,33 @@ export default function MaterialGroupsPage() {
             {/* Main Layout: Groups and Subgroups Side by Side */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Groups Section */}
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg overflow-hidden flex flex-col h-full">
-                <div className="px-6 py-4 bg-slate-800/50 border-b border-slate-700 flex items-center justify-between">
+              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg overflow-hidden flex flex-col h-full">
+                <div className="px-6 py-4 bg-app-surface-muted border-b border-app-border flex items-center justify-between">
                   <div className="flex items-center">
-                    <div className="w-1.5 h-5 bg-cyan-500 rounded-full mr-3"></div>
-                    <h2 className="text-lg font-bold text-white">Groups</h2>
+                    <div className="w-1.5 h-5 bg-app-accent rounded-full mr-3"></div>
+                    <h2 className="text-lg font-bold text-app-text">Groups</h2>
                   </div>
-                  <span className="text-xs font-semibold px-2.5 py-1 bg-slate-950 text-slate-400 rounded-full">{groups.length} total</span>
+                  <span className="text-xs font-semibold px-2.5 py-1 bg-app-bg text-app-text-muted rounded-full">{groups.length} total</span>
                 </div>
                 <div className="overflow-x-auto flex-1">
                   <table className="w-full text-left border-collapse">
-                    <thead className="bg-slate-800/80 border-b border-slate-700">
+                    <thead className="bg-app-surface/80 border-b border-app-border">
                       <tr>
-                        <th className="px-5 py-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Name</th>
-                        <th className="px-5 py-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Description</th>
-                        <th className="px-5 py-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Type</th>
-                        {isAdmin && <th className="px-5 py-3 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>}
+                        <th className="px-5 py-3 text-xs font-bold text-app-text-muted uppercase tracking-wider">Name</th>
+                        <th className="px-5 py-3 text-xs font-bold text-app-text-muted uppercase tracking-wider">Description</th>
+                        <th className="px-5 py-3 text-xs font-bold text-app-text-muted uppercase tracking-wider">Type</th>
+                        {isAdmin && <th className="px-5 py-3 text-xs font-bold text-app-text-muted uppercase tracking-wider text-right">Actions</th>}
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/50">
+                    <tbody className="divide-y divide-app-border/50">
                       {groups.map(group => (
                         <tr 
                           key={group._id}
-                          className={`cursor-pointer transition-colors ${selectedGroup?._id === group._id ? 'bg-cyan-900/30 border-l-2 border-l-cyan-400' : 'hover:bg-slate-800/50 border-l-2 border-l-transparent'}`}
+                          className={`cursor-pointer transition-colors ${selectedGroup?._id === group._id ? 'bg-cyan-900/30 border-l-2 border-l-cyan-400' : 'hover:bg-app-surface-muted border-l-2 border-l-transparent'}`}
                           onClick={() => setSelectedGroup(group)}
                         >
-                          <td className="px-5 py-4 font-semibold text-slate-200 break-words">{toTitleCase(group.name)}</td>
-                          <td className="px-5 py-4 text-sm text-slate-400 break-words">{toTitleCase(group.description)}</td>
+                          <td className="px-5 py-4 font-semibold text-app-text break-words">{toTitleCase(group.name)}</td>
+                          <td className="px-5 py-4 text-sm text-app-text-muted break-words">{toTitleCase(group.description)}</td>
                           <td className="px-5 py-4">
                             <span className={`px-2 py-1 text-xs font-bold rounded ${group.isService ? 'bg-purple-900/40 text-purple-400 border border-purple-800' : 'bg-blue-900/40 text-blue-400 border border-blue-800'}`}>
                               {group.isService ? 'Service' : 'Material'}
@@ -443,10 +443,10 @@ export default function MaterialGroupsPage() {
                           {isAdmin && (
                             <td className="px-5 py-4">
                               <div className="flex justify-end gap-2">
-                                <button onClick={(e) => handleEditClick(e, 'group', group)} className="p-1.5 text-slate-400 hover:text-cyan-400 transition-colors" title="Edit">
+                                <button onClick={(e) => handleEditClick(e, 'group', group)} className="p-1.5 text-app-text-muted hover:text-app-accent transition-colors" title="Edit">
                                   <FiEdit2 size={16} />
                                 </button>
-                                <button onClick={(e) => { e.stopPropagation(); handleDelete('group', group._id); }} className="p-1.5 text-slate-400 hover:text-rose-400 transition-colors" title="Delete">
+                                <button onClick={(e) => { e.stopPropagation(); handleDelete('group', group._id); }} className="p-1.5 text-app-text-muted hover:text-rose-400 transition-colors" title="Delete">
                                   <FiTrash2 size={16} />
                                 </button>
                               </div>
@@ -460,54 +460,54 @@ export default function MaterialGroupsPage() {
               </div>
 
               {/* Subgroups Section */}
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg overflow-hidden flex flex-col h-full">
-                <div className="px-6 py-4 bg-slate-800/50 border-b border-slate-700 flex items-center justify-between">
+              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg overflow-hidden flex flex-col h-full">
+                <div className="px-6 py-4 bg-app-surface-muted border-b border-app-border flex items-center justify-between">
                   <div className="flex items-center">
                     <div className="w-1.5 h-5 bg-emerald-500 rounded-full mr-3"></div>
-                    <h2 className="text-lg font-bold text-white">Subgroups {selectedGroup && <span className="text-emerald-400 ml-1">for {toTitleCase(selectedGroup.name)}</span>}</h2>
+                    <h2 className="text-lg font-bold text-app-text">Subgroups {selectedGroup && <span className="text-emerald-400 ml-1">for {toTitleCase(selectedGroup.name)}</span>}</h2>
                   </div>
-                  {selectedGroup && <span className="text-xs font-semibold px-2.5 py-1 bg-slate-950 text-slate-400 rounded-full">{selectedGroup.subgroups.length} total</span>}
+                  {selectedGroup && <span className="text-xs font-semibold px-2.5 py-1 bg-app-bg text-app-text-muted rounded-full">{selectedGroup.subgroups.length} total</span>}
                 </div>
                 
                 {selectedGroup ? (
                   <div className="overflow-x-auto flex-1">
                     <table className="w-full text-left border-collapse">
-                      <thead className="bg-slate-800/80 border-b border-slate-700">
+                      <thead className="bg-app-surface/80 border-b border-app-border">
                         <tr>
-                          <th className="px-5 py-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Name</th>
-                          <th className="px-5 py-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Description</th>
-                          <th className="px-5 py-3 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>
+                          <th className="px-5 py-3 text-xs font-bold text-app-text-muted uppercase tracking-wider">Name</th>
+                          <th className="px-5 py-3 text-xs font-bold text-app-text-muted uppercase tracking-wider">Description</th>
+                          <th className="px-5 py-3 text-xs font-bold text-app-text-muted uppercase tracking-wider text-right">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800/50">
+                      <tbody className="divide-y divide-app-border/50">
                         {selectedGroup.subgroups.length > 0 ? (
                           selectedGroup.subgroups.map(subgroup => (
-                            <tr key={subgroup._id} className="hover:bg-slate-800/50 transition-colors">
-                              <td className="px-5 py-4 font-semibold text-cyan-300 break-words">{toTitleCase(subgroup.name)}</td>
-                              <td className="px-5 py-4 text-sm text-slate-400 break-words">{toTitleCase(subgroup.description)}</td>
+                            <tr key={subgroup._id} className="hover:bg-app-surface-muted transition-colors">
+                              <td className="px-5 py-4 font-semibold text-app-accent break-words">{toTitleCase(subgroup.name)}</td>
+                              <td className="px-5 py-4 text-sm text-app-text-muted break-words">{toTitleCase(subgroup.description)}</td>
                               <td className="px-5 py-4">
                                 <div className="flex justify-end gap-1.5 flex-wrap">
                                   {isAdmin && (
                                     <>
-                                      <button onClick={(e) => handleEditClick(e, 'subgroup', subgroup)} className="p-1.5 text-slate-400 hover:text-cyan-400 bg-slate-950 rounded transition-colors" title="Edit">
+                                      <button onClick={(e) => handleEditClick(e, 'subgroup', subgroup)} className="p-1.5 text-app-text-muted hover:text-app-accent bg-app-bg rounded transition-colors" title="Edit">
                                         <FiEdit2 size={16} />
                                       </button>
-                                      <button onClick={(e) => { e.stopPropagation(); handleDelete('subgroup', subgroup._id); }} className="p-1.5 text-slate-400 hover:text-rose-400 bg-slate-950 rounded transition-colors" title="Delete">
+                                      <button onClick={(e) => { e.stopPropagation(); handleDelete('subgroup', subgroup._id); }} className="p-1.5 text-app-text-muted hover:text-rose-400 bg-app-bg rounded transition-colors" title="Delete">
                                         <FiTrash2 size={16} />
                                       </button>
                                     </>
                                   )}
                                   {(isAdmin || userRole === 'user' || userRole === 'project') && (
-                                    <button onClick={(e) => { e.stopPropagation(); window.open(`/vendor-group-mapping?subgroupId=${subgroup._id}`, '_blank'); }} className="p-1.5 text-slate-400 hover:text-emerald-400 bg-slate-950 rounded transition-colors" title="View Vendors">
+                                    <button onClick={(e) => { e.stopPropagation(); window.open(`/vendor-group-mapping?subgroupId=${subgroup._id}`, '_blank'); }} className="p-1.5 text-app-text-muted hover:text-emerald-400 bg-app-bg rounded transition-colors" title="View Vendors">
                                       <FiEye size={16} />
                                     </button>
                                   )}
                                   {isAdmin && (
                                     <>
-                                      <button onClick={(e) => { e.stopPropagation(); window.open(`/material-groups/map-vendor?subgroupId=${subgroup._id}`, '_blank'); }} className="p-1.5 text-slate-400 hover:text-amber-400 bg-slate-950 rounded transition-colors" title="Map Vendor">
+                                      <button onClick={(e) => { e.stopPropagation(); window.open(`/material-groups/map-vendor?subgroupId=${subgroup._id}`, '_blank'); }} className="p-1.5 text-app-text-muted hover:text-amber-400 bg-app-bg rounded transition-colors" title="Map Vendor">
                                         <FiLink size={16} />
                                       </button>
-                                      <button onClick={(e) => { e.stopPropagation(); const params = new URLSearchParams({ subgroupId: subgroup._id, groupName: selectedGroup.name || '', subgroupName: subgroup.name || '', isService: String(!!selectedGroup.isService) }); window.open(`/material-groups/print-vendors?${params.toString()}`, '_blank'); }} className="p-1.5 text-slate-400 hover:text-indigo-400 bg-slate-950 rounded transition-colors" title="Print Vendors">
+                                      <button onClick={(e) => { e.stopPropagation(); const params = new URLSearchParams({ subgroupId: subgroup._id, groupName: selectedGroup.name || '', subgroupName: subgroup.name || '', isService: String(!!selectedGroup.isService) }); window.open(`/material-groups/print-vendors?${params.toString()}`, '_blank'); }} className="p-1.5 text-app-text-muted hover:text-indigo-400 bg-app-bg rounded transition-colors" title="Print Vendors">
                                         <FiPrinter size={16} />
                                       </button>
                                     </>
@@ -518,14 +518,14 @@ export default function MaterialGroupsPage() {
                           ))
                         ) : (
                           <tr>
-                            <td colSpan="3" className="px-5 py-8 text-center text-slate-500 italic">No subgroups available for this group.</td>
+                            <td colSpan="3" className="px-5 py-8 text-center text-app-text-muted italic">No subgroups available for this group.</td>
                           </tr>
                         )}
                       </tbody>
                     </table>
                   </div>
                 ) : (
-                  <div className="flex-1 flex flex-col items-center justify-center p-12 text-slate-500 text-center">
+                  <div className="flex-1 flex flex-col items-center justify-center p-12 text-app-text-muted text-center">
                     <FiFilter size={48} className="mb-4 opacity-20" />
                     <p className="text-lg">Select a group to view its subgroups</p>
                   </div>
@@ -550,40 +550,40 @@ function GroupForm({ initialData, onSubmit, onCancel }) {
   return (
     <form onSubmit={(e) => { e.preventDefault(); onSubmit(formData); }} className="space-y-5">
       <div>
-        <label className="block text-sm font-semibold text-slate-300 mb-1.5">Name</label>
+        <label className="block text-sm font-semibold text-app-text-secondary mb-1.5">Name</label>
         <input
           type="text"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           required
-          className="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-slate-200 transition-colors"
+          className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text transition-colors"
         />
       </div>
       <div>
-        <label className="block text-sm font-semibold text-slate-300 mb-1.5">Description</label>
+        <label className="block text-sm font-semibold text-app-text-secondary mb-1.5">Description</label>
         <textarea
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           rows="3"
-          className="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-slate-200 transition-colors resize-none"
+          className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text transition-colors resize-none"
         ></textarea>
       </div>
       <div>
-        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg border border-slate-700/50 bg-slate-950/50 hover:bg-slate-800 transition-colors">
+        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg border border-app-border/50 bg-app-bg/50 hover:bg-app-surface transition-colors">
           <input
             type="checkbox"
             checked={formData.isService}
             onChange={(e) => setFormData({ ...formData, isService: e.target.checked })}
-            className="w-5 h-5 accent-cyan-500 bg-slate-900 border-slate-700 rounded"
+            className="w-5 h-5 accent-cyan-500 bg-app-surface border-slate-700 rounded"
           />
-          <span className="text-slate-300 font-medium">Is Service Group</span>
+          <span className="text-app-text-secondary font-medium">Is Service Group</span>
         </label>
       </div>
-      <div className="flex gap-3 pt-4 border-t border-slate-800">
+      <div className="flex gap-3 pt-4 border-t border-app-border">
         <button type="submit" className="flex-1 py-2.5 font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-colors">
           {initialData ? 'Update' : 'Create'} Group
         </button>
-        <button type="button" onClick={onCancel} className="flex-1 py-2.5 font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors">
+        <button type="button" onClick={onCancel} className="flex-1 py-2.5 font-semibold text-app-text-secondary bg-app-surface hover:bg-app-surface-muted border border-app-border rounded-lg transition-colors">
           Cancel
         </button>
       </div>
@@ -601,29 +601,29 @@ function SubgroupForm({ groupId, initialData, onSubmit, onCancel }) {
   return (
     <form onSubmit={(e) => { e.preventDefault(); onSubmit(formData); }} className="space-y-5">
       <div>
-        <label className="block text-sm font-semibold text-slate-300 mb-1.5">Name</label>
+        <label className="block text-sm font-semibold text-app-text-secondary mb-1.5">Name</label>
         <input
           type="text"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           required
-          className="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-slate-200 transition-colors"
+          className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text transition-colors"
         />
       </div>
       <div>
-        <label className="block text-sm font-semibold text-slate-300 mb-1.5">Description</label>
+        <label className="block text-sm font-semibold text-app-text-secondary mb-1.5">Description</label>
         <textarea
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           rows="3"
-          className="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-slate-200 transition-colors resize-none"
+          className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text transition-colors resize-none"
         ></textarea>
       </div>
-      <div className="flex gap-3 pt-4 border-t border-slate-800">
+      <div className="flex gap-3 pt-4 border-t border-app-border">
         <button type="submit" className="flex-1 py-2.5 font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-colors">
           {initialData ? 'Update' : 'Create'} Subgroup
         </button>
-        <button type="button" onClick={onCancel} className="flex-1 py-2.5 font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors">
+        <button type="button" onClick={onCancel} className="flex-1 py-2.5 font-semibold text-app-text-secondary bg-app-surface hover:bg-app-surface-muted border border-app-border rounded-lg transition-colors">
           Cancel
         </button>
       </div>

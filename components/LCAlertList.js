@@ -37,8 +37,8 @@ const LCAlertList = ({ lcAlerts = [], onOpenComment }) => {
           <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
             <FiFileText className="h-8 w-8 text-emerald-400" />
           </div>
-          <h3 className="text-lg font-bold text-slate-100 mb-1">No Letter of Credit Alerts</h3>
-          <p className="text-sm text-slate-400">All Letters of Credit are currently properly managed and within expiry limits.</p>
+          <h3 className="text-lg font-bold text-app-text mb-1">No Letter of Credit Alerts</h3>
+          <p className="text-sm text-app-text-muted">All Letters of Credit are currently properly managed and within expiry limits.</p>
         </div>
       </div>
     );
@@ -47,18 +47,18 @@ const LCAlertList = ({ lcAlerts = [], onOpenComment }) => {
   return (
     <div>
       {/* Header */}
-      <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50">
+      <div className="px-6 py-4 border-b border-app-border bg-app-surface-muted">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <FiFileText className="h-5 w-5 text-cyan-500 mr-3" />
             <div>
-              <h3 className="text-lg font-bold text-slate-100">
+              <h3 className="text-lg font-bold text-app-text">
                 Letter of Credit Expiry Alerts
               </h3>
             </div>
           </div>
           <div className="text-right">
-            <span className="bg-slate-950 text-cyan-400 py-1 px-3 rounded-full text-xs font-bold border border-slate-800 shadow-sm">
+            <span className="bg-app-bg text-app-accent py-1 px-3 rounded-full text-xs font-bold border border-app-border shadow-sm">
               {lcAlerts.length} Alerts
             </span>
           </div>
@@ -79,36 +79,36 @@ const LCAlertList = ({ lcAlerts = [], onOpenComment }) => {
             <col className="w-[11%]" />
             <col className="w-[17%]" />
           </colgroup>
-          <thead className="bg-slate-950 sticky top-0 z-10 shadow-sm border-b border-slate-800">
+          <thead className="bg-app-bg sticky top-0 z-10 shadow-sm border-b border-app-border">
             <tr>
-              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">PO Number</th>
-              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Vendor</th>
-              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Plant</th>
-              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Open Value</th>
-              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">LC Amount</th>
-              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Opened Date</th>
-              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Expiry Date</th>
-              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Status</th>
-              <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">Actions</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">PO Number</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">Vendor</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">Plant</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">Open Value</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">LC Amount</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">Opened Date</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">Expiry Date</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">Status</th>
+              <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider text-center">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/50 bg-slate-900">
+          <tbody className="divide-y divide-app-border/50 bg-app-surface">
             {lcAlerts.map((po, index) => (
-              <tr key={index} className="hover:bg-slate-800/40 transition-colors group">
+              <tr key={index} className="hover:bg-app-surface/40 transition-colors group">
                 <td className="px-4 py-3 whitespace-nowrap">
-                  <div className="text-xs font-bold text-cyan-400">
+                  <div className="text-xs font-bold text-app-accent">
                     {po.ponumber}
                   </div>
                 </td>
                 <td className="px-4 py-3">
-                  <div className="text-xs text-slate-200 capitalize break-words font-medium">
+                  <div className="text-xs text-app-text capitalize break-words font-medium">
                     {po.poDetails?.vendorname?.toLowerCase() || 'N/A'}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono mt-0.5">
+                  <div className="text-[10px] text-app-text-muted font-mono mt-0.5">
                     {po.poDetails?.vendorcode || 'N/A'}
                   </div>
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-xs text-slate-300">
+                <td className="px-4 py-3 whitespace-nowrap text-xs text-app-text-secondary">
                   {po.poDetails?.plant || 'N/A'}
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap text-xs font-mono text-emerald-400">
@@ -117,19 +117,19 @@ const LCAlertList = ({ lcAlerts = [], onOpenComment }) => {
                     'N/A'
                   }
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-xs font-mono text-slate-300">
+                <td className="px-4 py-3 whitespace-nowrap text-xs font-mono text-app-text-secondary">
                   {po.lcAlert?.amount ? 
                     `${po.lcAlert.amount.toLocaleString()}` : 
                     'N/A'
                   }
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-xs text-slate-400">
+                <td className="px-4 py-3 whitespace-nowrap text-xs text-app-text-muted">
                   {po.lcAlert?.openeddate ? 
                     moment(po.lcAlert.openeddate).format('MMM D, YYYY') : 
                     'N/A'
                   }
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-xs text-slate-300">
+                <td className="px-4 py-3 whitespace-nowrap text-xs text-app-text-secondary">
                   {po.lcAlert?.expirydate ? 
                     moment(po.lcAlert.expirydate).format('MMM D, YYYY') : 
                     'N/A'
@@ -151,21 +151,21 @@ const LCAlertList = ({ lcAlerts = [], onOpenComment }) => {
                   <div className="flex items-center justify-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => router.push(`/openpurchaseorders1/schedule/${po.ponumber}`)}
-                      className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-violet-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-violet-500"
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-app-surface hover:bg-violet-600 text-app-text-secondary hover:text-app-text rounded text-[10px] font-medium transition-all shadow-sm border border-app-border hover:border-violet-500"
                       title="Update Schedule"
                     >
                       <FiCalendar size={12} /> Schedule
                     </button>
                     <button
                       onClick={() => onOpenComment(po.ponumber)}
-                      className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-blue-500"
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-app-surface hover:bg-blue-600 text-app-text-secondary hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-app-border hover:border-blue-500"
                       title="View/Add Comments"
                     >
                       <FiMessageSquare size={12} /> Comment
                     </button>
                     <button
                       onClick={() => router.push(`/openpurchaseorders1/view/${po.ponumber}`)}
-                      className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-cyan-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-cyan-500"
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-app-surface hover:bg-app-accent text-app-text-secondary hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-app-border hover:border-app-accent"
                       title="View PO Details & Timeline"
                     >
                       <FiEye size={12} /> View

@@ -177,17 +177,17 @@ const PurchasesReport = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col font-sans">
+      <div className="app-page min-h-screen flex flex-col font-sans">
         <div className="flex-1 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
-          <span className="ml-4 text-slate-300 font-medium">Loading comprehensive report data...</span>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-accent"></div>
+          <span className="ml-4 text-app-text-secondary font-medium">Loading comprehensive report data...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex-1 flex flex-col font-sans">
+    <div className="app-page min-h-screen flex-1 flex flex-col font-sans">
       <Head>
         <title>Comprehensive Purchases Report | MM Portal</title>
       </Head>
@@ -195,16 +195,16 @@ const PurchasesReport = () => {
         <div className="mx-auto" style={{ maxWidth: '1400px' }}>
           
           {/* Header */}
-          <div className="mb-8 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between">
+          <div className="mb-8 bg-app-surface border border-app-border rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between">
             <div className="relative z-10 mb-4 md:mb-0">
-              <h1 className="text-3xl font-extrabold text-slate-100 tracking-tight mb-2">Comprehensive Purchases Report</h1>
-              <p className="text-slate-400">
+              <h1 className="text-3xl font-extrabold text-app-text tracking-tight mb-2">Comprehensive Purchases Report</h1>
+              <p className="text-app-text-muted">
                 Analyze material purchasing frequency, volume, and total spend across all procurement channels.
               </p>
             </div>
-            <div className="relative z-10 flex items-center gap-4 bg-slate-950/50 p-4 rounded-xl border border-slate-800/50">
+            <div className="relative z-10 flex items-center gap-4 bg-app-bg/50 p-4 rounded-xl border border-app-border/50">
               <div className="flex flex-col">
-                <label htmlFor="year-select" className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
+                <label htmlFor="year-select" className="text-xs font-semibold text-app-text-muted uppercase tracking-wide mb-1">
                   Report Year
                 </label>
                 <select
@@ -214,7 +214,7 @@ const PurchasesReport = () => {
                     const v = e.target.value;
                     setSelectedYear(v === "all" ? "all" : parseInt(v, 10));
                   }}
-                  className="bg-slate-900 border border-slate-700 text-slate-200 rounded px-3 py-1.5 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-sm font-medium"
+                  className="bg-app-surface border border-app-border text-app-text rounded px-3 py-1.5 focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-sm font-medium"
                 >
                   <option value="all">All Years (Lifetime)</option>
                   {years.map((y) => (
@@ -234,15 +234,15 @@ const PurchasesReport = () => {
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex overflow-x-auto space-x-2 border-b border-slate-800 mb-6 pb-px scrollbar-hide">
+          <div className="flex overflow-x-auto space-x-2 border-b border-app-border mb-6 pb-px scrollbar-hide">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab)}
                 className={`py-3 px-5 font-semibold text-sm rounded-t-lg transition-colors flex items-center whitespace-nowrap ${
                   activeTab.id === tab.id
-                    ? 'bg-slate-900 text-cyan-400 border-t border-x border-slate-800'
-                    : 'text-slate-500 hover:text-slate-300 hover:bg-slate-900/50'
+                    ? 'bg-app-surface text-app-accent border-t border-x border-slate-800'
+                    : 'text-app-text-muted hover:text-app-text-secondary hover:bg-app-surface-muted'
                 }`}
               >
                 {tab.icon}
@@ -261,57 +261,57 @@ const PurchasesReport = () => {
 
           {/* Loading Data State */}
           {loadingData ? (
-            <div className="flex flex-col items-center justify-center py-20 bg-slate-900 border border-slate-800 rounded-xl shadow-xl">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-500 mb-4" />
-              <span className="text-slate-400 font-medium tracking-wide">Crunching numbers for {activeTab.label}...</span>
+            <div className="flex flex-col items-center justify-center py-20 bg-app-surface border border-app-border rounded-xl shadow-xl">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-app-accent mb-4" />
+              <span className="text-app-text-muted font-medium tracking-wide">Crunching numbers for {activeTab.label}...</span>
             </div>
           ) : (
             <>
               {/* Summary Metrics */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-lg p-5 flex items-center">
+                <div className="bg-app-surface border border-app-border rounded-xl shadow-lg p-5 flex items-center">
                   <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg mr-4">
                     <FiHash className="text-blue-400 text-xl" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total POs</p>
-                    <p className="text-2xl font-black text-slate-100">{distinctPoCount != null ? distinctPoCount.toLocaleString() : "—"}</p>
+                    <p className="text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1">Total POs</p>
+                    <p className="text-2xl font-black text-app-text">{distinctPoCount != null ? distinctPoCount.toLocaleString() : "—"}</p>
                   </div>
                 </div>
                 
-                <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-lg p-5 flex items-center">
+                <div className="bg-app-surface border border-app-border rounded-xl shadow-lg p-5 flex items-center">
                   <div className="p-3 bg-violet-500/10 border border-violet-500/20 rounded-lg mr-4">
                     <FiBox className="text-violet-400 text-xl" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Unique Materials</p>
-                    <p className="text-2xl font-black text-slate-100">{displayData.length.toLocaleString()}</p>
+                    <p className="text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1">Unique Materials</p>
+                    <p className="text-2xl font-black text-app-text">{displayData.length.toLocaleString()}</p>
                   </div>
                 </div>
                 
-                <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-lg p-5 flex items-center">
+                <div className="bg-app-surface border border-app-border rounded-xl shadow-lg p-5 flex items-center">
                   <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg mr-4">
                     <FiDollarSign className="text-emerald-400 text-xl" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Value (SAR)</p>
-                    <p className="text-2xl font-black text-slate-100">{formatCurrency(totalValue)}</p>
+                    <p className="text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1">Total Value (SAR)</p>
+                    <p className="text-2xl font-black text-app-text">{formatCurrency(totalValue)}</p>
                   </div>
                 </div>
               </div>
 
               {/* Data Table */}
-              <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-xl overflow-hidden">
-                <div className="p-4 bg-slate-900/80 border-b border-slate-800 flex items-center gap-4">
+              <div className="bg-app-surface border border-app-border rounded-xl shadow-xl overflow-hidden">
+                <div className="p-4 bg-app-surface/80 border-b border-app-border flex items-center gap-4">
                   <div className="flex-1 relative">
                     <input
                       type="text"
                       placeholder="Filter by Material Code..."
                       value={filterMaterialCode}
                       onChange={(e) => setFilterMaterialCode(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-700 text-slate-200 text-sm rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 placeholder-slate-600 transition-colors"
+                      className="w-full bg-app-bg border border-app-border text-app-text text-sm rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent placeholder-app-text-disabled transition-colors"
                     />
-                    <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                    <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
                   </div>
                   <div className="flex-1 relative">
                     <input
@@ -319,56 +319,56 @@ const PurchasesReport = () => {
                       placeholder="Filter by Material Description..."
                       value={filterMaterialDescription}
                       onChange={(e) => setFilterMaterialDescription(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-700 text-slate-200 text-sm rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 placeholder-slate-600 transition-colors"
+                      className="w-full bg-app-bg border border-app-border text-app-text text-sm rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent placeholder-app-text-disabled transition-colors"
                     />
-                    <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                    <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
                   </div>
-                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wide bg-slate-950 px-3 py-2 rounded-lg border border-slate-800">
+                  <div className="text-xs font-bold text-app-text-muted uppercase tracking-wide bg-app-bg px-3 py-2 rounded-lg border border-app-border">
                     {filteredData.length !== data.length ? `${filteredData.length} of ${data.length} records` : `${data.length} records`}
                   </div>
                 </div>
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
-                    <thead className="bg-slate-950 border-b border-slate-800">
+                    <thead className="bg-app-bg border-b border-app-border">
                       <tr>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                          <button onClick={() => handleSort("materialCode")} className="flex items-center hover:text-cyan-400 transition-colors">
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">
+                          <button onClick={() => handleSort("materialCode")} className="flex items-center hover:text-app-accent transition-colors">
                             Material Code
                             {sortKey === "materialCode" && (sortDir === "asc" ? " ↑" : " ↓")}
                           </button>
                         </th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                          <button onClick={() => handleSort("materialDescription")} className="flex items-center hover:text-cyan-400 transition-colors">
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">
+                          <button onClick={() => handleSort("materialDescription")} className="flex items-center hover:text-app-accent transition-colors">
                             Material Description
                             {sortKey === "materialDescription" && (sortDir === "asc" ? " ↑" : " ↓")}
                           </button>
                         </th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">
-                          <button onClick={() => handleSort("poCount")} className="ml-auto flex items-center hover:text-cyan-400 transition-colors">
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-right">
+                          <button onClick={() => handleSort("poCount")} className="ml-auto flex items-center hover:text-app-accent transition-colors">
                             # of POs
                             {sortKey === "poCount" && (sortDir === "asc" ? " ↑" : " ↓")}
                           </button>
                         </th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">
-                          <button onClick={() => handleSort("totalValue")} className="ml-auto flex items-center hover:text-cyan-400 transition-colors">
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-right">
+                          <button onClick={() => handleSort("totalValue")} className="ml-auto flex items-center hover:text-app-accent transition-colors">
                             Total Value (SAR)
                             {sortKey === "totalValue" && (sortDir === "asc" ? " ↑" : " ↓")}
                           </button>
                         </th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">
-                          <button onClick={() => handleSort("totalQty")} className="ml-auto flex items-center hover:text-cyan-400 transition-colors">
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-right">
+                          <button onClick={() => handleSort("totalQty")} className="ml-auto flex items-center hover:text-app-accent transition-colors">
                             Total Qty
                             {sortKey === "totalQty" && (sortDir === "asc" ? " ↑" : " ↓")}
                           </button>
                         </th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center">Actions</th>
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-center">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-app-border/60">
                       {displayData.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="px-6 py-12 text-center text-slate-500 italic bg-slate-950/30 border border-slate-800 border-dashed m-4 rounded-xl">
+                          <td colSpan={6} className="px-6 py-12 text-center text-app-text-muted italic bg-app-bg/30 border border-app-border border-dashed m-4 rounded-xl">
                             {data.length === 0
                               ? (isAllYears ? "No purchase data found in the collection." : `No purchase data for ${selectedYear}.`)
                               : "No rows match your current filters."}
@@ -376,20 +376,20 @@ const PurchasesReport = () => {
                         </tr>
                       ) : (
                         displayData.map((row, idx) => (
-                          <tr key={row.materialKey ?? idx} className="hover:bg-slate-800/50 transition-colors group">
-                            <td className="px-5 py-3 text-sm font-bold text-cyan-400">
+                          <tr key={row.materialKey ?? idx} className="hover:bg-app-surface-muted transition-colors group">
+                            <td className="px-5 py-3 text-sm font-bold text-app-accent">
                               {row.materialCode != null && String(row.materialCode).trim() !== "" ? row.materialCode : "—"}
                             </td>
-                            <td className="px-5 py-3 text-sm text-slate-200 max-w-md truncate" title={row.materialDescription}>
+                            <td className="px-5 py-3 text-sm text-app-text max-w-md truncate" title={row.materialDescription}>
                               {row.materialDescription != null && String(row.materialDescription).trim() !== "" ? row.materialDescription : "—"}
                             </td>
-                            <td className="px-5 py-3 text-sm font-mono text-slate-300 text-right">
+                            <td className="px-5 py-3 text-sm font-mono text-app-text-secondary text-right">
                               {row.poCount ?? 0}
                             </td>
                             <td className="px-5 py-3 text-sm font-mono text-emerald-400 text-right">
                               {formatCurrency(row.totalValue)}
                             </td>
-                            <td className="px-5 py-3 text-sm font-mono text-slate-300 text-right">
+                            <td className="px-5 py-3 text-sm font-mono text-app-text-secondary text-right">
                               {formatQuantity(row.totalQty)}
                             </td>
                             <td className="px-5 py-3 text-center">
@@ -397,7 +397,7 @@ const PurchasesReport = () => {
                                 href={detailsUrl(row)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-block px-3 py-1.5 rounded-md text-[11px] font-bold bg-slate-800 text-slate-300 hover:bg-cyan-600 hover:text-white transition-all shadow-sm border border-slate-700 hover:border-cyan-500 opacity-80 group-hover:opacity-100"
+                                className="inline-block px-3 py-1.5 rounded-md text-[11px] font-bold bg-app-surface text-app-text-secondary hover:bg-app-accent hover:text-white transition-all shadow-sm border border-app-border hover:border-app-accent opacity-80 group-hover:opacity-100"
                               >
                                 View Details
                               </a>

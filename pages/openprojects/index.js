@@ -135,7 +135,7 @@ function OpenProjects() {
         accessor: 'projectName',
         Cell: ({ row }) => (
           <div 
-            className="font-semibold text-cyan-400 hover:text-cyan-300 cursor-pointer"
+            className="font-semibold text-app-accent hover:text-app-accent cursor-pointer"
             onClick={() => handleProjectClick(row.original.projectId)}
           >
             {row.original.projectId === "unassigned" 
@@ -156,7 +156,7 @@ function OpenProjects() {
           </div>
         ),
         accessor: 'projectWbs',
-        Cell: ({ row, value }) => <span className="font-semibold text-sm text-slate-100">{row.original.projectId === "unassigned" ? "N/A" : value || "Unassigned"}</span>,
+        Cell: ({ row, value }) => <span className="font-semibold text-sm text-app-text">{row.original.projectId === "unassigned" ? "N/A" : value || "Unassigned"}</span>,
       },
       {
         Header: () => (
@@ -170,7 +170,7 @@ function OpenProjects() {
         ),
         accessor: 'openPOCount',
         Cell: ({ value }) => (
-          <div className="text-center font-semibold text-slate-200">
+          <div className="text-center font-semibold text-app-text">
             {value || 0}
           </div>
         ),
@@ -187,7 +187,7 @@ function OpenProjects() {
         ),
         accessor: 'totalPOValue',
         Cell: ({ value }) => (
-          <div className="text-right font-semibold text-slate-200">
+          <div className="text-right font-semibold text-app-text">
             {formatNumber(value)}
           </div>
         ),
@@ -195,7 +195,7 @@ function OpenProjects() {
       {
         Header: () => (
           <div 
-            className="cursor-pointer flex items-center text-xs uppercase tracking-wider text-slate-400 font-bold"
+            className="cursor-pointer flex items-center text-xs uppercase tracking-wider text-app-text-muted font-bold"
             onClick={() => requestSort('totalOpenValue')}
           >
             Open PO Balance (SAR)
@@ -210,20 +210,20 @@ function OpenProjects() {
         ),
       },
       {
-        Header: () => <div className="text-xs uppercase tracking-wider text-slate-400 font-bold text-center">Actions</div>,
+        Header: () => <div className="text-xs uppercase tracking-wider text-app-text-muted font-bold text-center">Actions</div>,
         accessor: 'actions',
         Cell: ({ row }) => (
           <div className="flex gap-2 justify-center">
             <button
               onClick={() => handleViewPOTimelines(row.original.projectId)}
-              className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyan-400 hover:text-cyan-300 transition-all duration-200 text-xs font-semibold py-1.5 px-3 rounded-lg shadow-sm hover:shadow flex items-center whitespace-nowrap"
+              className="bg-app-surface hover:bg-app-surface-muted border border-app-border text-app-accent hover:text-app-accent transition-all duration-200 text-xs font-semibold py-1.5 px-3 rounded-lg shadow-sm hover:shadow flex items-center whitespace-nowrap"
             >
               <FiTrendingUp className="mr-1.5" />
               View PO timelines
             </button>
             <button
               onClick={() => handleViewPOList(row.original.projectId)}
-              className="bg-cyan-500 hover:bg-cyan-400 text-slate-900 transition-all duration-200 text-xs font-semibold py-1.5 px-3 rounded-lg shadow-sm hover:shadow flex items-center whitespace-nowrap"
+              className="bg-app-accent hover:bg-app-accent-hover text-slate-900 transition-all duration-200 text-xs font-semibold py-1.5 px-3 rounded-lg shadow-sm hover:shadow flex items-center whitespace-nowrap"
             >
               <FiList className="mr-1.5" />
               View PO list
@@ -238,10 +238,10 @@ function OpenProjects() {
   if (loading) {
     return (
       <>
-        <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
+        <div className="app-page min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto"></div>
-            <p className="mt-4 text-slate-400">Loading open projects...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-accent mx-auto"></div>
+            <p className="mt-4 text-app-text-muted">Loading open projects...</p>
           </div>
         </div>
       </>
@@ -250,18 +250,18 @@ function OpenProjects() {
 
   return (
     <>
-      <div className="min-h-screen bg-slate-950 text-slate-100 py-10">
+      <div className="app-page min-h-screen py-10">
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Header Stats */}
           <div className="mb-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
               <div>
-                <h1 className="text-4xl font-extrabold text-white mb-2 flex items-center tracking-tight">
-                  <FiFolder className="mr-3 text-cyan-400 drop-shadow-sm" />
+                <h1 className="text-4xl font-extrabold text-app-text mb-2 flex items-center tracking-tight">
+                  <FiFolder className="mr-3 text-app-accent drop-shadow-sm" />
                   Projects with Open POs
                 </h1>
-                <p className="text-slate-400 font-medium ml-1 flex items-center">
-                  <span className="w-2 h-2 rounded-full bg-cyan-500 mr-2 animate-pulse"></span>
+                <p className="text-app-text-muted font-medium ml-1 flex items-center">
+                  <span className="w-2 h-2 rounded-full bg-app-accent mr-2 animate-pulse"></span>
                   Overview of all active projects and their purchase orders
                 </p>
               </div>
@@ -269,31 +269,31 @@ function OpenProjects() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Total Projects Card */}
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg hover:border-cyan-500/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg hover:border-app-accent/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-app-accent/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
                 <div className="flex items-start justify-between relative z-10">
                   <div>
-                    <p className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-1">Open Projects</p>
-                    <p className="text-3xl font-bold text-white tracking-tight">
+                    <p className="text-sm font-semibold text-app-text-muted uppercase tracking-wider mb-1">Open Projects</p>
+                    <p className="text-3xl font-bold text-app-text tracking-tight">
                       {totals.totalProjects}
                     </p>
                   </div>
-                  <div className="p-3 bg-cyan-900/30 text-cyan-400 rounded-xl group-hover:bg-cyan-500 group-hover:text-slate-900 transition-colors duration-300 shadow-sm">
+                  <div className="p-3 bg-cyan-900/30 text-app-accent rounded-xl group-hover:bg-app-accent group-hover:text-slate-900 transition-colors duration-300 shadow-sm">
                     <FiFolder className="h-6 w-6" />
                   </div>
                 </div>
-                <div className="mt-4 flex items-center text-xs font-medium text-cyan-400 bg-cyan-900/30 rounded-lg px-2 py-1 w-fit">
+                <div className="mt-4 flex items-center text-xs font-medium text-app-accent bg-cyan-900/30 rounded-lg px-2 py-1 w-fit">
                   <span>Active Workspaces</span>
                 </div>
               </div>
 
               {/* Total POs Card */}
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg hover:border-emerald-500/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
+              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg hover:border-emerald-500/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
                 <div className="flex items-start justify-between relative z-10">
                   <div>
-                    <p className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-1">Total Open POs</p>
-                    <p className="text-3xl font-bold text-white tracking-tight">
+                    <p className="text-sm font-semibold text-app-text-muted uppercase tracking-wider mb-1">Total Open POs</p>
+                    <p className="text-3xl font-bold text-app-text tracking-tight">
                       {totals.totalPOs}
                     </p>
                   </div>
@@ -307,14 +307,14 @@ function OpenProjects() {
               </div>
 
               {/* Total PO Value Card */}
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg hover:border-purple-500/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
+              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg hover:border-purple-500/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
                 <div className="flex items-start justify-between relative z-10">
                   <div>
-                    <p className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-1">Total PO Value</p>
+                    <p className="text-sm font-semibold text-app-text-muted uppercase tracking-wider mb-1">Total PO Value</p>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-sm font-bold text-slate-500">SAR</span>
-                      <p className="text-2xl font-bold text-white tracking-tight">
+                      <span className="text-sm font-bold text-app-text-muted">SAR</span>
+                      <p className="text-2xl font-bold text-app-text tracking-tight">
                         {formatNumber(totals.totalPOValue)}
                       </p>
                     </div>
@@ -329,11 +329,11 @@ function OpenProjects() {
               </div>
 
               {/* Open Balance Card */}
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg hover:border-rose-500/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
+              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg hover:border-rose-500/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
                 <div className="flex items-start justify-between relative z-10">
                   <div>
-                    <p className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-1">Open Balance</p>
+                    <p className="text-sm font-semibold text-app-text-muted uppercase tracking-wider mb-1">Open Balance</p>
                     <div className="flex items-baseline gap-1">
                       <span className="text-sm font-bold text-rose-400">SAR</span>
                       <p className="text-2xl font-bold text-rose-400 tracking-tight">
@@ -353,19 +353,19 @@ function OpenProjects() {
           </div>
 
           {/* Projects Table */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg overflow-hidden">
-            <div className="px-6 py-5 border-b border-slate-800 bg-slate-800/50 flex justify-between items-center">
-              <h2 className="text-lg font-bold text-white flex items-center">
-                <div className="w-1.5 h-6 bg-cyan-500 rounded-full mr-3"></div>
+          <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg overflow-hidden">
+            <div className="px-6 py-5 border-b border-app-border bg-app-surface-muted flex justify-between items-center">
+              <h2 className="text-lg font-bold text-app-text flex items-center">
+                <div className="w-1.5 h-6 bg-app-accent rounded-full mr-3"></div>
                 Project Details
               </h2>
             </div>
             <div className="p-6">
               {projectsData.length === 0 ? (
-                <div className="text-center py-16 text-slate-400 flex flex-col items-center">
+                <div className="text-center py-16 text-app-text-muted flex flex-col items-center">
                   <FiFolder className="h-16 w-16 text-slate-700 mb-4" />
                   <p className="text-lg font-medium">No projects with open purchase orders found.</p>
-                  <p className="text-sm text-slate-500 mt-1">Check back later or adjust your filters.</p>
+                  <p className="text-sm text-app-text-muted mt-1">Check back later or adjust your filters.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto custom-scrollbar">

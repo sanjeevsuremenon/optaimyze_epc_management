@@ -10,8 +10,8 @@ const RATING_INSTRUCTIONS = `Rate each parameter from 1 to 5 stars. You can give
 
 function StarRow({ label, value, onChange, disabled, isOverall }) {
   return (
-    <div className={`flex flex-wrap items-center gap-2 py-1.5 border-b border-slate-900/50 last:border-b-0 ${isOverall ? 'bg-cyan-950/20 rounded-md px-2 -mx-1 border-l-2 border-cyan-500' : ''}`}>
-      <div className={`flex-1 min-w-0 ${isOverall ? 'text-xs font-bold text-cyan-400' : 'text-xs text-slate-300'}`}>
+    <div className={`flex flex-wrap items-center gap-2 py-1.5 border-b border-slate-900/50 last:border-b-0 ${isOverall ? 'bg-cyan-950/20 rounded-md px-2 -mx-1 border-l-2 border-app-accent' : ''}`}>
+      <div className={`flex-1 min-w-0 ${isOverall ? 'text-xs font-bold text-app-accent' : 'text-xs text-app-text-secondary'}`}>
         {label}
         {isOverall && <span className="ml-1 text-[10px] font-semibold text-cyan-500/80">(manual direct entry)</span>}
       </div>
@@ -39,8 +39,8 @@ function CategoryColumn({ title, labels, ratings, onChange, disabled }) {
   const hasAnyIndividualRating = [1, 2, 3, 4, 5, 6, 7, 8, 9].some((k) => ratings[k] != null && ratings[k] >= 1 && ratings[k] <= 5);
   const hasManualOverall = ratings[10] != null && ratings[10] >= 1 && ratings[10] <= 5;
   return (
-    <div className="flex-1 min-w-0 flex flex-col border border-slate-800 rounded-lg bg-slate-900/40 shadow-inner overflow-hidden">
-      <div className="px-3.5 py-2 bg-slate-900/80 text-slate-300 font-bold text-xs uppercase tracking-wider border-b border-slate-800">
+    <div className="flex-1 min-w-0 flex flex-col border border-app-border rounded-lg bg-app-surface-muted shadow-inner overflow-hidden">
+      <div className="px-3.5 py-2 bg-app-surface/80 text-app-text-secondary font-bold text-xs uppercase tracking-wider border-b border-app-border">
         {title}
       </div>
       <div className="p-3 space-y-0">
@@ -62,9 +62,9 @@ function CategoryColumn({ title, labels, ratings, onChange, disabled }) {
         })}
       </div>
       {overall != null && (
-        <div className="px-3.5 py-1.5 bg-slate-900/60 text-xs text-slate-400 border-t border-slate-800 flex justify-between items-center">
+        <div className="px-3.5 py-1.5 bg-app-surface-muted/80 text-xs text-app-text-muted border-t border-app-border flex justify-between items-center">
           <span>Computed overall score:</span>
-          <span className="font-black text-amber-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-850">{overall.toFixed(1)} / 5</span>
+          <span className="font-black text-amber-400 bg-app-bg px-2 py-0.5 rounded border border-slate-850">{overall.toFixed(1)} / 5</span>
         </div>
       )}
     </div>
@@ -81,13 +81,13 @@ export default function VendorFeedbackRatingCard({
   disableServices = false,
 }) {
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900/20 p-4 shadow-lg">
-      <div className="mb-4 p-3 rounded-lg bg-slate-950 border border-slate-850 text-xs">
-        <p className="font-bold text-cyan-400 mb-1 flex items-center gap-1.5">
+    <div className="rounded-xl border border-app-border bg-app-surface/20 p-4 shadow-lg">
+      <div className="mb-4 p-3 rounded-lg bg-app-bg border border-slate-850 text-xs">
+        <p className="font-bold text-app-accent mb-1 flex items-center gap-1.5">
           <FontAwesomeIcon icon={faInfoCircle} className="text-cyan-500" />
           Rating Instructions
         </p>
-        <p className="text-slate-400 leading-normal">{RATING_INSTRUCTIONS}</p>
+        <p className="text-app-text-muted leading-normal">{RATING_INSTRUCTIONS}</p>
       </div>
       <div className="flex flex-col md:flex-row gap-4">
         <div className={`flex-1 transition-all duration-300 ${disableMaterials ? 'opacity-30 pointer-events-none' : 'opacity-100'}`}>

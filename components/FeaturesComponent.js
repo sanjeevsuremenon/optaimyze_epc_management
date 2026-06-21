@@ -6,7 +6,7 @@ function FeaturesComponent() {
     <div className="relative bg-white opacity-50 dark:bg-gray-500 pb-5">
       <div className="lg:grid lg:grid-flow-row-dense lg:grid-cols-2 lg:gap-1 lg:items-center">
         <div className="lg:pl-2">
-          <h4 className="text-[18px] leading-8 font-extrabold mb-20 text-gray-900 dark:text-white tracking-tight sm:leading-9">
+          <h4 className="text-[18px] leading-8 font-extrabold mb-20 text-gray-900 dark:text-app-text tracking-tight sm:leading-9">
             Manage everything outside SAP direct in browser
           </h4>
           <ul className="mt-2">
@@ -27,10 +27,10 @@ function FeaturesComponent() {
                   </div>
                 </div>
                 <div className="ml-4">
-                  <h5 className="text-md leading-6 text-gray-900 dark:text-white font-bold">
+                  <h5 className="text-md leading-6 text-gray-900 dark:text-app-text font-bold">
                     Search Materials
                   </h5>
-                  <p className="mt-1 text-[12px] leading-5 text-gray-500 dark:text-gray-300">
+                  <p className="mt-1 text-[12px] leading-5 text-gray-500 dark:text-app-text-secondary">
                     Know everything about your materials from your dashboard-price, stock, incoming orders, requisitions.
                   </p>
                 </div>
@@ -53,10 +53,10 @@ function FeaturesComponent() {
                   </div>
                 </div>
                 <div className="ml-4">
-                  <h5 className="text-md leading-6 text-gray-900 dark:text-white font-bold">
+                  <h5 className="text-md leading-6 text-gray-900 dark:text-app-text font-bold">
                     Monitor your Purchase Orders
                   </h5>
-                  <p className="mt-2 text-[12px] leading-5 text-gray-500 dark:text-gray-300">
+                  <p className="mt-2 text-[12px] leading-5 text-gray-500 dark:text-app-text-secondary">
                     All your orders in one place so you can manage your
                     delivery, expediting & monitoring.
                   </p>
@@ -80,10 +80,10 @@ function FeaturesComponent() {
                   </div>
                 </div>
                 <div className="ml-4">
-                  <h5 className="text-md leading-6 text-gray-900 dark:text-white font-bold">
+                  <h5 className="text-md leading-6 text-gray-900 dark:text-app-text font-bold">
                     Control Projects
                   </h5>
-                  <p className="mt-2 text-[12px] leading-5 text-gray-500 dark:text-gray-300 pb-3">
+                  <p className="mt-2 text-[12px] leading-5 text-gray-500 dark:text-app-text-secondary pb-3">
                     Projects visibility of incoming materials, stock & requisitions already made.
                   </p>
                   

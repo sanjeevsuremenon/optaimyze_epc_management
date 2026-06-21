@@ -90,7 +90,7 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
       case 'png':
         return <FiImage className="text-emerald-400 text-xl" />;
       default:
-        return <FiFile className="text-slate-400 text-xl" />;
+        return <FiFile className="text-app-text-muted text-xl" />;
     }
   };
 
@@ -105,10 +105,10 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
       'INSURANCE': 'bg-pink-500/10 text-pink-400 border border-pink-500/20',
       'ZATCA': 'bg-teal-500/10 text-teal-400 border border-teal-500/20',
       'BANK_ACCOUNT_LETTER': 'bg-orange-500/10 text-orange-400 border border-orange-500/20',
-      'CLIENT_REFERENCES': 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20',
+      'CLIENT_REFERENCES': 'bg-app-accent/10 text-app-accent border border-app-accent/20',
       'APPROVAL_LETTERS': 'bg-lime-500/10 text-lime-400 border border-lime-500/20',
       'PREQUALIFICATION_SHEET': 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
-      'OTHER': 'bg-slate-500/10 text-slate-400 border border-slate-500/20'
+      'OTHER': 'bg-slate-500/10 text-app-text-muted border border-slate-500/20'
     };
     return colors[type] || colors['OTHER'];
   };
@@ -122,20 +122,20 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
-        <span className="ml-3 text-slate-400 font-medium">Loading documents...</span>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-app-accent"></div>
+        <span className="ml-3 text-app-text-muted font-medium">Loading documents...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-center py-12 bg-slate-950/50 rounded-xl border border-rose-500/20">
+      <div className="text-center py-12 bg-app-bg/50 rounded-xl border border-rose-500/20">
         <div className="text-rose-400 font-bold mb-2">Error Loading Documents</div>
-        <div className="text-sm text-slate-400 mb-4">{error}</div>
+        <div className="text-sm text-app-text-muted mb-4">{error}</div>
         <button
           onClick={fetchDocuments}
-          className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition-colors border border-slate-700"
+          className="px-4 py-2 bg-app-surface hover:bg-app-surface-muted text-app-text rounded-lg transition-colors border border-app-border"
         >
           Retry
         </button>
@@ -146,16 +146,16 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
   return (
     <div className="space-y-6">
       {documents.length > 0 && (
-        <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-app-bg border border-app-border rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex-1 max-w-sm">
-            <label htmlFor="filterType" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <label htmlFor="filterType" className="block text-xs font-bold text-app-text-muted uppercase tracking-wider mb-2">
               Filter by Type
             </label>
             <select
               id="filterType"
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+              className="w-full bg-app-surface border border-app-border text-app-text text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent"
             >
               <option value="ALL">All Documents ({documents.length})</option>
               {uniqueDocumentTypes.map(type => (
@@ -167,22 +167,22 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
       )}
 
       {filteredDocuments.length === 0 ? (
-        <div className="text-center py-16 bg-slate-950/50 rounded-xl border border-slate-800 border-dashed">
+        <div className="text-center py-16 bg-app-bg/50 rounded-xl border border-app-border border-dashed">
           <FiFile className="mx-auto h-12 w-12 text-slate-700 mb-4" />
-          <p className="text-slate-400 font-medium">
+          <p className="text-app-text-muted font-medium">
             {documents.length === 0 ? 'No documents uploaded yet.' : 'No documents match the selected filter.'}
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredDocuments.map((document) => (
-            <div key={document._id} className="bg-slate-950 border border-slate-800 rounded-xl p-4 hover:border-cyan-900 transition-colors group flex flex-col">
+            <div key={document._id} className="bg-app-bg border border-app-border rounded-xl p-4 hover:border-cyan-900 transition-colors group flex flex-col">
               <div className="flex items-start gap-3 mb-3">
-                <div className="mt-1 bg-slate-900 p-2 rounded-lg border border-slate-800">
+                <div className="mt-1 bg-app-surface p-2 rounded-lg border border-app-border">
                   {getFileIcon(document.filename)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-bold text-slate-200 truncate" title={document.filename}>
+                  <h3 className="text-sm font-bold text-app-text truncate" title={document.filename}>
                     {document.filename}
                   </h3>
                   <div className="mt-1.5">
@@ -194,32 +194,32 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
               </div>
               
               {document.description && (
-                <p className="text-xs text-slate-400 mb-4 line-clamp-2 flex-1">{document.description}</p>
+                <p className="text-xs text-app-text-muted mb-4 line-clamp-2 flex-1">{document.description}</p>
               )}
               {!document.description && <div className="flex-1"></div>}
               
-              <div className="text-[10px] text-slate-500 mb-4 pt-4 border-t border-slate-800/80">
-                Uploaded by <span className="text-slate-400 font-medium">{document.uploadedBy}</span> on {new Date(document.uploadedAt).toLocaleDateString()}
+              <div className="text-[10px] text-app-text-muted mb-4 pt-4 border-t border-app-border/80">
+                Uploaded by <span className="text-app-text-muted font-medium">{document.uploadedBy}</span> on {new Date(document.uploadedAt).toLocaleDateString()}
               </div>
               
               <div className="flex items-center gap-2 mt-auto">
                 <button
                   onClick={() => handleViewDocument(document)}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 bg-slate-900 hover:bg-cyan-900/40 text-cyan-400 rounded-lg transition-colors border border-slate-800 hover:border-cyan-800 text-xs font-semibold"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 bg-app-surface hover:bg-cyan-900/40 text-app-accent rounded-lg transition-colors border border-app-border hover:border-cyan-800 text-xs font-semibold"
                   title="View Document"
                 >
                   <FiEye /> View
                 </button>
                 <button
                   onClick={() => handleDownloadDocument(document)}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 bg-slate-900 hover:bg-emerald-900/40 text-emerald-400 rounded-lg transition-colors border border-slate-800 hover:border-emerald-800 text-xs font-semibold"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 bg-app-surface hover:bg-emerald-900/40 text-emerald-400 rounded-lg transition-colors border border-app-border hover:border-emerald-800 text-xs font-semibold"
                   title="Download Document"
                 >
                   <FiDownload /> Save
                 </button>
                 <button
                   onClick={() => handleDeleteDocument(document._id)}
-                  className="inline-flex items-center justify-center p-1.5 bg-slate-900 hover:bg-rose-900/40 text-rose-400 rounded-lg transition-colors border border-slate-800 hover:border-rose-800"
+                  className="inline-flex items-center justify-center p-1.5 bg-app-surface hover:bg-rose-900/40 text-rose-400 rounded-lg transition-colors border border-app-border hover:border-rose-800"
                   title="Delete Document"
                 >
                   <FiTrash2 />
@@ -233,24 +233,24 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
       {/* Document Viewer Modal */}
       {viewMode && selectedDocument && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-6">
-          <div className="bg-slate-950 border border-slate-800 rounded-2xl max-w-5xl w-full h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-fade-in-up">
-            <div className="flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800">
+          <div className="bg-app-bg border border-app-border rounded-2xl max-w-5xl w-full h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-fade-in-up">
+            <div className="flex items-center justify-between p-4 bg-app-surface border-b border-app-border">
               <div className="flex items-center gap-3">
                 {getFileIcon(selectedDocument.filename)}
-                <h3 className="text-lg font-bold text-slate-100 truncate max-w-md" title={selectedDocument.filename}>
+                <h3 className="text-lg font-bold text-app-text truncate max-w-md" title={selectedDocument.filename}>
                   {selectedDocument.filename}
                 </h3>
               </div>
               <button
                 onClick={() => setViewMode(false)}
-                className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+                className="p-2 text-app-text-muted hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
                 title="Close Viewer"
               >
                 <FiX size={20} />
               </button>
             </div>
             
-            <div className="flex-1 overflow-hidden bg-slate-950 relative rounded-b-2xl">
+            <div className="flex-1 overflow-hidden bg-app-bg relative rounded-b-2xl">
               {(() => {
                 const fileType = selectedDocument.filename.split('.').pop().toLowerCase();
                 const filePath = `/${vendorCode}/${selectedDocument.filename}`;
@@ -265,24 +265,24 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
                   );
                 } else if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileType)) {
                   return (
-                    <div className="flex items-center justify-center h-full p-4 bg-slate-900/50">
+                    <div className="flex items-center justify-center h-full p-4 bg-app-surface-muted">
                       <img 
                         src={filePath} 
                         alt={selectedDocument.filename} 
-                        className="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-slate-800"
+                        className="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-app-border"
                       />
                     </div>
                   );
                 } else {
                   return (
-                    <div className="absolute inset-0 flex items-center justify-center bg-slate-950">
+                    <div className="absolute inset-0 flex items-center justify-center bg-app-bg">
                       <div className="text-center p-6 border border-rose-500/20 bg-rose-500/10 rounded-xl max-w-sm">
                         <FiFile className="mx-auto h-12 w-12 text-rose-400 mb-4" />
                         <h4 className="text-lg font-bold text-rose-400 mb-2">Format Not Supported</h4>
-                        <p className="text-slate-300 text-sm mb-4">This file format cannot be previewed in the browser.</p>
+                        <p className="text-app-text-secondary text-sm mb-4">This file format cannot be previewed in the browser.</p>
                         <button 
                           onClick={() => handleDownloadDocument(selectedDocument)}
-                          className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition-colors border border-slate-700 text-sm font-medium inline-flex items-center gap-2"
+                          className="px-4 py-2 bg-app-surface hover:bg-app-surface-muted text-app-text rounded-lg transition-colors border border-app-border text-sm font-medium inline-flex items-center gap-2"
                         >
                           <FiDownload /> Download Instead
                         </button>

@@ -34,34 +34,34 @@ export default function VendorEvaluationList() {
         <div className="min-h-screen pb-12">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-extrabold tracking-tight text-white mb-2 drop-shadow-sm">
+            <h1 className="text-4xl font-extrabold tracking-tight text-app-text mb-2 drop-shadow-sm">
               Vendor Evaluations
             </h1>
-            <p className="text-slate-400 text-sm md:text-base">
+            <p className="text-app-text-muted text-sm md:text-base">
               Overview of all evaluated suppliers, PO transactions performance and audit scores
             </p>
           </div>
 
           {/* Evaluations Table Card */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-[0_20px_55px_rgba(15,23,42,0.22)] overflow-hidden">
-            <div className="p-5 border-b border-slate-800 bg-slate-950/30 flex justify-between items-center">
-              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                <Star size={16} className="text-cyan-400" />
+          <div className="bg-app-surface border border-app-border rounded-2xl shadow-[0_20px_55px_rgba(15,23,42,0.22)] overflow-hidden">
+            <div className="p-5 border-b border-app-border bg-app-bg/30 flex justify-between items-center">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-app-text-muted flex items-center gap-1.5">
+                <Star size={16} className="text-app-accent" />
                 Evaluated Vendor Master List ({evalmarks.length})
               </h2>
             </div>
 
             {isLoading ? (
               <div className="flex justify-center items-center py-20">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-500"></div>
-                <span className="ml-3 text-slate-400 font-semibold text-sm">Loading evaluations...</span>
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-app-accent"></div>
+                <span className="ml-3 text-app-text-muted font-semibold text-sm">Loading evaluations...</span>
               </div>
             ) : evalmarks.length === 0 ? (
-              <p className="text-slate-400 text-center py-20">No evaluations found.</p>
+              <p className="text-app-text-muted text-center py-20">No evaluations found.</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
-                  <thead className="bg-slate-950 border-b border-slate-800 text-slate-400 font-bold uppercase tracking-wider text-[9px]">
+                  <thead className="bg-app-bg border-b border-app-border text-app-text-muted font-bold uppercase tracking-wider text-[9px]">
                     <tr>
                       <th className="py-4 px-5">Vendor Code</th>
                       <th className="py-4 px-5">Vendor Name</th>
@@ -72,22 +72,22 @@ export default function VendorEvaluationList() {
                       <th className="py-4 px-5 text-right w-28">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60">
+                  <tbody className="divide-y divide-app-border/60">
                     {evalmarks.map((evalmark, index) => {
-                      const bgClass = index % 2 === 0 ? "bg-slate-900/60" : "bg-slate-900/30";
+                      const bgClass = index % 2 === 0 ? "bg-app-surface-muted/80" : "bg-app-surface-muted";
                       return (
                         <tr
                           key={index}
-                          className={`${bgClass} hover:bg-slate-800/40 transition-colors group`}
+                          className={`${bgClass} hover:bg-app-surface/40 transition-colors group`}
                         >
-                          <td className="py-3.5 px-5 font-mono font-semibold text-cyan-400">
+                          <td className="py-3.5 px-5 font-mono font-semibold text-app-accent">
                             {evalmark.vendorcode}
                           </td>
-                          <td className="py-3.5 px-5 text-sm font-bold text-slate-200">
+                          <td className="py-3.5 px-5 text-sm font-bold text-app-text">
                             {evalmark.vendorname}
                           </td>
                           <td className="py-3.5 px-5 text-center">
-                            <span className="inline-block bg-slate-950/80 border border-slate-850 px-2.5 py-1 rounded text-cyan-400 font-bold font-mono">
+                            <span className="inline-block bg-app-surface-muted border border-slate-850 px-2.5 py-1 rounded text-app-accent font-bold font-mono">
                               {evalmark.finalfixedscore?.$numberDecimal || evalmark.finalfixedscore || "0"}
                             </span>
                           </td>
@@ -109,7 +109,7 @@ export default function VendorEvaluationList() {
                           <td className="py-3.5 px-5 text-right">
                             <Link
                               href={`/vendorevaluation/webformat/${evalmark.vendorcode}`}
-                              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-800 border border-slate-700 hover:bg-cyan-600 hover:border-cyan-500 text-slate-300 hover:text-white rounded text-[10px] font-semibold transition-all shadow-sm"
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 app-card hover:bg-app-accent hover:border-app-accent text-app-text-secondary hover:text-white rounded text-[10px] font-semibold transition-all shadow-sm"
                             >
                               <Eye size={12} className="mr-1" /> Details
                             </Link>

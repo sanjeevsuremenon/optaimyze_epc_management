@@ -61,7 +61,7 @@ function PurchaseOrderSearch() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex-1 flex flex-col font-sans">
+    <div className="app-page min-h-screen flex-1 flex flex-col font-sans">
       <Head>
         <title>Purchase Order Search</title>
       </Head>
@@ -69,104 +69,104 @@ function PurchaseOrderSearch() {
         <div className="mx-auto" style={{ maxWidth: '1400px' }}>
           {/* Page Title */}
           <div className="mb-8">
-            <h1 className="text-3xl font-extrabold text-slate-100 tracking-tight mb-2">Purchase Order Search</h1>
-            <p className="text-slate-400">Search by vendor, project, material, or PO number. Use * to separate up to 4 search terms.</p>
+            <h1 className="text-3xl font-extrabold text-app-text tracking-tight mb-2">Purchase Order Search</h1>
+            <p className="text-app-text-muted">Search by vendor, project, material, or PO number. Use * to separate up to 4 search terms.</p>
           </div>
 
           {/* Search Section */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-xl p-6 mb-8">
+          <div className="bg-app-surface border border-app-border rounded-xl shadow-xl p-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Vendor Search */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">
+                <label className="block text-xs font-semibold text-app-text-muted uppercase tracking-wide mb-2">
                   Vendor Name
                 </label>
                 <div className="relative">
                   <input
                     type="text"
                     placeholder="e.g., vendor*name*term"
-                    className="w-full px-4 py-2.5 pl-10 bg-slate-950 border border-slate-700 text-slate-200 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors placeholder-slate-600"
+                    className="w-full px-4 py-2.5 pl-10 bg-app-bg border border-app-border text-app-text rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent transition-colors placeholder-app-text-disabled"
                     value={vendorSearch}
                     onChange={(e) => setVendorSearch(e.target.value)}
                   />
-                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
                 </div>
               </div>
 
               {/* Project Search */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">
+                <label className="block text-xs font-semibold text-app-text-muted uppercase tracking-wide mb-2">
                   Project Name/WBS
                 </label>
                 <div className="relative">
                   <input
                     type="text"
                     placeholder="e.g., project*name*term"
-                    className="w-full px-4 py-2.5 pl-10 bg-slate-950 border border-slate-700 text-slate-200 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors placeholder-slate-600"
+                    className="w-full px-4 py-2.5 pl-10 bg-app-bg border border-app-border text-app-text rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent transition-colors placeholder-app-text-disabled"
                     value={projectSearch}
                     onChange={(e) => setProjectSearch(e.target.value)}
                   />
-                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
                 </div>
               </div>
 
               {/* Material Search */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">
+                <label className="block text-xs font-semibold text-app-text-muted uppercase tracking-wide mb-2">
                   Material Description
                 </label>
                 <div className="relative">
                   <input
                     type="text"
                     placeholder="e.g., material*description*term"
-                    className="w-full px-4 py-2.5 pl-10 bg-slate-950 border border-slate-700 text-slate-200 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors placeholder-slate-600"
+                    className="w-full px-4 py-2.5 pl-10 bg-app-bg border border-app-border text-app-text rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent transition-colors placeholder-app-text-disabled"
                     value={materialSearch}
                     onChange={(e) => setMaterialSearch(e.target.value)}
                   />
-                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
                 </div>
               </div>
 
               {/* PO Number Search */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">
+                <label className="block text-xs font-semibold text-app-text-muted uppercase tracking-wide mb-2">
                   PO Number
                 </label>
                 <div className="relative">
                   <input
                     type="text"
                     placeholder="e.g., 4500*1289"
-                    className="w-full px-4 py-2.5 pl-10 bg-slate-950 border border-slate-700 text-slate-200 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors placeholder-slate-600"
+                    className="w-full px-4 py-2.5 pl-10 bg-app-bg border border-app-border text-app-text rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent transition-colors placeholder-app-text-disabled"
                     value={ponumberSearch}
                     onChange={(e) => setPonumberSearch(e.target.value)}
                   />
-                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
                 </div>
               </div>
             </div>
           </div>
 
           {/* Results Section */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-xl overflow-hidden">
-            <div className="p-5 border-b border-slate-800 bg-slate-900/50 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-slate-100 flex items-center">
+          <div className="bg-app-surface border border-app-border rounded-xl shadow-xl overflow-hidden">
+            <div className="p-5 border-b border-app-border bg-app-surface-muted flex items-center justify-between">
+              <h2 className="text-lg font-bold text-app-text flex items-center">
                 Search Results 
-                {results.length > 0 && <span className="ml-3 px-2.5 py-0.5 rounded-full bg-cyan-900/50 text-cyan-400 text-xs font-medium border border-cyan-800/50">{results.length} found</span>}
+                {results.length > 0 && <span className="ml-3 px-2.5 py-0.5 rounded-full bg-cyan-900/50 text-app-accent text-xs font-medium border border-cyan-800/50">{results.length} found</span>}
               </h2>
             </div>
             
             {loading ? (
               <div className="flex justify-center items-center p-12">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-500"></div>
-                <span className="ml-4 text-slate-400 font-medium">Searching...</span>
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-app-accent"></div>
+                <span className="ml-4 text-app-text-muted font-medium">Searching...</span>
               </div>
             ) : results.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-16 text-center">
-                <div className="w-20 h-20 rounded-full bg-slate-800/50 flex items-center justify-center mb-4 border border-slate-700/50">
-                  <FiSearch className="w-8 h-8 text-slate-500" />
+                <div className="w-20 h-20 rounded-full bg-app-surface-muted flex items-center justify-center mb-4 border border-app-border/50">
+                  <FiSearch className="w-8 h-8 text-app-text-muted" />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-300 mb-2">No Results Found</h3>
-                <p className="text-slate-500 text-sm max-w-sm">Enter search criteria above to find purchase orders. The table will update automatically.</p>
+                <h3 className="text-lg font-semibold text-app-text-secondary mb-2">No Results Found</h3>
+                <p className="text-app-text-muted text-sm max-w-sm">Enter search criteria above to find purchase orders. The table will update automatically.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -179,56 +179,56 @@ function PurchaseOrderSearch() {
                     <col className="w-[30%]" />
                     <col className="w-[28%]" />
                   </colgroup>
-                  <thead className="bg-slate-950 sticky top-0 z-10 shadow-sm border-b border-slate-800">
+                  <thead className="bg-app-bg sticky top-0 z-10 shadow-sm border-b border-app-border">
                     <tr>
-                      <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">PO Number</th>
-                      <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">PO Date</th>
-                      <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Delivery</th>
-                      <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Vendor Code</th>
-                      <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Vendor Name</th>
-                      <th className="px-4 py-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">Actions</th>
+                      <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">PO Number</th>
+                      <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">PO Date</th>
+                      <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">Delivery</th>
+                      <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">Vendor Code</th>
+                      <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">Vendor Name</th>
+                      <th className="px-4 py-3 text-[11px] font-bold text-app-text-muted uppercase tracking-wider text-center">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/50">
+                  <tbody className="divide-y divide-app-border/50">
                     {results.map((po, index) => (
                       <tr 
                         key={index} 
-                        className="hover:bg-slate-800/40 transition-colors group"
+                        className="hover:bg-app-surface/40 transition-colors group"
                       >
-                        <td className="px-4 py-3 text-xs font-semibold text-cyan-400">
+                        <td className="px-4 py-3 text-xs font-semibold text-app-accent">
                           {po.ponum}
                         </td>
-                        <td className="px-4 py-3 text-xs text-slate-300">
+                        <td className="px-4 py-3 text-xs text-app-text-secondary">
                           {po.podate ? moment(po.podate).format('MM/DD/YYYY') : 'N/A'}
                         </td>
-                        <td className="px-4 py-3 text-xs text-slate-300">
+                        <td className="px-4 py-3 text-xs text-app-text-secondary">
                           {po["delivery-date"] ? moment(po["delivery-date"]).format('MM/DD/YYYY') : 'N/A'}
                         </td>
-                        <td className="px-4 py-3 text-xs font-mono text-slate-400">
+                        <td className="px-4 py-3 text-xs font-mono text-app-text-muted">
                           {po.vendorcode || 'N/A'}
                         </td>
-                        <td className="px-4 py-3 text-xs text-slate-200 capitalize break-words">
+                        <td className="px-4 py-3 text-xs text-app-text capitalize break-words">
                           {po.vendorname?.toLowerCase() || 'N/A'}
                         </td>
                         <td className="px-4 py-2">
                           <div className="flex items-center justify-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
                             <button
                               onClick={() => router.push(`/openpurchaseorders1/schedule/${po.ponum}`)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-slate-800 hover:bg-violet-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-violet-500"
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-app-surface hover:bg-violet-600 text-app-text-secondary hover:text-app-text rounded text-[10px] font-medium transition-all shadow-sm border border-app-border hover:border-violet-500"
                               title="Update Schedule"
                             >
                               <FiCalendar size={12} /> Schedule
                             </button>
                             <button
                               onClick={() => openComments(po.ponum)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-blue-500"
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-app-surface hover:bg-blue-600 text-app-text-secondary hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-app-border hover:border-blue-500"
                               title="View/Add Comments"
                             >
                               <FiMessageSquare size={12} /> Comment
                             </button>
                             <button
                               onClick={() => router.push(`/openpurchaseorders1/view/${po.ponum}`)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-slate-800 hover:bg-cyan-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-cyan-500"
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-app-surface hover:bg-app-accent text-app-text-secondary hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-app-border hover:border-app-accent"
                               title="View PO Details & Timeline"
                             >
                               <FiEye size={12} /> View

@@ -157,7 +157,7 @@ export default function Vendors1() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex-1 flex flex-col font-sans">
+    <div className="app-page min-h-screen flex-1 flex flex-col font-sans">
       <Head>
         <title>Master Vendors Hub | MM Portal</title>
       </Head>
@@ -165,23 +165,23 @@ export default function Vendors1() {
         <div className="mx-auto" style={{ maxWidth: '1400px' }}>
           
           {/* Header & Search */}
-          <div className="mb-8 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+          <div className="mb-8 bg-app-surface border border-app-border rounded-2xl p-6 shadow-xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <div>
-                <h1 className="text-3xl font-extrabold text-slate-100 tracking-tight mb-2">Master Vendors Hub</h1>
-                <p className="text-slate-400">Search and manage vendor qualifications, evaluations, and purchase orders.</p>
+                <h1 className="text-3xl font-extrabold text-app-text tracking-tight mb-2">Master Vendors Hub</h1>
+                <p className="text-app-text-muted">Search and manage vendor qualifications, evaluations, and purchase orders.</p>
               </div>
-              <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 p-1 rounded-lg">
+              <div className="flex items-center gap-2 bg-app-bg border border-app-border p-1 rounded-lg">
                 <button
                   onClick={() => setLayoutMode('table')}
-                  className={`p-2 rounded-md transition-colors ${layoutMode === 'table' ? 'bg-slate-800 text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
+                  className={`p-2 rounded-md transition-colors ${layoutMode === 'table' ? 'bg-app-surface text-app-accent' : 'text-app-text-muted hover:text-app-text-secondary'}`}
                   title="Table View"
                 >
                   <FiList className="text-lg" />
                 </button>
                 <button
                   onClick={() => setLayoutMode('card')}
-                  className={`p-2 rounded-md transition-colors ${layoutMode === 'card' ? 'bg-slate-800 text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
+                  className={`p-2 rounded-md transition-colors ${layoutMode === 'card' ? 'bg-app-surface text-app-accent' : 'text-app-text-muted hover:text-app-text-secondary'}`}
                   title="Card View"
                 >
                   <FiGrid className="text-lg" />
@@ -193,34 +193,34 @@ export default function Vendors1() {
               <input
                 type="text"
                 placeholder="Search vendors by name or code..."
-                className="w-full bg-slate-950 border border-slate-700 text-slate-200 text-lg rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 placeholder-slate-600 transition-colors shadow-inner"
+                className="w-full bg-app-bg border border-app-border text-app-text text-lg rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent placeholder-app-text-disabled transition-colors shadow-inner"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <FiSearch className="absolute left-5 top-1/2 transform -translate-y-1/2 text-slate-500 text-xl" />
+              <FiSearch className="absolute left-5 top-1/2 transform -translate-y-1/2 text-app-text-muted text-xl" />
             </div>
           </div>
 
           {/* Vendors List Section */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-xl overflow-hidden mb-8">
+          <div className="bg-app-surface border border-app-border rounded-xl shadow-xl overflow-hidden mb-8">
             {vendors.length === 0 && !loading ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
                 <FiUsers className="w-16 h-16 text-slate-700 mb-4" />
-                <h3 className="text-xl font-bold text-slate-300 mb-2">No Vendors Found</h3>
-                <p className="text-slate-500">Try adjusting your search criteria.</p>
+                <h3 className="text-xl font-bold text-app-text-secondary mb-2">No Vendors Found</h3>
+                <p className="text-app-text-muted">Try adjusting your search criteria.</p>
               </div>
             ) : layoutMode === 'table' ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
-                  <thead className="bg-slate-950 border-b border-slate-800">
+                  <thead className="bg-app-bg border-b border-app-border">
                     <tr>
-                      <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Vendor Code</th>
-                      <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Vendor Name</th>
-                      <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">PO Count</th>
-                      <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center">Actions</th>
+                      <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Vendor Code</th>
+                      <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Vendor Name</th>
+                      <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-right">PO Count</th>
+                      <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-center">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60">
+                  <tbody className="divide-y divide-app-border/60">
                     {vendors.map((vendor, index) => {
                       const isSelected = selectedVendor === vendor["vendor-code"];
                       const isLast = index === vendors.length - 1;
@@ -229,36 +229,36 @@ export default function Vendors1() {
                           key={vendor["vendor-code"]}
                           ref={isLast ? lastVendorElementRef : null}
                           onClick={() => setSelectedVendor(isSelected ? null : vendor["vendor-code"])}
-                          className={`cursor-pointer transition-colors group ${isSelected ? 'bg-cyan-900/20 border-l-4 border-cyan-500' : 'hover:bg-slate-800/50 border-l-4 border-transparent'}`}
+                          className={`cursor-pointer transition-colors group ${isSelected ? 'bg-cyan-900/20 border-l-4 border-app-accent' : 'hover:bg-app-surface-muted border-l-4 border-transparent'}`}
                         >
-                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-cyan-400">
+                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-app-accent">
                             {vendor["vendor-code"]}
                           </td>
-                          <td className="px-5 py-4 text-sm font-bold text-slate-200 capitalize">
+                          <td className="px-5 py-4 text-sm font-bold text-app-text capitalize">
                             {vendor["vendor-name"]?.toLowerCase()}
                           </td>
-                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-slate-400 text-right">
+                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-app-text-muted text-right">
                             {vendor.poCount || 0}
                           </td>
                           <td className="px-5 py-4">
                             <div className="flex items-center justify-center gap-2">
                               <button
                                 onClick={(e) => { e.stopPropagation(); window.open(`/vendor-dashboard?vendorcode=${vendor["vendor-code"]}`, '_blank'); }}
-                                className="p-2 bg-slate-800 hover:bg-violet-600 text-slate-300 hover:text-white rounded-lg transition-all shadow-sm border border-slate-700 hover:border-violet-500"
+                                className="p-2 bg-app-surface hover:bg-violet-600 text-app-text-secondary hover:text-app-text rounded-lg transition-all shadow-sm border border-app-border hover:border-violet-500"
                                 title="Vendor Dashboard"
                               >
                                 <FiPieChart />
                               </button>
                               <button
                                 onClick={(e) => { e.stopPropagation(); window.open(`/vendordocview/${vendor["vendor-code"]}`, '_blank'); }}
-                                className="p-2 bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white rounded-lg transition-all shadow-sm border border-slate-700 hover:border-emerald-500"
+                                className="p-2 bg-app-surface hover:bg-emerald-600 text-app-text-secondary hover:text-white rounded-lg transition-all shadow-sm border border-app-border hover:border-emerald-500"
                                 title="Qualification & Documents"
                               >
                                 <FiFolder />
                               </button>
                               <button
                                 onClick={(e) => { e.stopPropagation(); window.open(`/vendorevaluation/webformat/${vendor["vendor-code"]}`, '_blank'); }}
-                                className="p-2 bg-slate-800 hover:bg-amber-600 text-slate-300 hover:text-white rounded-lg transition-all shadow-sm border border-slate-700 hover:border-amber-500"
+                                className="p-2 bg-app-surface hover:bg-amber-600 text-app-text-secondary hover:text-white rounded-lg transition-all shadow-sm border border-app-border hover:border-amber-500"
                                 title="Vendor Evaluation"
                               >
                                 <FiStar />
@@ -281,37 +281,37 @@ export default function Vendors1() {
                       key={vendor["vendor-code"]}
                       ref={isLast ? lastVendorElementRef : null}
                       onClick={() => setSelectedVendor(isSelected ? null : vendor["vendor-code"])}
-                      className={`cursor-pointer p-5 rounded-xl border transition-all duration-200 ${isSelected ? 'bg-cyan-900/10 border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.15)]' : 'bg-slate-950 border-slate-800 hover:border-slate-600 shadow-md'}`}
+                      className={`cursor-pointer p-5 rounded-xl border transition-all duration-200 ${isSelected ? 'bg-cyan-900/10 border-app-accent shadow-[0_0_15px_rgba(6,182,212,0.15)]' : 'bg-app-bg border-slate-800 hover:border-slate-600 shadow-md'}`}
                     >
                       <div className="flex justify-between items-start mb-4">
-                        <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-950 px-2 py-1 rounded border border-cyan-900">
+                        <span className="text-xs font-mono font-bold text-app-accent bg-cyan-950 px-2 py-1 rounded border border-cyan-900">
                           {vendor["vendor-code"]}
                         </span>
-                        <span className="text-xs font-bold text-slate-500 bg-slate-900 px-2 py-1 rounded border border-slate-800">
+                        <span className="text-xs font-bold text-app-text-muted bg-app-surface px-2 py-1 rounded border border-app-border">
                           {vendor.poCount || 0} POs
                         </span>
                       </div>
-                      <h3 className="text-lg font-bold text-slate-200 capitalize mb-6 line-clamp-2 min-h-[56px]">
+                      <h3 className="text-lg font-bold text-app-text capitalize mb-6 line-clamp-2 min-h-[56px]">
                         {vendor["vendor-name"]?.toLowerCase()}
                       </h3>
-                      <div className="flex justify-between pt-4 border-t border-slate-800/80">
+                      <div className="flex justify-between pt-4 border-t border-app-border/80">
                         <button
                           onClick={(e) => { e.stopPropagation(); window.open(`/vendor-dashboard?vendorcode=${vendor["vendor-code"]}`, '_blank'); }}
-                          className="flex-1 flex justify-center py-2 text-slate-400 hover:text-violet-400 transition-colors"
+                          className="flex-1 flex justify-center py-2 text-app-text-muted hover:text-violet-400 transition-colors"
                           title="Dashboard"
                         >
                           <FiPieChart className="text-xl" />
                         </button>
                         <button
                           onClick={(e) => { e.stopPropagation(); window.open(`/vendordocview/${vendor["vendor-code"]}`, '_blank'); }}
-                          className="flex-1 flex justify-center py-2 text-slate-400 hover:text-emerald-400 transition-colors"
+                          className="flex-1 flex justify-center py-2 text-app-text-muted hover:text-emerald-400 transition-colors"
                           title="Qualification"
                         >
                           <FiFolder className="text-xl" />
                         </button>
                         <button
                           onClick={(e) => { e.stopPropagation(); window.open(`/vendorevaluation/webformat/${vendor["vendor-code"]}`, '_blank'); }}
-                          className="flex-1 flex justify-center py-2 text-slate-400 hover:text-amber-400 transition-colors"
+                          className="flex-1 flex justify-center py-2 text-app-text-muted hover:text-amber-400 transition-colors"
                           title="Evaluation"
                         >
                           <FiStar className="text-xl" />
@@ -325,72 +325,72 @@ export default function Vendors1() {
             
             {/* Loading Indicator for Infinite Scroll */}
             {loading && (
-              <div className="flex justify-center p-6 bg-slate-900">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
+              <div className="flex justify-center p-6 bg-app-surface">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-app-accent"></div>
               </div>
             )}
           </div>
 
           {/* PO List Section */}
           {selectedVendor && (
-            <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-xl overflow-hidden mt-8 animate-fade-in-up">
-              <div className="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-950/50">
+            <div className="bg-app-surface border border-app-border rounded-xl shadow-xl overflow-hidden mt-8 animate-fade-in-up">
+              <div className="p-6 border-b border-app-border flex justify-between items-center bg-app-bg/50">
                 <div>
-                  <h2 className="text-xl font-bold text-slate-100 flex items-center">
+                  <h2 className="text-xl font-bold text-app-text flex items-center">
                     <FiShoppingCart className="mr-3 text-cyan-500" />
                     Vendor Purchase Orders
                   </h2>
-                  <p className="text-sm text-slate-500 mt-1">Viewing all POs for <span className="text-slate-300 font-mono font-bold">{selectedVendor}</span></p>
+                  <p className="text-sm text-app-text-muted mt-1">Viewing all POs for <span className="text-app-text-secondary font-mono font-bold">{selectedVendor}</span></p>
                 </div>
               </div>
 
               {poLoading ? (
                 <div className="flex justify-center p-12">
-                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-500"></div>
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-app-accent"></div>
                 </div>
               ) : purchaseOrders.length === 0 ? (
                 <div className="flex flex-col items-center justify-center p-12 text-center">
                   <FiShoppingCart className="w-12 h-12 text-slate-700 mb-4" />
-                  <p className="text-slate-400">This vendor has no purchase orders.</p>
+                  <p className="text-app-text-muted">This vendor has no purchase orders.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto p-4">
                   <table className="w-full text-left">
-                    <thead className="bg-slate-950 border-b border-slate-800">
+                    <thead className="bg-app-bg border-b border-app-border">
                       <tr>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">PO Number</th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-cyan-400" onClick={() => requestPOSort('podate')}>
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">PO Number</th>
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider cursor-pointer hover:text-app-accent" onClick={() => requestPOSort('podate')}>
                           Date <POSortIndicator columnKey="podate" />
                         </th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-cyan-400" onClick={() => requestPOSort('delivery-date')}>
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider cursor-pointer hover:text-app-accent" onClick={() => requestPOSort('delivery-date')}>
                           Delivery <POSortIndicator columnKey="delivery-date" />
                         </th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right cursor-pointer hover:text-cyan-400" onClick={() => requestPOSort('poval')}>
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-right cursor-pointer hover:text-app-accent" onClick={() => requestPOSort('poval')}>
                           Value (SAR) <POSortIndicator columnKey="poval" />
                         </th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Balance</th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center cursor-pointer hover:text-cyan-400" onClick={() => requestPOSort('status')}>
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-right">Balance</th>
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-center cursor-pointer hover:text-app-accent" onClick={() => requestPOSort('status')}>
                           Status <POSortIndicator columnKey="status" />
                         </th>
-                        <th className="px-5 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center">Actions</th>
+                        <th className="px-5 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider text-center">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-app-border/60">
                       {sortedPurchaseOrders.map((po, index) => (
-                        <tr key={index} className="hover:bg-slate-800/40 transition-colors group">
-                          <td className="px-5 py-4 whitespace-nowrap text-sm font-bold text-cyan-400">
+                        <tr key={index} className="hover:bg-app-surface/40 transition-colors group">
+                          <td className="px-5 py-4 whitespace-nowrap text-sm font-bold text-app-accent">
                             {po.ponum}
                           </td>
-                          <td className="px-5 py-4 whitespace-nowrap text-sm text-slate-300">
+                          <td className="px-5 py-4 whitespace-nowrap text-sm text-app-text-secondary">
                             {po.podate ? moment(po.podate).format('MMM D, YYYY') : '—'}
                           </td>
-                          <td className="px-5 py-4 whitespace-nowrap text-sm text-slate-300">
+                          <td className="px-5 py-4 whitespace-nowrap text-sm text-app-text-secondary">
                             {po["delivery-date"] ? moment(po["delivery-date"]).format('MMM D, YYYY') : '—'}
                           </td>
-                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-slate-300 text-right">
+                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-app-text-secondary text-right">
                             {po.poval ? po.poval.toLocaleString() : '0'}
                           </td>
-                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-slate-400 text-right">
+                          <td className="px-5 py-4 whitespace-nowrap text-sm font-mono text-app-text-muted text-right">
                             {po.balgrval ? po.balgrval.toLocaleString() : '0'}
                           </td>
                           <td className="px-5 py-4 text-center">
@@ -402,21 +402,21 @@ export default function Vendors1() {
                             <div className="flex items-center justify-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
                               <button
                                 onClick={(e) => { e.stopPropagation(); window.open(`/openpurchaseorders1/schedule/${po.ponum}`, '_blank'); }}
-                                className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-violet-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-violet-500"
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-app-surface hover:bg-violet-600 text-app-text-secondary hover:text-app-text rounded text-[10px] font-medium transition-all shadow-sm border border-app-border hover:border-violet-500"
                                 title="Update Schedule"
                               >
                                 <FiCalendar size={12} /> Schedule
                               </button>
                               <button
                                 onClick={(e) => handleOpenComment(po.ponum, e)}
-                                className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-blue-500"
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-app-surface hover:bg-blue-600 text-app-text-secondary hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-app-border hover:border-blue-500"
                                 title="View/Add Comments"
                               >
                                 <FiMessageSquare size={12} /> Comment
                               </button>
                               <button
                                 onClick={(e) => { e.stopPropagation(); window.open(`/openpurchaseorders1/view/${po.ponum}`, '_blank'); }}
-                                className="inline-flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-cyan-600 text-slate-300 hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-slate-700 hover:border-cyan-500"
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-app-surface hover:bg-app-accent text-app-text-secondary hover:text-white rounded text-[10px] font-medium transition-all shadow-sm border border-app-border hover:border-app-accent"
                                 title="View PO Details & Timeline"
                               >
                                 <FiEye size={12} /> View

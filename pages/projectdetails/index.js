@@ -82,7 +82,7 @@ export default function Projectdetails({ initialProjects = [], session }) {
           <div className="inline-flex">
             <button
               onClick={() => handleEdit(row.original["project-wbs"])}
-              className="bg-cyan-500 hover:bg-cyan-400 text-slate-900 px-3 py-1 rounded-md text-sm font-semibold shadow-sm"
+              className="bg-app-accent hover:bg-app-accent-hover text-slate-900 px-3 py-1 rounded-md text-sm font-semibold shadow-sm"
             >
               View Schedule
             </button>
@@ -106,23 +106,23 @@ export default function Projectdetails({ initialProjects = [], session }) {
   }, [projectlist, debounced]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="app-page min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-white">Projects</h1>
-            <p className="text-sm text-slate-400 mt-1">Master list of all projects in the system</p>
+            <h1 className="text-2xl font-bold tracking-tight text-app-text">Projects</h1>
+            <p className="text-sm text-app-text-muted mt-1">Master list of all projects in the system</p>
           </div>
           <div className="flex items-center gap-3">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search projects, WBS or manager"
-              className="bg-slate-900/70 placeholder:text-slate-400 text-slate-100 px-3 py-2 rounded-md border border-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="bg-app-surface/70 placeholder:text-app-text-muted text-app-text px-3 py-2 rounded-md border border-app-border focus:outline-none focus:ring-2 focus:ring-app-accent"
             />
             <button
               onClick={() => window.location.reload()}
-              className="bg-slate-800/70 text-slate-200 px-3 py-2 rounded-md hover:bg-slate-800/90"
+              className="bg-app-surface/70 text-app-text px-3 py-2 rounded-md hover:bg-app-surface/90"
             >
               Refresh
             </button>
@@ -130,7 +130,7 @@ export default function Projectdetails({ initialProjects = [], session }) {
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 shadow-lg">
+          <div className="rounded-2xl bg-app-surface/80 border border-app-border p-4 shadow-lg">
             <Tablecomponent 
               columns={columns} 
               data={filtered}

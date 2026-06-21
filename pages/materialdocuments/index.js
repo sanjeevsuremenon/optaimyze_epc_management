@@ -88,30 +88,30 @@ function Matdocs() {
     );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="app-page min-h-screen flex flex-col">
       <main className="container mx-auto px-4 py-8 flex-1 flex flex-col">
         {/* Header Section */}
         <div className="mb-6">
           <div className="flex items-center mb-6">
-            <div className="w-1.5 h-8 bg-cyan-500 rounded-full mr-4"></div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">Material Documents</h1>
+            <div className="w-1.5 h-8 bg-app-accent rounded-full mr-4"></div>
+            <h1 className="text-3xl font-bold text-app-text tracking-tight">Material Documents</h1>
           </div>
           
           {/* Multi-Field Filter Panel */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg p-6 mb-8">
-            <div className="flex items-center mb-4 text-cyan-400">
+          <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg p-6 mb-8">
+            <div className="flex items-center mb-4 text-app-accent">
               <FiFilter className="mr-2" />
               <h2 className="font-semibold">Search Filters</h2>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">PO Number</label>
+                <label className="block text-xs font-semibold text-app-text-muted mb-1 uppercase tracking-wider">PO Number</label>
                 <input
                   type="text"
                   name="po"
                   placeholder="e.g. 4500001234"
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-slate-200 placeholder-slate-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors"
                   value={filters.po}
                   onChange={handleFilterChange}
                   onKeyDown={handleKeyDown}
@@ -119,12 +119,12 @@ function Matdocs() {
               </div>
               
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">Material Code</label>
+                <label className="block text-xs font-semibold text-app-text-muted mb-1 uppercase tracking-wider">Material Code</label>
                 <input
                   type="text"
                   name="matCode"
                   placeholder="e.g. 10002345"
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-slate-200 placeholder-slate-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors"
                   value={filters.matCode}
                   onChange={handleFilterChange}
                   onKeyDown={handleKeyDown}
@@ -132,12 +132,12 @@ function Matdocs() {
               </div>
               
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">Description</label>
+                <label className="block text-xs font-semibold text-app-text-muted mb-1 uppercase tracking-wider">Description</label>
                 <input
                   type="text"
                   name="desc"
                   placeholder="e.g. porta cabin"
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-slate-200 placeholder-slate-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors"
                   value={filters.desc}
                   onChange={handleFilterChange}
                   onKeyDown={handleKeyDown}
@@ -145,12 +145,12 @@ function Matdocs() {
               </div>
               
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">Project / WBS</label>
+                <label className="block text-xs font-semibold text-app-text-muted mb-1 uppercase tracking-wider">Project / WBS</label>
                 <input
                   type="text"
                   name="wbs"
                   placeholder="e.g. PRJ-2023"
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-slate-200 placeholder-slate-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors"
                   value={filters.wbs}
                   onChange={handleFilterChange}
                   onKeyDown={handleKeyDown}
@@ -161,7 +161,7 @@ function Matdocs() {
             <div className="flex justify-end mt-6 gap-3">
               <button
                 onClick={handleClearFilters}
-                className="px-5 py-2.5 text-sm font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors flex items-center border border-slate-700 hover:border-slate-600"
+                className="px-5 py-2.5 text-sm font-semibold text-app-text-secondary bg-app-surface hover:bg-app-surface-muted rounded-lg transition-colors flex items-center border border-app-border hover:border-slate-600"
               >
                 <FiX className="mr-2" /> Clear
               </button>
@@ -176,7 +176,7 @@ function Matdocs() {
         </div>
 
         {/* Table Section */}
-        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-lg transition-all duration-300 overflow-hidden flex-1 flex flex-col relative">
+        <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg transition-all duration-300 overflow-hidden flex-1 flex flex-col relative">
           {hasActiveFilters && (
             <div className="px-6 py-3 bg-cyan-900/30 border-b border-cyan-800/50 flex items-center">
               <span className="text-sm text-cyan-200">
@@ -186,17 +186,17 @@ function Matdocs() {
           )}
           <div className="flex-1">
             <table className="w-full text-left border-collapse table-fixed">
-              <thead className="bg-slate-800/80 sticky top-0 border-b border-slate-700 z-10 backdrop-blur-sm">
+              <thead className="bg-app-surface/80 sticky top-0 border-b border-app-border z-10 backdrop-blur-sm">
                 <tr>
-                  <th className="w-[10%] px-4 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Doc #</th>
-                  <th className="w-[6%] px-4 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Item</th>
-                  <th className="w-[10%] px-4 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Date</th>
-                  <th className="w-[10%] px-4 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Material</th>
-                  <th className="w-[20%] px-4 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Description</th>
-                  <th className="w-[8%] px-4 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Qty</th>
-                  <th className="w-[10%] px-4 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Amount (SAR)</th>
-                  <th className="w-[14%] px-4 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Plant / SLoc / Mvt</th>
-                  <th className="w-[12%] px-4 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Account</th>
+                  <th className="w-[10%] px-4 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Doc #</th>
+                  <th className="w-[6%] px-4 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Item</th>
+                  <th className="w-[10%] px-4 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Date</th>
+                  <th className="w-[10%] px-4 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Material</th>
+                  <th className="w-[20%] px-4 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Description</th>
+                  <th className="w-[8%] px-4 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Qty</th>
+                  <th className="w-[10%] px-4 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Amount (SAR)</th>
+                  <th className="w-[14%] px-4 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Plant / SLoc / Mvt</th>
+                  <th className="w-[12%] px-4 py-4 text-xs font-bold text-app-text-muted uppercase tracking-wider">Account</th>
                 </tr>
               </thead>
               <tbody>
@@ -208,8 +208,8 @@ function Matdocs() {
             {isSuccess && data?.pages?.[0]?.length === 0 && (
               <div className="flex flex-col items-center justify-center p-16 text-center">
                 <FiFileText className="w-16 h-16 text-slate-600 mb-4" />
-                <h3 className="text-lg font-bold text-slate-300 mb-2">No documents found</h3>
-                <p className="text-sm text-slate-500 max-w-sm">
+                <h3 className="text-lg font-bold text-app-text-secondary mb-2">No documents found</h3>
+                <p className="text-sm text-app-text-muted max-w-sm">
                   We couldn't find any material documents matching your active filters. Try clearing some criteria.
                 </p>
               </div>
@@ -218,10 +218,10 @@ function Matdocs() {
           
           {/* Loading Indicator */}
           {isFetchingNextPage && (
-            <div className="p-4 border-t border-slate-800 bg-slate-900/50 flex justify-center">
+            <div className="p-4 border-t border-app-border bg-app-surface-muted flex justify-center">
               <div className="flex items-center gap-3">
-                <div className="w-5 h-5 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-sm text-cyan-400 font-medium">Loading more documents...</span>
+                <div className="w-5 h-5 border-2 border-app-accent border-t-transparent rounded-full animate-spin"></div>
+                <span className="text-sm text-app-accent font-medium">Loading more documents...</span>
               </div>
             </div>
           )}

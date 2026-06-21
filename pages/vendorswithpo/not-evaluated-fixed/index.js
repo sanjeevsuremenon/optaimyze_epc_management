@@ -561,7 +561,7 @@ function VendorsNotEvaluatedFixed() {
             </button>
             <button
               onClick={() => handleComent(row)}
-              className="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-white bg-orange-400/90 rounded-md hover:bg-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-300 focus:ring-offset-1 transition-all duration-200 shadow-sm"
+              className="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-app-text bg-orange-400/90 rounded-md hover:bg-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-300 focus:ring-offset-1 transition-all duration-200 shadow-sm"
             >
               <FiMessageSquare className="w-3.5 h-3.5 mr-1.5" />
               Comments

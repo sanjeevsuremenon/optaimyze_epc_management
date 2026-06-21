@@ -49,16 +49,16 @@ const VendorEvaluationPDFNew = () => {
       {!showPDF ? (
         <div className="max-w-4xl mx-auto">
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-app-text mb-2">
               Vendor Evaluation PDF Generator
             </h1>
-            <p className="text-gray-600 dark:text-gray-300 mb-8">
+            <p className="text-gray-600 dark:text-app-text-secondary mb-8">
               Generate PDF reports with custom filters
             </p>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-app-text-secondary mb-2">
                   Vendor Code Range
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -71,7 +71,7 @@ const VendorEvaluationPDFNew = () => {
                       value={vendorCodeFrom}
                       onChange={(e) => setVendorCodeFrom(e.target.value)}
                       placeholder="e.g., 1000"
-                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-app-text transition-all"
                     />
                   </div>
                   <div>
@@ -83,7 +83,7 @@ const VendorEvaluationPDFNew = () => {
                       value={vendorCodeTo}
                       onChange={(e) => setVendorCodeTo(e.target.value)}
                       placeholder="e.g., 2000"
-                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-app-text transition-all"
                     />
                   </div>
                 </div>
@@ -98,7 +98,7 @@ const VendorEvaluationPDFNew = () => {
                 </button>
                 <button
                   onClick={handleReset}
-                  className="px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
+                  className="px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-app-text-secondary font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
                 >
                   Reset
                 </button>
@@ -109,12 +109,12 @@ const VendorEvaluationPDFNew = () => {
       ) : (
         <div className="w-full">
           <div className="mb-4 flex justify-between items-center bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-app-text">
               PDF Preview
             </h2>
             <button
               onClick={handleReset}
-              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold rounded-lg transition-all"
+              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-app-text font-semibold rounded-lg transition-all"
             >
               Back to Filters
             </button>

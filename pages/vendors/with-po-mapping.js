@@ -88,7 +88,7 @@ export default function VendorsWithPOMappingPage() {
 
   return (
     <div
-      className="min-h-screen bg-slate-900/5"
+      className="app-page min-h-screen/5"
       style={{
         backgroundImage: `radial-gradient(circle at 0 0, rgba(59,130,246,0.18) 0, transparent 55%),
                           radial-gradient(circle at 100% 0, rgba(236,72,153,0.14) 0, transparent 55%),
@@ -122,7 +122,7 @@ export default function VendorsWithPOMappingPage() {
                   value={vendorSearch}
                   onChange={(e) => setVendorSearch(e.target.value)}
                   placeholder="Type to filter vendors..."
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl shadow-inner bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 text-sm md:text-base"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl shadow-inner bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-app-text-muted text-sm md:text-base"
                 />
               </div>
               <div>
@@ -135,7 +135,7 @@ export default function VendorsWithPOMappingPage() {
                   value={vendorCodeFilter}
                   onChange={(e) => setVendorCodeFilter(e.target.value)}
                   placeholder="Type vendor code..."
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl shadow-inner bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-400 text-sm md:text-base"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl shadow-inner bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-app-text-muted text-sm md:text-base"
                 />
               </div>
             </div>
@@ -175,7 +175,7 @@ export default function VendorsWithPOMappingPage() {
                   <thead className="bg-slate-50">
                     <tr>
                       <th 
-                        className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100 select-none transition-colors"
+                        className="px-4 py-3 text-left text-xs font-semibold text-app-text-muted uppercase tracking-wider cursor-pointer hover:bg-slate-100 select-none transition-colors"
                         onClick={() => handleSort('vendor-name')}
                       >
                         <div className="flex items-center gap-2">
@@ -188,7 +188,7 @@ export default function VendorsWithPOMappingPage() {
                         </div>
                       </th>
                       <th 
-                        className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100 select-none transition-colors"
+                        className="px-4 py-3 text-left text-xs font-semibold text-app-text-muted uppercase tracking-wider cursor-pointer hover:bg-slate-100 select-none transition-colors"
                         onClick={() => handleSort('vendor-code')}
                       >
                         <div className="flex items-center gap-2">
@@ -200,10 +200,10 @@ export default function VendorsWithPOMappingPage() {
                           )}
                         </div>
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-app-text-muted uppercase tracking-wider">
                         Mapped material / service groups
                       </th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider w-28">
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-app-text-muted uppercase tracking-wider w-28">
                         Action
                       </th>
                     </tr>
@@ -211,7 +211,7 @@ export default function VendorsWithPOMappingPage() {
                   <tbody className="bg-white divide-y divide-slate-100">
                     {filteredAndSortedVendors.length === 0 ? (
                       <tr>
-                        <td colSpan={4} className="px-4 py-8 text-center text-slate-500 text-sm">
+                        <td colSpan={4} className="px-4 py-8 text-center text-app-text-muted text-sm">
                           {onlyVendorsNotMapped && !vendorSearch.trim() && !vendorCodeFilter.trim()
                             ? 'No unmapped vendors. All vendors with PO have at least one group mapped.'
                             : (vendorSearch.trim() || vendorCodeFilter.trim())
@@ -231,7 +231,7 @@ export default function VendorsWithPOMappingPage() {
                           <td className="px-4 py-3">
                             <div className="flex flex-wrap gap-1.5">
                               {(v.mappings || []).length === 0 ? (
-                                <span className="text-slate-400 text-sm">None mapped</span>
+                                <span className="text-app-text-muted text-sm">None mapped</span>
                               ) : (
                                 (v.mappings || []).map((m, i) => (
                                   <span
@@ -240,7 +240,7 @@ export default function VendorsWithPOMappingPage() {
                                   >
                                     {m.groupName} → {m.subgroupName}
                                     {m.isService && (
-                                      <span className="ml-1 text-slate-500">(Svc)</span>
+                                      <span className="ml-1 text-app-text-muted">(Svc)</span>
                                     )}
                                   </span>
                                 ))
@@ -278,7 +278,7 @@ export default function VendorsWithPOMappingPage() {
               <button
                 type="button"
                 onClick={() => setMapModalVendor(null)}
-                className="p-2 text-slate-500 hover:text-slate-700 rounded-lg hover:bg-slate-100"
+                className="p-2 text-app-text-muted hover:text-slate-700 rounded-lg hover:bg-slate-100"
                 aria-label="Close"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

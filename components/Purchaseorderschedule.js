@@ -701,7 +701,7 @@ function Purchaseorderschedule({ ponumber }) {
         onSubmit={!editStates.generalData ? handleSubmitGendata : handleEditGendata}
       >
         <div className="relative py-6 mb-3 flex gap-1 overflow-hidden  border-y-2 border-slate-400 rounded-lg shadow-lg  m-9 pt-20 pb-20 dark:bg-gray-600 duration-300 ease-in-out transition-transform transform hover:-translate-y-2">
-          <div className="text-[14px] font-italic py-3 px-6  bg-cyan-600 text-white">
+          <div className="text-[14px] font-italic py-3 px-6  bg-app-accent text-white">
             <h3 className="justify-center align-middle">
               {" "}
               General <br /> PO Progress <br /> Data
@@ -711,7 +711,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-cyan-100/70">
             <label
               htmlFor="poackdate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               PO Acknowledgment date:
             </label>
@@ -721,7 +721,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={poackdate}
                 onChange={(date) => setPOackdate(date)}
                 popperModifiers={[
@@ -745,7 +745,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="podelysch"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               Delivery schedule as per PO
             </label>
@@ -757,7 +757,7 @@ function Purchaseorderschedule({ ponumber }) {
               <input
                 type="text"
                 name="podelysch"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pb-3 mb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pb-3 mb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 id="podelysch"
                 value={delysch}
                 placeholder="e-g ....PO Delivery sch(10 working weeks from drg approval/PO/advance...)"
@@ -767,7 +767,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="podelysch"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               Delivery date as per PO term.
             </label>
@@ -779,7 +779,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={podelydate}
                 onChange={(date) => setPodelydate(date)}
                 popperModifiers={[
@@ -803,7 +803,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="estdelydate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               Estimated delivery date as per current status.
             </label>
@@ -813,7 +813,7 @@ function Purchaseorderschedule({ ponumber }) {
               //   {moment(estdelydate).format("DD-MM-YYYY")}{" "}
               // </div>
               <DatePicker
-                className="bg-sky-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-sky-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={new Date(estdelydate)}
                 onChange={(date) => setEstdelydate(date)}
                 popperModifiers={[
@@ -836,7 +836,7 @@ function Purchaseorderschedule({ ponumber }) {
            
             ) : (
               <DatePicker
-                className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={new Date(estdelydate)}
                 onChange={(date) => setEstdelydate(date)}
                 popperModifiers={[
@@ -863,7 +863,7 @@ function Purchaseorderschedule({ ponumber }) {
             <div className="mb-3 mx-2">
               <label
                 htmlFor="basedesignrecdate"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
               >
                 Base design received date (from supplier)
               </label>
@@ -874,7 +874,7 @@ function Purchaseorderschedule({ ponumber }) {
                 </div>
               ) : (
                 <DatePicker
-                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   selected={basedesignrecdate}
                   onChange={(date) => setBasedesignrecdate(date)}
                   popperModifiers={[
@@ -899,7 +899,7 @@ function Purchaseorderschedule({ ponumber }) {
             <div className="mb-3 mx-2">
               <label
                 htmlFor="basedesignapprdate"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
               >
                 Base design approval date (from client/proj)
               </label>
@@ -910,7 +910,7 @@ function Purchaseorderschedule({ ponumber }) {
                 </div>
               ) : (
                 <DatePicker
-                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   selected={basedesignapprdate}
                   onChange={(date) => setBasedesignapprdate(date)}
                   popperModifiers={[
@@ -934,7 +934,7 @@ function Purchaseorderschedule({ ponumber }) {
 
               <label
                 htmlFor="basedesigncomments"
-                className="block mb-2  mx-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2  mx-2 text-sm font-medium text-gray-900 dark:text-app-text"
               >
                 Base design comments, if any
               </label>
@@ -948,7 +948,7 @@ function Purchaseorderschedule({ ponumber }) {
                   type="text"
                   name="basedesigncomments"
                   value={basedesigncomments}
-                  className="bg-gray-50  px-3  w-4/5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  pb-24 mb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50  px-3  w-4/5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  pb-24 mb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   id="basedesigncomments"
                   onChange={(e) => setBasedesigncomments(e.target.value)}
                   placeholder=" "
@@ -958,7 +958,7 @@ function Purchaseorderschedule({ ponumber }) {
               {/* New General comments textbox */}
               <label
                 htmlFor="generalcomments"
-                className="block mb-2  mx-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2  mx-2 text-sm font-medium text-gray-900 dark:text-app-text"
               >
                 General comments
               </label>
@@ -972,7 +972,7 @@ function Purchaseorderschedule({ ponumber }) {
                   type="text"
                   name="generalcomments"
                   value={generalcomments}
-                  className="bg-gray-50  px-3  w-4/5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  pb-24 mb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50  px-3  w-4/5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  pb-24 mb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   id="generalcomments"
                   onChange={(e) => setGeneralcomments(e.target.value)}
                   placeholder=" "
@@ -985,7 +985,7 @@ function Purchaseorderschedule({ ponumber }) {
             <div className="bg-cyan-100/70 ml-3 pl-3">
               <label
                 htmlFor="detdesignrecdate"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
               >
                 Detailed design received date:
               </label>
@@ -996,7 +996,7 @@ function Purchaseorderschedule({ ponumber }) {
                 </div>
               ) : (
                 <DatePicker
-                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   selected={detdesignrecdate}
                   onChange={(date) => setDetdesignrecdate(date)}
                   popperModifiers={[
@@ -1020,7 +1020,7 @@ function Purchaseorderschedule({ ponumber }) {
 
               <label
                 htmlFor="detdesignapprodate"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
               >
                 Detailed Design approval date:
               </label>
@@ -1031,7 +1031,7 @@ function Purchaseorderschedule({ ponumber }) {
                 </div>
               ) : (
                 <DatePicker
-                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   selected={detdesignaprdate}
                   onChange={(date) => setDetdesignaprdate(date)}
                   popperModifiers={[
@@ -1055,7 +1055,7 @@ function Purchaseorderschedule({ ponumber }) {
 
               <label
                 htmlFor="mfgclearancedate"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
               >
                 Manufacturing clearance issued date:
               </label>
@@ -1065,7 +1065,7 @@ function Purchaseorderschedule({ ponumber }) {
                 </div>
               ) : (
                 <DatePicker
-                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   selected={mfgclearancedate}
                   onChange={(date) => setMfgclearancedate(date)}
                   popperModifiers={[
@@ -1089,7 +1089,7 @@ function Purchaseorderschedule({ ponumber }) {
 
               <label
                 htmlFor="itpapprdate"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
               >
                 ITP Approval date
               </label>
@@ -1099,7 +1099,7 @@ function Purchaseorderschedule({ ponumber }) {
                 </div>
               ) : (
                 <DatePicker
-                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   selected={itpapprdate}
                   onChange={(date) => setItpapprdate(date)}
                   popperModifiers={[
@@ -1123,7 +1123,7 @@ function Purchaseorderschedule({ ponumber }) {
 
               <label
                 htmlFor="finalworkcompleteddate"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
               >
                 Final work completed date
               </label>
@@ -1133,7 +1133,7 @@ function Purchaseorderschedule({ ponumber }) {
                 </div>
               ) : (
                 <DatePicker
-                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   selected={finalworkcompleteddate}
                   onChange={(date) => setFinalworkcompleteddate(date)}
                   popperModifiers={[
@@ -1157,7 +1157,7 @@ function Purchaseorderschedule({ ponumber }) {
 
               <label
                 htmlFor="Grdate"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
               >
                 GR/SES posted date
               </label>
@@ -1167,7 +1167,7 @@ function Purchaseorderschedule({ ponumber }) {
                 </div>
               ) : (
                 <DatePicker
-                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="h-6 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   selected={grdate}
                   onChange={(date) => setGrdate(date)}
                   popperModifiers={[
@@ -1276,7 +1276,7 @@ function Purchaseorderschedule({ ponumber }) {
       {/* Bank Guarantee Section */}
       {!bgtab && (
         <div className="relative py-6 mb-3 flex gap-1 overflow-hidden border-y-2 border-slate-400 rounded-lg shadow-lg m-9 pt-20 pb-20">
-          <div className="text-[14px] font-italic py-3 px-6 bg-sky-600 text-white">
+          <div className="text-[14px] font-italic py-3 px-6 bg-sky-600 text-app-text">
             <h3 className="justify-center align-middle">
               Bank
               <br /> Guarantee
@@ -1290,7 +1290,7 @@ function Purchaseorderschedule({ ponumber }) {
               value="not applicable"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
             />
-            <label htmlFor="bgtabchk" className="ml-2 text-sm font-medium text-gray-300">
+            <label htmlFor="bgtabchk" className="ml-2 text-sm font-medium text-app-text-secondary">
               Not Applicable
             </label>
           </div>
@@ -1516,7 +1516,7 @@ function Purchaseorderschedule({ ponumber }) {
               />
               <label
                 htmlFor="lctabchk"
-                className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ml-2 text-sm font-medium text-gray-900 dark:text-app-text-secondary"
               >
                 Not Applicable
               </label>
@@ -1525,7 +1525,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-purple-100/70">
             <label
               htmlFor="lcestopendate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               LC Open date estimated:{" "}
             </label>
@@ -1536,7 +1536,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={lcestopendate}
                 onChange={(date) => setLcEstopendate(date)}
                 popperModifiers={[
@@ -1560,7 +1560,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="lcincoterm"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               L C Incoterm:{" "}
             </label>
@@ -1573,7 +1573,7 @@ function Purchaseorderschedule({ ponumber }) {
               <input
                 type="text"
                 id="lcincoterm"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="CIF/DDP/Ex-w..."
                 value={lcincoterm}
                 onChange={(e) => setLcincoterm(e.target.value)}
@@ -1582,7 +1582,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="lcamount"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               Enter L/C Amount
             </label>
@@ -1595,7 +1595,7 @@ function Purchaseorderschedule({ ponumber }) {
               <input
                 type="text"
                 name="lcamount"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 id="lcamount"
                 // pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
                 value={lcamount}
@@ -1608,7 +1608,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-purple-100/70">
             <label
               htmlFor="lcdocuments"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               LC Documents:{" "}
             </label>
@@ -1623,14 +1623,14 @@ function Purchaseorderschedule({ ponumber }) {
                 id="lcdocuments"
                 value={lcdocuments}
                 onChange={(e) => setLcdocuments(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-3/4  p-2.5 pb-3 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-3/4  p-2.5 pb-3 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Original Invoice/Bill of Lading/..."
               />
             )}
 
             <label
               htmlFor="lcdatadate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               LC data requested & received from supplier:
             </label>
@@ -1641,7 +1641,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={lcdatadate}
                 onChange={(date) => setLcDatadate(date)}
                 popperModifiers={[
@@ -1665,7 +1665,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="lcopeneddate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               LC opened date: (swift advice from bank)
             </label>
@@ -1676,7 +1676,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={lcopeneddate}
                 popperPlacement="top-start"
                 DayPickerInput-Overlay
@@ -1704,7 +1704,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-purple-100/70">
             <label
               htmlFor="lcswift"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               LC Swift Number & Bank:
             </label>
@@ -1717,7 +1717,7 @@ function Purchaseorderschedule({ ponumber }) {
               <input
                 type="text"
                 id="lcswift"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 pb-3 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 pb-3 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Original Invoice/Bill of Lading/..."
                 value={lcswift}
                 onChange={(e) => setLcswift(e.target.value)}
@@ -1726,7 +1726,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="lclastshipdate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               LC Last shipment date:
             </label>
@@ -1737,7 +1737,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={lclastshipdate}
                 popperPlacement="top-start"
                 onChange={(date) => setLcLastshipdate(date)}
@@ -1762,7 +1762,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="lcexpirydate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               LC Expiry Date:
             </label>
@@ -1773,7 +1773,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={lcexpirydate}
                 popperPlacement="top-start"
                 onChange={(date) => setLcExpirydate(date)}
@@ -1800,7 +1800,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-purple-100/70">
             <label
               htmlFor="lcremarks"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               LC Remarks
             </label>
@@ -1813,7 +1813,7 @@ function Purchaseorderschedule({ ponumber }) {
               <input
                 type="textarea"
                 id="lcremarks"
-                className="bg-gray-50 border border-gray-300 pb-64 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-1/2 p-2.5  mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 pb-64 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-1/2 p-2.5  mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Any free text remarks by JAL Fin / Proj/ MMD/..."
                 value={lcremarks}
                 onChange={(e) => setLcremarks(e.target.value)}
@@ -1835,7 +1835,7 @@ function Purchaseorderschedule({ ponumber }) {
 
       {testflagged ? null : (
         <div className="relative py-6 mb-3 flex gap-1 overflow-hidden  border-y-2 border-slate-400 rounded-lg shadow-lg  m-9 pt-20 pb-20 dark:bg-gray-600 duration-300 ease-in-out transition-transform transform hover:-translate-y-2">
-          <div className="text-[14px] font-italic py-3 px-6  bg-fuchsia-600 text-white">
+          <div className="text-[14px] font-italic py-3 px-6  bg-fuchsia-600 text-app-text">
             <h3 className="justify-center align-middle">
               {" "}
               Progress <br /> Milestones
@@ -1851,7 +1851,7 @@ function Purchaseorderschedule({ ponumber }) {
               />
               <label
                 htmlFor="testingtabchk"
-                className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ml-2 text-sm font-medium text-gray-900 dark:text-app-text-secondary"
               >
                 Not Applicable
               </label>
@@ -1860,7 +1860,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-fuchsia-100/70">
             <label
               htmlFor="mfgstart"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               Actual Manufacturing start Date:
             </label>
@@ -1871,7 +1871,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={mfgstart}
                 onChange={(date) => setMfgstart(date)}
                 popperModifiers={[
@@ -1895,7 +1895,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="Fatdate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               FAT/Final inspection date:
             </label>
@@ -1906,7 +1906,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={Fatdate}
                 onChange={(date) => setFatdate(date)}
                 popperModifiers={[
@@ -1932,7 +1932,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-fuchsia-100/70">
             <label
               htmlFor="Fatreportdate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               TPI /Final inspection report received date:
             </label>
@@ -1943,7 +1943,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={Fatreportdate}
                 onChange={(date) => setFatreportdate(date)}
                 popperModifiers={[
@@ -1967,7 +1967,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="Bldate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               B/L/ AWB booked date
             </label>
@@ -1978,7 +1978,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={Bldate}
                 onChange={(date) => setBldate(date)}
                 popperModifiers={[
@@ -2004,7 +2004,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-fuchsia-100/70">
             <label
               htmlFor="vesselreacheddate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               Flight/vessel reached date
             </label>
@@ -2015,7 +2015,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={vesselreacheddate}
                 onChange={(date) => setVesselreacheddate(date)}
                 popperModifiers={[
@@ -2039,7 +2039,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="customscleareddate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               Customs cleared/ Bayyan paid date
             </label>
@@ -2050,7 +2050,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={customscleareddate}
                 onChange={(date) => setCustomscleareddate(date)}
                 popperModifiers={[
@@ -2105,7 +2105,7 @@ function Purchaseorderschedule({ ponumber }) {
               />
               <label
                 htmlFor="shiptabchk"
-                className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ml-2 text-sm font-medium text-gray-900 dark:text-app-text-secondary"
               >
                 Not Applicable
               </label>
@@ -2114,7 +2114,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-amber-100/70">
             <label
               htmlFor="dimensions"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               Gross weight/dimensions (appx) in KG/Metric dimensions
             </label>
@@ -2127,7 +2127,7 @@ function Purchaseorderschedule({ ponumber }) {
               <input
                 type="text"
                 id="dimensions"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 pb-3 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 pb-3 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Gross weight (Kg) and dimensions (Metric)/..."
                 value={grossweight}
                 onChange={(e) => setGrossweight(e.target.value)}
@@ -2136,7 +2136,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="shipmentbookedddate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               Shipment is booked on:
             </label>
@@ -2147,7 +2147,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={shipmentbookeddate}
                 onChange={(date) => setShipmentbookeddate(date)}
                 popperModifiers={[
@@ -2173,7 +2173,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-amber-100/70">
             <label
               htmlFor="saberapplieddate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               SABER applied on:
             </label>
@@ -2184,7 +2184,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={saberapplieddate}
                 onChange={(date) => setSaberapplieddate(date)}
                 popperModifiers={[
@@ -2208,7 +2208,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="saberreceiveddate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               SABER received on:
             </label>
@@ -2219,7 +2219,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={saberreceiveddate}
                 onChange={(date) => setSaberreceiveddate(date)}
                 popperModifiers={[
@@ -2245,7 +2245,7 @@ function Purchaseorderschedule({ ponumber }) {
           <div className="flex-1 shadow-xl px-3 bg-amber-100/70">
             <label
               htmlFor="ffnominateddate"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               Freight forwarder nominated on
             </label>
@@ -2256,7 +2256,7 @@ function Purchaseorderschedule({ ponumber }) {
               </div>
             ) : (
               <DatePicker
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 selected={ffnoMinateddate}
                 onChange={(date) => setFfnoMinateddate(date)}
                 popperModifiers={[
@@ -2280,7 +2280,7 @@ function Purchaseorderschedule({ ponumber }) {
 
             <label
               htmlFor="finalremarks"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
             >
               FINAL REMARKS ON PO:
             </label>
@@ -2293,7 +2293,7 @@ function Purchaseorderschedule({ ponumber }) {
               <input
                 type="text"
                 id="finalremarks"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pb-28 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pb-28 mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="FINAL REMARKS IF ANY..."
                 value={finalremarks}
                 onChange={(e) => setFinalremarks(e.target.value)}

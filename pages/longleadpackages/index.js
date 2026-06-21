@@ -561,7 +561,7 @@ function LongLeadPackages() {
               </div>
             ) : packages.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-8 text-center">
-                <FiFile className="w-16 h-16 text-gray-300 mb-4" />
+                <FiFile className="w-16 h-16 text-app-text-secondary mb-4" />
                 <h3 className="text-lg font-medium text-gray-600 mb-2">
                   No Packages Found
                 </h3>

@@ -3,13 +3,16 @@ import Papa from 'papaparse';
 import { OpenAI } from 'openai';
 import styles from './MaterialStandardization.module.css';
 
-
-// Initialize OpenAI client
-const openai = new OpenAI({
-//  
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-dangerouslyAllowBrowser: true 
-});
+function getOpenAIClient() {
+  const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error('OpenAI API key not configured (set OPENAI_API_KEY or NEXT_PUBLIC_OPENAI_API_KEY in .env)');
+  }
+  return new OpenAI({
+    apiKey,
+    dangerouslyAllowBrowser: true,
+  });
+}
 
 export default function MaterialStandardizationPage() {
 
@@ -116,7 +119,7 @@ if primary characteristic is missing, output "CHARACTERISTIC_NOT_AVAILABLE"
 
 Output only the standardized description or one of these keywords: CHARACTERISTIC_NOT_AVAILABLE, OVERSIZED, UNCLEANSED`;
 
-      const completion = await openai.chat.completions.create({
+      const completion = await getOpenAIClient().chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
           {

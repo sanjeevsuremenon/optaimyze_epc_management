@@ -51,10 +51,10 @@ export default function ModuleGrid() {
         <div className="mx-auto max-w-7xl">
           {/* Section Header */}
           <div className="mb-12 space-y-4">
-            <h2 className="text-4xl font-bold text-white">
+            <h2 className="text-4xl font-bold text-app-text">
               Welcome to your Dashboard
             </h2>
-            <p className="text-xl text-slate-300">
+            <p className="text-xl text-app-text-secondary">
               Access all modules and tools to manage your EPC operations
             </p>
           </div>
@@ -67,8 +67,8 @@ export default function ModuleGrid() {
           </div>
 
           {/* Footer Info */}
-          <div className="mt-16 rounded-lg border border-slate-700 bg-slate-900/50 p-6 text-center">
-            <p className="text-slate-300">
+          <div className="mt-16 rounded-lg border border-app-border bg-app-surface-muted p-6 text-center">
+            <p className="text-app-text-secondary">
               🚀 More modules and features coming soon. Your feedback helps us build better.
             </p>
           </div>

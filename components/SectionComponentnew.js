@@ -284,7 +284,7 @@ function SectionComponent() {
         <div className="col-span-1 bg-gray-50 px-12">
           <div className="w-[450px] h-[450px] flex my-auto justify-center">
             <div className="p-3 w-[300px] h-[300px]">
-              <h5 className=" mt-3 text-[14px]  font-bold tracking-tight text-gray-900 dark:text-white">
+              <h5 className=" mt-3 text-[14px]  font-bold tracking-tight text-gray-900 dark:text-app-text">
                 2023- current Inventory Value (SAR)
               </h5>
               <div className="mt-3 px-1">
@@ -318,7 +318,7 @@ function SectionComponent() {
         </div>
 
         <div className="col-span-2 bg-gray-50 px-12 w-full h-[500px]">
-          <h5 className="text-[12px]  font-bold tracking-tight text-gray-900 dark:text-white">
+          <h5 className="text-[12px]  font-bold tracking-tight text-gray-900 dark:text-app-text">
             Current Materialgroupwise Inventory Value (SAR)
           </h5>
           <Bar
@@ -444,7 +444,7 @@ function SectionComponent() {
       </div>
 
       <div>
-          {/* <h5 className="text-md font-bold leading-none text-zinc-900 w-1/4 mx-auto  dark:text-white">
+          {/* <h5 className="text-md font-bold leading-none text-zinc-900 w-1/4 mx-auto  dark:text-app-text">
             Total materials coded in Material master:
           </h5> */}
           <div className="flow-root w-1/4 mx-auto">
@@ -455,11 +455,11 @@ function SectionComponent() {
               <li className="py-3 sm:py-4">
                 <div className="flex items-center space-x-4">
                   <div className="flex-1 min-w-0">
-                    <p className="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-1.5 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                    <p className="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-1.5 rounded-full dark:bg-gray-700 dark:text-app-text-secondary">
                       Total Active in Master:
                     </p>
                   </div>
-                  <div className="bg-gray-100 tracking-widest text-gray-800 text-sm font-medium mr-2 px-2.5 py-1.5 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                  <div className="bg-gray-100 tracking-widest text-gray-800 text-sm font-medium mr-2 px-2.5 py-1.5 rounded-full dark:bg-gray-700 dark:text-app-text-secondary">
                     {totalmaterials}
                   </div>
                 </div>
@@ -534,7 +534,7 @@ function SectionComponent() {
                 (Value of total PO issued)
               </span>{" "}
             </h3>
-            <div className="text-xs uppercase font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            <div className="text-xs uppercase font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-app-text">
               {topvendorsVal
                 .sort(function (a, b) {
                   return b.count - a.count;
@@ -567,7 +567,7 @@ function SectionComponent() {
               (Number of PO Line items)
             </span>{" "}
           </h3>
-          <div className="text-xs uppercase font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          <div className="text-xs uppercase font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-app-text">
             {topvendorsCount
               .sort(function (a, b) {
                 return b.count - a.count;
@@ -618,7 +618,7 @@ function SectionComponent() {
                   >
                     <th
                       scope="row"
-                      className="px-3 py-4 text-[12px] font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="px-3 py-4 text-[12px] font-medium text-gray-900 whitespace-nowrap dark:text-app-text"
                     >
                       {row["material-code"]}
                     </th>
@@ -662,7 +662,7 @@ function SectionComponent() {
             </h3>
             {/* <div className="relative overflow-x-auto"> */}
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              {/* <div className="text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"> */}
+              {/* <div className="text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-app-text"> */}
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-6 py-3">
@@ -692,7 +692,7 @@ function SectionComponent() {
                     >
                       <th
                         scope="row"
-                        className="px-2 py-4 font-medium pl-6 text-[12px] font-bold  text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-2 py-4 font-medium pl-6 text-[12px] font-bold  text-gray-900 whitespace-nowrap dark:text-app-text"
                       >
                         {row._id.ponum}
                       </th>

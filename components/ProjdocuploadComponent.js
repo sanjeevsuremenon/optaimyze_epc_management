@@ -88,7 +88,7 @@ function ProjdocuploadComponent({ wbs }) {
         </div>
 
         <label
-          className="inline-block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="inline-block mb-2 text-sm font-medium text-gray-900 dark:text-app-text"
           htmlFor="file_input"
         >
           Select file(s)
@@ -102,7 +102,7 @@ function ProjdocuploadComponent({ wbs }) {
           name="upldFiles"
         />
         <p
-          className="inline-block mt-1 text-[8px] ml-2  text-gray-500 dark:text-gray-300"
+          className="inline-block mt-1 text-[8px] ml-2  text-gray-500 dark:text-app-text-secondary"
           id="file_input_help"
         >
           PDF,.doc ONLY (MAX.1000 MB).

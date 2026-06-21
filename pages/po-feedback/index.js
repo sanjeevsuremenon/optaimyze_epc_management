@@ -253,7 +253,7 @@ export default function POFeedbackPage() {
                       <button
                         type="button"
                         onClick={handleCancel}
-                        className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md flex items-center gap-2 transition-colors shadow-md hover:shadow-lg"
+                        className="bg-gray-500 hover:bg-gray-600 text-app-text px-4 py-2 rounded-md flex items-center gap-2 transition-colors shadow-md hover:shadow-lg"
                       >
                         <FontAwesomeIcon icon={faTimes} />
                         Cancel

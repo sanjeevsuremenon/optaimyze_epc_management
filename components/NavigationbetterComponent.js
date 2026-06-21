@@ -9,18 +9,18 @@ function NavigationbetterComponent() {
             id="tabs"
             className="inline-flex w-full space-x-2 sm:space-x-6 md:space-x-12 items-center border-b overflow-hidden border-gray-300"
           >
-            <li className="px-4 py-2 -mb-px font-semibold text-gray-800 dark:text-white hover:text-green-400 dark:hover:text-gray-300 border-b-2 border-green-400 dark:border-gray-50 hover:border-green-300 dark:hover:border-gray-200 rounded-t opacity-50">
+            <li className="px-4 py-2 -mb-px font-semibold text-gray-800 dark:text-app-text hover:text-green-400 dark:hover:text-app-text-secondary border-b-2 border-green-400 dark:border-gray-50 hover:border-green-300 dark:hover:border-gray-200 rounded-t opacity-50">
               <a id="default-tab" href="#first">
                 Home
               </a>
             </li>
-            <li className="px-4 py-2 font-semibold text-gray-800 dark:text-white hover:text-green-400 dark:hover:text-gray-300 rounded-t opacity-50 hover:border-green-300 dark:hover:border-gray-200">
+            <li className="px-4 py-2 font-semibold text-gray-800 dark:text-app-text hover:text-green-400 dark:hover:text-app-text-secondary rounded-t opacity-50 hover:border-green-300 dark:hover:border-gray-200">
               <a href="#second">About</a>
             </li>
-            <li className="px-4 py-2 font-semibold text-gray-800 dark:text-white hover:text-green-400 dark:hover:text-gray-300 rounded-t opacity-50 hover:border-green-300 dark:hover:border-gray-200">
+            <li className="px-4 py-2 font-semibold text-gray-800 dark:text-app-text hover:text-green-400 dark:hover:text-app-text-secondary rounded-t opacity-50 hover:border-green-300 dark:hover:border-gray-200">
               <a href="#third">Features</a>
             </li>
-            <li className="px-4 py-2 font-semibold text-gray-800 dark:text-white hover:text-green-400 dark:hover:text-gray-300 rounded-t opacity-50 hover:border-green-300 dark:hover:border-gray-200">
+            <li className="px-4 py-2 font-semibold text-gray-800 dark:text-app-text hover:text-green-400 dark:hover:text-app-text-secondary rounded-t opacity-50 hover:border-green-300 dark:hover:border-gray-200">
               <a href="#fourth">Contact</a>
             </li>
           </ul>
