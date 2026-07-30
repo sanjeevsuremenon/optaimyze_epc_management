@@ -65,7 +65,7 @@ function Loginpage() {
       <div className="grid grid-cols-3">
         <div>
           <Image
-          src="/JAL.jpg"
+          src="/images/epc-stack.svg"
           width={640}
           height={640}          
           priority    
@@ -145,7 +145,7 @@ function Loginpage() {
       </div>
         <div>
             <Image
-            src="/MMPortalpic1.jpg"
+            src="/images/mm-portal-pic.svg"
             alt="portal"
             width={640}
             height={640}

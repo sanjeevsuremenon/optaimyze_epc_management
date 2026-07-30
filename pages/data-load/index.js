@@ -7,7 +7,9 @@ import {
   Upload,
   Download,
   AlertOctagon,
-  ArrowLeft
+  ArrowLeft,
+  Briefcase,
+  FileText
 } from "lucide-react";
 import MasterTable from "../../components/AssetManagement/MasterTable";
 import MasterFormModal from "../../components/AssetManagement/MasterFormModal";
@@ -26,6 +28,32 @@ const masterTabs = [
       { key: "project-name", label: "Project Name", type: "text", required: true },
       { key: "created-date", label: "Created Date (YYYY-MM-DD)", type: "text", required: false },
       { key: "created-by", label: "Created By", type: "text", required: false },
+    ]
+  },
+  {
+    id: "projects",
+    label: "Projects",
+    apiType: "projects",
+    icon: Briefcase,
+    fields: [
+      { key: "project-wbs", label: "Project WBS", type: "text", required: true, isKey: true },
+      { key: "project-name", label: "Project Name", type: "text", required: true },
+      { key: "project-incharge", label: "Project Incharge", type: "text", required: true },
+      { key: "created-date", label: "Created Date (YYYY-MM-DD)", type: "text", required: false },
+      { key: "changed-date", label: "Changed Date (YYYY-MM-DD)", type: "text", required: false },
+      { key: "start-date", label: "Start Date (YYYY-MM-DD)", type: "text", required: false },
+      { key: "finished-date", label: "Finished Date (YYYY-MM-DD)", type: "text", required: false },
+    ]
+  },
+  {
+    id: "wbs",
+    label: "WBS Elements",
+    apiType: "wbs",
+    icon: FileText,
+    fields: [
+      { key: "wbs-number", label: "WBS Number", type: "text", required: true, isKey: true },
+      { key: "wbs-description", label: "WBS Description", type: "text", required: true },
+      { key: "updated-at", label: "Updated At (YYYY-MM-DD)", type: "text", required: false },
     ]
   }
 ];

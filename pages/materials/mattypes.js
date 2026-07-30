@@ -1,9 +1,9 @@
 import React from "react";
-import ProjectsManager from "../../components/ProjectsManager";
+import MaterialsManager from "../../components/MaterialsManager";
 import { getSession } from "next-auth/react";
 
-export default function ProjectsPage() {
-  return <ProjectsManager initialTab="projects" />;
+export default function MaterialTypesPage() {
+  return <MaterialsManager initialTab="mattypes" />;
 }
 
 export async function getServerSideProps(context) {

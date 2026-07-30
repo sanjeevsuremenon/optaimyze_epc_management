@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import "../styles/tailwind.css";
+import "../styles/theme.css";
 import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
 import React from "react";

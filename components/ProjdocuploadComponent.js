@@ -129,7 +129,7 @@ function ProjdocuploadComponent({ wbs }) {
          placeholder="blur"
          blurDataURL={image}
          objectFit="contain"
-         alt="JAL"
+         alt="EPC-Stack"
       />} */}
     </div>
   );

@@ -2,8 +2,8 @@ import React from "react";
 import ProjectsManager from "../../components/ProjectsManager";
 import { getSession } from "next-auth/react";
 
-export default function ProjectsPage() {
-  return <ProjectsManager initialTab="projects" />;
+export default function WbsPage() {
+  return <ProjectsManager initialTab="wbs" />;
 }
 
 export async function getServerSideProps(context) {

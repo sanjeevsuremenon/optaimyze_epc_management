@@ -8,7 +8,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap');
 
 @import "tailwindcss";
-@import "./theme.css";
 @import "react-datepicker/dist/react-datepicker.css";
 
 @layer components {

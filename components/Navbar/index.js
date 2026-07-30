@@ -36,20 +36,18 @@ const Navbar = () => {
 
       <header className="flex justify-between   dark:bg-gray-600 text-dark-primary dark:text-light-primary">
         <Image
-          src="/JAHR.jpg"
+          src="/images/epc-stack.svg"
           width={200}
           height={40}
           quality={100}
           priority
-          placeholder="blur"
-          blurDataURL="/JAHR.jpg"
           objectFit="contain"
-          alt="JAL"
+          alt="EPC-Stack"
         ></Image>
 
         <div inline-block="true" list-none="true">
           <h2 className="font-Rampart font-extrabold my-auto text-l  text-red-900 dark:text-red-300 pb-2">
-            JAL SAP DAWP
+            EPC-Stack SAP DAWP
           </h2>
           <p className="font-Montserrat font-semibold pt-2 pl-2 pr-2 text-app-text text-xs dark:text-slate-900 bg-zinc-600 dark:bg-white">
             {" "}
@@ -149,7 +147,7 @@ const Navbar = () => {
               className="bg-slate-500 hover:bg-app-surface-muted px-2 mx-3 rounded"
               onClick={() => signIn()}
             >
-              Welcome Guest Sign in
+              Sign In
             </button>
           )}
         </div>

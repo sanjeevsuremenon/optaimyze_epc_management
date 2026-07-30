@@ -1814,7 +1814,7 @@ function Purchaseorderschedule({ ponumber }) {
                 type="textarea"
                 id="lcremarks"
                 className="bg-gray-50 border border-gray-300 pb-64 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-1/2 p-2.5  mb-6  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-app-text dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Any free text remarks by JAL Fin / Proj/ MMD/..."
+                placeholder="Any free text remarks by EPC-Stack Fin / Proj/ MMD/..."
                 value={lcremarks}
                 onChange={(e) => setLcremarks(e.target.value)}
               />

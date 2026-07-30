@@ -73,10 +73,10 @@ function HeaderComponent() {
           <div className="col-span-1 flex justify-center">
             <Link href="/" className="flex items-center">
                 <Image
-                  src="/images/JAL_LOGO.jpg"
+                  src="/images/epc-stack.svg"
                   width={70}
                   height={70}
-                  alt="JAL"
+                  alt="EPC-Stack Logo"
                   className="rounded shadow"
                 />
             </Link>

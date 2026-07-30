@@ -9,7 +9,7 @@ const authOptions = {
   //configure auth providers
   providers: [
     CredentialsProvider({
-      name: "JALMMWebAPP",
+      name: "EPC-Stack",
       // credentials:{},
       credentials: {
         email: {},
@@ -18,8 +18,9 @@ const authOptions = {
         // role: {},
       },
       async authorize(credentials, req, session) {
-        const { db } = await connectToDatabase();
         const normalizedEmail = String(credentials?.email || "").trim().toLowerCase();
+
+        const { db } = await connectToDatabase();
 
         const user = await db
           .collection("users")

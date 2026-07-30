@@ -17,6 +17,8 @@ const MODULES = [
       { label: "Projects", path: "/projects" },
       { label: "Projects (new)", path: "/projects1" },
       { label: "Project Dashboard", path: "/projectsdashboard" },
+      { label: "Networks", path: "/projects/networks" },
+      { label: "WBS Elements", path: "/projects/wbs" },
     ],
   },
   {
@@ -32,8 +34,9 @@ const MODULES = [
     id: "vendors",
     label: "Vendors",
     subs: [
+      { label: "Vendors Dashboard", path: "/vendorsdashboard" },
       { label: "Vendors", path: "/vendors1" },
-      { label: "Vendor Dashboard", path: "/vendor-dashboard" },
+      { label: "Vendor Search & Details", path: "/vendor-dashboard" },
       { label: "Non SAP Vendors", path: "/nonsapvendors" },
       { label: "Vendor Feedback", path: "/vendor-feedback" },
       { label: "Vendor Evaluation", path: "/vendorevaluation/webformat" },
@@ -45,15 +48,25 @@ const MODULES = [
     subs: [
       { label: "Materials", path: "/materials" },
       { label: "Materials (alt)", path: "/materials1" },
+      { label: "Material Groups List", path: "/materials/materialgroups" },
+      { label: "Material Types", path: "/materials/mattypes" },
       { label: "Material Groups", path: "/material-groups" },
       { label: "Material Dashboard", path: "/materialsdashboard" },
     ],
   },
-  { id: "tracking", label: "Tracking", subs: [{ label: "Tracking", path: "/tracking" }] },
+  {
+    id: "tracking",
+    label: "Tracking",
+    subs: [
+      { label: "Tracking Dashboard", path: "/trackingdashboard" },
+      { label: "Tracking Home", path: "/tracking" },
+    ],
+  },
   {
     id: "reports",
     label: "Reports",
     subs: [
+      { label: "Reports Dashboard", path: "/reportsdashboard" },
       { label: "All Purchases", path: "/all-purchases-report" },
       { label: "Import Purchases", path: "/import-purchases-report" },
       { label: "Domestic Purchases", path: "/domestic-purchases-report" },

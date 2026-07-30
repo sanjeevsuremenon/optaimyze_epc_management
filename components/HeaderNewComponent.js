@@ -135,10 +135,10 @@ function HeaderNewComponent() {
           <div className="col-span-1 flex justify-center">
             <Link href="/" onClick={handleLinkClick} className="flex items-center">
                 <Image
-                  src="/images/JAL_LOGO.jpg"
+                  src="/images/epc-stack.svg"
                   width={70}
                   height={70}
-                  alt="JAL"
+                  alt="EPC-Stack"
                   className="rounded shadow"
                 />
             </Link>

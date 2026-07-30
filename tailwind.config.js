@@ -1,38 +1,62 @@
 module.exports = {
-  darkMode:'class',
+  darkMode: 'class',
   i18n: {
-    locales: ["en-US"],
-    defaultLocale: "en-US",
+    locales: ['en-US'],
+    defaultLocale: 'en-US',
   },
   content: [
-    
-    "./pages/**/*.{html,js,ts,jsx,tsx}",
-    "./components/**/*.{html,js,ts,jsx,tsx}",
+    './pages/**/*.{html,js,ts,jsx,tsx}',
+    './components/**/*.{html,js,ts,jsx,tsx}',
+    './styles/**/*.{css,js}',
     './node_modules/tw-elements/dist/js/**/*.js',
+  ],
+  safelist: [
+    'bg-app-accent',
+    'bg-app-accent-soft',
+    'bg-app-bg',
+    'bg-app-surface',
+    'bg-app-surface-muted',
+    'border-app-border',
+    'text-app-text',
+    'text-app-text-secondary',
+    'text-app-text-muted',
+    'text-app-accent',
   ],
   theme: {
     extend: {
-      colors:{
-        'light-primary':'#E5E7EB',
-        'light-secondary':'#D1D5DB',
-        'dark-primary':'#1F2937',
-        'dark-secondary':'#111827'
+      colors: {
+        'light-primary': '#E5E7EB',
+        'light-secondary': '#D1D5DB',
+        'dark-primary': '#1F2937',
+        'dark-secondary': '#111827',
+        'app-bg': 'var(--app-bg)',
+        'app-surface': 'var(--app-surface)',
+        'app-surface-muted': 'var(--app-surface-muted)',
+        'app-border': 'var(--app-border)',
+        'app-border-light': 'var(--app-border-light)',
+        'app-text': 'var(--app-text)',
+        'app-text-secondary': 'var(--app-text-secondary)',
+        'app-text-muted': 'var(--app-text-muted)',
+        'app-text-disabled': 'var(--app-text-disabled)',
+        'app-accent': 'var(--app-accent)',
+        'app-accent-hover': 'var(--app-accent-hover)',
+        'app-accent-soft': 'var(--app-accent-soft)',
+        'app-accent-text': 'var(--app-accent-text)',
       },
-      fontFamily:{
-        Rampart:['"Rampart One"', "Helvetica", "Arial", "sans-serif"],
-        Montserrat:["Montserrat", "Helvetica", "Arial", "sans-serif"],
-        Lato:["Lato", "Helvetica", "Arial", "sans-serif"],
-        Ubuntu:["Ubuntu","Arial","sans-serif"],
-        Freehand:["Freehand","Arial"],
-        Poppins: ["Poppins", "sans-serif"],
-        Roboto:["Roboto", "Arial"],
-        OpenSans: ['"Open sans"', "sans-serif"],
-        
+      fontFamily: {
+        Rampart: ['"Rampart One"', 'Helvetica', 'Arial', 'sans-serif'],
+        Montserrat: ['Montserrat', 'Helvetica', 'Arial', 'sans-serif'],
+        Lato: ['Lato', 'Helvetica', 'Arial', 'sans-serif'],
+        Ubuntu: ['Ubuntu', 'Arial', 'sans-serif'],
+        Freehand: ['Freehand', 'Arial'],
+        Poppins: ['Poppins', 'sans-serif'],
+        Roboto: ['Roboto', 'Arial'],
+        OpenSans: ['"Open sans"', 'sans-serif'],
+      },
     },
   },
-  plugins: [require('tw-elements/plugin.cjs'), require("daisyui"),require("@tailwindcss/forms"),],
+  plugins: [require('tw-elements/plugin.cjs'), require('daisyui'), require('@tailwindcss/forms')],
   future: {
     purgeLayersByDefault: true,
   },
-}
-}
+};

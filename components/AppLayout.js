@@ -52,6 +52,18 @@ export default function AppLayout({ children }) {
     "/vendorsdashboard",
     "/projectdocumentsdashboard",
     "/assetdashboard",
+    "/trackingdashboard",
+    "/reportsdashboard",
+    "/globalmastersdashboard",
+    "/projects/networks",
+    "/projects/wbs",
+    "/materials/materialgroups",
+    "/materials/mattypes",
+    "/materials1",
+    "/openpurchaseorders1",
+    "/vendors1",
+    "/specialstock1",
+    "/completestock1",
   ];
   const isDashboard = dashboardPaths.includes(router.pathname);
 

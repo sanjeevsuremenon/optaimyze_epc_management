@@ -315,7 +315,7 @@ export default function PublicAssetDetailsPage() {
 
       {/* Footer copyright branding */}
       <div className="text-center py-8 text-xs text-app-text-muted font-mono tracking-wider border-t border-slate-900/50 mt-12 max-w-3xl w-full mx-auto">
-        © {new Date().getFullYear()} JAL International. All rights reserved.
+        © {new Date().getFullYear()} EPC-Stack. All rights reserved.
       </div>
     </div>
   );
