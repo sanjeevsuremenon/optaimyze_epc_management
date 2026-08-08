@@ -173,11 +173,14 @@ const handler = async (req, res) => {
           }
         });
 
-        // Add project names to results
+        // Add project names; omit nested openPOs from list payload (keeps response light)
         const result = projectsArray.map(proj => ({
-          ...proj,
+          projectId: proj.projectId,
+          openPOCount: proj.openPOCount,
+          totalPOValue: proj.totalPOValue,
+          totalOpenValue: proj.totalOpenValue,
           projectName: projectInfoMap[proj.projectId]?.projectName || "",
-          projectWbs: projectInfoMap[proj.projectId]?.projectWbs || proj.projectId
+          projectWbs: projectInfoMap[proj.projectId]?.projectWbs || proj.projectId,
         }));
 
         // Calculate totals

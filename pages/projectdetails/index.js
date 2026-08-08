@@ -71,7 +71,7 @@ export default function Projectdetails({ initialProjects = [], session }) {
         Cell: Datestyle,
       },
       {
-        Header: "Finish Date",
+        Header: "End Date",
         accessor: "finished-date",
         Cell: Datestyle,
       },

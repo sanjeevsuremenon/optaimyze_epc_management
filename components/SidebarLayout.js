@@ -47,7 +47,6 @@ const MODULES = [
     label: "Materials",
     subs: [
       { label: "Materials", path: "/materials" },
-      { label: "Materials (alt)", path: "/materials1" },
       { label: "Material Groups List", path: "/materials/materialgroups" },
       { label: "Material Types", path: "/materials/mattypes" },
       { label: "Material Groups", path: "/material-groups" },
@@ -60,6 +59,10 @@ const MODULES = [
     subs: [
       { label: "Tracking Dashboard", path: "/trackingdashboard" },
       { label: "Tracking Home", path: "/tracking" },
+      { label: "PR Form", path: "/tracking/forms/PRForm" },
+      { label: "PO Form", path: "/tracking/forms/POForm" },
+      { label: "Delivery Form", path: "/tracking/forms/DeliveryForm" },
+      { label: "Post Delivery Form", path: "/tracking/forms/PostDeliveryForm" },
     ],
   },
   {
@@ -67,6 +70,8 @@ const MODULES = [
     label: "Reports",
     subs: [
       { label: "Reports Dashboard", path: "/reportsdashboard" },
+      { label: "Purchases Report", path: "/purchases-report" },
+      { label: "Lessons Learnt", path: "/lessons-learnt" },
       { label: "All Purchases", path: "/all-purchases-report" },
       { label: "Import Purchases", path: "/import-purchases-report" },
       { label: "Domestic Purchases", path: "/domestic-purchases-report" },
@@ -122,8 +127,8 @@ export default function SidebarLayout({ children }) {
     router.pathname === path || router.pathname.startsWith(`${path}/`);
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-app-bg text-app-text">
-      <div className="flex">
+    <div className="flex min-h-full flex-1 flex-col bg-app-bg text-app-text">
+      <div className="flex flex-1 min-h-0">
         {showSidebar && (
           <aside className="hidden w-[260px] shrink-0 border-r border-app-border bg-[var(--app-sidebar-bg)] p-4 md:block">
             <div className="mb-6 px-2">
@@ -195,7 +200,7 @@ export default function SidebarLayout({ children }) {
           </aside>
         )}
 
-        <div className={`relative flex-1 p-4 sm:p-6 ${showSidebar ? "" : "pl-14"}`}>{children}</div>
+        <div className={`relative flex flex-1 flex-col min-h-0 p-4 sm:p-6 ${showSidebar ? "" : "pl-14"}`}>{children}</div>
 
         {!showSidebar && (
           <button

@@ -54,12 +54,11 @@ function HeaderNewComponent() {
     {
       label: "Materials",
       icon: faPeopleGroup,
-      href: "/materials1",
+      href: "/materials",
       sublinks: [
-        { href: "/materials1", label: "Materials" },
+        { href: "/materials", label: "Materials" },
         { href: "/materialdocuments", label: "Material Docs" },
         { href: "/material-groups", label: "Material Groups" },
-        { href: "/reqmatcode", label: "New Matcode" },
         { href: "/material-standardization", label: "Standardize Materials" },
       ]
     },

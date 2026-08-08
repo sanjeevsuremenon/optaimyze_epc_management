@@ -1,4 +1,8 @@
 import { connectToDatabase } from "../../../../lib/mongoconnect";
+import {
+  poDateExistsMatch,
+  yearDateFilterStages,
+} from "../../../../lib/purchaseReportDateStages";
 
 /** Helper: sum po-quantity (handles number or Decimal128) */
 const qtySum = { $sum: { $convert: { input: "$po-quantity", to: "double", onError: 0, onNull: 0 } } };
@@ -45,29 +49,10 @@ export default async function handler(req, res) {
     const { db } = await connectToDatabase();
     const coll = db.collection("purchaseorders");
 
-    const startOfYear = !allYears ? new Date(yearNum, 0, 1, 0, 0, 0, 0) : null;
-    const endOfYear = !allYears ? new Date(yearNum, 11, 31, 23, 59, 59, 999) : null;
-
-    const dateFilterStage = !allYears
-      ? [
-          { $match: { "po-date": { $exists: true, $ne: null } } },
-          {
-            $addFields: {
-              poDateNorm: {
-                $cond: {
-                  if: { $eq: [{ $type: "$po-date" }, "date"] },
-                  then: "$po-date",
-                  else: { $toDate: "$po-date" },
-                },
-              },
-            },
-          },
-          { $match: { poDateNorm: { $gte: startOfYear, $lte: endOfYear } } },
-        ]
-      : [];
+    const dateFilterStage = !allYears ? yearDateFilterStages(yearNum) : [];
 
     const pipeline = [
-      { $match: allYears ? {} : { "po-date": { $exists: true, $ne: null } } },
+      { $match: allYears ? {} : poDateExistsMatch },
       ...dateFilterStage,
       materialGroupStage,
       {

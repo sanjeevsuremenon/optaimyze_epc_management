@@ -1,4 +1,8 @@
 import { connectToDatabase } from "../../../lib/mongoconnect";
+import {
+  poDateExistsMatch,
+  poDateNormAddFields,
+} from "../../../lib/purchaseReportDateStages";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -48,19 +52,19 @@ export default async function handler(req, res) {
 
     const dateFilterStage = !allYears
       ? [
-          { $match: { "po-date": { $exists: true, $ne: null } } },
+          { $match: poDateExistsMatch },
           {
             $addFields: {
               poDateNorm: {
                 $cond: {
                   if: { $eq: [{ $type: "$po-date" }, "date"] },
                   then: "$po-date",
-                  else: { $toDate: "$po-date" },
+                  else: { $convert: { input: "$po-date", to: "date", onError: null, onNull: null } },
                 },
               },
             },
           },
-          { $match: { poDateNorm: { $gte: startOfYear, $lte: endOfYear } } },
+          { $match: { poDateNorm: { $ne: null, $gte: startOfYear, $lte: endOfYear } } },
         ]
       : [];
 

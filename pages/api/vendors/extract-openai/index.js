@@ -26,7 +26,12 @@ export default async function handler(req, res) {
     }
 
     if (!OPENAI_API_KEY) {
-      return res.status(500).json({ error: 'OpenAI API key not configured (OPENAI_API_KEY or NEXT_PUBLIC_OPENAI_API_KEY)' });
+      // Soft-fail so vendor dashboard load is not blocked by missing optional AI config
+      return res.status(200).json({
+        success: false,
+        skipped: true,
+        reason: 'OpenAI API key not configured',
+      });
     }
 
     const { db } = await connectToDatabase();

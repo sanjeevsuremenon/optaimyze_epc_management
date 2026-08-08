@@ -102,9 +102,9 @@ export default function NewVendorPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} bg-app-bg text-app-text`}>
       <div className={styles.editForm}>
-        <h3 className="text-lg font-bold text-sky-800">Add New Vendor</h3>
+        <h3 className={styles.pageTitle}>Add New Vendor</h3>
         
         <form onSubmit={handleSubmit}>
           {/* Company Information Group */}
@@ -291,7 +291,7 @@ export default function NewVendorPage() {
             </div>
           </div>
 
-          <div className={styles.formActions} style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div className={styles.formActions}>
             <button type="submit" className={styles.saveButton}>
               Save Vendor
             </button>

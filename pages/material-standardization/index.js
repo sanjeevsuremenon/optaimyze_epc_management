@@ -259,7 +259,7 @@ Output only the standardized description or one of these keywords: CHARACTERISTI
 
   return (
     <>
-    <div className={styles.container}>
+    <div className={`${styles.container} app-page`}>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"></div>
       <h1 className={styles.title}>Material Description Standardization</h1>

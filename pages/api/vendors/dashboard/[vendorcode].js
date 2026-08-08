@@ -23,18 +23,54 @@ export default async function handler(req, res) {
       if (source === 'registeredvendors' && vendorName) {
         registeredVendorDetails = await db.collection('registeredvendors').findOne({ vendorname: vendorName });
       }
-      // Fallbacks by code
+      // Fallbacks by code (string + numeric variants)
       if (!registeredVendorDetails) {
+        const codeStr = String(vendorcode).trim();
+        const codeNum = /^\d+$/.test(codeStr) ? Number(codeStr) : null;
+        const codeVariants = [codeStr, vendorcode];
+        if (codeNum != null && !Number.isNaN(codeNum)) codeVariants.push(codeNum);
+
         [vendorDetails, registeredVendorDetails] = await Promise.all([
-          db.collection('vendors').findOne({ 'vendor-code': vendorcode }),
-          db.collection('registeredvendors').findOne({ vendorcode: vendorcode })
+          db.collection('vendors').findOne({
+            $or: [
+              { 'vendor-code': { $in: codeVariants } },
+              { vendorcode: { $in: codeVariants } },
+            ],
+          }),
+          db.collection('registeredvendors').findOne({
+            $or: [
+              { vendorcode: { $in: codeVariants } },
+              { 'vendor-code': { $in: codeVariants } },
+            ],
+          }),
         ]);
       }
 
       vendor = vendorDetails || registeredVendorDetails;
-      
+
+      // Last resort: synthesize from purchase orders so dashboard is not blank
       if (!vendor) {
-        return res.status(404).json({ error: 'Vendor not found' });
+        const codeStr = String(vendorcode).trim();
+        const poSample = await db.collection('purchaseorders').findOne({
+          $or: [
+            { vendorcode: codeStr },
+            { 'vendor-code': codeStr },
+            ...( /^\d+$/.test(codeStr) ? [{ vendorcode: Number(codeStr) }, { 'vendor-code': Number(codeStr) }] : []),
+          ],
+        });
+        if (poSample) {
+          vendor = {
+            'vendor-code': codeStr,
+            vendorcode: codeStr,
+            'vendor-name': poSample.vendorname || poSample['vendor-name'] || vendorName || codeStr,
+            vendorname: poSample.vendorname || poSample['vendor-name'] || vendorName || codeStr,
+            source: 'purchaseorders',
+          };
+        }
+      }
+
+      if (!vendor) {
+        return res.status(404).json({ error: 'Vendor not found', vendorcode });
       }
 
     // Get purchase orders for this vendor
@@ -45,7 +81,14 @@ export default async function handler(req, res) {
     
     try {
       const purchaseOrders = await db.collection('purchaseorders')
-        .find({ vendorcode: vendorcode })
+        .find({
+          $or: [
+            { vendorcode: vendorcode },
+            { 'vendor-code': vendorcode },
+            { vendorcode: String(vendorcode) },
+            { 'vendor-code': String(vendorcode) },
+          ],
+        })
         .toArray();
 
 
@@ -206,7 +249,9 @@ export default async function handler(req, res) {
           vatnumber: vendor['vat-number'] || vendor.vatnumber,
           created_date: vendor.created_date || vendor.created_at,
           created_by: vendor.created_by,
-          source: vendorDetails ? 'vendors' : 'registeredvendors'
+          source: vendorDetails
+            ? 'vendors'
+            : (vendor.source === 'purchaseorders' ? 'purchaseorders' : 'registeredvendors')
         } : null,
         poSummary: {
           totalValue: totalValue || 0,

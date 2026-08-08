@@ -59,7 +59,7 @@ export default function AppLayout({ children }) {
     "/projects/wbs",
     "/materials/materialgroups",
     "/materials/mattypes",
-    "/materials1",
+    "/materials",
     "/openpurchaseorders1",
     "/vendors1",
     "/specialstock1",
@@ -68,14 +68,16 @@ export default function AppLayout({ children }) {
   const isDashboard = dashboardPaths.includes(router.pathname);
 
   return (
-    <div className="app-page min-h-screen">
+    <div className="app-page min-h-screen flex flex-col">
       <ModuleHeader />
       {isDashboard ? (
-        <main className="min-h-[calc(100vh-12rem)]">{children}</main>
+        <main className="flex-1 w-full">{children}</main>
       ) : (
-        <SidebarLayout>
-          <main className="min-h-[calc(100vh-12rem)]">{children}</main>
-        </SidebarLayout>
+        <div className="flex-1 flex flex-col min-h-0">
+          <SidebarLayout>
+            <main className="flex-1 w-full">{children}</main>
+          </SidebarLayout>
+        </div>
       )}
       <FooterComponent />
     </div>

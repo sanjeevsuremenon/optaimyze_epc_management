@@ -26,8 +26,8 @@ function colorForStatus(name, index) {
 
 export function AssetStatusChart({
   data,
-  gridStroke = "#F1F5F9",
-  axisStroke = "#64748B",
+  gridStroke = "var(--app-border, #334155)",
+  axisStroke = "var(--app-text-muted, #94A3B8)",
   emptyLabel = "No status data yet",
 }) {
   const hasData = data?.length > 0;
@@ -59,7 +59,7 @@ export function AssetStatusChart({
             angle={-18}
             textAnchor="end"
             height={56}
-            axisLine={{ stroke: "#E2E8F0" }}
+            axisLine={{ stroke: "var(--app-border, #334155)" }}
             tickLine={false}
           />
           <YAxis
@@ -70,15 +70,15 @@ export function AssetStatusChart({
           />
           <Tooltip
             contentStyle={{
-              background: "#0F172A",
-              color: "#FFFFFF",
+              background: "var(--app-surface, #0F172A)",
+              color: "var(--app-text, #FFFFFF)",
               borderRadius: 6,
-              border: "none",
+              border: "1px solid var(--app-border, transparent)",
               fontSize: 13,
               padding: "8px 12px",
             }}
-            labelStyle={{ color: "#FFFFFF" }}
-            itemStyle={{ color: "#FFFFFF" }}
+            labelStyle={{ color: "var(--app-text, #FFFFFF)" }}
+            itemStyle={{ color: "var(--app-text, #FFFFFF)" }}
             formatter={(value) => [value, "Assets"]}
           />
           <Bar dataKey="value" radius={[4, 4, 0, 0]} name="Assets" maxBarSize={32}>

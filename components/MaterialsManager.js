@@ -288,9 +288,9 @@ export default function MaterialsManager({ initialTab = "materials" }) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 py-8 space-y-6 bg-[var(--app-bg)] text-[var(--app-text)]">
       {/* Navigation tabs */}
-      <div className="flex border-b border-slate-200 dark:border-slate-800 gap-2 overflow-x-auto pb-px">
+      <div className="flex border-b border-[var(--app-border)] gap-2 overflow-x-auto pb-px">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const active = activeTab === tab.id;
@@ -303,8 +303,8 @@ export default function MaterialsManager({ initialTab = "materials" }) {
               }}
               className={`flex items-center gap-2 px-6 py-3 border-b-2 font-semibold text-sm transition-all whitespace-nowrap ${
                 active 
-                  ? "border-cyan-500 text-cyan-600 dark:text-cyan-400" 
-                  : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+                  ? "border-[var(--app-accent)] text-[var(--app-accent)]" 
+                  : "border-transparent text-[var(--app-text-muted)] hover:text-[var(--app-text)]"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -317,9 +317,9 @@ export default function MaterialsManager({ initialTab = "materials" }) {
       {activeTab !== "explorer" ? (
         <div className="space-y-6">
           {/* Filters Bar */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 border border-slate-800/80 p-4 rounded-2xl backdrop-blur">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[var(--app-surface)] border border-[var(--app-border)] p-4 rounded-2xl backdrop-blur">
             <div className="relative flex-1 max-w-md">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[var(--app-text-muted)]">
                 <Search className="w-4 h-4" />
               </span>
               <input
@@ -327,22 +327,22 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                 placeholder={`Search ${activeTab}...`}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-950/80 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 text-sm"
+                className="w-full pl-10 pr-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] placeholder:text-[var(--app-text-disabled)] focus:outline-none focus:border-[var(--app-accent)] text-sm"
               />
             </div>
             
             <div className="flex items-center gap-3">
               {/* Card / Table Toggle */}
-              <div className="flex bg-slate-950/80 border border-slate-800 rounded-xl p-1">
+              <div className="flex bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl p-1">
                 <button
                   onClick={() => setViewMode("table")}
-                  className={`p-1.5 rounded-lg transition ${viewMode === "table" ? "bg-slate-800 text-cyan-400" : "text-slate-400"}`}
+                  className={`p-1.5 rounded-lg transition ${viewMode === "table" ? "bg-[var(--app-surface-muted)] text-[var(--app-accent)]" : "text-[var(--app-text-muted)]"}`}
                 >
                   <List className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setViewMode("card")}
-                  className={`p-1.5 rounded-lg transition ${viewMode === "card" ? "bg-slate-800 text-cyan-400" : "text-slate-400"}`}
+                  className={`p-1.5 rounded-lg transition ${viewMode === "card" ? "bg-[var(--app-surface-muted)] text-[var(--app-accent)]" : "text-[var(--app-text-muted)]"}`}
                 >
                   <Grid className="w-4 h-4" />
                 </button>
@@ -351,7 +351,7 @@ export default function MaterialsManager({ initialTab = "materials" }) {
               {/* CSV Upload/Download */}
               <button 
                 onClick={handleDownloadTemplate}
-                className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold rounded-xl transition"
+                className="flex items-center gap-1.5 px-4 py-2.5 bg-[var(--app-surface-muted)] hover:bg-[var(--app-border)] text-[var(--app-text)] text-sm font-semibold rounded-xl transition"
               >
                 <Download className="w-4 h-4" />
                 Template
@@ -365,7 +365,7 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
                 <button 
-                  className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold rounded-xl transition"
+                  className="flex items-center gap-1.5 px-4 py-2.5 bg-[var(--app-surface-muted)] hover:bg-[var(--app-border)] text-[var(--app-text)] text-sm font-semibold rounded-xl transition"
                 >
                   <Upload className="w-4 h-4" />
                   Import CSV
@@ -375,7 +375,7 @@ export default function MaterialsManager({ initialTab = "materials" }) {
               {/* Add New */}
               <button
                 onClick={openAddModal}
-                className="flex items-center gap-1.5 px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition transform hover:scale-[1.02]"
+                className="flex items-center gap-1.5 px-4 py-2.5 bg-[var(--app-accent)] hover:bg-[var(--app-accent-hover)] text-[var(--app-accent-text)] text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition"
               >
                 <Plus className="w-4 h-4" />
                 Add New
@@ -385,70 +385,70 @@ export default function MaterialsManager({ initialTab = "materials" }) {
 
           {/* List display based on viewMode */}
           {loading ? (
-            <div className="text-center py-12 text-slate-400 font-medium">Loading data...</div>
+            <div className="text-center py-12 text-[var(--app-text-muted)] font-medium">Loading data...</div>
           ) : viewMode === "table" ? (
-            <div className="overflow-x-auto bg-slate-900/40 border border-slate-800/80 rounded-2xl">
-              <table className="min-w-full divide-y divide-slate-800">
-                <thead className="bg-slate-950/60">
+            <div className="overflow-x-auto bg-[var(--app-surface)] border border-[var(--app-border)] rounded-2xl">
+              <table className="min-w-full divide-y divide-[var(--app-border)]">
+                <thead className="bg-[var(--app-surface-muted)]">
                   {activeTab === "materials" && (
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Material Code</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Description</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Group</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Industry</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">UOM</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Old Mat No</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-slate-400 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Material Code</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Description</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Group</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Industry</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">UOM</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Old Mat No</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Actions</th>
                     </tr>
                   )}
                   {activeTab === "materialgroups" && (
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Group Name</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Description</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Parent Type ID</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-slate-400 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Group Name</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Description</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Parent Type ID</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Actions</th>
                     </tr>
                   )}
                   {activeTab === "mattypes" && (
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Type Name</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Description</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">Type (Service/Mat)</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-slate-400 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Type Name</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Description</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Type (Service/Mat)</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-[var(--app-text-muted)] uppercase tracking-wider">Actions</th>
                     </tr>
                   )}
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 bg-transparent text-slate-200">
+                <tbody className="divide-y divide-[var(--app-border)] bg-transparent text-[var(--app-text)]">
                   {dataList.map((row) => (
-                    <tr key={row._id} className="hover:bg-slate-800/20 transition-colors">
+                    <tr key={row._id} className="hover:bg-[var(--app-surface-muted)] transition-colors">
                       {activeTab === "materials" && (
                         <>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-cyan-400">{row["material-code"]}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-[var(--app-accent)]">{row["material-code"]}</td>
                           <td className="px-6 py-4 text-sm font-medium max-w-xs truncate">{row["material-description"]}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-350">{row["material-group"]}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">{row["material-industry"] || "N/A"}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-450">{row["unit-measure"] || "EA"}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">{row["old-material-number"] || "N/A"}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--app-text-secondary)]">{row["material-group"]}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--app-text-muted)]">{row["material-industry"] || "N/A"}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--app-text-muted)]">{row["unit-measure"] || "EA"}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--app-text-muted)]">{row["old-material-number"] || "N/A"}</td>
                         </>
                       )}
                       {activeTab === "materialgroups" && (
                         <>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-purple-400">{row["name"]}</td>
-                          <td className="px-6 py-4 text-sm font-medium text-slate-300 max-w-xs truncate">{row["description"]}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400 font-mono">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-purple-700 dark:text-purple-400">{row["name"]}</td>
+                          <td className="px-6 py-4 text-sm font-medium text-[var(--app-text-secondary)] max-w-xs truncate">{row["description"]}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--app-text-muted)] font-mono">
                             {row["groupId"] ? (row["groupId"].$oid || row["groupId"].toString()) : "N/A"}
                           </td>
                         </>
                       )}
                       {activeTab === "mattypes" && (
                         <>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-400">{row["name"]}</td>
-                          <td className="px-6 py-4 text-sm font-medium text-slate-300 max-w-xs truncate">{row["description"]}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-700 dark:text-emerald-400">{row["name"]}</td>
+                          <td className="px-6 py-4 text-sm font-medium text-[var(--app-text-secondary)] max-w-xs truncate">{row["description"]}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--app-text-muted)]">
                             {row["isService"] ? (
-                              <span className="text-pink-400 bg-pink-950/40 px-2 py-0.5 rounded text-xs border border-pink-900/30">Service</span>
+                              <span className="text-pink-700 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/40 px-2 py-0.5 rounded text-xs border border-pink-200 dark:border-pink-900/30">Service</span>
                             ) : (
-                              <span className="text-teal-400 bg-teal-950/40 px-2 py-0.5 rounded text-xs border border-teal-900/30">Material</span>
+                              <span className="text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/40 px-2 py-0.5 rounded text-xs border border-teal-200 dark:border-teal-900/30">Material</span>
                             )}
                           </td>
                         </>
@@ -456,14 +456,14 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                         <button
                           onClick={() => openEditModal(row)}
-                          className="text-slate-400 hover:text-amber-400 transition p-1"
+                          className="text-[var(--app-text-muted)] hover:text-amber-400 transition p-1"
                           title="Edit"
                         >
                           <Edit className="w-4 h-4 inline" />
                         </button>
                         <button
                           onClick={() => handleDelete(row)}
-                          className="text-slate-400 hover:text-rose-500 transition p-1"
+                          className="text-[var(--app-text-muted)] hover:text-rose-500 transition p-1"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4 inline" />
@@ -473,7 +473,7 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                   ))}
                   {dataList.length === 0 && (
                     <tr>
-                      <td colSpan="7" className="text-center py-8 text-slate-500 text-sm">No records found.</td>
+                      <td colSpan="7" className="text-center py-8 text-[var(--app-text-muted)] text-sm">No records found.</td>
                     </tr>
                   )}
                 </tbody>
@@ -483,48 +483,48 @@ export default function MaterialsManager({ initialTab = "materials" }) {
             /* Card view */
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {dataList.map((row) => (
-                <div key={row._id} className="app-card rounded-[1.5rem] p-6 shadow-md border border-slate-800/80 hover:border-slate-700/80 flex flex-col justify-between space-y-4">
+                <div key={row._id} className="app-card rounded-[1.5rem] p-6 shadow-md border border-[var(--app-border)] hover:border-[var(--app-border)] flex flex-col justify-between space-y-4">
                   <div>
                     {activeTab === "materials" && (
                       <>
-                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-cyan-400 bg-cyan-950/40 border border-cyan-800/30 px-2.5 py-0.5 rounded-full">
+                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-[var(--app-accent)] bg-[var(--app-accent-soft)] border border-[var(--app-accent)] px-2.5 py-0.5 rounded-full">
                           Code: {row["material-code"]}
                         </span>
-                        <h4 className="text-base font-bold text-slate-100 mt-3 line-clamp-2">{row["material-description"]}</h4>
-                        <p className="text-xs text-slate-500 mt-2">Group: <span className="font-semibold text-slate-350">{row["material-group"]}</span></p>
+                        <h4 className="text-base font-bold text-[var(--app-text)] mt-3 line-clamp-2">{row["material-description"]}</h4>
+                        <p className="text-xs text-[var(--app-text-muted)] mt-2">Group: <span className="font-semibold text-[var(--app-text-secondary)]">{row["material-group"]}</span></p>
                       </>
                     )}
                     {activeTab === "materialgroups" && (
                       <>
-                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-purple-400 bg-purple-950/40 border border-purple-800/30 px-2.5 py-0.5 rounded-full">
+                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-purple-700 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/30 px-2.5 py-0.5 rounded-full">
                           Group: {row["name"]}
                         </span>
-                        <h4 className="text-base font-bold text-slate-100 mt-3 line-clamp-2">{row["description"]}</h4>
-                        <p className="text-[10px] text-slate-500 mt-2 truncate">Parent ID: <span className="font-mono text-slate-400">{row["groupId"] ? (row["groupId"].$oid || row["groupId"].toString()) : "N/A"}</span></p>
+                        <h4 className="text-base font-bold text-[var(--app-text)] mt-3 line-clamp-2">{row["description"]}</h4>
+                        <p className="text-[10px] text-[var(--app-text-muted)] mt-2 truncate">Parent ID: <span className="font-mono text-[var(--app-text-muted)]">{row["groupId"] ? (row["groupId"].$oid || row["groupId"].toString()) : "N/A"}</span></p>
                       </>
                     )}
                     {activeTab === "mattypes" && (
                       <>
-                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-emerald-400 bg-emerald-950/40 border border-emerald-800/30 px-2.5 py-0.5 rounded-full">
+                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/30 px-2.5 py-0.5 rounded-full">
                           Type: {row["name"]}
                         </span>
-                        <h4 className="text-base font-bold text-slate-100 mt-3">{row["description"]}</h4>
-                        <p className="text-xs text-slate-550 mt-2">Class: <span className="font-semibold text-slate-300">{row["isService"] ? "Service" : "Material"}</span></p>
+                        <h4 className="text-base font-bold text-[var(--app-text)] mt-3">{row["description"]}</h4>
+                        <p className="text-xs text-[var(--app-text-muted)] mt-2">Class: <span className="font-semibold text-[var(--app-text-secondary)]">{row["isService"] ? "Service" : "Material"}</span></p>
                       </>
                     )}
                   </div>
                   
-                  <div className="flex items-center justify-end border-t border-slate-800/60 pt-4 gap-2">
+                  <div className="flex items-center justify-end border-t border-[var(--app-border)] pt-4 gap-2">
                     <button
                       onClick={() => openEditModal(row)}
-                      className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-amber-400 rounded-lg transition"
+                      className="p-1.5 bg-[var(--app-surface-muted)] hover:bg-[var(--app-border)] text-[var(--app-text-secondary)] hover:text-amber-400 rounded-lg transition"
                       title="Edit"
                     >
                       <Edit className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(row)}
-                      className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-rose-500 rounded-lg transition"
+                      className="p-1.5 bg-[var(--app-surface-muted)] hover:bg-[var(--app-border)] text-[var(--app-text-secondary)] hover:text-rose-500 rounded-lg transition"
                       title="Delete"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -533,7 +533,7 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                 </div>
               ))}
               {dataList.length === 0 && (
-                <div className="col-span-full text-center py-12 text-slate-500">No records found.</div>
+                <div className="col-span-full text-center py-12 text-[var(--app-text-muted)]">No records found.</div>
               )}
             </div>
           )}
@@ -541,16 +541,16 @@ export default function MaterialsManager({ initialTab = "materials" }) {
       ) : (
         /* Hierarchy explorer nodes mapping view */
         <div className="space-y-6">
-          <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="bg-[var(--app-surface)] border border-[var(--app-border)] p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h3 className="text-lg font-bold text-slate-100">Material Type, Group & Master Map</h3>
-              <p className="text-xs text-slate-400 mt-1">Select a Material Type to view associated Material Groups and mapped raw Materials.</p>
+              <h3 className="text-lg font-bold text-[var(--app-text)]">Material Type, Group & Master Map</h3>
+              <p className="text-xs text-[var(--app-text-muted)] mt-1">Select a Material Type to view associated Material Groups and mapped raw Materials.</p>
             </div>
             <div>
               <select
                 value={selectedMatType}
                 onChange={(e) => setSelectedMatType(e.target.value)}
-                className="w-full md:w-80 px-4 py-2.5 bg-slate-950/80 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                className="w-full md:w-80 px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
               >
                 {allMatTypes.map((m) => (
                   <option key={m._id} value={m["name"]}>
@@ -562,9 +562,9 @@ export default function MaterialsManager({ initialTab = "materials" }) {
           </div>
 
           {loadingHierarchy ? (
-            <div className="text-center py-16 text-slate-400 font-medium">Tracing material links...</div>
+            <div className="text-center py-16 text-[var(--app-text-muted)] font-medium">Tracing material links...</div>
           ) : hierarchyData ? (
-            <div className="bg-slate-950/40 border border-slate-900/60 p-8 rounded-[2rem] flex flex-col items-center">
+            <div className="bg-[var(--app-surface-muted)] border border-[var(--app-border)] p-8 rounded-[2rem] flex flex-col items-center">
               
               {/* Visual Node Hierarchy */}
               <div className="w-full max-w-4xl flex flex-col items-center gap-10">
@@ -579,51 +579,51 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                     </div>
                   </div>
                   {/* Stem Down */}
-                  <div className="w-0.5 h-10 bg-slate-800"></div>
+                  <div className="w-0.5 h-10 bg-[var(--app-surface-muted)]"></div>
                 </div>
 
                 {/* Grid of Groups and Materials */}
                 <div className="grid md:grid-cols-2 gap-8 w-full relative">
                   
                   {/* Left Column: Material Groups */}
-                  <div className="flex flex-col items-center bg-slate-900/30 border border-slate-800/40 p-6 rounded-2xl">
+                  <div className="flex flex-col items-center bg-[var(--app-surface-muted)] border border-[var(--app-border)] p-6 rounded-2xl">
                     <div className="flex items-center gap-2 mb-4">
-                      <Layers className="w-5 h-5 text-purple-400" />
-                      <h3 className="text-base font-bold text-slate-200">Material Groups (Subgroups)</h3>
+                      <Layers className="w-5 h-5 text-purple-700 dark:text-purple-400" />
+                      <h3 className="text-base font-bold text-[var(--app-text)]">Material Groups (Subgroups)</h3>
                     </div>
                     
                     <div className="flex flex-col gap-3 w-full">
                       {hierarchyData.groups.map((group) => (
-                        <div key={group._id} className="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-sm flex flex-col gap-1">
-                          <span className="text-sm font-bold text-purple-400">{group["name"]}</span>
-                          <p className="text-xs text-slate-350 mt-1 line-clamp-2">{group["description"]}</p>
+                        <div key={group._id} className="bg-[var(--app-surface)] border border-[var(--app-border)] p-4 rounded-xl shadow-sm flex flex-col gap-1">
+                          <span className="text-sm font-bold text-purple-700 dark:text-purple-400">{group["name"]}</span>
+                          <p className="text-xs text-[var(--app-text-secondary)] mt-1 line-clamp-2">{group["description"]}</p>
                         </div>
                       ))}
                       {hierarchyData.groups.length === 0 && (
-                        <p className="text-xs text-slate-500 text-center py-6">No groups matched the mapping keys.</p>
+                        <p className="text-xs text-[var(--app-text-muted)] text-center py-6">No groups matched the mapping keys.</p>
                       )}
                     </div>
                   </div>
 
                   {/* Right Column: Materials */}
-                  <div className="flex flex-col items-center bg-slate-900/30 border border-slate-800/40 p-6 rounded-2xl">
+                  <div className="flex flex-col items-center bg-[var(--app-surface-muted)] border border-[var(--app-border)] p-6 rounded-2xl">
                     <div className="flex items-center gap-2 mb-4">
-                      <Boxes className="w-5 h-5 text-cyan-400" />
-                      <h3 className="text-base font-bold text-slate-200">Raw Materials</h3>
+                      <Boxes className="w-5 h-5 text-[var(--app-accent)]" />
+                      <h3 className="text-base font-bold text-[var(--app-text)]">Raw Materials</h3>
                     </div>
                     
                     <div className="flex flex-col gap-3 w-full max-h-96 overflow-y-auto pr-1">
                       {hierarchyData.materials.map((mat) => (
-                        <div key={mat._id} className="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-sm flex items-center justify-between">
+                        <div key={mat._id} className="bg-[var(--app-surface)] border border-[var(--app-border)] p-4 rounded-xl shadow-sm flex items-center justify-between">
                           <div className="flex flex-col gap-0.5">
-                            <span className="text-xs font-bold text-cyan-400">{mat["material-code"]}</span>
-                            <span className="text-sm text-slate-300 font-medium line-clamp-1">{mat["material-description"]}</span>
+                            <span className="text-xs font-bold text-[var(--app-accent)]">{mat["material-code"]}</span>
+                            <span className="text-sm text-[var(--app-text-secondary)] font-medium line-clamp-1">{mat["material-description"]}</span>
                           </div>
-                          <ChevronRight className="w-4 h-4 text-slate-700" />
+                          <ChevronRight className="w-4 h-4 text-[var(--app-text-disabled)]" />
                         </div>
                       ))}
                       {hierarchyData.materials.length === 0 && (
-                        <p className="text-xs text-slate-500 text-center py-6">No materials found in the mapped group.</p>
+                        <p className="text-xs text-[var(--app-text-muted)] text-center py-6">No materials found in the mapped group.</p>
                       )}
                     </div>
                   </div>
@@ -646,7 +646,7 @@ export default function MaterialsManager({ initialTab = "materials" }) {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            backgroundColor: 'var(--app-overlay)',
             backdropFilter: 'blur(4px)',
             zIndex: 10000,
             display: 'flex',
@@ -658,8 +658,8 @@ export default function MaterialsManager({ initialTab = "materials" }) {
         >
           <div 
             style={{
-              backgroundColor: '#0f172a', // slate-900
-              border: '1px solid #334155', // slate-700/80
+              backgroundColor: 'var(--app-surface)',
+              border: '1px solid var(--app-border)',
               borderRadius: '1rem',
               width: '100%',
               maxWidth: '28rem',
@@ -671,9 +671,9 @@ export default function MaterialsManager({ initialTab = "materials" }) {
             }}
           >
             {/* Header */}
-            <div style={{ padding: '1.5rem', borderBottom: '1px solid #1e293b' }}>
-              <h3 className="text-lg font-bold text-slate-100">{editingRecord ? "Edit Record" : "Add New Record"}</h3>
-              <p className="text-xs text-slate-400 mt-1">Fill in the fields to save to database.</p>
+            <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--app-border)' }}>
+              <h3 className="text-lg font-bold text-[var(--app-text)]">{editingRecord ? "Edit Record" : "Add New Record"}</h3>
+              <p className="text-xs text-[var(--app-text-muted)] mt-1">Fill in the fields to save to database.</p>
             </div>
             
             <form 
@@ -698,88 +698,88 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                 {activeTab === "materials" && (
                   <>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Material Code (Required)</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Material Code (Required)</label>
                       <input
                         type="text"
                         required
                         disabled={!!editingRecord}
                         value={formData["material-code"] || ""}
                         onChange={(e) => setFormData({ ...formData, "material-code": e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Industry Code</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Industry Code</label>
                       <input
                         type="text"
                         value={formData["material-industry"] || ""}
                         onChange={(e) => setFormData({ ...formData, "material-industry": e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Material Group Code (Required)</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Material Group Code (Required)</label>
                       <input
                         type="text"
                         required
                         value={formData["material-group"] || ""}
                         onChange={(e) => setFormData({ ...formData, "material-group": e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Unit of Measure (UOM)</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Unit of Measure (UOM)</label>
                       <input
                         type="text"
                         value={formData["unit-measure"] || ""}
                         onChange={(e) => setFormData({ ...formData, "unit-measure": e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Old Material Number</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Old Material Number</label>
                       <input
                         type="text"
                         value={formData["old-material-number"] || ""}
                         onChange={(e) => setFormData({ ...formData, "old-material-number": e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Material Description (Required)</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Material Description (Required)</label>
                       <textarea
                         required
                         value={formData["material-description"] || ""}
                         onChange={(e) => setFormData({ ...formData, "material-description": e.target.value })}
-                        className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                         rows={2}
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Material Description 2</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Material Description 2</label>
                       <textarea
                         value={formData["mat-description2"] || ""}
                         onChange={(e) => setFormData({ ...formData, "mat-description2": e.target.value })}
-                        className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                         rows={2}
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Created By</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Created By</label>
                       <input
                         type="text"
                         value={formData["created-by"] || ""}
                         onChange={(e) => setFormData({ ...formData, "created-by": e.target.value })}
-                        className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Updated By</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Updated By</label>
                       <input
                         type="text"
                         value={formData["updated-by"] || ""}
                         onChange={(e) => setFormData({ ...formData, "updated-by": e.target.value })}
-                        className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                   </>
@@ -788,33 +788,33 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                 {activeTab === "materialgroups" && (
                   <>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Group Name/Code (Required)</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Group Name/Code (Required)</label>
                       <input
                         type="text"
                         required
                         disabled={!!editingRecord}
                         value={formData["name"] || ""}
                         onChange={(e) => setFormData({ ...formData, "name": e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Description (Required)</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Description (Required)</label>
                       <input
                         type="text"
                         required
                         value={formData["description"] || ""}
                         onChange={(e) => setFormData({ ...formData, "description": e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Parent Type ID (groupId ObjectId string)</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Parent Type ID (groupId ObjectId string)</label>
                       <input
                         type="text"
                         value={formData["groupId"] || ""}
                         onChange={(e) => setFormData({ ...formData, "groupId": e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold font-mono"
+                        className="w-full px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold font-mono"
                       />
                     </div>
                   </>
@@ -823,24 +823,24 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                 {activeTab === "mattypes" && (
                   <>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Type Name (Required)</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Type Name (Required)</label>
                       <input
                         type="text"
                         required
                         disabled={!!editingRecord}
                         value={formData["name"] || ""}
                         onChange={(e) => setFormData({ ...formData, "name": e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase text-slate-400 mb-1.5">Description (Required)</label>
+                      <label className="block text-xs font-semibold uppercase text-[var(--app-text-muted)] mb-1.5">Description (Required)</label>
                       <input
                         type="text"
                         required
                         value={formData["description"] || ""}
                         onChange={(e) => setFormData({ ...formData, "description": e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-500 text-sm font-semibold"
+                        className="w-full px-4 py-2.5 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-xl text-[var(--app-text)] focus:outline-none focus:border-[var(--app-accent)] text-sm font-semibold"
                       />
                     </div>
                     <div className="flex items-center gap-2">
@@ -849,9 +849,9 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                         id="isService"
                         checked={!!formData["isService"]}
                         onChange={(e) => setFormData({ ...formData, "isService": e.target.checked })}
-                        className="w-4 h-4 accent-cyan-500 rounded bg-slate-950 border-slate-800"
+                        className="w-4 h-4 accent-cyan-500 rounded bg-[var(--app-bg)] border-[var(--app-border)]"
                       />
-                      <label htmlFor="isService" className="text-xs font-semibold uppercase text-slate-400">Is Service Type</label>
+                      <label htmlFor="isService" className="text-xs font-semibold uppercase text-[var(--app-text-muted)]">Is Service Type</label>
                     </div>
                   </>
                 )}
@@ -861,8 +861,8 @@ export default function MaterialsManager({ initialTab = "materials" }) {
               <div 
                 style={{
                   padding: '1rem 1.5rem',
-                  borderTop: '1px solid #1e293b',
-                  backgroundColor: 'rgba(15, 23, 42, 0.3)',
+                  borderTop: '1px solid var(--app-border)',
+                  backgroundColor: 'var(--app-surface-muted)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'flex-end',
@@ -872,13 +872,13 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold rounded-lg transition"
+                  className="px-4 py-2 bg-[var(--app-surface-muted)] hover:bg-[var(--app-border)] text-[var(--app-text-secondary)] text-sm font-semibold rounded-lg transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white text-sm font-bold rounded-lg transition"
+                  className="px-4 py-2 bg-[var(--app-accent)] hover:bg-[var(--app-accent-hover)] text-[var(--app-accent-text)] text-sm font-bold rounded-lg transition"
                 >
                   Save
                 </button>

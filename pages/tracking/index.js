@@ -20,10 +20,10 @@ import {
 } from 'react-icons/fi';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PRForm from "./forms/PRForm";
-import POForm from "./forms/POForm";
-import DeliveryForm from "./forms/DeliveryForm";
-import PostDeliveryForm from "./forms/PostDeliveryForm";
+import PRForm from "../../components/Tracking/PRForm";
+import POForm from "../../components/Tracking/POForm";
+import DeliveryForm from "../../components/Tracking/DeliveryForm";
+import PostDeliveryForm from "../../components/Tracking/PostDeliveryForm";
 
 function TrackingPage() {
   const { data: session } = useSession();
@@ -327,7 +327,7 @@ function TrackingPage() {
   // Check if user is authenticated
   if (!session) {
     return (
-      <div className="bg-light-primary dark:bg-dark-primary min-h-screen flex items-center justify-center">
+      <div className="app-page min-h-screen flex items-center justify-center">
         <Head>
           <title>Access Denied - OPTAIMYZE Portal</title>
         </Head>
@@ -344,7 +344,7 @@ function TrackingPage() {
   }
 
   return (
-    <div className="bg-light-primary dark:bg-dark-primary min-h-screen">
+    <div className="app-page min-h-screen text-app-text">
       <Head>
         <title> Tracking Log - OPTAIMYZE Portal</title>
         <meta name="description" content="Purchase requisition and purchase order tracking" />

@@ -481,9 +481,10 @@ function LongLeadPackages() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
+    <div className="app-page min-h-screen font-[Poppins,sans-serif]">
+
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+        <h1 className="text-3xl font-bold text-app-text mb-6 tracking-tight">
           Long Lead Material Packages
         </h1>
 
@@ -493,26 +494,26 @@ function LongLeadPackages() {
             <input
               type="text"
               placeholder="Search projects by name..."
-              className="w-full px-4 py-3 pl-12 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 shadow-md hover:shadow-lg transition-shadow duration-300"
+              className="w-full px-4 py-3 pl-12 text-app-text bg-app-surface border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/30 shadow-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
           </div>
 
           {/* Project Suggestions */}
           {projects.length > 0 && (
-            <div className="mt-2 bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-auto z-50">
+            <div className="mt-2 bg-app-surface rounded-lg shadow-lg border border-app-border max-h-96 overflow-auto z-50">
               {projects.map((project, index) => (
                 <div
                   key={index}
                   onClick={() => handleProjectSelect(project)}
-                  className="p-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                  className="p-3 hover:bg-app-accent-soft cursor-pointer border-b border-app-border last:border-b-0"
                 >
-                  <div className="font-semibold text-gray-800">
+                  <div className="font-semibold text-app-text">
                     {project["project-name"]}
                   </div>
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-app-text-muted">
                     {project["project-wbs"]}
                   </div>
                 </div>
@@ -523,19 +524,19 @@ function LongLeadPackages() {
 
         {/* Selected Project Display */}
         {selectedProject && (
-          <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <div className="mb-6 p-4 bg-app-accent-soft rounded-xl border border-app-border">
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-xl font-semibold text-gray-800">
+                <h2 className="text-xl font-semibold text-app-text">
                   {selectedProject["project-name"]}
                 </h2>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-app-text-muted">
                   WBS: {selectedProject["project-wbs"]}
                 </p>
               </div>
               <button
                 onClick={handleAddNew}
-                className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                className="app-btn-primary"
               >
                 <FiPlus className="mr-2" />
                 Add New Package
@@ -546,88 +547,88 @@ function LongLeadPackages() {
 
         {/* Packages List */}
         {selectedProject && (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-4 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
+          <div className="bg-app-surface border border-app-border rounded-xl shadow-sm overflow-hidden">
+            <div className="p-4 border-b border-app-border bg-app-surface-muted/60">
               <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-gray-800">Packages</h2>
-                <p className="text-sm text-gray-600 italic">
+                <h2 className="text-xl font-semibold text-app-text">Packages</h2>
+                <p className="text-sm text-app-text-muted italic">
                   Note: Uploaded documents can be viewed/downloaded by clicking the edit button
                 </p>
               </div>
             </div>
             {loading ? (
               <div className="flex justify-center p-8">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-accent"></div>
               </div>
             ) : packages.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-8 text-center">
                 <FiFile className="w-16 h-16 text-app-text-secondary mb-4" />
-                <h3 className="text-lg font-medium text-gray-600 mb-2">
+                <h3 className="text-lg font-medium text-app-text mb-2">
                   No Packages Found
                 </h3>
-                <p className="text-gray-500">
+                <p className="text-app-text-muted">
                   Click "Add New Package" to create the first package for this project.
                 </p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
+                  <thead className="bg-app-surface-muted">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-app-text-secondary uppercase tracking-wider">
                         Package Name
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-app-text-secondary uppercase tracking-wider">
                         Description
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-app-text-secondary uppercase tracking-wider">
                         Date Shared from Designer
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-app-text-secondary uppercase tracking-wider">
                         Date Shared to MMD
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-app-text-secondary uppercase tracking-wider">
                         PO Date
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-app-text-secondary uppercase tracking-wider">
                         Documents
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-app-text-secondary uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-app-surface divide-y divide-app-border">
                     {packages.map((pkg) => (
                       <tr 
                         key={pkg._id} 
                         onClick={() => setSelectedPackage(pkg)}
-                        className={`hover:bg-blue-50 cursor-pointer transition-colors ${
-                          selectedPackage?._id === pkg._id ? 'bg-blue-100' : ''
+                        className={`hover:bg-app-surface-muted cursor-pointer transition-colors ${
+                          selectedPackage?._id === pkg._id ? 'bg-app-accent-soft' : ''
                         }`}
                       >
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-app-text">
                           {pkg.packageName}
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                        <td className="px-6 py-4 text-sm text-app-text-muted max-w-xs truncate">
                           {pkg.packageDescription}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-app-text-muted">
                           {pkg.dateSharedFromDesigner
                             ? moment(pkg.dateSharedFromDesigner).format("MM/DD/YYYY")
                             : "-"}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-app-text-muted">
                           {pkg.dateSharedToMMDByProject
                             ? moment(pkg.dateSharedToMMDByProject).format("MM/DD/YYYY")
                             : "-"}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-app-text-muted">
                           {pkg.poDate
                             ? moment(pkg.poDate).format("MM/DD/YYYY")
                             : "-"}
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
+                        <td className="px-6 py-4 text-sm text-app-text-muted">
                           {pkg.packageDocuments?.length || 0} file(s)
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -636,7 +637,7 @@ function LongLeadPackages() {
                               e.stopPropagation();
                               handleEdit(pkg);
                             }}
-                            className="text-blue-600 hover:text-blue-900 mr-3"
+                            className="text-app-accent hover:text-app-accent-hover mr-3"
                             title="Edit package"
                           >
                             <FiEdit2 />
@@ -646,7 +647,7 @@ function LongLeadPackages() {
                               e.stopPropagation();
                               handleDelete(pkg._id);
                             }}
-                            className="text-red-600 hover:text-red-900"
+                            className="text-rose-500 hover:text-rose-600"
                             title="Delete package"
                           >
                             <FiTrash2 />
@@ -663,14 +664,14 @@ function LongLeadPackages() {
 
         {/* PO Assignment Section */}
         {selectedPackage && (
-          <div className="mt-6 bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-4 border-b bg-gradient-to-r from-green-50 to-emerald-50">
+          <div className="mt-6 bg-app-surface border border-app-border rounded-xl shadow-sm overflow-hidden">
+            <div className="p-4 border-b border-app-border bg-emerald-500/10">
               <div className="flex justify-between items-center">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-800">
+                  <h2 className="text-xl font-semibold text-app-text">
                     Purchase Orders - {selectedPackage.packageName}
                   </h2>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-app-text-muted mt-1">
                     Click on a package row above to view and assign POs
                   </p>
                 </div>
@@ -680,7 +681,7 @@ function LongLeadPackages() {
                     setPoSearchTerm("");
                     setPoSearchResults([]);
                   }}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-app-text-muted hover:text-app-text"
                   title="Close"
                 >
                   <FiX className="w-5 h-5" />
@@ -691,7 +692,7 @@ function LongLeadPackages() {
             <div className="p-6">
               {/* Assigned POs */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                <h3 className="text-lg font-semibold text-app-text mb-4">
                   Assigned Purchase Orders ({selectedPackage.poAssignments?.length || 0})
                 </h3>
                 {selectedPackage.poAssignments && selectedPackage.poAssignments.length > 0 ? (
@@ -699,21 +700,21 @@ function LongLeadPackages() {
                     {selectedPackage.poAssignments.map((assignment, index) => (
                       <div
                         key={index}
-                        className="p-4 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                        className="p-4 border border-app-border rounded-lg bg-app-surface-muted hover:bg-app-surface transition-colors"
                       >
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
-                            <p className="font-semibold text-gray-800">{assignment.poNumber}</p>
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="font-semibold text-app-text">{assignment.poNumber}</p>
+                            <p className="text-xs text-app-text-muted mt-1">
                               Assigned by: {assignment.assignedBy}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-app-text-muted">
                               {assignment.assignedAt ? moment(assignment.assignedAt).format("MM/DD/YYYY HH:mm") : ""}
                             </p>
                           </div>
                           <button
                             onClick={() => handleUnassignPO(assignment.poNumber)}
-                            className="ml-2 text-red-600 hover:text-red-800"
+                            className="ml-2 text-rose-500 hover:text-rose-600"
                             title="Unassign PO"
                           >
                             <FiX className="w-5 h-5" />
@@ -723,7 +724,7 @@ function LongLeadPackages() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-app-text-muted">
                     <p>No POs assigned to this package yet.</p>
                     <p className="text-sm mt-2">Search and assign POs below.</p>
                   </div>
@@ -731,22 +732,22 @@ function LongLeadPackages() {
               </div>
 
               {/* Search and Assign POs */}
-              <div className="border-t pt-6">
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">
+              <div className="border-t border-app-border pt-6">
+                <h3 className="text-lg font-semibold text-app-text mb-2">
                   Search and Assign Purchase Orders
                 </h3>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-app-text-muted mb-4">
                   Only POs for project <span className="font-semibold">{selectedProject["project-name"]}</span> ({selectedProject["project-wbs"]}) will be shown
                 </p>
                 <div className="relative mb-4">
                   <input
                     type="text"
                     placeholder="Search POs by PO number..."
-                    className="w-full px-4 py-3 pl-12 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 shadow-sm"
+                    className="w-full px-4 py-3 pl-12 text-app-text bg-app-surface border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/30 shadow-sm"
                     value={poSearchTerm}
                     onChange={(e) => setPoSearchTerm(e.target.value)}
                   />
-                  <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
                 </div>
 
                 {/* Search Results */}
@@ -754,31 +755,31 @@ function LongLeadPackages() {
                   <div className="mt-4">
                     {searchingPOs ? (
                       <div className="flex justify-center py-4">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-app-accent"></div>
                       </div>
                     ) : poSearchResults.length > 0 ? (
-                      <div className="bg-gray-50 rounded-lg border border-gray-200 max-h-96 overflow-y-auto">
+                      <div className="bg-app-surface-muted rounded-lg border border-app-border max-h-96 overflow-y-auto">
                         <table className="w-full">
-                          <thead className="bg-gray-100 sticky top-0">
+                          <thead className="bg-app-surface-muted sticky top-0">
                             <tr>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">
+                              <th className="px-4 py-3 text-left text-xs font-medium text-app-text-secondary uppercase">
                                 PO Number
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">
+                              <th className="px-4 py-3 text-left text-xs font-medium text-app-text-secondary uppercase">
                                 Date
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">
+                              <th className="px-4 py-3 text-left text-xs font-medium text-app-text-secondary uppercase">
                                 Vendor
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">
+                              <th className="px-4 py-3 text-left text-xs font-medium text-app-text-secondary uppercase">
                                 Value (SAR)
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">
+                              <th className="px-4 py-3 text-left text-xs font-medium text-app-text-secondary uppercase">
                                 Action
                               </th>
                             </tr>
                           </thead>
-                          <tbody className="bg-white divide-y divide-gray-200">
+                          <tbody className="bg-app-surface divide-y divide-app-border">
                             {poSearchResults.map((po, index) => {
                               const isAssigned = selectedPackage.poAssignments?.some(
                                 a => a.poNumber === po["po-number"]
@@ -786,36 +787,36 @@ function LongLeadPackages() {
                               return (
                                 <tr
                                   key={index}
-                                  className={`hover:bg-blue-50 ${
-                                    isAssigned ? "bg-green-50" : ""
+                                  className={`hover:bg-app-accent-soft ${
+                                    isAssigned ? "bg-emerald-500/10" : ""
                                   }`}
                                 >
-                                  <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                                  <td className="px-4 py-3 text-sm font-medium text-app-text">
                                     {po["po-number"]}
                                   </td>
-                                  <td className="px-4 py-3 text-sm text-gray-600">
+                                  <td className="px-4 py-3 text-sm text-app-text-muted">
                                     {po["po-date"]
                                       ? moment(po["po-date"]).format("MM/DD/YYYY")
                                       : "-"}
                                   </td>
-                                  <td className="px-4 py-3 text-sm text-gray-600">
+                                  <td className="px-4 py-3 text-sm text-app-text-muted">
                                     <div>
                                       <div className="font-medium">{po.vendorcode || "-"}</div>
-                                      <div className="text-xs text-gray-500">
+                                      <div className="text-xs text-app-text-muted">
                                         {po.vendorname || "-"}
                                       </div>
                                     </div>
                                   </td>
-                                  <td className="px-4 py-3 text-sm text-gray-600">
+                                  <td className="px-4 py-3 text-sm text-app-text-muted">
                                     {po.poval ? po.poval.toLocaleString() : "0"}
                                   </td>
                                   <td className="px-4 py-3 text-sm">
                                     {isAssigned ? (
-                                      <span className="text-green-600 font-medium">Assigned</span>
+                                      <span className="text-emerald-600 dark:text-emerald-400 font-medium">Assigned</span>
                                     ) : (
                                       <button
                                         onClick={() => handleAssignPO(po["po-number"])}
-                                        className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
+                                        className="px-3 py-1 bg-app-accent text-app-accent-text rounded hover:bg-app-accent-hover transition-colors text-sm"
                                       >
                                         Assign
                                       </button>
@@ -828,7 +829,7 @@ function LongLeadPackages() {
                         </table>
                       </div>
                     ) : (
-                      <div className="text-center py-4 text-gray-500">
+                      <div className="text-center py-4 text-app-text-muted">
                         No POs found matching "{poSearchTerm}"
                       </div>
                     )}
@@ -841,10 +842,10 @@ function LongLeadPackages() {
 
         {/* Package Form Modal */}
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-800">
+          <div className="fixed inset-0 bg-app-overlay flex items-center justify-center z-50 p-4">
+            <div className="bg-app-surface border border-app-border rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-app-border flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-app-text">
                   {editingPackage ? "Edit Package" : "Add New Package"}
                 </h2>
                 <button
@@ -852,7 +853,7 @@ function LongLeadPackages() {
                     setShowForm(false);
                     setEditingPackage(null);
                   }}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-app-text-muted hover:text-app-text"
                 >
                   <FiX className="w-6 h-6" />
                 </button>
@@ -861,7 +862,7 @@ function LongLeadPackages() {
               <form onSubmit={handleSubmit} className="p-6 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-app-text-secondary mb-1">
                       Package Name *
                     </label>
                     <input
@@ -869,13 +870,13 @@ function LongLeadPackages() {
                       name="packageName"
                       value={formData.packageName}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-app-border bg-app-bg text-app-text rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-app-text-secondary mb-1">
                       Date Shared from Designer
                     </label>
                     <input
@@ -883,12 +884,12 @@ function LongLeadPackages() {
                       name="dateSharedFromDesigner"
                       value={formData.dateSharedFromDesigner}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-app-border bg-app-bg text-app-text rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
                     />
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-app-text-secondary mb-1">
                       Package Description
                     </label>
                     <textarea
@@ -896,12 +897,12 @@ function LongLeadPackages() {
                       value={formData.packageDescription}
                       onChange={handleInputChange}
                       rows="3"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-app-border bg-app-bg text-app-text rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-app-text-secondary mb-1">
                       Date Shared to MMD by Project
                     </label>
                     <input
@@ -909,12 +910,12 @@ function LongLeadPackages() {
                       name="dateSharedToMMDByProject"
                       value={formData.dateSharedToMMDByProject}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-app-border bg-app-bg text-app-text rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-app-text-secondary mb-1">
                       Date RFQ Floated
                     </label>
                     <input
@@ -922,12 +923,12 @@ function LongLeadPackages() {
                       name="dateRFQFloated"
                       value={formData.dateRFQFloated}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-app-border bg-app-bg text-app-text rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-app-text-secondary mb-1">
                       Date Offers Shared with Project
                     </label>
                     <input
@@ -935,12 +936,12 @@ function LongLeadPackages() {
                       name="dateOffersSharedWithProject"
                       value={formData.dateOffersSharedWithProject}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-app-border bg-app-bg text-app-text rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-app-text-secondary mb-1">
                       PO Date
                     </label>
                     <input
@@ -948,44 +949,44 @@ function LongLeadPackages() {
                       name="poDate"
                       value={formData.poDate}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-app-border bg-app-bg text-app-text rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
                     />
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-app-text-secondary mb-1">
                       Package Documents
                     </label>
                     <input
                       type="file"
                       multiple
                       onChange={handleFileChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-app-border bg-app-bg text-app-text rounded-lg focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xls,.xlsx"
                     />
                     {selectedFiles.length > 0 && (
-                      <div className="mt-2 text-sm text-gray-600">
+                      <div className="mt-2 text-sm text-app-text-muted">
                         {selectedFiles.length} file(s) selected
                       </div>
                     )}
                     {editingPackage && formData.packageDocuments?.length > 0 && (
                       <div className="mt-4">
-                        <p className="text-sm font-medium text-gray-700 mb-2">
+                        <p className="text-sm font-medium text-app-text mb-2">
                           Existing Documents:
                         </p>
                         <div className="space-y-2">
                           {formData.packageDocuments.map((doc, index) => (
                             <div
                               key={index}
-                              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
+                              className="flex items-center justify-between p-3 bg-app-surface-muted rounded-lg border border-app-border"
                             >
                               <div className="flex items-center flex-1 min-w-0">
-                                <FiFile className="mr-2 text-gray-500 flex-shrink-0" />
-                                <span className="text-sm text-gray-700 truncate" title={doc.originalName}>
+                                <FiFile className="mr-2 text-app-text-muted flex-shrink-0" />
+                                <span className="text-sm text-app-text truncate" title={doc.originalName}>
                                   {doc.originalName}
                                 </span>
                                 {doc.fileSize && (
-                                  <span className="ml-2 text-xs text-gray-500">
+                                  <span className="ml-2 text-xs text-app-text-muted">
                                     ({(doc.fileSize / 1024).toFixed(2)} KB)
                                   </span>
                                 )}
@@ -994,7 +995,7 @@ function LongLeadPackages() {
                                 <button
                                   type="button"
                                   onClick={() => window.open(doc.filePath, '_blank')}
-                                  className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors duration-200"
+                                  className="p-2 text-app-accent hover:text-app-accent-hover hover:bg-app-accent-soft rounded transition-colors duration-200"
                                   title="View document"
                                 >
                                   <FiEye className="w-4 h-4" />
@@ -1009,7 +1010,7 @@ function LongLeadPackages() {
                                     link.click();
                                     document.body.removeChild(link);
                                   }}
-                                  className="p-2 text-green-600 hover:text-green-800 hover:bg-green-50 rounded transition-colors duration-200"
+                                  className="p-2 text-emerald-600 hover:text-emerald-500 hover:bg-emerald-500/10 rounded transition-colors duration-200"
                                   title="Download document"
                                 >
                                   <FiDownload className="w-4 h-4" />
@@ -1019,7 +1020,7 @@ function LongLeadPackages() {
                                   onClick={() =>
                                     handleRemoveDocument(editingPackage._id, index)
                                   }
-                                  className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors duration-200"
+                                  className="p-2 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 rounded transition-colors duration-200"
                                   title="Remove document"
                                 >
                                   <FiX className="w-4 h-4" />
@@ -1033,21 +1034,21 @@ function LongLeadPackages() {
                   </div>
                 </div>
 
-                <div className="flex justify-end space-x-4 pt-4 border-t">
+                <div className="flex justify-end space-x-4 pt-4 border-t border-app-border">
                   <button
                     type="button"
                     onClick={() => {
                       setShowForm(false);
                       setEditingPackage(null);
                     }}
-                    className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                    className="app-btn-secondary"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={uploadingFiles}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                    className="app-btn-primary disabled:opacity-50"
                   >
                     {uploadingFiles
                       ? "Uploading..."
@@ -1060,7 +1061,8 @@ function LongLeadPackages() {
             </div>
           </div>
         )}
-      </main>    </div>
+      </main>
+    </div>
   );
 }
 

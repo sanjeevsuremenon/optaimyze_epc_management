@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { getSession } from "next-auth/react";
+import Head from "next/head";
 import moment from "moment";
 import { FiArrowUp, FiArrowDown } from 'react-icons/fi';
 
@@ -266,190 +267,161 @@ export default function POCommentsPage() {
   }, [poList, sortConfig]);
 
   return (
-    <>
-      <div className="min-h-screen bg-gray-50 text-gray-900 w-11/12 ml-9">
-        <div className="mt-6">
-          <h1 className="font-bold text-2xl mb-6 text-gray-800">
+    <div className="app-page min-h-full flex-1 flex flex-col text-app-text">
+      <Head>
+        <title>PO Comments | Optaimyze</title>
+      </Head>
+
+      <div className="flex-1 w-full max-w-7xl mx-auto px-4 py-8 space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-app-text tracking-tight">
             PO Comments Management
           </h1>
-          
-          {loading ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600">Loading PO comments...</p>
-            </div>
-          ) : poList.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-md p-8 text-center">
-              <p className="text-gray-600 text-lg">
-                No POs with comments found.
-              </p>
-            </div>
-          ) : (
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <table className="w-full text-sm text-left text-gray-500">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-100">
-                  <tr>
-                    <th 
-                      scope="col" 
-                      className="px-6 py-3 cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                      onClick={() => requestSort('ponumber')}
-                    >
-                      PO Number <SortIndicator columnKey="ponumber" />
-                    </th>
-                    <th 
-                      scope="col" 
-                      className="px-6 py-3 cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                      onClick={() => requestSort('podate')}
-                    >
-                      PO Date <SortIndicator columnKey="podate" />
-                    </th>
-                    <th 
-                      scope="col" 
-                      className="px-6 py-3 cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                      onClick={() => requestSort('poval')}
-                    >
-                      Value (SAR) <SortIndicator columnKey="poval" />
-                    </th>
-                    <th 
-                      scope="col" 
-                      className="px-6 py-3 cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                      onClick={() => requestSort('vendorname')}
-                    >
-                      Vendor Name <SortIndicator columnKey="vendorname" />
-                    </th>
-                    <th 
-                      scope="col" 
-                      className="px-6 py-3 cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                      onClick={() => requestSort('title')}
-                    >
-                      Title <SortIndicator columnKey="title" />
-                    </th>
-                    <th 
-                      scope="col" 
-                      className="px-6 py-3 cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                      onClick={() => requestSort('commentCount')}
-                    >
-                      Comment Count <SortIndicator columnKey="commentCount" />
-                    </th>
-                    <th 
-                      scope="col" 
-                      className="px-6 py-3 cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                      onClick={() => requestSort('lastUpdated')}
-                    >
-                      Last Updated <SortIndicator columnKey="lastUpdated" />
-                    </th>
-                    <th 
-                      scope="col" 
-                      className="px-6 py-3 cursor-pointer hover:bg-gray-200 transition-colors duration-200"
-                      onClick={() => requestSort('lastUpdatedBy')}
-                    >
-                      Last Updated By <SortIndicator columnKey="lastUpdatedBy" />
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedPOList.map((po, index) => (
-                    <tr
-                      key={po.ponumber}
-                      className={`bg-white border-b hover:bg-gray-50 ${
-                        index % 2 === 0 ? "bg-gray-50" : ""
-                      }`}
-                    >
-                      <td className="px-6 py-4 font-medium text-gray-900">
-                        {po.ponumber}
-                      </td>
-                      <td className="px-6 py-4 text-gray-700">
-                        {po.podate ? moment(po.podate).format("DD-MM-YYYY") : "N/A"}
-                      </td>
-                      <td className="px-6 py-4 text-gray-700">
-                        {po.poval ? po.poval.toLocaleString() : "0"}
-                      </td>
-                      <td className="px-6 py-4 text-gray-700">
-                        {po.vendorname || "N/A"}
-                      </td>
-                      <td className="px-6 py-4 text-gray-700">
-                        {po.title || "N/A"}
-                      </td>
-                      <td className="px-6 py-4 text-gray-700">
-                        {po.commentCount}
-                      </td>
-                      <td className="px-6 py-4 text-gray-700">
-                        {moment(po.lastUpdated).format("DD-MM-YYYY HH:mm")}
-                      </td>
-                      <td className="px-6 py-4 text-gray-700">
-                        {po.lastUpdatedBy || "N/A"}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex space-x-2">
-                          <button
-                            onClick={() => handleGeneratePDF(po.ponumber)}
-                            disabled={generatingPdf[po.ponumber]}
-                            className={`px-4 py-2 rounded font-semibold text-sm transition-all ${
-                              generatingPdf[po.ponumber]
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-blue-600 hover:bg-blue-700 text-white"
-                            }`}
-                          >
-                            {generatingPdf[po.ponumber]
-                              ? "Generating..."
-                              : "Comments"}
-                          </button>
-                          <button
-                            onClick={() => handleAnalyze(po.ponumber)}
-                            disabled={analyzing[po.ponumber]}
-                            className={`px-4 py-2 rounded font-semibold text-sm transition-all ${
-                              analyzing[po.ponumber]
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-purple-600 hover:bg-purple-700 text-white"
-                            }`}
-                          >
-                            {analyzing[po.ponumber]
-                              ? "Analyzing..."
-                              : "Analysis"}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+          <p className="text-sm text-app-text-muted mt-1">
+            Purchase orders with comment threads. Generate comment PDFs or AI analysis.
+          </p>
         </div>
+
+        {loading ? (
+          <div className="text-center py-16">
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-app-surface border border-app-border rounded-lg shadow-sm">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-app-accent" />
+              <span className="text-sm text-app-text-muted">Loading PO comments…</span>
+            </div>
+          </div>
+        ) : poList.length === 0 ? (
+          <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm p-10 text-center">
+            <p className="text-app-text-muted text-sm">No POs with comments found.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto bg-app-surface border border-app-border rounded-2xl shadow-sm">
+            <table className="min-w-full divide-y divide-app-border text-sm">
+              <thead className="bg-app-surface-muted">
+                <tr>
+                  {[
+                    { key: "ponumber", label: "PO Number" },
+                    { key: "podate", label: "PO Date" },
+                    { key: "poval", label: "Value (SAR)" },
+                    { key: "vendorname", label: "Vendor Name" },
+                    { key: "title", label: "Title" },
+                    { key: "commentCount", label: "Comments" },
+                    { key: "lastUpdated", label: "Last Updated" },
+                    { key: "lastUpdatedBy", label: "Updated By" },
+                    { key: null, label: "Action" },
+                  ].map((col) => (
+                    <th
+                      key={col.label}
+                      scope="col"
+                      className={`px-4 py-3.5 text-left text-xs font-bold text-app-text-secondary uppercase tracking-wider ${
+                        col.key ? "cursor-pointer hover:text-app-accent transition-colors" : ""
+                      }`}
+                      onClick={col.key ? () => requestSort(col.key) : undefined}
+                    >
+                      {col.label}
+                      {col.key ? <SortIndicator columnKey={col.key} /> : null}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-app-border bg-app-surface text-app-text">
+                {sortedPOList.map((po) => (
+                  <tr
+                    key={po.ponumber}
+                    className="hover:bg-app-surface-muted/70 transition-colors"
+                  >
+                    <td className="px-4 py-3 whitespace-nowrap font-semibold text-app-accent font-mono">
+                      {po.ponumber}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-app-text-muted">
+                      {po.podate ? moment(po.podate).format("DD-MM-YYYY") : "—"}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-app-text-secondary tabular-nums">
+                      {po.poval ? Number(po.poval).toLocaleString() : "0"}
+                    </td>
+                    <td className="px-4 py-3 text-app-text max-w-xs truncate">
+                      {po.vendorname || "—"}
+                    </td>
+                    <td className="px-4 py-3 text-app-text-secondary max-w-xs truncate">
+                      {po.title || "—"}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-app-text-secondary tabular-nums">
+                      {po.commentCount}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-app-text-muted">
+                      {po.lastUpdated
+                        ? moment(po.lastUpdated).format("DD-MM-YYYY HH:mm")
+                        : "—"}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-app-text-secondary">
+                      {po.lastUpdatedBy || "—"}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleGeneratePDF(po.ponumber)}
+                          disabled={generatingPdf[po.ponumber]}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                            generatingPdf[po.ponumber]
+                              ? "bg-app-surface-muted text-app-text-disabled cursor-not-allowed border border-app-border"
+                              : "bg-app-accent hover:bg-app-accent-hover text-app-accent-text"
+                          }`}
+                        >
+                          {generatingPdf[po.ponumber] ? "Generating…" : "Comments"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleAnalyze(po.ponumber)}
+                          disabled={analyzing[po.ponumber]}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition border ${
+                            analyzing[po.ponumber]
+                              ? "bg-app-surface-muted text-app-text-disabled cursor-not-allowed border-app-border"
+                              : "border-app-border bg-app-surface-muted text-app-text hover:border-app-accent hover:text-app-accent"
+                          }`}
+                        >
+                          {analyzing[po.ponumber] ? "Analyzing…" : "Analysis"}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
-      {/* Analysis Modal */}
       {showAnalysisModal && analysisResult && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-11/12 max-h-[90vh] overflow-hidden flex flex-col">
-            <div className="bg-purple-600 text-white px-6 py-4 flex justify-between items-center">
-              <h2 className="text-xl font-bold">
-                PO Analysis - {analysisResult.ponumber}
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-app-surface border border-app-border rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col text-app-text">
+            <div className="bg-app-accent text-app-accent-text px-6 py-4 flex justify-between items-center">
+              <h2 className="text-lg font-bold">
+                PO Analysis — {analysisResult.ponumber}
               </h2>
               <button
+                type="button"
                 onClick={() => {
                   setShowAnalysisModal(false);
                   setAnalysisResult(null);
                 }}
-                className="text-app-text hover:text-app-text text-2xl font-bold"
+                className="text-app-accent-text/80 hover:text-app-accent-text text-2xl font-bold leading-none"
+                aria-label="Close"
               >
                 ×
               </button>
             </div>
             <div className="p-6 overflow-y-auto flex-1">
-              <div className="mb-4 text-sm text-gray-600">
-                Generated on: {moment(analysisResult.generatedAt).format("DD-MM-YYYY HH:mm:ss")}
+              <div className="mb-4 text-xs text-app-text-muted">
+                Generated on:{" "}
+                {moment(analysisResult.generatedAt).format("DD-MM-YYYY HH:mm:ss")}
               </div>
-              <div className="prose max-w-none">
-                <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">
-                  {analysisResult.analysis}
-                </div>
+              <div className="whitespace-pre-wrap text-app-text-secondary leading-relaxed text-sm">
+                {analysisResult.analysis}
               </div>
             </div>
-            <div className="bg-gray-100 px-6 py-4 flex justify-between items-center">
+            <div className="bg-app-surface-muted border-t border-app-border px-6 py-4 flex justify-between items-center gap-3">
               <button
+                type="button"
                 onClick={() =>
                   handleGenerateAnalysisPDF(
                     analysisResult.ponumber,
@@ -457,20 +429,21 @@ export default function POCommentsPage() {
                   )
                 }
                 disabled={generatingAnalysisPdf}
-                className={`px-6 py-2 rounded font-semibold text-sm transition-all ${
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
                   generatingAnalysisPdf
-                    ? "bg-gray-400 cursor-not-allowed text-app-text"
-                    : "bg-green-600 hover:bg-green-700 text-white"
+                    ? "bg-app-surface text-app-text-disabled cursor-not-allowed border border-app-border"
+                    : "bg-emerald-600 hover:bg-emerald-500 text-white"
                 }`}
               >
-                {generatingAnalysisPdf ? "Generating PDF..." : "Generate PDF"}
+                {generatingAnalysisPdf ? "Generating PDF…" : "Generate PDF"}
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setShowAnalysisModal(false);
                   setAnalysisResult(null);
                 }}
-                className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded font-semibold transition-all"
+                className="px-4 py-2 bg-app-accent hover:bg-app-accent-hover text-app-accent-text rounded-lg text-sm font-semibold transition"
               >
                 Close
               </button>
@@ -478,7 +451,7 @@ export default function POCommentsPage() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

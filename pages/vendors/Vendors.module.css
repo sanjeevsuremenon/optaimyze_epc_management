@@ -4,42 +4,148 @@
   margin-left: auto;
   margin-right: auto;
   padding: 16px clamp(16px, 4vw, 40px) 32px;
+  background: var(--app-bg);
+  color: var(--app-text);
 }
 
 .tableWrap {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: #fff;
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-sm);
 }
 
 .searchInput {
   flex: 1;
   margin-right: 20px;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  background: var(--app-surface);
+  color: var(--app-text);
 }
 
-.table {
-  width: 100%;
-  min-width: 960px;
-  border-collapse: separate;
-  border-spacing: 0;
+.searchInput::placeholder {
+  color: var(--app-text-muted);
 }
 
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  vertical-align: top;
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
-.table th {
-  background-color: #f2f2f2;
-  text-align: left;
+.vendorCard {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 1rem;
+  box-shadow: var(--app-shadow-sm);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.vendorCardHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.vendorCardActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.vendorBadge {
+  display: inline-flex;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  background: var(--app-surface-muted);
+  color: var(--app-text-secondary);
+  font-size: 0.85rem;
+}
+
+.vendorCardMeta,
+.vendorCardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.vendorCardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sectionTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--app-accent);
+  margin-bottom: 0.5rem;
+}
+
+.fieldLabel {
+  margin-bottom: 0.25rem;
+  color: var(--app-text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.vendorNameCell {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--app-text);
+  margin: 0;
+}
+
+.editLink {
+  background: var(--app-accent);
+  color: var(--app-accent-text);
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.editLink:hover {
+  background: var(--app-accent-hover);
+}
+
+.mapButton {
+  background: var(--app-accent-soft);
+  color: var(--app-accent);
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--app-accent);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.mapButton:hover {
+  background: var(--app-accent-hover);
+  color: var(--app-accent-text);
+}
+
+@media (max-width: 1024px) {
+  .cardGrid,
+  .vendorCardMeta,
+  .vendorCardGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Keep Actions column visible when scrolling horizontally */
@@ -48,35 +154,23 @@
   position: sticky;
   right: 0;
   z-index: 1;
-  background: #fff;
+  background: var(--app-surface);
   box-shadow: -8px 0 12px -10px rgba(0, 0, 0, 0.35);
   min-width: 9rem;
+  color: var(--app-text);
 }
 
 .table thead th:last-child {
   z-index: 2;
-  background: #f2f2f2;
-}
-
-.editButton {
-  background-color: #4CAF50;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.editButton:hover {
-  background-color: #45a049;
+  background: var(--app-surface-muted);
 }
 
 .editLink {
-  background-color: #4caf50;
-  color: white;
-  padding: 5px 10px;
+  background: var(--app-accent);
+  color: var(--app-accent-text);
+  padding: 0.4rem 0.65rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.4rem;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
@@ -85,25 +179,26 @@
 }
 
 .editLink:hover {
-  background-color: #45a049;
-  color: white;
+  background: var(--app-accent-hover);
+  color: var(--app-accent-text);
 }
 
 .editFormContainer {
-  background-color: #f9f9f9;
+  background: var(--app-surface);
   padding: 20px;
   border-radius: 8px;
   margin-top: 20px;
+  border: 1px solid var(--app-border);
 }
 
 .editForm {
   display: flex;
-  flex-direction: column; 
-  border-color: aqua;
-  border-width: 1px;
-  background-color: #f1f6f6;
+  flex-direction: column;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  box-shadow: var(--app-shadow-sm);
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 0.75rem;
 }
 
 .editForm h3 {
@@ -111,21 +206,21 @@
 }
 
 .formGroup {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
+  background: var(--app-surface-muted);
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
   padding: 20px;
   margin-bottom: 20px;
 }
 
 .formGroupTitle {
   font-size: 1rem;
-  color: #53a0ec;
+  color: var(--app-accent);
   margin-bottom: 15px;
   padding-bottom: 10px;
-  border-bottom: 2px solid #dee2e6;
+  border-bottom: 2px solid var(--app-border);
   text-align: center;
-  font-weight: semibold;
+  font-weight: 600;
 }
 
 .formGrid {
@@ -141,46 +236,50 @@
 
 .label {
   font-size: 14px;
-  color: #495057;
+  color: var(--app-text-secondary);
   margin-bottom: 6px;
   font-weight: 500;
 }
 
 .input {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
   font-size: 14px;
-  transition: border-color 0.2s;
-  background-color: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--app-surface);
+  color: var(--app-text);
 }
 
 .input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  border-color: var(--app-accent);
+  box-shadow: 0 0 0 2px var(--app-accent-soft);
 }
 
 .input::placeholder {
-  color: #aaa;
+  color: var(--app-text-muted);
 }
 
 .saveButton {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px;
+  background: var(--app-accent);
+  color: var(--app-accent-text);
+  padding: 10px 12px;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
 .saveButton:hover {
-  background-color: #45a049;
+  background: var(--app-accent-hover);
 }
 
 .formActions {
   margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 /* Responsive grid adjustments */
@@ -197,8 +296,8 @@
 }
 
 .addNewButton {
-  background-color: #dc3545;
-  color: white;
+  background: var(--app-danger);
+  color: var(--app-accent-text);
   width: 40px;
   height: 40px;
   border: none;
@@ -208,11 +307,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
+  transition: opacity 0.2s ease;
 }
 
 .addNewButton:hover {
-  background-color: #c82333;
+  opacity: 0.95;
 }
 
 .modal {
@@ -221,7 +320,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: var(--app-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -229,13 +328,15 @@
 }
 
 .modalContent {
-  background-color: white;
+  background: var(--app-surface);
   padding: 20px;
   border-radius: 8px;
   width: 90%;
   max-width: 1000px;
   max-height: 90vh;
   overflow-y: auto;
+  border: 1px solid var(--app-border);
+  color: var(--app-text);
 }
 
 .modalHeader {
@@ -244,7 +345,7 @@
   align-items: center;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 2px solid #dee2e6;
+  border-bottom: 2px solid var(--app-border);
 }
 
 .closeButton {
@@ -252,25 +353,25 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #666;
+  color: var(--app-text-secondary);
 }
 
 .closeButton:hover {
-  color: #333;
+  color: var(--app-text);
 }
 
 .cancelButton {
-  background: #dc3545;
+  background: var(--app-danger);
   border: none;
   font-size: 16px;
   cursor: pointer;
-  color: #eee3e3;
-  padding: 10px;
-  border-radius: 4px;
+  color: var(--app-accent-text);
+  padding: 10px 12px;
+  border-radius: 0.5rem;
 }
 
 .cancelButton:hover {
-  color: #de8080;
+  opacity: 0.95;
 }
 
 .headerSection {
@@ -282,10 +383,10 @@
 
 .matchingVendors {
   margin-top: 8px;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-sm);
   max-height: 200px;
   overflow-y: auto;
 }
@@ -294,8 +395,8 @@
   padding: 8px 12px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #4a5568;
-  border-bottom: 1px solid #e2e8f0;
+  color: var(--app-text);
+  border-bottom: 1px solid var(--app-border);
 }
 
 .matchingVendorsList {
@@ -307,18 +408,18 @@
 .matchingVendorItem {
   padding: 8px 12px;
   font-size: 0.875rem;
-  color: #2d3748;
+  color: var(--app-text-secondary);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .matchingVendorItem:hover {
-  background-color: #f7fafc;
+  background: var(--app-surface-muted);
 }
 
 .listMeta {
   font-size: 0.875rem;
-  color: #555;
+  color: var(--app-text-muted);
   margin-bottom: 12px;
 }
 
@@ -329,6 +430,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--app-text-muted);
 }
 
 .actionCell {
@@ -342,16 +444,16 @@
 }
 
 .mapButton {
-  background-color: #2196f3;
-  color: white;
-  padding: 5px 10px;
+  background: var(--app-accent);
+  color: var(--app-accent-text);
+  padding: 0.4rem 0.65rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.4rem;
   cursor: pointer;
 }
 
 .mapButton:hover {
-  background-color: #1976d2;
+  background: var(--app-accent-hover);
 }
 
 .loadMoreSentinel {
@@ -361,7 +463,7 @@
 
 .loadMoreHint {
   text-align: center;
-  color: #666;
+  color: var(--app-text-muted);
   font-size: 0.875rem;
   margin: 12px 0;
 }
@@ -369,13 +471,60 @@
 .mapModalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--app-overlay);
   z-index: 1000;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   padding: 24px;
   overflow-y: auto;
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--app-border);
+}
+
+.vendorNameCell {
+  font-weight: 700;
+  font-style: italic;
+  color: var(--app-accent);
+}
+
+.metaValue {
+  color: var(--app-text-secondary);
+}
+
+.addressCell {
+  color: var(--app-text-secondary);
+}
+
+.addressPrimary {
+  display: block;
+  font-weight: 700;
+  color: var(--app-accent);
+}
+
+.contactCell {
+  color: var(--app-text-secondary);
+}
+
+.contactAccent {
+  color: var(--app-accent);
+  font-weight: 600;
+}
+
+.contactEmail {
+  color: var(--app-success);
+}
+
+.contactMobile {
+  color: var(--app-warning);
+}
+
+.pageTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--app-accent);
 }
 
 .mapModalContent {

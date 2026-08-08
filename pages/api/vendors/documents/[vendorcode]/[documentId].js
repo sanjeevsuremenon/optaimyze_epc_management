@@ -1,12 +1,20 @@
 import { connectToDatabase } from "../../../../../lib/mongoconnect";
 import fs from "fs";
 import path from "path";
+import { ObjectId } from "mongodb";
 
 export default async function handler(req, res) {
   const { vendorcode, documentId } = req.query;
 
   if (!vendorcode || !documentId) {
     return res.status(400).json({ error: 'Vendor code and document ID are required' });
+  }
+
+  let objectId;
+  try {
+    objectId = new ObjectId(documentId);
+  } catch (err) {
+    return res.status(400).json({ error: 'Invalid document ID' });
   }
 
   try {
@@ -16,7 +24,7 @@ export default async function handler(req, res) {
       case 'DELETE': {
         // First, get the document to find the file path
         const document = await db.collection('vendordocuments').findOne({
-          _id: documentId,
+          _id: objectId,
           vendorCode: vendorcode
         });
 
@@ -42,7 +50,7 @@ export default async function handler(req, res) {
 
         // Delete the document record from database
         const result = await db.collection('vendordocuments').deleteOne({
-          _id: documentId,
+          _id: objectId,
           vendorCode: vendorcode
         });
 

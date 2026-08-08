@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const { project, title, priority, deliveryRef, requestInfo, createdBy, createdDate, status, lastUpdated } = req.body;
+    const { project, title, priority, deliveryRef, poNumber, requestInfo, createdBy, createdDate, status, lastUpdated } = req.body;
     if (!project || !title || !priority || !deliveryRef || !requestInfo) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
@@ -19,7 +19,8 @@ export default async function handler(req, res) {
       project, 
       title, 
       priority, 
-      deliveryRef, 
+      deliveryRef,
+      poNumber: poNumber?.trim() || '',
       requestInfo, 
       createdBy, 
       createdDate, 

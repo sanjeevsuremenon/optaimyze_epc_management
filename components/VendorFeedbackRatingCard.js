@@ -10,10 +10,10 @@ const RATING_INSTRUCTIONS = `Rate each parameter from 1 to 5 stars. You can give
 
 function StarRow({ label, value, onChange, disabled, isOverall }) {
   return (
-    <div className={`flex flex-wrap items-center gap-2 py-1.5 border-b border-slate-900/50 last:border-b-0 ${isOverall ? 'bg-cyan-950/20 rounded-md px-2 -mx-1 border-l-2 border-app-accent' : ''}`}>
+    <div className={`flex flex-wrap items-center gap-2 py-1.5 border-b border-app-border/50 last:border-b-0 ${isOverall ? 'bg-app-accent-soft/40 rounded-md px-2 -mx-1 border-l-2 border-app-accent' : ''}`}>
       <div className={`flex-1 min-w-0 ${isOverall ? 'text-xs font-bold text-app-accent' : 'text-xs text-app-text-secondary'}`}>
         {label}
-        {isOverall && <span className="ml-1 text-[10px] font-semibold text-cyan-500/80">(manual direct entry)</span>}
+        {isOverall && <span className="ml-1 text-[10px] font-semibold text-app-accent/80">(manual direct entry)</span>}
       </div>
       <div className="flex items-center gap-0.5 flex-shrink-0">
         {[1, 2, 3, 4, 5].map((n) => (
@@ -64,7 +64,7 @@ function CategoryColumn({ title, labels, ratings, onChange, disabled }) {
       {overall != null && (
         <div className="px-3.5 py-1.5 bg-app-surface-muted/80 text-xs text-app-text-muted border-t border-app-border flex justify-between items-center">
           <span>Computed overall score:</span>
-          <span className="font-black text-amber-400 bg-app-bg px-2 py-0.5 rounded border border-slate-850">{overall.toFixed(1)} / 5</span>
+          <span className="font-black text-amber-600 dark:text-amber-400 bg-app-bg px-2 py-0.5 rounded border border-app-border">{overall.toFixed(1)} / 5</span>
         </div>
       )}
     </div>
@@ -81,10 +81,10 @@ export default function VendorFeedbackRatingCard({
   disableServices = false,
 }) {
   return (
-    <div className="rounded-xl border border-app-border bg-app-surface/20 p-4 shadow-lg">
-      <div className="mb-4 p-3 rounded-lg bg-app-bg border border-slate-850 text-xs">
+    <div className="rounded-xl border border-app-border bg-app-surface p-4 shadow-sm">
+      <div className="mb-4 p-3 rounded-lg bg-app-bg border border-app-border text-xs">
         <p className="font-bold text-app-accent mb-1 flex items-center gap-1.5">
-          <FontAwesomeIcon icon={faInfoCircle} className="text-cyan-500" />
+          <FontAwesomeIcon icon={faInfoCircle} className="text-app-accent" />
           Rating Instructions
         </p>
         <p className="text-app-text-muted leading-normal">{RATING_INSTRUCTIONS}</p>

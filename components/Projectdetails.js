@@ -561,7 +561,7 @@ function Projectdetails({ projects }) {
                                  
                              
                              router.push(
-                               `/openpurchaseorders/pocomments?ponumber=${purchase["ponum"]}`
+                               `/openpurchaseorders1/view/${encodeURIComponent(purchase["ponum"])}`
                              );
                               }} > <Image src="/images/comment.png" width={30} height={10}></Image> </buton>
                               </td>
@@ -669,7 +669,7 @@ function Projectdetails({ projects }) {
                                  
                              
                              router.push(
-                               `/openpurchaseorders/pocomments?ponumber=${purchase["ponum"]}`
+                               `/openpurchaseorders1/view/${encodeURIComponent(purchase["ponum"])}`
                              );
                               }} > Comments </buton>
                               </td>

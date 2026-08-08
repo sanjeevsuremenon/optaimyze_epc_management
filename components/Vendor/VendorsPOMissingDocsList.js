@@ -1,29 +1,28 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import HeaderComponent from '../HeaderNewComponent';
-import FooterComponent from '../FooterComponent';
-import moment from 'moment';
-import Link from 'next/link';
-import { FiArrowUp, FiArrowDown } from 'react-icons/fi';
+import React, { useEffect, useState, useMemo } from "react";
+import Head from "next/head";
+import moment from "moment";
+import Link from "next/link";
+import { FiArrowUp, FiArrowDown, FiSearch, FiUpload } from "react-icons/fi";
 
 function VendorsPOMissingDocsList() {
   const [docTypes, setDocTypes] = useState([]);
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sortConfig, setSortConfig] = useState({ key: 'vendor-code', direction: 'asc' });
-  const [searchTerm, setSearchTerm] = useState('');
+  const [sortConfig, setSortConfig] = useState({ key: "vendor-name", direction: "asc" });
+  const [searchTerm, setSearchTerm] = useState("");
 
   const requestSort = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
     }
     setSortConfig({ key, direction });
   };
 
   const SortIndicator = ({ columnKey }) => {
     if (sortConfig.key !== columnKey) return null;
-    return sortConfig.direction === 'asc' ? (
+    return sortConfig.direction === "asc" ? (
       <FiArrowUp className="inline ml-1" />
     ) : (
       <FiArrowDown className="inline ml-1" />
@@ -34,14 +33,15 @@ function VendorsPOMissingDocsList() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch('/api/reports/vendors/po-missing-docs');
-        if (!res.ok) throw new Error('Failed to fetch report');
-        const { documentTypes, vendors } = await res.json();
-        setDocTypes(documentTypes);
-        setVendors(vendors);
+        setError(null);
+        const res = await fetch("/api/reports/vendors/po-missing-docs");
+        if (!res.ok) throw new Error("Failed to fetch report");
+        const { documentTypes, vendors: list } = await res.json();
+        setDocTypes(documentTypes || []);
+        setVendors(list || []);
       } catch (err) {
         console.error(err);
-        setError(err.message || 'Error');
+        setError(err.message || "Error");
       } finally {
         setLoading(false);
       }
@@ -53,10 +53,22 @@ function VendorsPOMissingDocsList() {
   const sortedVendors = useMemo(() => {
     const items = [...vendors];
     const { key, direction } = sortConfig;
-    const dir = direction === 'asc' ? 1 : -1;
+    const dir = direction === "asc" ? 1 : -1;
     items.sort((a, b) => {
-      if (key === 'vendor-code') return (a['vendor-code'] || '').localeCompare(b['vendor-code'] || '') * dir;
-      if (key === 'vendor-name') return (a['vendor-name'] || '').localeCompare(b['vendor-name'] || '') * dir;
+      if (key === "vendor-code") {
+        return (a["vendor-code"] || "").localeCompare(b["vendor-code"] || "") * dir;
+      }
+      if (key === "vendor-name") {
+        return (a["vendor-name"] || "").localeCompare(b["vendor-name"] || "") * dir;
+      }
+      if (key === "poCount") {
+        return ((a.poCount || 0) - (b.poCount || 0)) * dir;
+      }
+      if (key === "created_date") {
+        const at = a.created_date ? new Date(a.created_date).getTime() : 0;
+        const bt = b.created_date ? new Date(b.created_date).getTime() : 0;
+        return (at - bt) * dir;
+      }
       return 0;
     });
     return items;
@@ -65,104 +77,206 @@ function VendorsPOMissingDocsList() {
   const filteredVendors = useMemo(() => {
     if (!searchTerm) return sortedVendors;
     const s = searchTerm.trim().toLowerCase();
-    return sortedVendors.filter(v => {
-      const code = (v['vendor-code'] || '').toLowerCase();
-      const name = (v['vendor-name'] || '').toLowerCase();
+    return sortedVendors.filter((v) => {
+      const code = (v["vendor-code"] || "").toLowerCase();
+      const name = (v["vendor-name"] || "").toLowerCase();
       return code.includes(s) || name.includes(s);
     });
   }, [sortedVendors, searchTerm]);
 
-  if (loading) return (
-    <div className="min-h-screen bg-gray-50">
-      <HeaderComponent />
-      <div className="container mx-auto px-4 py-12 text-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto" />
-        <p className="mt-4 text-gray-600">Loading report...</p>
-      </div>
-      <FooterComponent />
-    </div>
-  );
-
-  if (error) return (
-    <div className="min-h-screen bg-gray-50">
-      <HeaderComponent />
-      <div className="container mx-auto px-4 py-12 text-center text-red-600">Error: {error}</div>
-      <FooterComponent />
-    </div>
-  );
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <HeaderComponent />
-      <div className="container mx-auto px-4 py-8 overflow-x-auto">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Vendors with Purchase Orders — Missing Documents</h1>
-            <p className="text-sm text-gray-600 mt-1">Each column to the right is a document type; a red 'X' indicates the document type is not uploaded.</p>
-          </div>
+    <div className="app-page min-h-screen text-app-text">
+      <Head>
+        <title>Vendors Missing Documents | Optaimyze</title>
+      </Head>
+
+      <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-app-text tracking-tight">
+            Vendors Without Documents
+          </h1>
+          <p className="text-sm text-app-text-muted mt-1">
+            All vendors in the vendors collection with no documents uploaded. Document-type
+            columns show missing (✕) until files are uploaded.
+          </p>
         </div>
 
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-app-surface border border-app-border p-4 rounded-2xl shadow-sm">
+          <div className="relative flex-1 max-w-md">
+            <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-app-text-muted">
+              <FiSearch className="w-4 h-4" />
+            </span>
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by vendor code or name"
-              className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-72"
+              className="w-full pl-10 pr-4 py-2.5 bg-app-bg border border-app-border rounded-xl text-app-text placeholder:text-app-text-disabled focus:outline-none focus:border-app-accent text-sm"
             />
-            {searchTerm && (
-              <button onClick={() => setSearchTerm('')} className="text-sm text-gray-600 hover:underline">Clear</button>
-            )}
           </div>
-          <div className="text-sm text-gray-500">Showing {filteredVendors.length} of {vendors.length}</div>
+          <div className="flex items-center gap-3 text-sm text-app-text-muted">
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => setSearchTerm("")}
+                className="hover:text-app-accent hover:underline"
+              >
+                Clear
+              </button>
+            )}
+            <span>
+              Showing {filteredVendors.length.toLocaleString()} of{" "}
+              {vendors.length.toLocaleString()}
+            </span>
+          </div>
         </div>
 
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <table className="min-w-full text-left divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-xs font-medium text-gray-500">
-                  <button className="flex items-center gap-1" onClick={() => requestSort('vendor-code')}>Vendor Code <SortIndicator columnKey={'vendor-code'} /></button>
-                </th>
-                <th className="px-4 py-3 text-xs font-medium text-gray-500">
-                  <button className="flex items-center gap-1" onClick={() => requestSort('vendor-name')}>Vendor Name <SortIndicator columnKey={'vendor-name'} /></button>
-                </th>
-                <th className="px-4 py-3 text-xs font-medium text-gray-500">Registered</th>
-                <th className="px-4 py-3 text-xs font-medium text-gray-500">Created By</th>
-                <th className="px-4 py-3 text-xs font-medium text-gray-500">PO Count</th>
-                {docTypes.map(dt => (
-                  <th key={dt.code} className="px-4 py-3 text-xs font-medium text-gray-500">{dt.code}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-100">
-              {filteredVendors.map((v, idx) => (
-                <tr key={`${v['vendor-code']}-${idx}`} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-700">
-                    <Link href={`/vendorpage?vendorcode=${encodeURIComponent(v['vendor-code'])}`} className="text-blue-600 hover:underline">
-                      {v['vendor-code']}
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{v['vendor-name']}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{v.created_date ? moment(v.created_date).format('YYYY-MM-DD') : 'N/A'}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{v.created_by || 'N/A'}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{v.poCount || 0}</td>
-
-                  {v.missing && v.missing.map(m => (
-                    <td key={m.code} className="px-4 py-3 text-sm text-center">
-                      {m.missing ? <span className="text-red-600 font-bold">✕</span> : <span className="text-green-600">✓</span>}
-                    </td>
+        {loading ? (
+          <div className="bg-app-surface border border-app-border rounded-2xl py-16 text-center text-app-text-muted">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-app-accent mx-auto" />
+            <p className="mt-4">Loading report…</p>
+          </div>
+        ) : error ? (
+          <div className="bg-app-surface border border-rose-500/30 rounded-2xl py-12 text-center text-rose-500">
+            Error: {error}
+          </div>
+        ) : (
+          <div className="overflow-x-auto bg-app-surface border border-app-border rounded-2xl shadow-sm">
+            <table className="min-w-full divide-y divide-app-border text-left">
+              <thead className="bg-app-surface-muted">
+                <tr>
+                  <th className="px-4 py-3.5 text-xs font-bold text-app-text-secondary uppercase tracking-wider">
+                    <button
+                      type="button"
+                      className="flex items-center gap-1 hover:text-app-accent"
+                      onClick={() => requestSort("vendor-code")}
+                    >
+                      Vendor Code <SortIndicator columnKey="vendor-code" />
+                    </button>
+                  </th>
+                  <th className="px-4 py-3.5 text-xs font-bold text-app-text-secondary uppercase tracking-wider">
+                    <button
+                      type="button"
+                      className="flex items-center gap-1 hover:text-app-accent"
+                      onClick={() => requestSort("vendor-name")}
+                    >
+                      Vendor Name <SortIndicator columnKey="vendor-name" />
+                    </button>
+                  </th>
+                  <th className="px-4 py-3.5 text-xs font-bold text-app-text-secondary uppercase tracking-wider">
+                    <button
+                      type="button"
+                      className="flex items-center gap-1 hover:text-app-accent"
+                      onClick={() => requestSort("created_date")}
+                    >
+                      Registered <SortIndicator columnKey="created_date" />
+                    </button>
+                  </th>
+                  <th className="px-4 py-3.5 text-xs font-bold text-app-text-secondary uppercase tracking-wider">
+                    Created By
+                  </th>
+                  <th className="px-4 py-3.5 text-xs font-bold text-app-text-secondary uppercase tracking-wider">
+                    <button
+                      type="button"
+                      className="flex items-center gap-1 hover:text-app-accent"
+                      onClick={() => requestSort("poCount")}
+                    >
+                      PO Count <SortIndicator columnKey="poCount" />
+                    </button>
+                  </th>
+                  <th className="px-4 py-3.5 text-xs font-bold text-app-text-secondary uppercase tracking-wider">
+                    Upload
+                  </th>
+                  {docTypes.map((dt) => (
+                    <th
+                      key={dt.code}
+                      className="px-3 py-3.5 text-xs font-bold text-app-text-secondary uppercase tracking-wider whitespace-nowrap"
+                      title={dt.label}
+                    >
+                      {dt.code}
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-app-border bg-app-surface text-app-text">
+                {filteredVendors.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={6 + docTypes.length}
+                      className="px-4 py-16 text-center text-app-text-muted"
+                    >
+                      No vendors without documents found.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredVendors.map((v, idx) => (
+                    <tr
+                      key={`${v["vendor-code"]}-${idx}`}
+                      className="hover:bg-app-surface-muted/70 transition-colors"
+                    >
+                      <td className="px-4 py-3 text-sm font-semibold text-app-accent whitespace-nowrap">
+                        <Link
+                          href={`/vendor-dashboard?vendorcode=${encodeURIComponent(
+                            v["vendor-code"]
+                          )}`}
+                          className="hover:underline"
+                        >
+                          {v["vendor-code"]}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-app-text max-w-xs truncate">
+                        {v["vendor-name"] || "—"}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-app-text-muted whitespace-nowrap">
+                        {v.created_date
+                          ? moment(v.created_date).format("YYYY-MM-DD")
+                          : "—"}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-app-text-secondary">
+                        {v.created_by || "—"}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-app-text-secondary">
+                        {v.poCount || 0}
+                      </td>
+                      <td className="px-4 py-3 text-sm whitespace-nowrap">
+                        <Link
+                          href={`/vendor-dashboard?vendorcode=${encodeURIComponent(
+                            v["vendor-code"]
+                          )}`}
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-app-border bg-app-surface-muted text-app-text text-xs font-semibold hover:border-app-accent hover:text-app-accent transition"
+                          title="Open vendor dashboard to upload documents"
+                        >
+                          <FiUpload className="w-3.5 h-3.5" />
+                          Upload
+                        </Link>
+                      </td>
+                      {(v.missing || []).map((m) => (
+                        <td key={m.code} className="px-3 py-3 text-sm text-center">
+                          {m.missing ? (
+                            <span className="text-rose-500 font-bold" title="Missing">
+                              ✕
+                            </span>
+                          ) : (
+                            <span className="text-emerald-500" title="Uploaded">
+                              ✓
+                            </span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-        <div className="mt-6 text-sm text-gray-500">Total: {vendors.length}</div>
+        {!loading && !error && (
+          <p className="text-sm text-app-text-muted">
+            Total vendors without documents: {vendors.length.toLocaleString()}
+          </p>
+        )}
       </div>
-      <FooterComponent />
     </div>
   );
 }

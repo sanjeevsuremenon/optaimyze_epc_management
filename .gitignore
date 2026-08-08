@@ -54,3 +54,9 @@ unusedcomponents.txt
 *.docx  
 *.pdf
 *.zip
+evals.json
+seed_vendors.js
+updates.json
+pages/assetmanagement/masters/guides
+pages/assetmanagement/masters/guides.json
+unusedbacendfiles.txtunusedpages.txt

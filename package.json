@@ -60,6 +60,7 @@
     "react-intersection-observer": "^10.0.3",
     "react-lottie": "^1.2.10",
     "react-quill": "^2.0.0",
+    "react-quill-new": "^3.8.3",
     "react-scroll": "^1.9.3",
     "react-select": "^5.10.2",
     "react-table": "^7.8.0",

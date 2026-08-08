@@ -430,14 +430,20 @@ export default function MaterialGroupsPage() {
                       {groups.map(group => (
                         <tr 
                           key={group._id}
-                          className={`cursor-pointer transition-colors ${selectedGroup?._id === group._id ? 'bg-cyan-900/30 border-l-2 border-l-cyan-400' : 'hover:bg-app-surface-muted border-l-2 border-l-transparent'}`}
+                          className={`cursor-pointer transition-colors ${selectedGroup?._id === group._id ? 'bg-app-accent-soft border-l-2 border-l-app-accent' : 'hover:bg-app-surface-muted border-l-2 border-l-transparent'}`}
                           onClick={() => setSelectedGroup(group)}
                         >
                           <td className="px-5 py-4 font-semibold text-app-text break-words">{toTitleCase(group.name)}</td>
                           <td className="px-5 py-4 text-sm text-app-text-muted break-words">{toTitleCase(group.description)}</td>
                           <td className="px-5 py-4">
-                            <span className={`px-2 py-1 text-xs font-bold rounded ${group.isService ? 'bg-purple-900/40 text-purple-400 border border-purple-800' : 'bg-blue-900/40 text-blue-400 border border-blue-800'}`}>
-                              {group.isService ? 'Service' : 'Material'}
+                            <span
+                              className={`px-2 py-1 text-xs font-bold rounded border ${
+                                group.isService
+                                  ? "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/40 dark:text-purple-300 dark:border-purple-800"
+                                  : "bg-sky-100 text-sky-800 border-sky-200 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-800"
+                              }`}
+                            >
+                              {group.isService ? "Service" : "Material"}
                             </span>
                           </td>
                           {isAdmin && (

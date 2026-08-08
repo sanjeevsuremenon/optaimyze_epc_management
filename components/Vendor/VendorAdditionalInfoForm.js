@@ -98,6 +98,7 @@ function VendorAdditionalInfoForm({ vendorCode, onSaved, onCancel }) {
         })
       });
       if (!res.ok) throw new Error('Failed to save');
+      toast.success('Vendor additional info saved');
       if (onSaved) onSaved();
     } catch (err) {
       toast.error(err.message || 'Failed to save');
@@ -108,15 +109,15 @@ function VendorAdditionalInfoForm({ vendorCode, onSaved, onCancel }) {
 
   if (loading) return (
     <div className="flex items-center justify-center py-8">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      <span className="ml-2 text-gray-600">Loading...</span>
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-app-accent"></div>
+      <span className="ml-2 text-app-text-muted">Loading...</span>
     </div>
   );
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Company Type</label>
+        <label className="block text-sm font-medium text-app-text mb-1">Company Type</label>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {companyTypeOptions.map(opt => (
             <label key={opt} className="inline-flex items-center space-x-2 p-2 border rounded-md">
@@ -128,47 +129,47 @@ function VendorAdditionalInfoForm({ vendorCode, onSaved, onCancel }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Year Established</label>
-        <input type="number" value={data.yearEstablished} onChange={e => updateField('yearEstablished', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 2005" />
+        <label className="block text-sm font-medium text-app-text mb-1">Year Established</label>
+        <input type="number" value={data.yearEstablished} onChange={e => updateField('yearEstablished', e.target.value)} className="w-full px-3 py-2 border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-app-accent focus:border-app-accent" placeholder="e.g., 2005" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Company Legal Type</label>
-        <select value={data.companyLegalType} onChange={e => updateField('companyLegalType', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+        <label className="block text-sm font-medium text-app-text mb-1">Company Legal Type</label>
+        <select value={data.companyLegalType} onChange={e => updateField('companyLegalType', e.target.value)} className="w-full px-3 py-2 border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-app-accent focus:border-app-accent">
           <option value="">Select type...</option>
           {legalTypeOptions.map(opt => (<option key={opt} value={opt}>{opt}</option>))}
         </select>
         {data.companyLegalType === 'others' && (
-          <input type="text" value={data.companyLegalTypeOther} onChange={e => updateField('companyLegalTypeOther', e.target.value)} className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Please specify" />
+          <input type="text" value={data.companyLegalTypeOther} onChange={e => updateField('companyLegalTypeOther', e.target.value)} className="mt-2 w-full px-3 py-2 border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-app-accent focus:border-app-accent" placeholder="Please specify" />
         )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Number of Employees</label>
-          <input type="number" value={data.numEmployees} onChange={e => updateField('numEmployees', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          <label className="block text-sm font-medium text-app-text mb-1">Number of Employees</label>
+          <input type="number" value={data.numEmployees} onChange={e => updateField('numEmployees', e.target.value)} className="w-full px-3 py-2 border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-app-accent focus:border-app-accent" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Number of Technical/Engineering Staff</label>
-          <input type="number" value={data.numTechnicalStaff} onChange={e => updateField('numTechnicalStaff', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          <label className="block text-sm font-medium text-app-text mb-1">Number of Technical/Engineering Staff</label>
+          <input type="number" value={data.numTechnicalStaff} onChange={e => updateField('numTechnicalStaff', e.target.value)} className="w-full px-3 py-2 border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-app-accent focus:border-app-accent" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Number of Skilled Labor</label>
-          <input type="number" value={data.numSkilledLabor} onChange={e => updateField('numSkilledLabor', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          <label className="block text-sm font-medium text-app-text mb-1">Number of Skilled Labor</label>
+          <input type="number" value={data.numSkilledLabor} onChange={e => updateField('numSkilledLabor', e.target.value)} className="w-full px-3 py-2 border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-app-accent focus:border-app-accent" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Number of Unskilled Labor</label>
-          <input type="number" value={data.numUnskilledLabor} onChange={e => updateField('numUnskilledLabor', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          <label className="block text-sm font-medium text-app-text mb-1">Number of Unskilled Labor</label>
+          <input type="number" value={data.numUnskilledLabor} onChange={e => updateField('numUnskilledLabor', e.target.value)} className="w-full px-3 py-2 border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-app-accent focus:border-app-accent" />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Annual Turnover in SAR (Last 3 years average)</label>
-        <input type="number" value={data.annualTurnoverAvgSAR} onChange={e => updateField('annualTurnoverAvgSAR', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 1000000" />
+        <label className="block text-sm font-medium text-app-text mb-1">Annual Turnover in SAR (Last 3 years average)</label>
+        <input type="number" value={data.annualTurnoverAvgSAR} onChange={e => updateField('annualTurnoverAvgSAR', e.target.value)} className="w-full px-3 py-2 border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-app-accent focus:border-app-accent" placeholder="e.g., 1000000" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Financial References</label>
+        <label className="block text-sm font-medium text-app-text mb-1">Financial References</label>
         <div className="space-y-3">
           {data.financialReferences.map((ref, idx) => (
             <div key={idx} className="grid grid-cols-1 sm:grid-cols-4 gap-2">
@@ -178,17 +179,17 @@ function VendorAdditionalInfoForm({ vendorCode, onSaved, onCancel }) {
               <div className="flex space-x-2">
                 <input className="flex-1 px-3 py-2 border rounded-md" placeholder="Email" value={ref.email} onChange={e => updateArrayItem('financialReferences', idx, 'email', e.target.value)} />
                 {data.financialReferences.length > 1 && (
-                  <button type="button" onClick={() => removeArrayItem('financialReferences', idx)} className="px-2 py-2 text-xs bg-red-100 text-red-700 rounded">Remove</button>
+                  <button type="button" onClick={() => removeArrayItem('financialReferences', idx)} className="px-2 py-2 text-xs bg-rose-500/15 text-rose-500 rounded">Remove</button>
                 )}
               </div>
             </div>
           ))}
-          <button type="button" onClick={() => addArrayItem('financialReferences', { bankName: '', contact: '', mobile: '', email: '' })} className="px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded">+ Add reference</button>
+          <button type="button" onClick={() => addArrayItem('financialReferences', { bankName: '', contact: '', mobile: '', email: '' })} className="px-3 py-2 text-sm bg-app-accent-soft text-app-accent rounded">+ Add reference</button>
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Client References</label>
+        <label className="block text-sm font-medium text-app-text mb-1">Client References</label>
         <div className="space-y-3">
           {data.clientReferences.map((ref, idx) => (
             <div key={idx} className="grid grid-cols-1 sm:grid-cols-4 gap-2">
@@ -198,23 +199,23 @@ function VendorAdditionalInfoForm({ vendorCode, onSaved, onCancel }) {
               <div className="flex space-x-2">
                 <input className="flex-1 px-3 py-2 border rounded-md" placeholder="Email" value={ref.email} onChange={e => updateArrayItem('clientReferences', idx, 'email', e.target.value)} />
                 {data.clientReferences.length > 1 && (
-                  <button type="button" onClick={() => removeArrayItem('clientReferences', idx)} className="px-2 py-2 text-xs bg-red-100 text-red-700 rounded">Remove</button>
+                  <button type="button" onClick={() => removeArrayItem('clientReferences', idx)} className="px-2 py-2 text-xs bg-rose-500/15 text-rose-500 rounded">Remove</button>
                 )}
               </div>
             </div>
           ))}
-          <button type="button" onClick={() => addArrayItem('clientReferences', { companyName: '', contact: '', mobile: '', email: '' })} className="px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded">+ Add reference</button>
+          <button type="button" onClick={() => addArrayItem('clientReferences', { companyName: '', contact: '', mobile: '', email: '' })} className="px-3 py-2 text-sm bg-app-accent-soft text-app-accent rounded">+ Add reference</button>
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Company Total Area including Fab Shop (SQM)</label>
-        <input type="number" value={data.totalAreaSqm} onChange={e => updateField('totalAreaSqm', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+        <label className="block text-sm font-medium text-app-text mb-1">Company Total Area including Fab Shop (SQM)</label>
+        <input type="number" value={data.totalAreaSqm} onChange={e => updateField('totalAreaSqm', e.target.value)} className="w-full px-3 py-2 border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-app-accent focus:border-app-accent" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Remarks</label>
-        <textarea value={data.remarks} onChange={e => updateField('remarks', e.target.value)} rows={3} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+        <label className="block text-sm font-medium text-app-text mb-1">Remarks</label>
+        <textarea value={data.remarks} onChange={e => updateField('remarks', e.target.value)} rows={3} className="w-full px-3 py-2 border border-app-border rounded-md shadow-sm focus:outline-none focus:ring-app-accent focus:border-app-accent" />
       </div>
 
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-2">
@@ -223,7 +224,7 @@ function VendorAdditionalInfoForm({ vendorCode, onSaved, onCancel }) {
             type="button"
             onClick={onCancel}
             disabled={saving}
-            className="w-full sm:w-auto py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+            className="w-full sm:w-auto py-2 px-4 border border-app-border rounded-md text-sm font-medium text-app-text bg-app-surface hover:bg-app-surface-muted disabled:opacity-50"
           >
             Cancel
           </button>
@@ -231,7 +232,7 @@ function VendorAdditionalInfoForm({ vendorCode, onSaved, onCancel }) {
         <button
           type="submit"
           disabled={saving}
-          className="w-full sm:w-auto flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {saving ? 'Saving...' : 'Save'}
         </button>

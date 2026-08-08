@@ -208,15 +208,20 @@ export default function VendorDashboard() {
           if (match) {
             handleVendorSelect(match);
           } else {
-            // Fallback: If not found in search, try to construct a dummy vendor object
-            // This is useful if the search API fails but the dashboard API still has it.
-            const fallbackVendor = { vendorcode: vendorcodeFromQuery, vendorname: 'Vendor', source: 'vendors' };
-            handleVendorSelect(fallbackVendor);
+            // Still attempt dashboard load (may resolve from vendors / POs by code)
+            handleVendorSelect({
+              vendorcode: vendorcodeFromQuery,
+              vendorname: vendorcodeFromQuery,
+              source: 'vendors',
+            });
           }
         } catch (error) {
           console.error('Error loading vendor from query:', error);
-          // Fallback on error
-          handleVendorSelect({ vendorcode: vendorcodeFromQuery, vendorname: 'Vendor', source: 'vendors' });
+          handleVendorSelect({
+            vendorcode: vendorcodeFromQuery,
+            vendorname: vendorcodeFromQuery,
+            source: 'vendors',
+          });
         }
       };
       
@@ -257,32 +262,34 @@ export default function VendorDashboard() {
   const loadVendorData = async (vendorcode, vendorName, source) => {
     setIsLoading(true);
     try {
-      const url = new URL(`/api/vendors/dashboard/${vendorcode}`, window.location.origin);
+      const url = new URL(`/api/vendors/dashboard/${encodeURIComponent(vendorcode)}`, window.location.origin);
       if (vendorName) url.searchParams.set('vendorName', vendorName);
       if (source) url.searchParams.set('source', source);
       const response = await fetch(url.toString());
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || !data?.vendor) {
+        setVendorData(null);
+        setShowDashboard(false);
+        toast.error(data?.error || `Vendor not found for code ${vendorcode}`);
+        return;
+      }
+
       console.log('Vendor dashboard data loaded:', data);
-      console.log('Evaluation data:', data.evaluation);
-      console.log('Evaluation marks:', data.evaluation?.marks);
-      console.log('Evaluation data object:', data.evaluation?.data);
       setVendorData(data);
       setShowDashboard(true);
-      // Determine effective code for subsequent calls
       const effectiveCode = vendorcode;
-      // Trigger OpenAI extract and save to vendorextracts (fire-and-forget)
+      // Optional AI extract — never block dashboard
       fetch('/api/vendors/extract-openai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           vendorcode: effectiveCode,
-          vendorName: vendorName || data?.vendor?.vendorname,
+          vendorName: vendorName || data?.vendor?.vendorname || data?.vendor?.['vendor-name'],
           source: source || data?.vendor?.source
         })
       }).catch(err => console.error('Vendor extract-openai failed:', err));
-      // Load uploaded documents always
       loadUploadedDocuments(effectiveCode);
-      // Only load additional info and feedback for vendors that are not registeredvendors with NA code
       const isRegisteredNoCode = data?.vendor?.source === 'registeredvendors' && (!data?.vendor?.vendorcode || data?.vendor?.vendorcode === 'NA');
       if (!isRegisteredNoCode) {
         loadAdditionalInfo(effectiveCode);
@@ -294,6 +301,8 @@ export default function VendorDashboard() {
       }
     } catch (error) {
       console.error('Error loading vendor data:', error);
+      setVendorData(null);
+      setShowDashboard(false);
       toast.error('Failed to load vendor data');
     } finally {
       setIsLoading(false);

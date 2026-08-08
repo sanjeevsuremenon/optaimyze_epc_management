@@ -5,18 +5,20 @@ export function KpiCard({
   icon: Icon,
   iconBgClass,
   iconClass,
-  valueClass = "text-slate-900",
+  valueClass = "text-app-text",
   urgent = false,
   loading = false,
 }) {
   return (
     <div
-      className={`rounded-xl border bg-white p-6 shadow-sm transition-shadow hover:shadow-md ${
-        urgent ? "border-red-300 ring-1 ring-red-200" : "border-slate-200"
+      className={`rounded-xl border bg-app-surface p-6 shadow-sm transition-shadow hover:shadow-md ${
+        urgent
+          ? "border-red-400/50 ring-1 ring-red-400/30 dark:border-red-500/40 dark:ring-red-500/20"
+          : "border-app-border"
       }`}
     >
       <div className="flex items-start justify-between">
-        <span className="text-sm font-medium text-slate-600">{label}</span>
+        <span className="text-sm font-medium text-app-text-muted">{label}</span>
         <div
           className={`flex h-10 w-10 items-center justify-center rounded-full ${iconBgClass} ${
             urgent ? "animate-pulse" : ""

@@ -32,6 +32,11 @@ export default async function handler(req, res) {
     'purchaseorders': 'purchaseorders',
     'specialstock': 'specialstock',
     'completestock': 'completestock',
+    'poupdates': 'poupdates',
+    'poexecution': 'poexecution',
+    'vendorupdates': 'vendorupdates',
+    'vendorevaluations': 'vendorevaluations',
+    'vendorprequalifications': 'vendorprequalifications',
   };
 
   const collectionName = collectionMap[type];
@@ -51,30 +56,100 @@ export default async function handler(req, res) {
     'purchaseorders': 'po-number',
     'specialstock': 'material-code',
     'completestock': 'material-code',
+    'poupdates': 'ponumber',
+    'poexecution': 'ponumber',
+    'vendorupdates': 'vendorname',
+    'vendorevaluations': 'vendorCode',
+    'vendorprequalifications': 'vendorCode',
   };
   const sortField = sortFieldsMap[type] || '_id';
 
   // Helper to parse date fields safely
   const parseDates = (doc) => {
-    const dateFields = [
-      'created-date', 'changed-date', 'start-date', 'finished-date',
-      'updated-at', 'updated-date', 'created_date', 'createdAt', 'updatedAt',
-      'po-date', 'delivery-date', 'stock-date'
-    ];
-    dateFields.forEach(field => {
-      if (doc[field]) {
-        let rawDate = doc[field];
-        if (rawDate && typeof rawDate === 'object' && rawDate.$date) {
-          rawDate = rawDate.$date;
-        }
-        const parsedDate = new Date(rawDate);
-        if (!isNaN(parsedDate.getTime())) {
-          doc[field] = parsedDate;
-        } else {
-          delete doc[field];
-        }
+    const parseDatesDeep = (obj) => {
+      if (Array.isArray(obj)) {
+        obj.forEach(item => parseDatesDeep(item));
+      } else if (obj && typeof obj === 'object') {
+        Object.keys(obj).forEach(key => {
+          let val = obj[key];
+          if (val && typeof val === 'object' && val.$date) {
+            obj[key] = new Date(val.$date);
+          } else if (typeof val === 'string' && val.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)) {
+            const parsedDate = new Date(val);
+            if (!isNaN(parsedDate.getTime())) {
+              obj[key] = parsedDate;
+            }
+          } else if (
+            typeof val === 'string' &&
+            val.match(/^\d{4}-\d{2}-\d{2}$/) &&
+            (key.endsWith('-date') || key.endsWith('Date') || key === 'updated-at' || key === 'updatedAt' || key === 'createdAt')
+          ) {
+            const parsedDate = new Date(`${val}T00:00:00.000Z`);
+            if (!isNaN(parsedDate.getTime())) {
+              obj[key] = parsedDate;
+            }
+          } else if (typeof val === 'object') {
+            parseDatesDeep(val);
+          }
+        });
       }
+    };
+    parseDatesDeep(doc);
+    return doc;
+  };
+
+  // Normalize network activities: [{ activity-number, activity-wbs }, ...]
+  // Maps each activity to a child "Activity WBS" under the root project-wbs (not the root itself).
+  const normalizeNetworkActivities = (doc) => {
+    if (!doc) return doc;
+
+    const toItem = (activityNumber, activityWbs) => {
+      const num = String(activityNumber || "").trim();
+      const wbs = String(activityWbs || "").trim();
+      if (!num && !wbs) return null;
+      return { "activity-number": num, "activity-wbs": wbs };
+    };
+
+    let items = [];
+    const raw = doc.activities ?? doc["activity-numbers"] ?? doc["activity-number"];
+
+    if (Array.isArray(raw)) {
+      raw.forEach((entry) => {
+        if (entry && typeof entry === "object" && !Array.isArray(entry)) {
+          const item = toItem(
+            entry["activity-number"] ?? entry.activityNumber,
+            entry["activity-wbs"] ?? entry.activityWbs
+          );
+          if (item) items.push(item);
+        } else if (typeof entry === "string") {
+          const [a, b] = String(entry).split(":").map((s) => s.trim());
+          const item = toItem(a, b || "");
+          if (item) items.push(item);
+        }
+      });
+    } else if (typeof raw === "string" && raw.trim()) {
+      raw
+        .split(/[;\n|]+/)
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .forEach((part) => {
+          const [a, b] = part.split(":").map((s) => s.trim());
+          const item = toItem(a, b || "");
+          if (item) items.push(item);
+        });
+    }
+
+    const seen = new Set();
+    items = items.filter((item) => {
+      const key = `${item["activity-number"]}|${item["activity-wbs"]}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
     });
+
+    doc.activities = items;
+    doc["activity-numbers"] = items.map((a) => a["activity-number"]).filter(Boolean);
+    doc["activity-number"] = doc["activity-numbers"].join("; ");
     return doc;
   };
 
@@ -136,6 +211,43 @@ export default async function handler(req, res) {
           }
         }
       });
+    } else if (type === 'poexecution') {
+      const numberFields = ['abgamount', 'pbgamount', 'lcamount', 'amount', 'advamountpaid', 'milestoneamountpaid', 'finalpaidamt'];
+      const parseNumbersDeep = (obj) => {
+        if (Array.isArray(obj)) {
+          obj.forEach(item => parseNumbersDeep(item));
+        } else if (obj && typeof obj === 'object') {
+          Object.keys(obj).forEach(key => {
+            let val = obj[key];
+            if (numberFields.includes(key) && val !== undefined && val !== null && val !== '') {
+              obj[key] = parseFloat(String(val).replace(/,/g, ''));
+            } else if (typeof val === 'object') {
+              parseNumbersDeep(val);
+            }
+          });
+        }
+      };
+      parseNumbersDeep(doc);
+    } else if (type === 'vendorevaluations') {
+      if (doc['starRating'] !== undefined && doc['starRating'] !== null && doc['starRating'] !== '') {
+        doc['starRating'] = parseFloat(String(doc['starRating']));
+      }
+      ['ratingMaterials', 'ratingServices'].forEach(field => {
+        if (doc[field] && typeof doc[field] === 'object') {
+          Object.keys(doc[field]).forEach(k => {
+            if (doc[field][k] !== undefined && doc[field][k] !== null && doc[field][k] !== '') {
+              doc[field][k] = parseFloat(String(doc[field][k]));
+            }
+          });
+        }
+      });
+    } else if (type === 'vendorprequalifications') {
+      const numberFields = ['numEmployees', 'numSkilledLabor', 'numTechnicalStaff', 'numUnskilledLabor', 'totalAreaSqm'];
+      numberFields.forEach(field => {
+        if (doc[field] !== undefined && doc[field] !== null && doc[field] !== '') {
+          doc[field] = parseFloat(String(doc[field]).replace(/,/g, ''));
+        }
+      });
     }
     return doc;
   };
@@ -157,6 +269,10 @@ export default async function handler(req, res) {
                 { 'network-num': { $regex: search, $options: "i" } },
                 { 'project-wbs': { $regex: search, $options: "i" } },
                 { 'project-name': { $regex: search, $options: "i" } },
+                { 'activity-number': { $regex: search, $options: "i" } },
+                { 'activity-numbers': { $regex: search, $options: "i" } },
+                { 'activities.activity-number': { $regex: search, $options: "i" } },
+                { 'activities.activity-wbs': { $regex: search, $options: "i" } },
               ]
             };
           } else if (type === 'projects') {
@@ -172,6 +288,8 @@ export default async function handler(req, res) {
               $or: [
                 { 'wbs-number': { $regex: search, $options: "i" } },
                 { 'wbs-description': { $regex: search, $options: "i" } },
+                { 'network-num': { $regex: search, $options: "i" } },
+                { 'activity-number': { $regex: search, $options: "i" } },
               ]
             };
           } else if (type === 'materials') {
@@ -203,6 +321,31 @@ export default async function handler(req, res) {
                 { 'vendor-code': { $regex: search, $options: "i" } },
                 { 'vendor-name': { $regex: search, $options: "i" } },
                 { 'vat-number': { $regex: search, $options: "i" } },
+              ]
+            };
+          } else if (type === 'vendorupdates') {
+            query = {
+              $or: [
+                { 'vendorname': { $regex: search, $options: "i" } },
+                { 'vendorcode': { $regex: search, $options: "i" } },
+                { 'vendorCode': { $regex: search, $options: "i" } },
+                { 'title': { $regex: search, $options: "i" } },
+              ]
+            };
+          } else if (type === 'vendorevaluations' || type === 'vendorprequalifications') {
+            query = {
+              $or: [
+                { 'vendorCode': { $regex: search, $options: "i" } },
+                { 'vendorName': { $regex: search, $options: "i" } },
+                { 'vendor-code': { $regex: search, $options: "i" } },
+                { 'vendor-name': { $regex: search, $options: "i" } },
+              ]
+            };
+          } else if (type === 'poupdates' || type === 'poexecution') {
+            query = {
+              $or: [
+                { 'ponumber': { $regex: search, $options: "i" } },
+                { 'title': { $regex: search, $options: "i" } },
               ]
             };
           } else if (type === 'purchaseorders') {
@@ -270,6 +413,15 @@ export default async function handler(req, res) {
           };
 
           const keys = keyFieldsMap[type] || ['_id'];
+
+          // For networks bulk import: only allow rows whose project-wbs exists in projects
+          let projectWbsSet = null;
+          if (type === 'networks') {
+            const existingProjects = await db.collection('projects').find({}, { projection: { 'project-wbs': 1, 'project-name': 1 } }).toArray();
+            projectWbsSet = new Map(existingProjects.map((p) => [p['project-wbs'], p['project-name'] || '']));
+          }
+
+          const skippedMissingProjects = [];
           const bulkOps = bulkData.map(row => {
             const querySelector = {};
             // If the query key is nested (e.g. material.matcode), fetch it from the expanded object or string path
@@ -286,6 +438,16 @@ export default async function handler(req, res) {
 
             // Parse all date fields
             updateFields = parseDates(updateFields);
+
+            if (type === 'networks') {
+              updateFields = normalizeNetworkActivities(updateFields);
+              const projectWbs = String(updateFields['project-wbs'] || '').trim();
+              if (!projectWbs || !projectWbsSet.has(projectWbs)) {
+                skippedMissingProjects.push(projectWbs || '(empty)');
+                return null;
+              }
+              updateFields['project-name'] = projectWbsSet.get(projectWbs) || updateFields['project-name'] || '';
+            }
 
             // Convert groupId to ObjectId for materialsubgroups (materialgroups tab)
             if (type === 'materialgroups' && updateFields['groupId'] && typeof updateFields['groupId'] === 'string' && updateFields['groupId'].length === 24) {
@@ -340,10 +502,16 @@ export default async function handler(req, res) {
                 upsert: true
               }
             };
-          });
+          }).filter(Boolean);
 
           if (bulkOps.length === 0) {
-            return res.status(200).json({ message: "No records to import" });
+            const skipMsg = skippedMissingProjects?.length
+              ? ` All ${skippedMissingProjects.length} network row(s) skipped — project-wbs not found in projects collection.`
+              : "";
+            return res.status(400).json({
+              error: `No records to import.${skipMsg}`,
+              skippedMissingProjects: skippedMissingProjects || [],
+            });
           }
 
           const bulkResult = await db.collection(collectionName).bulkWrite(bulkOps);
@@ -352,6 +520,7 @@ export default async function handler(req, res) {
             matchedCount: bulkResult.matchedCount,
             modifiedCount: bulkResult.modifiedCount,
             upsertedCount: bulkResult.upsertedCount,
+            skippedMissingProjects: skippedMissingProjects || [],
           });
         }
 
@@ -360,6 +529,20 @@ export default async function handler(req, res) {
         insertData = unflattenDotNotation(insertData);
         insertData = parseNumericTypes(insertData, type);
         insertData = parseDates(insertData);
+        if (type === 'networks') {
+          insertData = normalizeNetworkActivities(insertData);
+          const projectWbs = String(insertData['project-wbs'] || '').trim();
+          if (!projectWbs) {
+            return res.status(400).json({ error: "project-wbs is required and must reference an existing project" });
+          }
+          const project = await db.collection('projects').findOne({ 'project-wbs': projectWbs });
+          if (!project) {
+            return res.status(400).json({
+              error: `Project "${projectWbs}" does not exist. Create it under Projects first before linking a network.`,
+            });
+          }
+          insertData['project-name'] = project['project-name'] || insertData['project-name'] || '';
+        }
         
         if (type === 'materialgroups' && insertData['groupId'] && typeof insertData['groupId'] === 'string' && insertData['groupId'].length === 24) {
           try {
@@ -382,6 +565,19 @@ export default async function handler(req, res) {
         updateData = unflattenDotNotation(updateData);
         updateData = parseNumericTypes(updateData, type);
         updateData = parseDates(updateData);
+        if (type === 'networks') {
+          updateData = normalizeNetworkActivities(updateData);
+          const projectWbs = String(updateData['project-wbs'] || '').trim();
+          if (projectWbs) {
+            const project = await db.collection('projects').findOne({ 'project-wbs': projectWbs });
+            if (!project) {
+              return res.status(400).json({
+                error: `Project "${projectWbs}" does not exist. Create it under Projects first before linking a network.`,
+              });
+            }
+            updateData['project-name'] = project['project-name'] || updateData['project-name'] || '';
+          }
+        }
 
         if (type === 'materialgroups' && updateData['groupId'] && typeof updateData['groupId'] === 'string' && updateData['groupId'].length === 24) {
           try {

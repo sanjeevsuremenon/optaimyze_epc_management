@@ -1,45 +1,45 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useSession, getSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import Tablecomponent, {
-  SelectColumnFilter,
-  Boldstyle1,
-  Boldstyle2,
-  Boldstyle3,
-  Boldstyle4,
-  Numberstyle,
-} from "../../components/Tablecomponent";
-import { FiArrowUp, FiArrowDown, FiFolder, FiShoppingCart, FiTrendingUp, FiList } from 'react-icons/fi';
+import {
+  FiArrowUp,
+  FiArrowDown,
+  FiFolder,
+  FiShoppingCart,
+  FiTrendingUp,
+  FiList,
+} from "react-icons/fi";
 
 function OpenProjects() {
   const router = useRouter();
-  const { data: session } = useSession();
   const [projectsData, setProjectsData] = useState([]);
   const [totals, setTotals] = useState({
     totalProjects: 0,
     totalPOs: 0,
     totalPOValue: 0,
-    totalOpenValue: 0
+    totalOpenValue: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [nameFilter, setNameFilter] = useState("all");
   const [sortConfig, setSortConfig] = useState({
-    key: 'totalOpenValue',
-    direction: 'desc'
+    key: "totalOpenValue",
+    direction: "desc",
   });
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch('/api/openprojects');
+        const response = await fetch("/api/openprojects");
         const data = await response.json();
-        
+
         if (data.projects && data.totals) {
           setProjectsData(data.projects);
           setTotals(data.totals);
         }
       } catch (error) {
-        console.error('Error fetching open projects:', error);
+        console.error("Error fetching open projects:", error);
       } finally {
         setLoading(false);
       }
@@ -48,56 +48,83 @@ function OpenProjects() {
     fetchData();
   }, []);
 
-  // Handle sort request
   const requestSort = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
     }
     setSortConfig({ key, direction });
   };
 
-  // Sort projects based on current sort configuration
-  const sortedProjects = useMemo(() => {
-    let sortableItems = [...projectsData];
-    if (sortConfig.key) {
-      sortableItems.sort((a, b) => {
-        let aValue = a[sortConfig.key];
-        let bValue = b[sortConfig.key];
-        
-        // Handle numeric values
-        if (typeof aValue === 'number' && typeof bValue === 'number') {
-          return sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue;
-        }
-        
-        // Handle string values
-        if (aValue < bValue) {
-          return sortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (aValue > bValue) {
-          return sortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableItems;
-  }, [projectsData, sortConfig]);
+  const projectNameOptions = useMemo(() => {
+    const names = new Set();
+    projectsData.forEach((p) => {
+      const label =
+        p.projectId === "unassigned"
+          ? "Unassigned POs"
+          : p.projectName || p.projectWbs || p.projectId || "Unassigned";
+      names.add(label);
+    });
+    return [...names].sort((a, b) => a.localeCompare(b));
+  }, [projectsData]);
 
-  // Sort indicator component
+  const filteredProjects = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return projectsData.filter((p) => {
+      const label =
+        p.projectId === "unassigned"
+          ? "Unassigned POs"
+          : p.projectName || p.projectWbs || p.projectId || "Unassigned";
+
+      if (nameFilter !== "all" && label !== nameFilter) return false;
+      if (!q) return true;
+
+      return (
+        label.toLowerCase().includes(q) ||
+        String(p.projectWbs || "").toLowerCase().includes(q) ||
+        String(p.projectId || "").toLowerCase().includes(q)
+      );
+    });
+  }, [projectsData, search, nameFilter]);
+
+  const sortedProjects = useMemo(() => {
+    const items = [...filteredProjects];
+    if (!sortConfig.key) return items;
+
+    items.sort((a, b) => {
+      let aValue = a[sortConfig.key];
+      let bValue = b[sortConfig.key];
+
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return sortConfig.direction === "asc" ? aValue - bValue : bValue - aValue;
+      }
+
+      aValue = String(aValue ?? "").toLowerCase();
+      bValue = String(bValue ?? "").toLowerCase();
+      if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    });
+    return items;
+  }, [filteredProjects, sortConfig]);
+
   const SortIndicator = ({ columnKey }) => {
     if (sortConfig.key !== columnKey) return null;
-    return sortConfig.direction === 'asc' ? 
-      <FiArrowUp className="inline ml-1" /> : 
-      <FiArrowDown className="inline ml-1" />;
+    return sortConfig.direction === "asc" ? (
+      <FiArrowUp className="inline ml-1" />
+    ) : (
+      <FiArrowDown className="inline ml-1" />
+    );
   };
 
-  // Format number with commas
   const formatNumber = (num) => {
-    if (num === null || num === undefined) return '0';
-    return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (num === null || num === undefined) return "0";
+    return Number(num).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
-  // Handle project click - navigate to project purchase timelines
   const handleProjectClick = (projectId) => {
     if (!projectId || projectId === "unassigned") {
       router.push(`/projectpurchasetimelines/unassigned`);
@@ -106,277 +133,269 @@ function OpenProjects() {
     }
   };
 
-  // Handle view PO timelines click - open in new tab
   const handleViewPOTimelines = (projectId) => {
-    const targetId = (!projectId || projectId === "unassigned") ? "unassigned" : projectId;
-    const url = `/projectpurchasetimelines/${encodeURIComponent(targetId)}`;
-    window.open(url, '_blank');
+    const targetId = !projectId || projectId === "unassigned" ? "unassigned" : projectId;
+    window.open(`/projectpurchasetimelines/${encodeURIComponent(targetId)}`, "_blank");
   };
 
-  // Handle view PO list click - open in new tab
   const handleViewPOList = (projectId) => {
-    const targetId = (!projectId || projectId === "unassigned") ? "unassigned" : projectId;
-    const url = `/projects1?project=${encodeURIComponent(targetId)}`;
-    window.open(url, '_blank');
+    const targetId = !projectId || projectId === "unassigned" ? "unassigned" : projectId;
+    window.open(`/projects1?project=${encodeURIComponent(targetId)}`, "_blank");
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: () => (
-          <div 
-            className="cursor-pointer flex items-center"
-            onClick={() => requestSort('projectName')}
-          >
-            Project Name
-            <SortIndicator columnKey="projectName" />
-          </div>
-        ),
-        accessor: 'projectName',
-        Cell: ({ row }) => (
-          <div 
-            className="font-semibold text-app-accent hover:text-app-accent cursor-pointer"
-            onClick={() => handleProjectClick(row.original.projectId)}
-          >
-            {row.original.projectId === "unassigned" 
-              ? "Unassigned POs (Cost Center, Order, etc.)" 
-              : row.original.projectName || row.original.projectWbs || row.original.projectId || "Unassigned"}
-          </div>
-        ),
-        Filter: SelectColumnFilter,
-      },
-      {
-        Header: () => (
-          <div 
-            className="cursor-pointer flex items-center"
-            onClick={() => requestSort('projectWbs')}
-          >
-            Project WBS
-            <SortIndicator columnKey="projectWbs" />
-          </div>
-        ),
-        accessor: 'projectWbs',
-        Cell: ({ row, value }) => <span className="font-semibold text-sm text-app-text">{row.original.projectId === "unassigned" ? "N/A" : value || "Unassigned"}</span>,
-      },
-      {
-        Header: () => (
-          <div 
-            className="cursor-pointer flex items-center"
-            onClick={() => requestSort('openPOCount')}
-          >
-            Open PO Count
-            <SortIndicator columnKey="openPOCount" />
-          </div>
-        ),
-        accessor: 'openPOCount',
-        Cell: ({ value }) => (
-          <div className="text-center font-semibold text-app-text">
-            {value || 0}
-          </div>
-        ),
-      },
-      {
-        Header: () => (
-          <div 
-            className="cursor-pointer flex items-center"
-            onClick={() => requestSort('totalPOValue')}
-          >
-            Total PO Value (SAR)
-            <SortIndicator columnKey="totalPOValue" />
-          </div>
-        ),
-        accessor: 'totalPOValue',
-        Cell: ({ value }) => (
-          <div className="text-right font-semibold text-app-text">
-            {formatNumber(value)}
-          </div>
-        ),
-      },
-      {
-        Header: () => (
-          <div 
-            className="cursor-pointer flex items-center text-xs uppercase tracking-wider text-app-text-muted font-bold"
-            onClick={() => requestSort('totalOpenValue')}
-          >
-            Open PO Balance (SAR)
-            <SortIndicator columnKey="totalOpenValue" />
-          </div>
-        ),
-        accessor: 'totalOpenValue',
-        Cell: ({ value }) => (
-          <div className="text-right font-bold text-rose-400 bg-rose-900/30 px-3 py-1 rounded-md inline-block min-w-[100px]">
-            {formatNumber(value)}
-          </div>
-        ),
-      },
-      {
-        Header: () => <div className="text-xs uppercase tracking-wider text-app-text-muted font-bold text-center">Actions</div>,
-        accessor: 'actions',
-        Cell: ({ row }) => (
-          <div className="flex gap-2 justify-center">
-            <button
-              onClick={() => handleViewPOTimelines(row.original.projectId)}
-              className="bg-app-surface hover:bg-app-surface-muted border border-app-border text-app-accent hover:text-app-accent transition-all duration-200 text-xs font-semibold py-1.5 px-3 rounded-lg shadow-sm hover:shadow flex items-center whitespace-nowrap"
-            >
-              <FiTrendingUp className="mr-1.5" />
-              View PO timelines
-            </button>
-            <button
-              onClick={() => handleViewPOList(row.original.projectId)}
-              className="bg-app-accent hover:bg-app-accent-hover text-slate-900 transition-all duration-200 text-xs font-semibold py-1.5 px-3 rounded-lg shadow-sm hover:shadow flex items-center whitespace-nowrap"
-            >
-              <FiList className="mr-1.5" />
-              View PO list
-            </button>
-          </div>
-        ),
-      },
-    ],
-    [sortConfig]
-  );
+  const displayName = (p) =>
+    p.projectId === "unassigned"
+      ? "Unassigned POs (Cost Center, Order, etc.)"
+      : p.projectName || p.projectWbs || p.projectId || "Unassigned";
 
   if (loading) {
     return (
-      <>
-        <div className="app-page min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-accent mx-auto"></div>
-            <p className="mt-4 text-app-text-muted">Loading open projects...</p>
-          </div>
+      <div className="app-page min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-accent mx-auto" />
+          <p className="mt-4 text-app-text-muted">Loading open projects...</p>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <div className="app-page min-h-screen py-10">
-        <div className="container mx-auto px-4 max-w-7xl">
-          {/* Header Stats */}
-          <div className="mb-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-              <div>
-                <h1 className="text-4xl font-extrabold text-app-text mb-2 flex items-center tracking-tight">
-                  <FiFolder className="mr-3 text-app-accent drop-shadow-sm" />
-                  Projects with Open POs
-                </h1>
-                <p className="text-app-text-muted font-medium ml-1 flex items-center">
-                  <span className="w-2 h-2 rounded-full bg-app-accent mr-2 animate-pulse"></span>
-                  Overview of all active projects and their purchase orders
-                </p>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Total Projects Card */}
-              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg hover:border-app-accent/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-app-accent/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                <div className="flex items-start justify-between relative z-10">
-                  <div>
-                    <p className="text-sm font-semibold text-app-text-muted uppercase tracking-wider mb-1">Open Projects</p>
-                    <p className="text-3xl font-bold text-app-text tracking-tight">
-                      {totals.totalProjects}
-                    </p>
-                  </div>
-                  <div className="p-3 bg-cyan-900/30 text-app-accent rounded-xl group-hover:bg-app-accent group-hover:text-slate-900 transition-colors duration-300 shadow-sm">
-                    <FiFolder className="h-6 w-6" />
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center text-xs font-medium text-app-accent bg-cyan-900/30 rounded-lg px-2 py-1 w-fit">
-                  <span>Active Workspaces</span>
-                </div>
-              </div>
-
-              {/* Total POs Card */}
-              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg hover:border-emerald-500/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                <div className="flex items-start justify-between relative z-10">
-                  <div>
-                    <p className="text-sm font-semibold text-app-text-muted uppercase tracking-wider mb-1">Total Open POs</p>
-                    <p className="text-3xl font-bold text-app-text tracking-tight">
-                      {totals.totalPOs}
-                    </p>
-                  </div>
-                  <div className="p-3 bg-emerald-900/30 text-emerald-400 rounded-xl group-hover:bg-emerald-500 group-hover:text-slate-900 transition-colors duration-300 shadow-sm">
-                    <FiShoppingCart className="h-6 w-6" />
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center text-xs font-medium text-emerald-400 bg-emerald-900/30 rounded-lg px-2 py-1 w-fit">
-                  <span>Pending Deliveries</span>
-                </div>
-              </div>
-
-              {/* Total PO Value Card */}
-              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg hover:border-purple-500/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                <div className="flex items-start justify-between relative z-10">
-                  <div>
-                    <p className="text-sm font-semibold text-app-text-muted uppercase tracking-wider mb-1">Total PO Value</p>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-sm font-bold text-app-text-muted">SAR</span>
-                      <p className="text-2xl font-bold text-app-text tracking-tight">
-                        {formatNumber(totals.totalPOValue)}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="p-3 bg-purple-900/30 text-purple-400 rounded-xl group-hover:bg-purple-500 group-hover:text-slate-900 transition-colors duration-300 shadow-sm">
-                    <FiTrendingUp className="h-6 w-6" />
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center text-xs font-medium text-purple-400 bg-purple-900/30 rounded-lg px-2 py-1 w-fit">
-                  <span>Committed Budget</span>
-                </div>
-              </div>
-
-              {/* Open Balance Card */}
-              <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg hover:border-rose-500/50 transition-all duration-300 p-6 flex flex-col justify-between group overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                <div className="flex items-start justify-between relative z-10">
-                  <div>
-                    <p className="text-sm font-semibold text-app-text-muted uppercase tracking-wider mb-1">Open Balance</p>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-sm font-bold text-rose-400">SAR</span>
-                      <p className="text-2xl font-bold text-rose-400 tracking-tight">
-                        {formatNumber(totals.totalOpenValue)}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="p-3 bg-rose-900/30 text-rose-400 rounded-xl group-hover:bg-rose-500 group-hover:text-slate-900 transition-colors duration-300 shadow-sm">
-                    <FiTrendingUp className="h-6 w-6" />
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center text-xs font-medium text-rose-400 bg-rose-900/30 rounded-lg px-2 py-1 w-fit">
-                  <span>Remaining to be Paid</span>
-                </div>
-              </div>
+    <div className="app-page min-h-screen py-10 font-[Poppins,sans-serif]">
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="mb-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-app-text mb-2 flex items-center tracking-tight">
+                <FiFolder className="mr-3 text-app-accent" />
+                Projects with Open POs
+              </h1>
+              <p className="text-app-text-muted font-medium ml-1 flex items-center">
+                <span className="w-2 h-2 rounded-full bg-app-accent mr-2" />
+                Overview of all active projects and their purchase orders
+              </p>
             </div>
           </div>
 
-          {/* Projects Table */}
-          <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg overflow-hidden">
-            <div className="px-6 py-5 border-b border-app-border bg-app-surface-muted flex justify-between items-center">
-              <h2 className="text-lg font-bold text-app-text flex items-center">
-                <div className="w-1.5 h-6 bg-app-accent rounded-full mr-3"></div>
-                Project Details
-              </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm p-6 flex flex-col justify-between">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-1">
+                    Open Projects
+                  </p>
+                  <p className="text-3xl font-bold text-app-text tracking-tight">
+                    {totals.totalProjects}
+                  </p>
+                </div>
+                <div className="p-3 bg-app-accent-soft text-app-accent rounded-xl">
+                  <FiFolder className="h-6 w-6" />
+                </div>
+              </div>
             </div>
-            <div className="p-6">
-              {projectsData.length === 0 ? (
-                <div className="text-center py-16 text-app-text-muted flex flex-col items-center">
-                  <FiFolder className="h-16 w-16 text-slate-700 mb-4" />
-                  <p className="text-lg font-medium">No projects with open purchase orders found.</p>
-                  <p className="text-sm text-app-text-muted mt-1">Check back later or adjust your filters.</p>
+
+            <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm p-6 flex flex-col justify-between">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-1">
+                    Total Open POs
+                  </p>
+                  <p className="text-3xl font-bold text-app-text tracking-tight">{totals.totalPOs}</p>
                 </div>
-              ) : (
-                <div className="overflow-x-auto custom-scrollbar">
-                  <Tablecomponent columns={columns} data={sortedProjects} />
+                <div className="p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl">
+                  <FiShoppingCart className="h-6 w-6" />
                 </div>
-              )}
+              </div>
+            </div>
+
+            <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm p-6 flex flex-col justify-between">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-1">
+                    Total PO Value
+                  </p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-sm font-bold text-app-text-muted">SAR</span>
+                    <p className="text-2xl font-bold text-app-text tracking-tight">
+                      {formatNumber(totals.totalPOValue)}
+                    </p>
+                  </div>
+                </div>
+                <div className="p-3 bg-violet-500/10 text-violet-600 dark:text-violet-400 rounded-xl">
+                  <FiTrendingUp className="h-6 w-6" />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm p-6 flex flex-col justify-between">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-1">
+                    Open Balance
+                  </p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-sm font-bold text-rose-500">SAR</span>
+                    <p className="text-2xl font-bold text-rose-500 tracking-tight">
+                      {formatNumber(totals.totalOpenValue)}
+                    </p>
+                  </div>
+                </div>
+                <div className="p-3 bg-rose-500/10 text-rose-500 rounded-xl">
+                  <FiTrendingUp className="h-6 w-6" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm overflow-hidden">
+          <div className="px-6 py-5 border-b border-app-border bg-app-surface-muted/50 flex justify-between items-center">
+            <h2 className="text-lg font-bold text-app-text flex items-center">
+              <div className="w-1.5 h-6 bg-app-accent rounded-full mr-3" />
+              Project Details
+            </h2>
+            <span className="text-sm text-app-text-muted">
+              {sortedProjects.length} of {projectsData.length} shown
+            </span>
+          </div>
+
+          <div className="p-5 sm:p-6">
+            <div className="mb-5 flex flex-col sm:flex-row gap-3 sm:items-end">
+              <label className="flex-1 min-w-0">
+                <span className="block text-xs font-semibold uppercase tracking-wide text-app-text-muted mb-1.5">
+                  Search
+                </span>
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder={`Search in ${projectsData.length} records`}
+                  className="w-full px-3 py-2.5 rounded-lg border border-app-border bg-app-bg text-app-text text-sm focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
+                />
+              </label>
+              <label className="sm:w-64">
+                <span className="block text-xs font-semibold uppercase tracking-wide text-app-text-muted mb-1.5">
+                  Project Name
+                </span>
+                <select
+                  value={nameFilter}
+                  onChange={(e) => setNameFilter(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-lg border border-app-border bg-app-bg text-app-text text-sm focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
+                >
+                  <option value="all">All</option>
+                  {projectNameOptions.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            {sortedProjects.length === 0 ? (
+              <div className="text-center py-16 text-app-text-muted flex flex-col items-center">
+                <FiFolder className="h-14 w-14 text-app-text-disabled mb-4" />
+                <p className="text-lg font-medium text-app-text">No data</p>
+                <p className="text-sm mt-1">
+                  {projectsData.length === 0
+                    ? "No projects with open purchase orders found."
+                    : "No projects match your current filters."}
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto rounded-xl border border-app-border">
+                <table className="w-full min-w-[900px]">
+                  <thead className="bg-app-surface-muted">
+                    <tr>
+                      {[
+                        { key: "projectName", label: "Project Name", align: "left" },
+                        { key: "projectWbs", label: "Project WBS", align: "left" },
+                        { key: "openPOCount", label: "Open PO Count", align: "center" },
+                        { key: "totalPOValue", label: "Total PO Value (SAR)", align: "right" },
+                        { key: "totalOpenValue", label: "Open PO Balance (SAR)", align: "right" },
+                        { key: null, label: "Actions", align: "center" },
+                      ].map((col) => (
+                        <th
+                          key={col.label}
+                          className={`px-4 py-3 text-xs font-semibold uppercase tracking-wider text-app-text-secondary ${
+                            col.align === "right"
+                              ? "text-right"
+                              : col.align === "center"
+                              ? "text-center"
+                              : "text-left"
+                          }`}
+                        >
+                          {col.key ? (
+                            <button
+                              type="button"
+                              onClick={() => requestSort(col.key)}
+                              className="inline-flex items-center gap-0.5 hover:text-app-accent transition-colors"
+                            >
+                              {col.label}
+                              <SortIndicator columnKey={col.key} />
+                            </button>
+                          ) : (
+                            col.label
+                          )}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-app-border bg-app-surface">
+                    {sortedProjects.map((p) => (
+                      <tr key={p.projectId} className="hover:bg-app-surface-muted/70 transition-colors">
+                        <td className="px-4 py-3.5">
+                          <button
+                            type="button"
+                            onClick={() => handleProjectClick(p.projectId)}
+                            className="font-semibold text-app-accent hover:underline text-left"
+                          >
+                            {displayName(p)}
+                          </button>
+                        </td>
+                        <td className="px-4 py-3.5 text-sm font-medium text-app-text">
+                          {p.projectId === "unassigned" ? "N/A" : p.projectWbs || p.projectId || "—"}
+                        </td>
+                        <td className="px-4 py-3.5 text-center font-semibold text-app-text">
+                          {p.openPOCount || 0}
+                        </td>
+                        <td className="px-4 py-3.5 text-right font-semibold text-app-text">
+                          {formatNumber(p.totalPOValue)}
+                        </td>
+                        <td className="px-4 py-3.5 text-right">
+                          <span className="inline-block min-w-[100px] font-bold text-rose-600 dark:text-rose-400 bg-rose-500/10 px-3 py-1 rounded-md">
+                            {formatNumber(p.totalOpenValue)}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3.5">
+                          <div className="flex gap-2 justify-center flex-wrap">
+                            <button
+                              type="button"
+                              onClick={() => handleViewPOTimelines(p.projectId)}
+                              className="bg-app-surface border border-app-border text-app-accent hover:bg-app-accent-soft transition-colors text-xs font-semibold py-1.5 px-3 rounded-lg inline-flex items-center whitespace-nowrap"
+                            >
+                              <FiTrendingUp className="mr-1.5" />
+                              View PO timelines
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleViewPOList(p.projectId)}
+                              className="bg-app-accent hover:bg-app-accent-hover text-app-accent-text transition-colors text-xs font-semibold py-1.5 px-3 rounded-lg inline-flex items-center whitespace-nowrap"
+                            >
+                              <FiList className="mr-1.5" />
+                              View PO list
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -26,6 +26,8 @@ const masterTabs = [
       { key: "network-num", label: "Network Number", type: "text", required: true, isKey: true },
       { key: "project-wbs", label: "Project WBS", type: "text", required: true },
       { key: "project-name", label: "Project Name", type: "text", required: true },
+      { key: "activity-numbers", label: "Activities as act:activity-wbs pairs (e.g. 0010:IS/GP.20.009.002;0020:IS/GP.20.009.003.001)", type: "text", required: false },
+      // Alias: bulk import also accepts `activities` with the same encoding
       { key: "created-date", label: "Created Date (YYYY-MM-DD)", type: "text", required: false },
       { key: "created-by", label: "Created By", type: "text", required: false },
     ]
@@ -41,8 +43,8 @@ const masterTabs = [
       { key: "project-incharge", label: "Project Incharge", type: "text", required: true },
       { key: "created-date", label: "Created Date (YYYY-MM-DD)", type: "text", required: false },
       { key: "changed-date", label: "Changed Date (YYYY-MM-DD)", type: "text", required: false },
-      { key: "start-date", label: "Start Date (YYYY-MM-DD)", type: "text", required: false },
-      { key: "finished-date", label: "Finished Date (YYYY-MM-DD)", type: "text", required: false },
+      { key: "start-date", label: "Start Date — estimated contractual (YYYY-MM-DD)", type: "text", required: false },
+      { key: "finished-date", label: "End Date — estimated contractual (YYYY-MM-DD)", type: "text", required: false },
     ]
   },
   {
@@ -53,6 +55,8 @@ const masterTabs = [
     fields: [
       { key: "wbs-number", label: "WBS Number", type: "text", required: true, isKey: true },
       { key: "wbs-description", label: "WBS Description", type: "text", required: true },
+      { key: "network-num", label: "Network Number (optional map)", type: "text", required: false },
+      { key: "activity-number", label: "Activity Number (optional map)", type: "text", required: false },
       { key: "updated-at", label: "Updated At (YYYY-MM-DD)", type: "text", required: false },
     ]
   }

@@ -52,12 +52,11 @@ export const moduleDashboards = {
       "old-material-number", "material-description", "mat-description2", "created-by", "updated-by"
     ],
     sublinks: [
-      { href: "/materials1", label: "Materials" },
+      { href: "/materials", label: "Materials" },
       { href: "/materials/materialgroups", label: "Material Groups List" },
       { href: "/materials/mattypes", label: "Material Types" },
       { href: "/materialdocuments", label: "Material Docs" },
       { href: "/material-groups", label: "Material Groups" },
-      { href: "/reqmatcode", label: "New Matcode" },
       { href: "/material-standardization", label: "Standardize Materials" },
     ],
   },

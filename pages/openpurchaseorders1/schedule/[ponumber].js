@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { FiArrowLeft, FiX } from 'react-icons/fi';
+import { FiArrowLeft, FiX, FiCalendar } from 'react-icons/fi';
 
 import GeneralPOData from '../../../components/POSchedule/GeneralPOData';
 import PaymentScheduleData from '../../../components/POSchedule/PaymentScheduleData';
@@ -17,15 +17,15 @@ export default function POSchedulePage() {
   const [isNewTab, setIsNewTab] = useState(false);
 
   React.useEffect(() => {
-    if (window.opener) {
+    if (typeof window !== 'undefined' && window.opener) {
       setIsNewTab(true);
     }
   }, []);
 
   if (!ponumber) {
     return (
-      <div className="app-page min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-app-accent"></div>
+      <div className="app-page min-h-screen flex items-center justify-center font-[Poppins,sans-serif]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-app-accent" />
       </div>
     );
   }
@@ -34,48 +34,53 @@ export default function POSchedulePage() {
     { id: 'general', label: 'General' },
     { id: 'payment', label: 'Payment Schedule' },
     { id: 'bank', label: 'Bank Guarantee' },
-    { id: 'lc', label: 'Letter of Credit (LC)' },
-    { id: 'progress', label: 'Progress/Inspection' },
+    { id: 'lc', label: 'Letter of Credit' },
+    { id: 'progress', label: 'Progress / Inspection' },
     { id: 'shipping', label: 'Shipping' },
   ];
 
   return (
-    <div className="app-page min-h-screen text-app-text flex flex-col pb-12">
+    <div className="app-page min-h-screen text-app-text flex flex-col pb-12 font-[Poppins,sans-serif]">
       <Head>
         <title>Schedule PO: {ponumber}</title>
       </Head>
-      
+
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-start justify-between mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-app-text flex items-center gap-3">
-              <button 
-                onClick={() => isNewTab ? window.close() : router.back()}
-                className="p-2 hover:bg-app-surface rounded-lg transition-colors text-app-text-muted hover:text-app-text"
-                title={isNewTab ? "Close Tab" : "Back"}
+            <h1 className="text-2xl sm:text-3xl font-bold text-app-text flex items-center gap-3 tracking-tight">
+              <button
+                type="button"
+                onClick={() => (isNewTab ? window.close() : router.back())}
+                className="p-2 hover:bg-app-surface-muted rounded-lg transition-colors text-app-text-muted hover:text-app-text border border-transparent hover:border-app-border"
+                title={isNewTab ? 'Close Tab' : 'Back'}
               >
                 {isNewTab ? <FiX /> : <FiArrowLeft />}
               </button>
-              Update Schedule: <span className="text-app-accent">{ponumber}</span>
+              <span className="inline-flex items-center gap-2">
+                <FiCalendar className="text-app-accent hidden sm:inline" />
+                Update Schedule
+              </span>
+              <span className="text-app-accent font-semibold">{ponumber}</span>
             </h1>
-            <p className="text-sm text-app-text-muted mt-1 ml-11">Fill out the schedule forms below. Each section saves independently.</p>
+            <p className="text-sm text-app-text-muted mt-2 ml-11">
+              Fill out the schedule forms below. Each section saves independently.
+            </p>
           </div>
         </div>
 
-        {/* Main Content Area */}
-        <div className="bg-app-surface border border-app-border rounded-xl shadow-2xl overflow-hidden flex flex-col">
-          {/* Tabs Navigation */}
-          <div className="border-b border-app-border px-6 bg-app-surface-muted">
-            <nav className="flex space-x-6 overflow-x-auto custom-scrollbar">
-              {tabs.map(tab => (
+        <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm overflow-hidden flex flex-col">
+          <div className="border-b border-app-border px-4 sm:px-6 bg-app-surface-muted/60">
+            <nav className="flex space-x-1 sm:space-x-4 overflow-x-auto">
+              {tabs.map((tab) => (
                 <button
                   key={tab.id}
+                  type="button"
                   onClick={() => setActiveTab(tab.id)}
-                  className={`py-4 px-2 border-b-2 font-semibold text-sm whitespace-nowrap transition-colors ${
+                  className={`py-3.5 px-2 sm:px-3 border-b-2 font-semibold text-sm whitespace-nowrap transition-colors ${
                     activeTab === tab.id
                       ? 'border-app-accent text-app-accent'
-                      : 'border-transparent text-app-text-muted hover:text-app-text hover:border-slate-700'
+                      : 'border-transparent text-app-text-muted hover:text-app-text hover:border-app-border'
                   }`}
                 >
                   {tab.label}
@@ -84,8 +89,7 @@ export default function POSchedulePage() {
             </nav>
           </div>
 
-          {/* Tab Content */}
-          <div className="p-6 bg-app-bg/30">
+          <div className="p-4 sm:p-6 bg-app-bg/40">
             {activeTab === 'general' && <GeneralPOData ponumber={ponumber} />}
             {activeTab === 'payment' && <PaymentScheduleData ponumber={ponumber} />}
             {activeTab === 'bank' && <BankGuaranteeData ponumber={ponumber} />}
@@ -95,32 +99,6 @@ export default function POSchedulePage() {
           </div>
         </div>
       </div>
-      
-      <style jsx global>{`
-        /* Force dark mode for imported components if they use standard classes */
-        .bg-white { background-color: #0f172a !important; color: #f1f5f9 !important; border-color: #1e293b !important; }
-        .text-gray-900, .text-gray-800, .text-blue-900 { color: #f8fafc !important; font-size: 0.875rem !important; }
-        .text-gray-700, .text-gray-600, .text-gray-500 { color: #94a3b8 !important; }
-        .bg-gray-50, .bg-blue-50 { background-color: #1e293b !important; border-color: #334155 !important; }
-        .bg-blue-50\\/50, .bg-blue-50\\/30, .bg-blue-50\\/60 { background-color: #0f172a !important; }
-        .border-gray-200, .border-blue-200, .border-blue-100 { border-color: #334155 !important; }
-        input, textarea, select { background-color: #1e293b !important; color: #f8fafc !important; border-color: #334155 !important; font-size: 0.875rem !important; font-weight: normal !important; }
-        
-        /* Sober up striking colors */
-        .bg-blue-600 { background-color: #334155 !important; color: #cbd5e1 !important; }
-        .hover\\:bg-blue-700:hover { background-color: #475569 !important; }
-        .text-red-600 { color: #38bdf8 !important; font-weight: 500 !important; } /* Soft sky blue instead of neon red */
-        .bg-red-50 { background-color: #0f172a !important; border-color: #38bdf8 !important; }
-        
-        /* Tone down typography */
-        .text-lg, .text-xl { font-size: 1rem !important; font-weight: 600 !important; }
-        .font-extrabold { font-weight: 600 !important; }
-        label { font-size: 0.75rem !important; font-weight: 500 !important; color: #94a3b8 !important; text-transform: uppercase; letter-spacing: 0.025em; }
-        
-        /* Reduce padding/margins for smaller footprint */
-        .p-4 { padding: 0.75rem !important; }
-        .mb-4 { margin-bottom: 0.75rem !important; }
-      `}</style>
     </div>
   );
 }

@@ -163,7 +163,7 @@ export default function DashboardPage() {
             </button>
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-lg bg-app-accent px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-app-accent-hover focus:outline-none focus:ring-2 focus:ring-app-accent focus:ring-offset-2"
+              className="inline-flex items-center gap-2 rounded-lg bg-app-accent px-4 py-2 text-sm font-medium text-app-accent-text shadow-sm transition hover:bg-app-accent-hover focus:outline-none focus:ring-2 focus:ring-app-accent focus:ring-offset-2"
             >
               <FileText className="h-4 w-4" aria-hidden />
               Generate Report
@@ -195,7 +195,7 @@ export default function DashboardPage() {
           <div className="space-y-6">
             {overviewError && (
               <div
-                className="flex items-center justify-between gap-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+                className="flex items-center justify-between gap-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-300"
                 role="alert"
               >
                 <div className="flex items-center gap-2">
@@ -204,7 +204,7 @@ export default function DashboardPage() {
                 </div>
                 <button
                   type="button"
-                  className="shrink-0 rounded-lg px-3 py-1 text-sm font-medium text-red-700 hover:bg-red-100"
+                  className="shrink-0 rounded-lg px-3 py-1 text-sm font-medium text-red-700 hover:bg-red-500/15 dark:text-red-300"
                   onClick={() => loadOverview()}
                 >
                   Retry
@@ -236,8 +236,8 @@ export default function DashboardPage() {
                     : `${summary?.custodyPercent ?? 0}% active custody`
                 }
                 icon={Users}
-                iconBgClass="bg-amber-50"
-                iconClass="text-amber-500"
+                iconBgClass="bg-amber-500/15"
+                iconClass="text-amber-600 dark:text-amber-400"
                 loading={overviewLoading}
               />
               <KpiCard
@@ -245,10 +245,12 @@ export default function DashboardPage() {
                 value={summary ? String(summary.calibrationsDueSoon) : "—"}
                 subLabel="Next 30 days"
                 icon={Wrench}
-                iconBgClass="bg-orange-100"
-                iconClass="text-orange-500"
+                iconBgClass="bg-orange-500/15"
+                iconClass="text-orange-600 dark:text-orange-400"
                 valueClass={
-                  summary?.calibrationsDueSoon > 0 ? "text-orange-500" : "text-app-text"
+                  summary?.calibrationsDueSoon > 0
+                    ? "text-orange-600 dark:text-orange-400"
+                    : "text-app-text"
                 }
                 loading={overviewLoading}
               />
@@ -257,10 +259,12 @@ export default function DashboardPage() {
                 value={summary ? String(summary.expiredCalibrations) : "—"}
                 subLabel="Action required"
                 icon={AlertTriangle}
-                iconBgClass="bg-red-50"
-                iconClass="text-red-500"
+                iconBgClass="bg-red-500/15"
+                iconClass="text-red-600 dark:text-red-400"
                 valueClass={
-                  summary?.expiredCalibrations > 0 ? "text-red-500" : "text-app-text"
+                  summary?.expiredCalibrations > 0
+                    ? "text-red-600 dark:text-red-400"
+                    : "text-app-text"
                 }
                 urgent={!overviewLoading && (summary?.expiredCalibrations ?? 0) > 0}
                 loading={overviewLoading}
@@ -291,7 +295,7 @@ export default function DashboardPage() {
                 {overviewLoading ? (
                   <p className="text-sm text-app-text-muted">Loading…</p>
                 ) : overview?.recentCustody?.length ? (
-                  <ul className="divide-y divide-slate-100">
+                  <ul className="divide-y divide-app-border">
                     {overview.recentCustody.slice(0, 5).map((row, idx) => (
                       <li
                         key={idx}
@@ -313,7 +317,7 @@ export default function DashboardPage() {
                           </p>
                           <p className="text-xs text-app-text-muted">{formatRelativeTime(row.custodyfrom)}</p>
                         </div>
-                        <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
+                        <span className="shrink-0 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
                           Active
                         </span>
                       </li>
@@ -349,14 +353,14 @@ export default function DashboardPage() {
                 {overviewLoading ? (
                   <p className="text-sm text-app-text-muted">Loading…</p>
                 ) : overview?.recentPpe?.length ? (
-                  <ul className="divide-y divide-slate-100">
+                  <ul className="divide-y divide-app-border">
                     {overview.recentPpe.slice(0, 5).map((r, idx) => (
                       <li
                         key={idx}
                         className="flex items-start gap-3 rounded-lg px-2 py-3 transition-colors hover:bg-app-surface-muted"
                       >
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-50">
-                          <HardHat className="h-4 w-4 text-orange-500" aria-hidden />
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500/15">
+                          <HardHat className="h-4 w-4 text-orange-600 dark:text-orange-400" aria-hidden />
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between gap-2">
@@ -381,14 +385,14 @@ export default function DashboardPage() {
                 {overviewLoading ? (
                   <p className="text-sm text-app-text-muted">Loading…</p>
                 ) : overview?.recentProjectReturns?.length ? (
-                  <ul className="divide-y divide-slate-100">
+                  <ul className="divide-y divide-app-border">
                     {overview.recentProjectReturns.slice(0, 5).map((m, idx) => (
                       <li
                         key={idx}
                         className="flex items-start gap-3 rounded-lg px-2 py-3 transition-colors hover:bg-app-surface-muted"
                       >
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-50">
-                          <Package className="h-4 w-4 text-violet-500" aria-hidden />
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-500/15">
+                          <Package className="h-4 w-4 text-violet-600 dark:text-violet-400" aria-hidden />
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between gap-2">

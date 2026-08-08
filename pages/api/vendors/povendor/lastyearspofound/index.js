@@ -8,8 +8,16 @@ const handler = async (req, res) => {
         const vendorpolist = await db.collection("vendorsandtheirpo").aggregate([
           { $match: { vendorpo: { $ne: [], $exists: true }, }, },
           { $unwind: { path: "$vendorpo", preserveNullAndEmptyArrays: false }, },
-          { $addFields: { year: { $year: "$vendorpo.po-date" }, }, },
-          { $match: { year: { $in: [2024] }, }, },
+          // All years through today (no hard-coded year filter)
+          {
+            $match: {
+              $or: [
+                { "vendorpo.po-date": { $lte: new Date(new Date().setHours(23, 59, 59, 999)) } },
+                { "vendorpo.po-date": { $exists: false } },
+                { "vendorpo.po-date": null },
+              ],
+            },
+          },
           { $group: { _id: "$vendor-code", count: { $sum: 1 }, "vendor-name": { $first: "$vendor-name" }, "vendor-code": { $first: "$vendor-code" }, }, },
           { $project: { _id: 0, "vendor-code": 1, "vendor-name": 1 } ,}
         ]).toArray();

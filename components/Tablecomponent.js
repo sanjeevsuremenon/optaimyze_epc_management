@@ -386,13 +386,13 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
           <div className="flex gap-2 flex-shrink-0">
             <button
               onClick={() => onViewModeChange('table')}
-              className={`px-3 py-2 rounded-md text-sm font-semibold ${viewMode === 'table' ? 'bg-app-accent text-slate-900' : 'bg-app-surface-muted text-app-text hover:bg-app-surface'}`}
+              className={`px-3 py-2 rounded-md text-sm font-semibold ${viewMode === 'table' ? 'bg-app-accent text-app-accent-text' : 'bg-app-surface-muted text-app-text hover:bg-app-surface'}`}
             >
               Table
             </button>
             <button
               onClick={() => onViewModeChange('card')}
-              className={`px-3 py-2 rounded-md text-sm font-semibold ${viewMode === 'card' ? 'bg-app-accent text-slate-900' : 'bg-app-surface-muted text-app-text hover:bg-app-surface'}`}
+              className={`px-3 py-2 rounded-md text-sm font-semibold ${viewMode === 'card' ? 'bg-app-accent text-app-accent-text' : 'bg-app-surface-muted text-app-text hover:bg-app-surface'}`}
             >
               Cards
             </button>
@@ -401,7 +401,7 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
       </div>
 
       {enablePagination && (
-        <div className="sticky top-24 z-20 mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-app-border bg-app-bg/95 px-4 py-3 text-sm text-app-text-secondary shadow-lg shadow-slate-950/20">
+        <div className="sticky top-24 z-20 mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-app-border bg-app-bg/95 px-4 py-3 text-sm text-app-text-secondary shadow-lg">
           <span className="font-medium text-app-text">
             Showing {visibleRows.length} of {rows.length} items
           </span>
@@ -501,7 +501,7 @@ function Tablecomponent({ columns, data, viewMode = 'table', onViewModeChange, e
       )}
 
       {enablePagination && isNearBottom && displayedRows < rows.length && (
-        <div className="fixed right-6 bottom-6 z-50 rounded-2xl border border-app-accent bg-app-bg/95 px-4 py-3 text-sm text-cyan-100 shadow-xl shadow-cyan-500/30 backdrop-blur-md">
+        <div className="fixed right-6 bottom-6 z-50 rounded-2xl border border-app-accent bg-app-bg/95 px-4 py-3 text-sm text-app-text shadow-xl backdrop-blur-md">
           Loading more items...
         </div>
       )}

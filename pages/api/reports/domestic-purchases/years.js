@@ -1,4 +1,8 @@
 import { connectToDatabase } from "../../../../lib/mongoconnect";
+import {
+  poDateExistsMatch,
+  poYearAddFields,
+} from "../../../../lib/purchaseReportDateStages";
 
 /**
  * GET /api/reports/domestic-purchases/years
@@ -15,23 +19,8 @@ export default async function handler(req, res) {
     const years = await db
       .collection("purchaseorders")
       .aggregate([
-        { $match: { "po-number": { $regex: /^45/ }, "po-date": { $exists: true, $ne: null } } },
-        {
-          $addFields: {
-            year: {
-              $cond: {
-                if: { $eq: [{ $type: "$po-date" }, "date"] },
-                then: { $year: "$po-date" },
-                else: {
-                  $let: {
-                    vars: { s: { $toString: "$po-date" } },
-                    in: { $toInt: { $substr: ["$$s", 0, 4] } },
-                  },
-                },
-              },
-            },
-          },
-        },
+        { $match: { "po-number": { $regex: /^45/ }, "po-date": { $exists: true, $nin: [null, ""] } } },
+        poYearAddFields,
         { $match: { year: { $gte: 2000, $lte: 2100 } } },
         { $group: { _id: "$year" } },
         { $sort: { _id: 1 } },

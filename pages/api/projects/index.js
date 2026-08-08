@@ -7,6 +7,19 @@ const handler =  async (req, res) => {
         case "GET": {
           const { db } = await connectToDatabase();
           const str = req.query.str
+          const wbs = req.query.wbs
+          
+          // Exact WBS lookup (avoids path encoding issues with "/" in project-wbs)
+          if (wbs) {
+            let decoded = String(wbs);
+            try {
+              decoded = decodeURIComponent(decoded);
+            } catch {
+              // keep raw
+            }
+            const project = await db.collection("projects").findOne({ "project-wbs": decoded });
+            return res.status(200).json(project || null);
+          }
           
           let condition = {};
           
@@ -69,7 +82,8 @@ const handler =  async (req, res) => {
     
   } catch (error) {
     console.log(error)
+    return res.status(500).json({ error: "Internal server error" });
   }
   
 }
-export default handler  
+export default handler

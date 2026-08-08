@@ -8,7 +8,18 @@ import { faCog, faDollarSign, faShip } from "@fortawesome/free-solid-svg-icons";
 function PurchaseOrderDetail() {
   const { data: session } = useSession();
   const router = useRouter();
-  const { ponum } = router.query;
+  const rawPonum = router.query.ponum;
+  const ponum = useMemo(() => {
+    const raw = Array.isArray(rawPonum) ? rawPonum[0] : rawPonum;
+    if (raw == null) return "";
+    let s = String(raw).trim();
+    try {
+      s = decodeURIComponent(s);
+    } catch {
+      // keep as-is
+    }
+    return s.trim();
+  }, [rawPonum]);
   
   // State for all data
   const [poLineItems, setPOLineItems] = useState([]);
@@ -19,15 +30,25 @@ function PurchaseOrderDetail() {
   const [deliveryHistory, setDeliveryHistory] = useState([]);
   const [basicInfo, setBasicInfo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
   
   // Tab state for PO Schedule section
   const [scheduleTab, setScheduleTab] = useState('general');
 
   useEffect(() => {
-    if (!ponum) return;
+    if (!router.isReady) return;
+    if (!ponum || ponum === "undefined" || ponum === "null") {
+      setLoading(false);
+      setLoadError("Missing purchase order number in URL.");
+      setBasicInfo(null);
+      setPOLineItems([]);
+      return;
+    }
 
     const fetchAllData = async () => {
       setLoading(true);
+      setLoadError(null);
+      const encoded = encodeURIComponent(ponum);
       try {
         // Fetch all data in parallel
         const [
@@ -38,20 +59,21 @@ function PurchaseOrderDetail() {
           feedbackResponse,
           deliveryResponse
         ] = await Promise.all([
-          fetch(`/api/purchaseorders/porder/${ponum}`),
-          fetch(`/api/purchaseorders/schedule/generaldata/${ponum}`),
-          fetch(`/api/purchaseorders/openpo/comments/${ponum}`),
-          fetch(`/api/logs/po/by-ponumber/${ponum}`),
-          fetch(`/api/po-feedback/by-ponumber/${ponum}`),
-          fetch(`/api/materialdocumentsforpo/${ponum}`)
+          fetch(`/api/purchaseorders/porder/${encoded}`),
+          fetch(`/api/purchaseorders/schedule/generaldata/${encoded}`),
+          fetch(`/api/purchaseorders/openpo/comments/${encoded}`),
+          fetch(`/api/logs/po/by-ponumber/${encoded}`),
+          fetch(`/api/po-feedback/by-ponumber/${encoded}`),
+          fetch(`/api/materialdocumentsforpo/${encoded}`)
         ]);
 
         // Process PO line items
         if (poResponse.ok) {
           const poData = await poResponse.json();
-          if (poData && poData.length > 0) {
-            setPOLineItems(poData);
-            const firstRecord = poData[0];
+          const lines = Array.isArray(poData) ? poData : poData ? [poData] : [];
+          if (lines.length > 0) {
+            setPOLineItems(lines);
+            const firstRecord = lines[0];
             setBasicInfo({
               ponumber: firstRecord["po-number"] || ponum,
               podate: firstRecord["po-date"],
@@ -61,7 +83,15 @@ function PurchaseOrderDetail() {
               plant: firstRecord["plant-code"] || "",
               currency: firstRecord.currency || ""
             });
+          } else {
+            setPOLineItems([]);
+            setBasicInfo(null);
+            setLoadError(`No purchase order found for ${ponum}.`);
           }
+        } else {
+          setPOLineItems([]);
+          setBasicInfo(null);
+          setLoadError(`Failed to load purchase order ${ponum}.`);
         }
 
         // Process PO Schedule
@@ -98,12 +128,13 @@ function PurchaseOrderDetail() {
 
       } catch (error) {
         console.error('Error fetching PO details:', error);
+        setLoadError(error.message || "Error loading PO details");
       }
       setLoading(false);
     };
 
     fetchAllData();
-  }, [ponum]);
+  }, [router.isReady, ponum]);
 
   // Format date helper
   const formatDate = (date) => {
@@ -528,19 +559,48 @@ function PurchaseOrderDetail() {
     );
   }
 
+  if (loadError && !basicInfo) {
+    return (
+      <div className="app-page min-h-screen text-app-text">
+        <main className="container mx-auto px-4 py-12 max-w-2xl text-center space-y-4">
+          <h1 className="text-2xl font-bold">Purchase Order Details</h1>
+          <p className="text-app-text-muted font-mono">PO: {ponum || "—"}</p>
+          <div className="bg-rose-500/10 border border-rose-500/20 text-rose-500 rounded-xl p-4 text-sm">
+            {loadError}
+          </div>
+          <button
+            type="button"
+            onClick={() => router.push("/purchaseorders")}
+            className="px-4 py-2 rounded-lg bg-app-accent text-app-accent-text text-sm font-semibold"
+          >
+            Back to Purchase Orders
+          </button>
+        </main>
+      </div>
+    );
+  }
+
   return (
-    <div className="app-page min-h-screen">
+    <div className="app-page min-h-screen text-app-text">
       
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Page Header */}
-          <div className="rounded-lg shadow-2xl p-6 bg-app-surface/70 border border-app-border flex items-center justify-between">
+          <div className="rounded-lg shadow-sm p-6 bg-app-surface border border-app-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-extrabold tracking-tight mb-2 text-app-text">Purchase Order Details</h1>
-              <p className="text-app-text-secondary text-lg">PO Number: <span className="font-mono text-app-accent">{ponum}</span></p>
+              <p className="text-app-text-secondary text-lg">PO Number: <span className="font-mono text-app-accent">{basicInfo?.ponumber || ponum}</span></p>
+              {loadError ? <p className="text-sm text-amber-600 mt-1">{loadError}</p> : null}
             </div>
-            <div>
-              <span className={`px-4 py-2 rounded-full font-semibold shadow-md ${totals.isFullyDelivered ? 'bg-gradient-to-r from-emerald-400 to-green-300 text-slate-900' : 'bg-gradient-to-r from-yellow-300 to-amber-400 text-slate-900'}`}>{totals.isFullyDelivered ? 'Complete' : 'Pending'}</span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => router.push("/purchaseorders")}
+                className="px-3 py-2 rounded-lg border border-app-border bg-app-surface-muted text-app-text text-sm font-semibold"
+              >
+                Back
+              </button>
+              <span className={`px-4 py-2 rounded-full font-semibold shadow-sm text-sm ${totals.isFullyDelivered ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300' : 'bg-amber-500/20 text-amber-800 dark:text-amber-300'}`}>{totals.isFullyDelivered ? 'Complete' : 'Pending'}</span>
             </div>
           </div>
 
@@ -598,7 +658,7 @@ function PurchaseOrderDetail() {
             {/* Right: PO Line Items */}
             <div className="bg-app-surface/80 rounded-xl shadow-lg overflow-hidden border-l-4 border-emerald-600" style={{ height: '40vh' }}>
               <div className="px-6 py-4 border-b border-app-border bg-app-surface-muted">
-                <h2 className="text-2xl font-bold text-emerald-300">Purchase Order Line Items</h2>
+                <h2 className="text-2xl font-bold text-emerald-600 dark:text-emerald-300">Purchase Order Line Items</h2>
               </div>
               <div className="p-6 overflow-y-auto" style={{ height: 'calc(40vh - 80px)', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                 <style jsx>{`

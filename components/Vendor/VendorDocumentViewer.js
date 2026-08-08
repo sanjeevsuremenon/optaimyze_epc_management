@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiDownload, FiTrash2, FiEye, FiFileText, FiImage, FiFile, FiX } from 'react-icons/fi';
 
 // Removed react-file-viewer to fix findDOMNode crash
@@ -67,7 +67,7 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
 
       fetchDocuments();
       
-      if (selectedDocument && selectedDocument._id === documentId) {
+      if (selectedDocument && String(selectedDocument._id) === String(documentId)) {
         setViewMode(false);
         setSelectedDocument(null);
       }
@@ -168,7 +168,7 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
 
       {filteredDocuments.length === 0 ? (
         <div className="text-center py-16 bg-app-bg/50 rounded-xl border border-app-border border-dashed">
-          <FiFile className="mx-auto h-12 w-12 text-slate-700 mb-4" />
+          <FiFile className="mx-auto h-12 w-12 text-app-text-muted mb-4" />
           <p className="text-app-text-muted font-medium">
             {documents.length === 0 ? 'No documents uploaded yet.' : 'No documents match the selected filter.'}
           </p>
@@ -176,7 +176,7 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredDocuments.map((document) => (
-            <div key={document._id} className="bg-app-bg border border-app-border rounded-xl p-4 hover:border-cyan-900 transition-colors group flex flex-col">
+            <div key={document._id} className="bg-app-bg border border-app-border rounded-xl p-4 hover:border-app-accent/40 transition-colors group flex flex-col">
               <div className="flex items-start gap-3 mb-3">
                 <div className="mt-1 bg-app-surface p-2 rounded-lg border border-app-border">
                   {getFileIcon(document.filename)}
@@ -199,27 +199,27 @@ export default function VendorDocumentViewer({ vendorCode, refreshTrigger }) {
               {!document.description && <div className="flex-1"></div>}
               
               <div className="text-[10px] text-app-text-muted mb-4 pt-4 border-t border-app-border/80">
-                Uploaded by <span className="text-app-text-muted font-medium">{document.uploadedBy}</span> on {new Date(document.uploadedAt).toLocaleDateString()}
+                Uploaded by <span className="text-app-text-secondary font-medium">{document.uploadedBy}</span> on {new Date(document.uploadedAt).toLocaleDateString()}
               </div>
               
               <div className="flex items-center gap-2 mt-auto">
                 <button
                   onClick={() => handleViewDocument(document)}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 bg-app-surface hover:bg-cyan-900/40 text-app-accent rounded-lg transition-colors border border-app-border hover:border-cyan-800 text-xs font-semibold"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 bg-app-surface hover:bg-app-accent-soft text-app-accent rounded-lg transition-colors border border-app-border hover:border-app-accent/40 text-xs font-semibold"
                   title="View Document"
                 >
                   <FiEye /> View
                 </button>
                 <button
                   onClick={() => handleDownloadDocument(document)}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 bg-app-surface hover:bg-emerald-900/40 text-emerald-400 rounded-lg transition-colors border border-app-border hover:border-emerald-800 text-xs font-semibold"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 bg-app-surface hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg transition-colors border border-app-border hover:border-emerald-500/30 text-xs font-semibold"
                   title="Download Document"
                 >
                   <FiDownload /> Save
                 </button>
                 <button
                   onClick={() => handleDeleteDocument(document._id)}
-                  className="inline-flex items-center justify-center p-1.5 bg-app-surface hover:bg-rose-900/40 text-rose-400 rounded-lg transition-colors border border-app-border hover:border-rose-800"
+                  className="inline-flex items-center justify-center p-1.5 bg-app-surface hover:bg-rose-500/10 text-rose-500 rounded-lg transition-colors border border-app-border hover:border-rose-500/30"
                   title="Delete Document"
                 >
                   <FiTrash2 />

@@ -41,7 +41,7 @@ function HeaderComponent() {
   // Top row nav items
   const topNavItems = [
     { href: "/", label: "Home", icon: faHomeUser },
-    { href: "/materials1", label: "Materials", icon: faPeopleGroup },
+    { href: "/materials", label: "Materials", icon: faPeopleGroup },
     { href: "/projects1", label: "Projects", icon: faCircleQuestion },
     { href: "/vendors1", label: "Vendors", icon: faAddressCard },
     { href: "/tracking", label: "Tracking", icon: faCircleQuestion },
@@ -57,7 +57,6 @@ function HeaderComponent() {
     { href: "/nonsapvendors", label: "Non SAP Vendors" },
     { href: "/projectdetails", label: "Project Details" },
     { href: "/materialdocuments", label: "Material Docs" },    
-    { href: "/reqmatcode", label: "new Matcode", highlight: true },
     { href: "/vendors/group-mapping", label: "Vendor Mapping", highlight: true },
     { href: "/material-groups", label: "Material Groups", highlight: true },
     { href: "/vendor-feedback", label: "Vendor Feedback", highlight: true },

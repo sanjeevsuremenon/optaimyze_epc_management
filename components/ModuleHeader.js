@@ -57,8 +57,7 @@ const NAV_ITEMS = [
     label: "Vendors",
     links: [
       { label: "Dashboard", href: "/vendorsdashboard" },
-      { label: "Vendors List", href: "/vendors" },
-      { label: "Vendors (Alt)", href: "/vendors1" },
+      { label: "Vendors", href: "/vendors1" },
       { label: "Non-SAP Vendors", href: "/nonsapvendors" },
       { label: "Document Upload", href: "/vendordocupload" },
       { label: "Document View", href: "/vendordocview" },
@@ -84,14 +83,11 @@ const NAV_ITEMS = [
     label: "Materials",
     links: [
       { label: "Dashboard", href: "/materialsdashboard" },
-      { label: "Materials List", href: "/materials" },
-      { label: "Materials (Alt)", href: "/materials1" },
+      { label: "Materials", href: "/materials" },
       { label: "Material Groups List", href: "/materials/materialgroups" },
       { label: "Material Types", href: "/materials/mattypes" },
       { label: "Standardisation", href: "/material-standardization" },
       { label: "Material Groups", href: "/material-groups" },
-      { label: "Group List", href: "/matgroupwiselist" },
-      { label: "Required Codes", href: "/reqmatcode" },
       { label: "Material Documents", href: "/materialdocuments" },
     ],
     dynamic: (query) => {
