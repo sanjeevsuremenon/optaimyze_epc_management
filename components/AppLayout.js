@@ -67,19 +67,22 @@ export default function AppLayout({ children }) {
   ];
   const isDashboard = dashboardPaths.includes(router.pathname);
 
+  const showSidebarLayout = status === "authenticated";
+  const showGlobalFooter = !(router.pathname === "/" && status !== "authenticated");
+
   return (
     <div className="app-page min-h-screen flex flex-col">
       <ModuleHeader />
-      {isDashboard ? (
-        <main className="flex-1 w-full">{children}</main>
-      ) : (
+      {showSidebarLayout ? (
         <div className="flex-1 flex flex-col min-h-0">
           <SidebarLayout>
             <main className="flex-1 w-full">{children}</main>
           </SidebarLayout>
         </div>
+      ) : (
+        <main className="flex-1 w-full">{children}</main>
       )}
-      <FooterComponent />
+      {showGlobalFooter && <FooterComponent />}
     </div>
   );
 }

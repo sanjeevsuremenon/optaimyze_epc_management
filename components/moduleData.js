@@ -161,9 +161,6 @@ export const moduleDashboards = {
       { href: "/vendor-reports/with-po-no-docs", label: "With PO No Docs" },
       { href: "/vendor-reports/po-missing-docs", label: "PO Missing Docs" },
       { href: "/lessons-learnt", label: "Lessons Learnt" },
-      { href: "/all-purchases-report", label: "All Purchases" },
-      { href: "/import-purchases-report", label: "Import Purchases" },
-      { href: "/domestic-purchases-report", label: "Domestic Purchases" },
     ],
   },
   networks: {

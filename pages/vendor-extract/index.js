@@ -53,23 +53,24 @@ export default function VendorExtract() {
 
   return (
     <div
-      className="min-h-screen p-6 bg-app-surface/5"
+      className="min-h-screen p-6 bg-app-bg text-app-text"
       style={{
         backgroundImage: `
-          radial-gradient(circle at 0 0, rgba(59,130,246,0.16) 0, transparent 55%),
-          radial-gradient(circle at 100% 0, rgba(236,72,153,0.12) 0, transparent 55%),
-          radial-gradient(circle at 50% 120%, rgba(16,185,129,0.12) 0, transparent 60%)
+          radial-gradient(circle at 0 0, rgba(59,130,246,0.08) 0, transparent 55%),
+          radial-gradient(circle at 100% 0, rgba(236,72,153,0.06) 0, transparent 55%),
+          radial-gradient(circle at 50% 120%, rgba(16,185,129,0.06) 0, transparent 60%)
         `,
         backgroundAttachment: 'fixed',
         backgroundSize: '120% 120%'
       }}
-    >      <ToastContainer />
+    >
+      <ToastContainer />
 
       <div className="mb-8">
-        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 mb-2 drop-shadow-sm">
+        <h1 className="text-4xl font-extrabold tracking-tight text-app-text mb-2 drop-shadow-sm">
           Vendor Extract (OpenAI)
         </h1>
-        <p className="text-slate-600 text-sm md:text-base">
+        <p className="text-app-text-secondary text-sm md:text-base">
           Enter a vendor code to extract group and subgroup info via OpenAI and save to vendorextracts collection.
         </p>
       </div>
@@ -77,11 +78,11 @@ export default function VendorExtract() {
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <form
           onSubmit={handleSubmit}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/70 shadow-[0_18px_45px_rgba(15,23,42,0.18)] p-6 mb-6"
+          className="bg-app-surface/80 backdrop-blur-sm rounded-2xl border border-app-border shadow-[0_18px_45px_rgba(0,0,0,0.25)] p-6 mb-6"
         >
           <div className="space-y-4">
             <div>
-              <label htmlFor="vendorCode" className="block text-sm font-medium text-slate-700 mb-1">
+              <label htmlFor="vendorCode" className="block text-sm font-medium text-app-text-secondary mb-1">
                 Vendor Code <span className="text-red-500">*</span>
               </label>
               <input
@@ -90,13 +91,13 @@ export default function VendorExtract() {
                 value={vendorCode}
                 onChange={(e) => setVendorCode(e.target.value)}
                 placeholder="e.g. 100246"
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white/80 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+                className="w-full px-4 py-3 border border-app-border rounded-xl bg-app-surface/80 focus:ring-2 focus:ring-app-accent focus:border-app-accent text-app-text text-base placeholder-app-text-disabled"
                 disabled={isSubmitting}
               />
             </div>
 
             <div>
-              <label htmlFor="vendorName" className="block text-sm font-medium text-slate-700 mb-1">
+              <label htmlFor="vendorName" className="block text-sm font-medium text-app-text-secondary mb-1">
                 Vendor Name <span className="text-app-text-muted">(optional, for registered vendors)</span>
               </label>
               <input
@@ -105,20 +106,20 @@ export default function VendorExtract() {
                 value={vendorName}
                 onChange={(e) => setVendorName(e.target.value)}
                 placeholder="Full vendor name"
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white/80 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+                className="w-full px-4 py-3 border border-app-border rounded-xl bg-app-surface/80 focus:ring-2 focus:ring-app-accent focus:border-app-accent text-app-text text-base placeholder-app-text-disabled"
                 disabled={isSubmitting}
               />
             </div>
 
             <div>
-              <label htmlFor="source" className="block text-sm font-medium text-slate-700 mb-1">
+              <label htmlFor="source" className="block text-sm font-medium text-app-text-secondary mb-1">
                 Source
               </label>
               <select
                 id="source"
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white/80 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+                className="w-full px-4 py-3 border border-app-border rounded-xl bg-app-surface/80 focus:ring-2 focus:ring-app-accent focus:border-app-accent text-app-text text-base"
                 disabled={isSubmitting}
               >
                 <option value="vendors">vendors</option>
@@ -129,7 +130,7 @@ export default function VendorExtract() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full px-4 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full px-4 py-3 bg-app-accent text-app-accent-text font-semibold rounded-xl shadow hover:bg-app-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isSubmitting ? 'Extracting…' : 'Extract & Save to vendorextracts'}
             </button>
@@ -137,28 +138,28 @@ export default function VendorExtract() {
         </form>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-6">
-            <p className="text-red-800 font-medium">Error</p>
-            <p className="text-red-700 text-sm mt-1">{error}</p>
+          <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 mb-6">
+            <p className="text-rose-400 font-medium">Error</p>
+            <p className="text-rose-300 text-sm mt-1">{error}</p>
           </div>
         )}
 
         {result && result.extract && (
           <div className="space-y-4">
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">Saved extract</h2>
+            <div className="bg-app-surface/90 backdrop-blur-sm rounded-2xl border border-app-border shadow p-6">
+              <h2 className="text-lg font-semibold text-app-text mb-4">Saved extract</h2>
               <dl className="space-y-2 text-sm">
                 <div>
                   <dt className="text-app-text-muted">Vendor name</dt>
-                  <dd className="font-medium text-slate-900">{result.extract.vendorName}</dd>
+                  <dd className="font-medium text-app-text">{result.extract.vendorName}</dd>
                 </div>
                 <div>
                   <dt className="text-app-text-muted">Number of POs</dt>
-                  <dd className="font-medium text-slate-900">{result.extract.numberOfPO}</dd>
+                  <dd className="font-medium text-app-text">{result.extract.numberOfPO}</dd>
                 </div>
                 <div>
                   <dt className="text-app-text-muted">Value of purchase so far</dt>
-                  <dd className="font-medium text-slate-900">
+                  <dd className="font-medium text-app-text">
                     {typeof result.extract.valueOfPurchaseSoFar === 'number'
                       ? new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(result.extract.valueOfPurchaseSoFar)
                       : result.extract.valueOfPurchaseSoFar}
@@ -166,7 +167,7 @@ export default function VendorExtract() {
                 </div>
                 <div>
                   <dt className="text-app-text-muted">Record created</dt>
-                  <dd className="font-medium text-slate-900">
+                  <dd className="font-medium text-app-text">
                     {result.extract.dateOfRecordCreated
                       ? new Date(result.extract.dateOfRecordCreated).toLocaleString()
                       : '—'}
@@ -175,17 +176,17 @@ export default function VendorExtract() {
               </dl>
             </div>
 
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/70 shadow p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">Group & Subgroup</h2>
+            <div className="bg-app-surface/90 backdrop-blur-sm rounded-2xl border border-app-border shadow p-6">
+              <h2 className="text-lg font-semibold text-app-text mb-4">Group & Subgroup</h2>
               {result.extract.groupAndSubgroup && result.extract.groupAndSubgroup.length > 0 ? (
                 <ul className="space-y-2">
                   {result.extract.groupAndSubgroup.map((item, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm">
-                      <span className="px-2 py-1 bg-slate-100 rounded text-slate-800">
+                      <span className="px-2 py-1 bg-app-surface-muted border border-app-border rounded text-app-text-secondary">
                         {item.group}
                       </span>
                       <span className="text-app-text-muted">→</span>
-                      <span className="text-slate-900">{item.subgroup}</span>
+                      <span className="text-app-text">{item.subgroup}</span>
                     </li>
                   ))}
                 </ul>
@@ -195,15 +196,16 @@ export default function VendorExtract() {
             </div>
 
             {result.debug && (
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div className="bg-app-surface-muted border border-app-border rounded-2xl p-4">
                 <p className="text-xs font-medium text-app-text-muted uppercase tracking-wide mb-2">Debug</p>
-                <pre className="text-xs text-slate-700 overflow-x-auto">
+                <pre className="text-xs text-app-text-secondary overflow-x-auto">
                   {JSON.stringify(result.debug, null, 2)}
                 </pre>
               </div>
             )}
           </div>
         )}
-      </div>    </div>
+      </div>
+    </div>
   );
 }

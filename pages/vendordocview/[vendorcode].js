@@ -70,7 +70,7 @@ export default function VendorDocViewPage() {
         <div className="flex-1 flex flex-col items-center justify-center">
           <h1 className="text-3xl font-bold text-rose-500 mb-4">Access Denied</h1>
           <p className="text-app-text-muted mb-8">Please sign in to access this page.</p>
-          <Link href="/auth/signin" className="px-6 py-2 bg-app-accent hover:bg-app-accent text-white rounded-lg transition-colors font-medium">
+          <Link href="/auth/login" className="px-6 py-2 bg-app-accent hover:bg-app-accent text-white rounded-lg transition-colors font-medium">
             Sign In
           </Link>
         </div>
