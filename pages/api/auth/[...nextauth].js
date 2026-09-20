@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 
 const authOptions = {
   debug: process.env.NODE_ENV === 'development',
+  secret: process.env.NEXTAUTH_SECRET,
   //configure auth providers
   providers: [
     CredentialsProvider({
@@ -94,19 +95,9 @@ const authOptions = {
     },
   },
  
-  secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-development',
 };
 
-const nextAuthHandler = async (req, res) => {
-  const protocol = req.headers['x-forwarded-proto'] || 'http';
-  let host = req.headers['x-forwarded-host'] || req.headers.host || '127.0.0.1:3000';
-  if (host.startsWith('localhost')) {
-    host = host.replace('localhost', '127.0.0.1');
-  }
-  process.env.NEXTAUTH_URL = `${protocol}://${host}`;
-
-  return await NextAuth(req, res, authOptions);
-};
+const nextAuthHandler = (req, res) => NextAuth(req, res, authOptions);
 
 export default nextAuthHandler;
 export { authOptions };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FiChevronDown, FiChevronRight, FiChevronLeft, FiMenu, FiX } from "react-icons/fi";
+import { FiChevronDown, FiChevronRight, FiChevronLeft, FiMenu, FiX, FiCpu } from "react-icons/fi";
 
 function prettify(path) {
   if (!path) return "";
@@ -176,6 +176,39 @@ export default function SidebarLayout({ children }) {
           }`}
         >
           <div className="mb-6 px-2">
+            {/* Prominent DB Agent shortcut */}
+            <Link
+              href="/db-agent"
+              className={`group mb-4 flex w-full items-center justify-between rounded-xl border px-3.5 py-2.5 text-left shadow-md transition hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 ${
+                router.pathname.startsWith("/db-agent")
+                  ? "border-teal-400 bg-gradient-to-r from-teal-500 to-sky-600 text-white"
+                  : "border-teal-500/40 bg-gradient-to-r from-teal-500/15 to-sky-500/15 text-teal-700 hover:from-teal-500/25 hover:to-sky-500/25 dark:text-teal-300"
+              }`}
+              title="Ask questions in plain English — read-only AI queries with tables & charts"
+            >
+              <span className="flex items-center gap-2.5">
+                <span
+                  className={`flex h-8 w-8 items-center justify-center rounded-lg ${
+                    router.pathname.startsWith("/db-agent")
+                      ? "bg-white/20"
+                      : "bg-teal-500/20 text-teal-600 group-hover:text-teal-500 dark:text-teal-300"
+                  }`}
+                >
+                  <FiCpu size={18} />
+                </span>
+                <span>
+                  <span className="block text-sm font-bold leading-tight">DB Agent</span>
+                  <span className={`block text-[10px] leading-tight ${router.pathname.startsWith("/db-agent") ? "text-white/80" : "text-app-text-muted"}`}>
+                    AI Query · Read-Only
+                  </span>
+                </span>
+              </span>
+              <FiChevronRight
+                size={16}
+                className={router.pathname.startsWith("/db-agent") ? "text-white/80" : "text-teal-500/60 group-hover:translate-x-0.5 group-hover:text-teal-500 transition"}
+              />
+            </Link>
+
             <div className="mb-2 flex items-center justify-between">
               <div className="text-[11px] font-semibold uppercase tracking-wider text-app-text-disabled">
                 Modules
