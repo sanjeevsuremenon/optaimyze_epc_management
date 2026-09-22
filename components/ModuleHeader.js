@@ -4,12 +4,32 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FiMenu, FiChevronDown } from "react-icons/fi";
+import {
+  FolderKanban,
+  ShoppingCart,
+  Users,
+  Boxes,
+  Truck,
+  Globe,
+  BarChart3,
+} from "lucide-react";
 import { faRightFromBracket, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import ThemeToggle from "./ThemeToggle";
+
+const NAV_ICONS = {
+  Projects: FolderKanban,
+  "Purchase Orders": ShoppingCart,
+  Vendors: Users,
+  Materials: Boxes,
+  Tracking: Truck,
+  "Assets & Masters": Globe,
+  Reports: BarChart3,
+};
 
 const NAV_ITEMS = [
   {
     label: "Projects",
+    icon: NAV_ICONS.Projects,
     links: [
       { label: "Dashboard", href: "/projectsdashboard" },
       { label: "Projects List", href: "/projects" },
@@ -32,6 +52,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Purchase Orders",
+    icon: NAV_ICONS["Purchase Orders"],
     links: [
       { label: "Dashboard", href: "/purchaseordersdashboard" },
       { label: "PO Search", href: "/purchaseordersearch" },
@@ -55,6 +76,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Vendors",
+    icon: NAV_ICONS["Vendors"],
     links: [
       { label: "Dashboard", href: "/vendorsdashboard" },
       { label: "Vendors", href: "/vendors1" },
@@ -81,6 +103,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Materials",
+    icon: NAV_ICONS["Materials"],
     links: [
       { label: "Dashboard", href: "/materialsdashboard" },
       { label: "Materials", href: "/materials" },
@@ -103,6 +126,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Tracking",
+    icon: NAV_ICONS["Tracking"],
     links: [
       { label: "Dashboard", href: "/trackingdashboard" },
       { label: "Tracking Home", href: "/tracking" },
@@ -121,6 +145,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Assets & Masters",
+    icon: NAV_ICONS["Assets & Masters"],
     links: [
       { label: "Asset Dashboard", href: "/assetdashboard" },
       { label: "Assets Alt Dashboard", href: "/assets/dashboard" },
@@ -142,6 +167,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Reports",
+    icon: NAV_ICONS["Reports"],
     links: [
       { label: "Dashboard", href: "/reportsdashboard" },
       { label: "Purchases Report", href: "/purchases-report" },
@@ -196,55 +222,95 @@ export default function ModuleHeader() {
               const dynamicLinks = item.dynamic(router.query) || [];
               const allLinks = [...item.links, ...dynamicLinks];
               const isCurrentModule = allLinks.some((l) => router.pathname === l.href || router.pathname.startsWith(l.href + "/"));
+              const ItemIcon = item.icon;
 
               return (
                 <div key={item.label} className="relative group py-2">
                   <button
                     type="button"
-                    className={`flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg transition-all duration-200 hover:bg-app-surface-muted hover:text-app-text ${
+                    className={`relative flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-px ${
                       isCurrentModule
-                        ? "text-app-accent bg-app-accent-soft/20 border-b-2 border-app-accent"
-                        : "text-app-text-secondary"
+                        ? "text-app-accent"
+                        : "text-app-text-secondary hover:bg-app-surface-muted hover:text-app-text"
                     }`}
                   >
+                    {ItemIcon && (
+                      <ItemIcon
+                        size={15}
+                        strokeWidth={2.2}
+                        className={`transition-colors duration-200 ${
+                          isCurrentModule
+                            ? "text-app-accent"
+                            : "text-app-text-muted group-hover:text-app-accent"
+                        }`}
+                      />
+                    )}
                     <span>{item.label}</span>
-                    <FiChevronDown className="transition-transform duration-200 group-hover:rotate-180" />
+                    <FiChevronDown
+                      size={13}
+                      className={`transition-all duration-300 group-hover:rotate-180 ${
+                        isCurrentModule ? "text-app-accent" : "text-app-text-muted group-hover:text-app-accent"
+                      }`}
+                    />
+                    <span
+                      className={`absolute inset-x-3 -bottom-px h-[2px] origin-left rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-transform duration-300 ${
+                        isCurrentModule ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
                   </button>
 
                   {/* Glassmorphism drop-down card */}
-                  <div className="absolute left-0 mt-2 w-64 bg-slate-900/90 dark:bg-slate-950/90 border border-app-border rounded-xl shadow-2xl backdrop-blur-xl opacity-0 invisible translate-y-2 transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 z-50 overflow-hidden p-2">
+                  <div className="invisible absolute left-0 z-50 mt-2 w-64 translate-y-2 overflow-hidden rounded-2xl border border-app-border bg-app-surface/95 p-2 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
                     {item.links.map((link) => {
                       const isActive = router.pathname === link.href;
                       return (
                         <Link
                           key={link.href}
                           href={link.href}
-                          className={`block px-3.5 py-2 text-xs font-semibold rounded-lg transition-all duration-150 ${
+                          className={`group/link flex items-center justify-between rounded-xl px-3.5 py-2 text-xs font-semibold transition-all duration-150 ${
                             isActive
-                              ? "bg-app-accent text-slate-950 font-bold shadow-md shadow-cyan-500/10"
-                              : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+                              ? "bg-app-accent-soft font-bold text-app-accent shadow-sm"
+                              : "text-app-text-secondary hover:translate-x-0.5 hover:bg-app-surface-muted hover:text-app-text"
                           }`}
                         >
                           {link.label}
+                          <span
+                            className={`text-[10px] transition-all duration-150 ${
+                              isActive
+                                ? "translate-x-0 text-app-accent opacity-100"
+                                : "-translate-x-1 text-app-accent opacity-0 group-hover/link:translate-x-0 group-hover/link:opacity-70"
+                            }`}
+                          >
+                            →
+                          </span>
                         </Link>
                       );
                     })}
 
                     {dynamicLinks.length > 0 && (
-                      <div className="mt-1 pt-1.5 border-t border-slate-800">
+                      <div className="mt-1 border-t border-app-border pt-1.5">
                         {dynamicLinks.map((link) => {
                           const isActive = router.pathname === link.href;
                           return (
                             <Link
                               key={link.href}
                               href={link.href}
-                              className={`block px-3.5 py-2 text-xs font-semibold rounded-lg transition-all duration-150 ${
+                              className={`group/link flex items-center justify-between rounded-xl px-3.5 py-2 text-xs font-semibold transition-all duration-150 ${
                                 isActive
-                                  ? "bg-cyan-500 text-slate-950 font-bold shadow-md"
-                                  : "text-cyan-400 hover:text-cyan-300 hover:bg-slate-800/60"
+                                  ? "bg-app-accent-soft font-bold text-app-accent shadow-sm"
+                                  : "text-app-accent hover:translate-x-0.5 hover:bg-app-surface-muted"
                               }`}
                             >
                               {link.label}
+                              <span
+                                className={`text-[10px] transition-all duration-150 ${
+                                  isActive
+                                    ? "translate-x-0 opacity-100"
+                                    : "-translate-x-1 opacity-0 group-hover/link:translate-x-0 group-hover/link:opacity-70"
+                                }`}
+                              >
+                                →
+                              </span>
                             </Link>
                           );
                         })}

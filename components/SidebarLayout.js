@@ -2,6 +2,15 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiChevronDown, FiChevronRight, FiChevronLeft, FiMenu, FiX, FiCpu } from "react-icons/fi";
+import {
+  FolderKanban,
+  ShoppingCart,
+  Users,
+  Boxes,
+  Truck,
+  BarChart3,
+  Globe,
+} from "lucide-react";
 
 function prettify(path) {
   if (!path) return "";
@@ -9,10 +18,21 @@ function prettify(path) {
   return out.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+const MODULE_ICONS = {
+  projects: FolderKanban,
+  purchaseorders: ShoppingCart,
+  vendors: Users,
+  materials: Boxes,
+  tracking: Truck,
+  reports: BarChart3,
+  assets: Globe,
+};
+
 const MODULES = [
   {
     id: "projects",
     label: "Projects",
+    icon: MODULE_ICONS.projects,
     subs: [
       { label: "Project Dashboard", path: "/projectsdashboard" },
       { label: "Projects", path: "/projects" },
@@ -28,6 +48,7 @@ const MODULES = [
   },
   {
     id: "purchaseorders",
+    icon: MODULE_ICONS.purchaseorders,
     label: "Purchase Orders",
     subs: [
       { label: "POs Dashboard", path: "/purchaseordersdashboard" },
@@ -42,6 +63,7 @@ const MODULES = [
   },
   {
     id: "vendors",
+    icon: MODULE_ICONS.vendors,
     label: "Vendors",
     subs: [
       { label: "Vendors Dashboard", path: "/vendorsdashboard" },
@@ -60,6 +82,7 @@ const MODULES = [
   },
   {
     id: "materials",
+    icon: MODULE_ICONS.materials,
     label: "Materials",
     subs: [
       { label: "Material Dashboard", path: "/materialsdashboard" },
@@ -73,6 +96,7 @@ const MODULES = [
   },
   {
     id: "tracking",
+    icon: MODULE_ICONS.tracking,
     label: "Tracking",
     subs: [
       { label: "Tracking Dashboard", path: "/trackingdashboard" },
@@ -85,6 +109,7 @@ const MODULES = [
   },
   {
     id: "reports",
+    icon: MODULE_ICONS.reports,
     label: "Reports",
     subs: [
       { label: "Reports Dashboard", path: "/reportsdashboard" },
@@ -97,6 +122,7 @@ const MODULES = [
   },
   {
     id: "assets",
+    icon: MODULE_ICONS.assets,
     label: "Assets & Masters",
     subs: [
       { label: "Asset Dashboard", path: "/assetdashboard" },
@@ -225,39 +251,72 @@ export default function SidebarLayout({ children }) {
                 <FiX size={18} />
               </button>
             </div>
-            {MODULES.map((mod) => (
-              <div key={mod.id} className="mb-2">
-                <button
-                  type="button"
-                  onClick={() => handleModuleClick(mod.id)}
-                  className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left transition hover:bg-app-surface-muted ${
-                    openModule === mod.id ? "bg-app-surface-muted font-semibold text-app-text" : "text-app-text-secondary"
-                  }`}
-                >
-                  <span>{mod.label}</span>
-                  <span className="text-app-text-muted">
-                    {openModule === mod.id ? <FiChevronDown /> : <FiChevronRight />}
-                  </span>
-                </button>
-                {openModule === mod.id && (
-                  <div className="mt-1 ml-2 border-l border-app-border-light pl-3">
-                    {mod.subs.map((s) => (
-                      <Link
-                        key={s.path}
-                        href={s.path}
-                        className={`block rounded-lg px-3 py-2 text-sm transition hover:bg-app-surface-muted ${
-                          isActivePath(s.path)
-                            ? "border-l-2 border-app-accent bg-app-accent-soft font-medium text-app-accent"
-                            : "text-app-text-muted hover:text-app-text"
-                        }`}
-                      >
-                        {s.label || prettify(s.path)}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+            {MODULES.map((mod) => {
+              const ModIcon = mod.icon;
+              const isOpen = openModule === mod.id;
+              return (
+                <div key={mod.id} className="mb-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleModuleClick(mod.id)}
+                    className={`group/mod flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:bg-app-surface-muted ${
+                      isOpen
+                        ? "bg-app-surface-muted font-semibold text-app-text shadow-sm"
+                        : "text-app-text-secondary hover:text-app-text"
+                    }`}
+                  >
+                    <span
+                      className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg border transition-all duration-200 ${
+                        isOpen
+                          ? "border-app-accent/40 bg-app-accent-soft text-app-accent"
+                          : "border-app-border bg-app-surface text-app-text-muted group-hover/mod:border-app-accent/30 group-hover/mod:text-app-accent"
+                      }`}
+                    >
+                      <ModIcon size={14} strokeWidth={2.2} />
+                    </span>
+                    <span className="flex-1 text-[11px] font-extrabold uppercase tracking-[0.14em] transition-transform duration-200 group-hover/mod:translate-x-0.5">
+                      {mod.label}
+                    </span>
+                    <span
+                      className={`text-app-text-muted transition-transform duration-300 ${
+                        isOpen ? "rotate-180 text-app-accent" : "group-hover/mod:text-app-accent"
+                      }`}
+                    >
+                      <FiChevronDown size={14} />
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <div className="mt-1 ml-[22px] space-y-0.5 border-l border-app-border-light pl-2.5">
+                      {mod.subs.map((s) => {
+                        const active = isActivePath(s.path);
+                        return (
+                          <Link
+                            key={s.path}
+                            href={s.path}
+                            className={`group/sub relative flex items-center rounded-lg px-3 py-2 text-sm transition-all duration-200 ${
+                              active
+                                ? "bg-app-accent-soft font-semibold text-app-accent"
+                                : "text-app-text-muted hover:bg-app-surface-muted hover:text-app-text"
+                            }`}
+                          >
+                            <span
+                              className={`absolute left-0 top-1/2 h-0 w-[3px] -translate-y-1/2 rounded-full bg-app-accent transition-all duration-200 ${
+                                active ? "h-4/6" : "group-hover/sub:h-2/6 group-hover/sub:opacity-60"
+                              }`}
+                            />
+                            <span
+                              className="text-[13px] [font-family:'Poppins',ui-sans-serif,system-ui,sans-serif] transition-transform duration-200 group-hover/sub:translate-x-0.5"
+                            >
+                              {s.label || prettify(s.path)}
+                            </span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </aside>
 

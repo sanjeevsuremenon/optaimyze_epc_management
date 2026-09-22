@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 import { Star, Eye } from "lucide-react";
+import GlassSubPageHero from "../../../components/GlassSubPageHero";
 
 export default function VendorEvaluationList() {
   const [evalmarks, setEvalmarks] = useState([]);
@@ -32,14 +33,16 @@ export default function VendorEvaluationList() {
         <title>Vendor Evaluations | OPTAIMYZE Portal</title>
       </Head>
         <div className="min-h-screen pb-12">
-          {/* Header */}
+          {/* Glass hero with live stats */}
           <div className="mb-8">
-            <h1 className="text-4xl font-extrabold tracking-tight text-app-text mb-2 drop-shadow-sm">
-              Vendor Evaluations
-            </h1>
-            <p className="text-app-text-muted text-sm md:text-base">
-              Overview of all evaluated suppliers, PO transactions performance and audit scores
-            </p>
+            <GlassSubPageHero
+              icon={Star}
+              eyebrow="Vendor Performance"
+              title="Vendor Evaluations"
+              description="Overview of all evaluated suppliers, PO transaction performance and audit scores."
+              accent="rose"
+              moduleKey="vendors"
+            />
           </div>
 
           {/* Evaluations Table Card */}

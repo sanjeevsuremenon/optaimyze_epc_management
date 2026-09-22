@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
 import { sampleVendors, samplePurchaseOrders } from "./purchaseOrdersData";
 import VendorAdditionalInfoForm from "./Vendor/VendorAdditionalInfoForm";
+import GlassSubPageHero from "./GlassSubPageHero";
 import { 
   FileSpreadsheet, 
   Users, 
@@ -125,6 +126,20 @@ export default function PurchaseOrdersManager({ initialTab = "purchaseorders" })
     { id: "vendorevaluations", label: "Vendor Evaluations", icon: Star, type: "vendorevaluations" },
     { id: "vendorprequalifications", label: "Vendor Prequalifications", icon: FileCheck, type: "vendorprequalifications" }
   ];
+
+  const HERO_CONFIG = {
+    purchaseorders: { eyebrow: "Purchase Orders", title: "Purchase Order Register", description: "Browse, search and manage the full purchase order register with live values from MongoDB.", accent: "amber", moduleKey: "purchaseorders" },
+    vendors: { eyebrow: "Vendors", title: "Vendor Master List", description: "Browse, search and manage vendor master data, contacts and classifications.", accent: "violet", moduleKey: "vendors" },
+    explorer: { eyebrow: "Linkage", title: "PO–Vendor Explorer", description: "Explore vendor hierarchies and their grouped purchase orders in one linked view.", accent: "cyan", moduleKey: null },
+    poupdates: { eyebrow: "Updates", title: "PO Updates", description: "Track the latest updates and remarks recorded against purchase orders.", accent: "sky", moduleKey: null },
+    poexecution: { eyebrow: "Execution", title: "PO Execution Tracker", description: "Follow execution progress, deliveries and pending quantities per purchase order.", accent: "indigo", moduleKey: null },
+    vendorupdates: { eyebrow: "Updates", title: "Vendor Updates", description: "Track the latest updates and remarks recorded against vendors.", accent: "emerald", moduleKey: null },
+    vendorevaluations: { eyebrow: "Performance", title: "Vendor Evaluations", description: "Review evaluation scores and performance marks per vendor.", accent: "rose", moduleKey: "vendors" },
+    vendorprequalifications: { eyebrow: "Prequalification", title: "Vendor Prequalifications", description: "Track vendor prequalification status and documentation.", accent: "cyan", moduleKey: null },
+  };
+
+  const hero = HERO_CONFIG[activeTab] || HERO_CONFIG.purchaseorders;
+  const HeroIcon = (tabs.find((t) => t.id === activeTab) || tabs[0]).icon;
 
   useEffect(() => {
     setMounted(true);
@@ -657,6 +672,14 @@ export default function PurchaseOrdersManager({ initialTab = "purchaseorders" })
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
+      <GlassSubPageHero
+        icon={HeroIcon}
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        description={hero.description}
+        accent={hero.accent}
+        moduleKey={hero.moduleKey}
+      />
       {/* Navigation tabs */}
       <div className="flex border-b border-app-border gap-2 overflow-x-auto pb-px">
         {tabs.map((tab) => {

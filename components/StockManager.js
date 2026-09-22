@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
 import { sampleSpecialStock, sampleCompleteStock } from "./stockData";
+import GlassSubPageHero from "./GlassSubPageHero";
 import { 
   Boxes, 
   List, 
@@ -91,6 +92,12 @@ export default function StockManager({ initialTab = "specialstock" }) {
   ];
 
   const currentTabDef = tabs.find(t => t.id === activeTab) || tabs[0];
+
+  const HERO_CONFIG = {
+    specialstock: { eyebrow: "Stock Management", title: "Special Stock", description: "Project-specific and sales-order-tied stock quantities with live line counts.", accent: "sky" },
+    completestock: { eyebrow: "Stock Management", title: "Complete Stock", description: "Full warehouse stock movements — receipts, issues and current balances.", accent: "emerald" },
+  };
+  const hero = HERO_CONFIG[activeTab] || HERO_CONFIG.specialstock;
 
   useEffect(() => {
     setMounted(true);
@@ -459,34 +466,35 @@ export default function StockManager({ initialTab = "specialstock" }) {
     <div className="w-full bg-gray-50 min-h-screen">
       <div className="p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto w-full">
         {/* Header & Title */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Stock Management</h1>
-            <p className="text-gray-500 mt-1">Manage special stock and complete stock data</p>
-          </div>
-          <div className="flex flex-wrap gap-3">
+        <div className="mb-6">
+          <GlassSubPageHero
+            icon={currentTabDef.icon}
+            eyebrow={hero.eyebrow}
+            title={hero.title}
+            description={hero.description}
+            accent={hero.accent}
+            moduleKey="stock"
+          >
             <button
               onClick={handleDownloadTemplate}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all shadow-sm text-gray-700 font-medium"
+              className="flex items-center gap-2 rounded-xl border border-slate-300/80 bg-white/70 px-4 py-2.5 text-xs font-bold text-slate-700 transition-all hover:-translate-y-0.5 hover:border-cyan-400 dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
             >
-              <Download size={18} />
-              <span className="hidden sm:inline">Download Template</span>
+              <Download size={14} />
+              Template
             </button>
-
-            <label className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all shadow-sm text-gray-700 font-medium cursor-pointer">
-              <Upload size={18} />
-              <span className="hidden sm:inline">Upload CSV</span>
+            <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-300/80 bg-white/70 px-4 py-2.5 text-xs font-bold text-slate-700 transition-all hover:-translate-y-0.5 hover:border-cyan-400 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
+              <Upload size={14} />
+              Upload CSV
               <input type="file" accept=".csv" className="hidden" onChange={handleUploadCSV} />
             </label>
-
             <button
               onClick={openAddModal}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-md font-medium"
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-cyan-500/25 transition-all hover:-translate-y-0.5"
             >
-              <Plus size={18} />
-              <span>Add New</span>
+              <Plus size={14} />
+              Add New
             </button>
-          </div>
+          </GlassSubPageHero>
         </div>
 
         {/* Tabs */}
