@@ -17,6 +17,8 @@ import {
   Eye,
   Inbox,
 } from "lucide-react";
+import GlassSubPageHero from "./GlassSubPageHero";
+import { GlassStyles, Tilt } from "./landing/glass";
 
 const parseCSV = (text) => {
   const lines = text.split(/\r\n|\n/);
@@ -598,11 +600,95 @@ export default function ProjectsManager({ initialTab = "projects" }) {
     });
   };
 
+  const currentTabDef = tabs.find((t) => t.id === activeTab) || tabs[0];
+
+  const getHeroInfo = () => {
+    switch (activeTab) {
+      case "networks":
+        return {
+          eyebrow: "Network Execution",
+          title: "Networks & Activities",
+          description: "Map activity numbers to work breakdown structure hierarchies.",
+          accent: "violet",
+        };
+      case "wbs":
+        return {
+          eyebrow: "Work Breakdown",
+          title: "WBS Elements",
+          description: "Granular cost, scheduling, and milestone nodes across project trees.",
+          accent: "emerald",
+        };
+      case "explorer":
+        return {
+          eyebrow: "Hierarchy Visualizer",
+          title: "Hierarchy Explorer",
+          description: "Interactive tree exploration of projects, networks, and child WBS nodes.",
+          accent: "cyan",
+        };
+      default:
+        return {
+          eyebrow: "Project Portfolio",
+          title: "Projects & WBS Master",
+          description: "Track and organize capital project structures, managers, and schedules.",
+          accent: "cyan",
+        };
+    }
+  };
+
+  const heroInfo = getHeroInfo();
+
   return (
     <div className="app-page min-h-full font-[Poppins,sans-serif]">
+      <GlassStyles />
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
+        {/* Glass Sub Page Hero */}
+        <GlassSubPageHero
+          icon={currentTabDef.icon}
+          eyebrow={heroInfo.eyebrow}
+          title={heroInfo.title}
+          description={heroInfo.description}
+          accent={heroInfo.accent}
+          moduleKey="projects"
+        >
+          {activeTab !== "explorer" && (
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={handleDownloadTemplate}
+                className="inline-flex items-center gap-2 rounded-xl border border-app-border bg-app-surface/80 px-4 py-2.5 text-xs font-semibold text-app-text transition-all hover:bg-app-surface hover:border-app-accent hover:shadow-sm"
+              >
+                <Download className="w-4 h-4 text-app-accent" />
+                Template
+              </button>
+              <div className="relative">
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleUploadCSV}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 rounded-xl border border-app-border bg-app-surface/80 px-4 py-2.5 text-xs font-semibold text-app-text transition-all hover:bg-app-surface hover:border-app-accent hover:shadow-sm pointer-events-none"
+                >
+                  <Upload className="w-4 h-4 text-app-accent" />
+                  Import CSV
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={openAddModal}
+                className="app-btn-primary text-xs flex items-center gap-2"
+              >
+                <Plus className="w-4 h-4" />
+                Add New
+              </button>
+            </div>
+          )}
+        </GlassSubPageHero>
+
         {/* Tabs */}
-        <div className="flex border-b border-app-border gap-1 overflow-x-auto">
+        <div className="flex border-b border-app-border gap-2 overflow-x-auto pb-1">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const active = activeTab === tab.id;
@@ -614,10 +700,10 @@ export default function ProjectsManager({ initialTab = "projects" }) {
                   setActiveTab(tab.id);
                   setSearchTerm("");
                 }}
-                className={`flex items-center gap-2 px-5 py-3 border-b-2 font-semibold text-sm transition-colors whitespace-nowrap ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs transition-all whitespace-nowrap ${
                   active
-                    ? "border-app-accent text-app-accent"
-                    : "border-transparent text-app-text-muted hover:text-app-text"
+                    ? "bg-app-accent/15 text-app-accent border border-app-accent/30 shadow-sm"
+                    : "border border-transparent text-app-text-muted hover:bg-app-surface hover:text-app-text"
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -891,9 +977,10 @@ export default function ProjectsManager({ initialTab = "projects" }) {
             ) : (
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {dataList.map((row) => (
-                  <div
+                  <Tilt
                     key={row._id}
-                    className="bg-app-surface border border-app-border rounded-2xl p-5 shadow-sm hover:border-app-accent/40 transition-colors flex flex-col justify-between gap-4"
+                    glow={activeTab === "networks" ? "violet" : activeTab === "wbs" ? "emerald" : "cyan"}
+                    className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl p-5 shadow-sm hover:border-app-accent/40 transition-all flex flex-col justify-between gap-4"
                   >
                     <div>
                       {activeTab === "projects" && (
@@ -953,6 +1040,9 @@ export default function ProjectsManager({ initialTab = "projects" }) {
                         {activeTab === "projects" && row["finished-date"]
                           ? ` · End: ${formatDate(row["finished-date"])}`
                           : ""}
+                        {activeTab === "networks" && row["created-by"]
+                          ? `By: ${row["created-by"]}`
+                          : ""}
                         {activeTab === "wbs" && row["updated-at"]
                           ? `Updated: ${formatDate(row["updated-at"])}`
                           : ""}
@@ -985,7 +1075,7 @@ export default function ProjectsManager({ initialTab = "projects" }) {
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </Tilt>
                 ))}
                 {dataList.length === 0 && (
                   <div className="col-span-full text-center py-16 text-app-text-muted">

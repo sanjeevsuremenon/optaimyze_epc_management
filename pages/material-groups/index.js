@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { FiEdit2, FiTrash2, FiEye, FiLink, FiPrinter, FiPlus, FiFilter, FiX } from 'react-icons/fi';
+import { Layers } from 'lucide-react';
+import GlassSubPageHero from '../../components/GlassSubPageHero';
+import { GlassStyles, Tilt } from '../../components/landing/glass';
 
 const toTitleCase = (str) => {
   if (!str) return '';
@@ -273,57 +276,61 @@ export default function MaterialGroupsPage() {
   }
 
   return (
-    <div className="app-page min-h-screen flex flex-col pb-12">
-      <main className="container mx-auto px-4 py-8 flex-1 flex flex-col">
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <div className="flex items-center">
-            <div className="w-1.5 h-8 bg-app-accent rounded-full mr-4"></div>
-            <h1 className="text-3xl font-bold text-app-text tracking-tight">Material & Service Groups</h1>
-          </div>
-          <div className="flex items-center gap-3">
+    <div className="app-page min-h-screen flex flex-col pb-12 font-[Poppins,sans-serif]">
+      <GlassStyles />
+      <main className="container mx-auto px-4 sm:px-6 py-8 flex-1 flex flex-col space-y-6">
+        {/* Glass Sub Page Hero */}
+        <GlassSubPageHero
+          icon={Layers}
+          eyebrow="Taxonomy & Catalog"
+          title="Material & Service Groups"
+          description="Manage hierarchical procurement categories, service classifications, and vendor group assignments."
+          accent="emerald"
+          moduleKey="materials"
+        >
+          <div className="flex flex-wrap items-center gap-2">
             <button 
               onClick={handleSort}
-              className="px-4 py-2.5 text-sm font-semibold text-app-text-secondary bg-app-surface hover:bg-app-surface-muted rounded-lg transition-colors border border-app-border flex items-center shadow-md"
+              className="inline-flex items-center gap-2 rounded-xl border border-app-border bg-app-surface/80 px-4 py-2.5 text-xs font-semibold text-app-text transition-all hover:bg-app-surface hover:border-app-accent hover:shadow-sm"
             >
-              <FiFilter className="mr-2" /> Sort by Type
+              <FiFilter className="w-4 h-4 text-app-accent" /> Sort by Type
             </button>
             {isAdmin && (
               <button 
                 onClick={() => handleNewClick('group')}
-                className="px-4 py-2.5 text-sm font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg shadow-lg shadow-cyan-900/20 transition-all flex items-center"
+                className="app-btn-primary text-xs flex items-center gap-2"
               >
-                <FiPlus className="mr-2" /> New Group
+                <FiPlus className="w-4 h-4" /> New Group
               </button>
             )}
             {isAdmin && selectedGroup && (
               <button 
                 onClick={() => handleNewClick('subgroup', selectedGroup._id)}
-                className="px-4 py-2.5 text-sm font-semibold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg shadow-lg shadow-emerald-900/20 transition-all flex items-center"
+                className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500 hover:text-white text-emerald-600 dark:text-emerald-400 px-4 py-2.5 text-xs font-bold transition-all shadow-sm"
               >
-                <FiPlus className="mr-2" /> New Subgroup
+                <FiPlus className="w-4 h-4" /> New Subgroup
               </button>
             )}
           </div>
-        </div>
+        </GlassSubPageHero>
 
-        {/* Search Section */}
-        <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg p-6 mb-8 relative">
-          <label className="block text-xs font-semibold text-app-accent mb-2 uppercase tracking-wider">
+        {/* Search Bento Panel */}
+        <div className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl shadow-sm p-6 space-y-2">
+          <label className="block text-xs font-bold text-app-text-muted uppercase tracking-wider">
             Search Material & Service Subgroups
           </label>
           <input
             type="text"
-            className="w-full px-5 py-3.5 bg-app-bg border border-app-border rounded-xl focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors shadow-inner"
+            className="w-full px-4 py-3 bg-app-bg border border-app-border rounded-xl focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/30 text-app-text placeholder-app-text-disabled transition-all text-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by name or description, use * to separate multiple terms..."
           />
           {debouncedSearchTerm && (
-            <div className="mt-3 text-sm font-medium text-app-text-muted">
+            <div className="text-xs font-semibold pt-1">
               {searchResults.length > 0
-                ? <span className="text-emerald-400">Found {searchResults.length} matching subgroups</span>
-                : <span className="text-rose-400">No matching subgroups found</span>
+                ? <span className="text-emerald-500">Found {searchResults.length} matching subgroup(s)</span>
+                : <span className="text-rose-500">No matching subgroups found</span>
               }
             </div>
           )}

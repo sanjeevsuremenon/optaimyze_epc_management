@@ -6,7 +6,10 @@ import { toast } from 'react-toastify';
 import VendorFeedbackRatingCard from '../../components/VendorFeedbackRatingCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faSave, faTimes, faSearch, faStar, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { Award, Star, MessageSquare } from 'lucide-react';
 import { computeCategoryOverall, computeFeedbackOverall } from '../../lib/vendorFeedbackRatingConfig';
+import GlassSubPageHero from '../../components/GlassSubPageHero';
+import { GlassStyles, Tilt } from '../../components/landing/glass';
 
 const TIER_OPTIONS = [
   { value: '', label: 'Select tier...' },
@@ -383,56 +386,51 @@ export default function VendorFeedbackPage() {
   }
 
   return (
-    <div className="app-page min-h-screen flex flex-col text-app-text">
+    <div className="app-page min-h-screen flex flex-col font-sans text-app-text">
+      <GlassStyles />
       <Head>
-        <title>Vendor Feedback - OPTAIMYZE Portal</title>
+        <title>Vendor Feedback | OPTAIMYZE</title>
         <meta name="description" content="User feedback on vendors" />
       </Head>
 
-      <div className="flex-1">
-        <div className="flex flex-col">
-          <div className="flex-shrink-0 bg-app-surface border-b border-app-border px-4 py-4">
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
-              <div>
-                <h1 className="text-xl font-bold text-app-text flex items-center gap-2">
-                  Vendor Feedback
-                </h1>
-                <p className="text-xs text-app-text-muted mt-1">
-                  Browse vendors and submit subjective evaluations and ratings
-                </p>
-              </div>
-            </div>
-          </div>
+      <main className="w-full max-w-full px-4 py-6 md:py-8 flex-1">
+        <div className="max-w-7xl mx-auto space-y-6 pb-16">
+          {/* Glass Subpage Hero */}
+          <GlassSubPageHero
+            icon={Award}
+            eyebrow="SUPPLIER EVALUATION"
+            title="Vendor Feedback & Ratings"
+            description="Evaluate vendor performance tiers across materials and services, submit qualitative audit feedback, and track consensus ratings."
+            accent="violet"
+            moduleKey="vendors"
+          />
 
-          <div className="flex-1">
-            <div className="max-w-7xl mx-auto px-4 py-6 pb-16 mb-24 w-full flex flex-col gap-6">
-
-              {/* Vendor list + search */}
-              <div className="p-6 bg-app-surface border border-app-border rounded-2xl shadow-sm">
-                <h2 className="text-base font-bold text-app-text mb-2">Give feedback for a vendor</h2>
-                <p className="text-xs text-app-text-muted mb-4">
-                  Showing up to {VENDOR_LIST_LIMIT} vendors. Search by name or code to find others, then select a vendor to add tier, rating and comments.
-                </p>
-                <div className="relative max-w-xl">
-                  <input
-                    type="text"
-                    value={vendorFeedbackSearchTerm}
-                    onChange={(e) => setVendorFeedbackSearchTerm(e.target.value)}
-                    placeholder="Search vendor name or code…"
-                    className="w-full px-3 py-2 pl-10 pr-4 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent text-app-text text-sm focus:ring-1 focus:ring-app-accent placeholder:text-app-text-disabled"
-                  />
-                  <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
-                  {vendorListLoading && (
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-app-accent" />
-                    </div>
-                  )}
+          {/* Vendor list + search Bento Card */}
+          <Tilt glow="violet" className="p-5 md:p-6 bg-app-surface/90 backdrop-blur-md border border-app-border rounded-2xl shadow-sm">
+            <h2 className="text-base font-bold text-app-text mb-1">Select a Supplier for Performance Feedback</h2>
+            <p className="text-xs text-app-text-muted mb-4">
+              Showing up to {VENDOR_LIST_LIMIT} vendors. Search by name or code to select a supplier, then evaluate tier and rating criteria.
+            </p>
+            <div className="relative max-w-xl">
+              <input
+                type="text"
+                value={vendorFeedbackSearchTerm}
+                onChange={(e) => setVendorFeedbackSearchTerm(e.target.value)}
+                placeholder="Search vendor name or code…"
+                className="w-full px-3 py-2 pl-10 pr-4 bg-app-bg border border-app-border rounded-xl focus:outline-none focus:border-violet-500 text-app-text text-xs focus:ring-1 focus:ring-violet-500 placeholder:text-app-text-disabled"
+              />
+              <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
+              {vendorListLoading && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-violet-500" />
                 </div>
-                <p className="mt-2 text-xs text-app-text-muted">
-                  {vendorListLoading
-                    ? 'Loading vendors…'
-                    : `Showing ${vendorList.length.toLocaleString()} of ${vendorListTotal.toLocaleString()} vendors`}
-                </p>
+              )}
+            </div>
+            <p className="mt-2 text-[11px] font-bold text-app-text-muted uppercase tracking-wider">
+              {vendorListLoading
+                ? 'Loading vendors…'
+                : `Showing ${vendorList.length.toLocaleString()} of ${vendorListTotal.toLocaleString()} vendors`}
+            </p>
 
                 <div className="mt-4 overflow-x-auto border border-app-border rounded-xl">
                   <table className="min-w-full divide-y divide-app-border">
@@ -499,7 +497,7 @@ export default function VendorFeedbackPage() {
                     </tbody>
                   </table>
                 </div>
-              </div>
+              </Tilt>
 
               {/* Selected vendor feedback panel */}
               {selectedVendorForFeedback && (
@@ -938,12 +936,10 @@ export default function VendorFeedbackPage() {
                 )}
               </div>
             </div>
-          </div>
+          </main>
         </div>
-      </div>
-    </div>
-  );
-}
+      );
+    }
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);

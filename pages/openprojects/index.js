@@ -9,6 +9,8 @@ import {
   FiTrendingUp,
   FiList,
 } from "react-icons/fi";
+import GlassSubPageHero from "../../components/GlassSubPageHero";
+import { GlassStyles, Tilt } from "../../components/landing/glass";
 
 function OpenProjects() {
   const router = useRouter();
@@ -160,91 +162,88 @@ function OpenProjects() {
   }
 
   return (
-    <div className="app-page min-h-screen py-10 font-[Poppins,sans-serif]">
-      <div className="container mx-auto px-4 max-w-7xl">
-        <div className="mb-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-app-text mb-2 flex items-center tracking-tight">
-                <FiFolder className="mr-3 text-app-accent" />
-                Projects with Open POs
-              </h1>
-              <p className="text-app-text-muted font-medium ml-1 flex items-center">
-                <span className="w-2 h-2 rounded-full bg-app-accent mr-2" />
-                Overview of all active projects and their purchase orders
-              </p>
-            </div>
-          </div>
+    <div className="app-page min-h-screen py-8 font-[Poppins,sans-serif]">
+      <GlassStyles />
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-6">
+        {/* Glass Sub Page Hero */}
+        <GlassSubPageHero
+          icon={FiFolder}
+          eyebrow="Commitment Tracking"
+          title="Projects with Open POs"
+          description="Overview of all active capital projects and remaining purchase order commitment values."
+          accent="cyan"
+          moduleKey="projects"
+        />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm p-6 flex flex-col justify-between">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-1">
-                    Open Projects
-                  </p>
-                  <p className="text-3xl font-bold text-app-text tracking-tight">
-                    {totals.totalProjects}
-                  </p>
-                </div>
-                <div className="p-3 bg-app-accent-soft text-app-accent rounded-xl">
-                  <FiFolder className="h-6 w-6" />
-                </div>
+        {/* 4 Bento KPI Metric Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Tilt glow="cyan" className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl shadow-sm p-5 flex flex-col justify-between hover:border-app-accent/40 transition-all">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-[11px] font-bold text-app-text-muted uppercase tracking-wider mb-1">
+                  Open Projects
+                </p>
+                <p className="text-3xl font-extrabold text-app-text tracking-tight">
+                  {totals.totalProjects}
+                </p>
+              </div>
+              <div className="p-3 bg-app-accent-soft text-app-accent rounded-xl">
+                <FiFolder className="h-5 w-5" />
               </div>
             </div>
+          </Tilt>
 
-            <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm p-6 flex flex-col justify-between">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-1">
-                    Total Open POs
-                  </p>
-                  <p className="text-3xl font-bold text-app-text tracking-tight">{totals.totalPOs}</p>
-                </div>
-                <div className="p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl">
-                  <FiShoppingCart className="h-6 w-6" />
-                </div>
+          <Tilt glow="emerald" className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl shadow-sm p-5 flex flex-col justify-between hover:border-emerald-500/40 transition-all">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-[11px] font-bold text-app-text-muted uppercase tracking-wider mb-1">
+                  Total Open POs
+                </p>
+                <p className="text-3xl font-extrabold text-app-text tracking-tight">{totals.totalPOs}</p>
+              </div>
+              <div className="p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl">
+                <FiShoppingCart className="h-5 w-5" />
               </div>
             </div>
+          </Tilt>
 
-            <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm p-6 flex flex-col justify-between">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-1">
-                    Total PO Value
+          <Tilt glow="violet" className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl shadow-sm p-5 flex flex-col justify-between hover:border-violet-500/40 transition-all">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-[11px] font-bold text-app-text-muted uppercase tracking-wider mb-1">
+                  Total PO Value
+                </p>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-xs font-bold text-app-text-muted">SAR</span>
+                  <p className="text-2xl font-extrabold text-app-text tracking-tight">
+                    {formatNumber(totals.totalPOValue)}
                   </p>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-sm font-bold text-app-text-muted">SAR</span>
-                    <p className="text-2xl font-bold text-app-text tracking-tight">
-                      {formatNumber(totals.totalPOValue)}
-                    </p>
-                  </div>
-                </div>
-                <div className="p-3 bg-violet-500/10 text-violet-600 dark:text-violet-400 rounded-xl">
-                  <FiTrendingUp className="h-6 w-6" />
                 </div>
               </div>
-            </div>
-
-            <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm p-6 flex flex-col justify-between">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-semibold text-app-text-muted uppercase tracking-wider mb-1">
-                    Open Balance
-                  </p>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-sm font-bold text-rose-500">SAR</span>
-                    <p className="text-2xl font-bold text-rose-500 tracking-tight">
-                      {formatNumber(totals.totalOpenValue)}
-                    </p>
-                  </div>
-                </div>
-                <div className="p-3 bg-rose-500/10 text-rose-500 rounded-xl">
-                  <FiTrendingUp className="h-6 w-6" />
-                </div>
+              <div className="p-3 bg-violet-500/10 text-violet-600 dark:text-violet-400 rounded-xl">
+                <FiTrendingUp className="h-5 w-5" />
               </div>
             </div>
-          </div>
+          </Tilt>
+
+          <Tilt glow="rose" className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl shadow-sm p-5 flex flex-col justify-between hover:border-rose-500/40 transition-all">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-[11px] font-bold text-app-text-muted uppercase tracking-wider mb-1">
+                  Open Balance
+                </p>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-xs font-bold text-rose-500">SAR</span>
+                  <p className="text-2xl font-extrabold text-rose-500 tracking-tight">
+                    {formatNumber(totals.totalOpenValue)}
+                  </p>
+                </div>
+              </div>
+              <div className="p-3 bg-rose-500/10 text-rose-500 rounded-xl">
+                <FiTrendingUp className="h-5 w-5" />
+              </div>
+            </div>
+          </Tilt>
         </div>
 
         <div className="bg-app-surface border border-app-border rounded-2xl shadow-sm overflow-hidden">

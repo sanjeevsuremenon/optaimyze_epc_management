@@ -2,6 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import Head from "next/head";
 import moment from "moment";
 import { FiDownload, FiFilter, FiBox, FiDollarSign, FiHash, FiLayers } from "react-icons/fi";
+import { TrendingUp, BarChart3, Download, Layers } from "lucide-react";
+import GlassSubPageHero from "../../components/GlassSubPageHero";
+import { GlassStyles, Tilt } from "../../components/landing/glass";
 
 const SORT_KEYS = ["materialCode", "materialDescription", "poCount", "totalValue", "totalQty"];
 
@@ -178,9 +181,12 @@ const PurchasesReport = () => {
   if (loading) {
     return (
       <div className="app-page min-h-screen flex flex-col font-sans">
+        <GlassStyles />
         <div className="flex-1 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-app-accent"></div>
-          <span className="ml-4 text-app-text-secondary font-medium">Loading comprehensive report data...</span>
+          <div className="flex items-center gap-3 bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl px-6 py-4 shadow-xl">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
+            <span className="text-app-text-secondary font-medium text-sm">Loading comprehensive report data...</span>
+          </div>
         </div>
       </div>
     );
@@ -188,23 +194,25 @@ const PurchasesReport = () => {
 
   return (
     <div className="app-page min-h-screen flex-1 flex flex-col font-sans">
+      <GlassStyles />
       <Head>
-        <title>Comprehensive Purchases Report | MM Portal</title>
+        <title>Purchases Report | OPTAIMYZE</title>
       </Head>
-      <main className="w-full max-w-full px-4 py-8">
-        <div className="mx-auto" style={{ maxWidth: '1400px' }}>
+      <main className="w-full max-w-full px-4 py-6 md:py-8">
+        <div className="mx-auto max-w-7xl space-y-6">
           
-          {/* Header */}
-          <div className="mb-8 bg-app-surface border border-app-border rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between">
-            <div className="relative z-10 mb-4 md:mb-0">
-              <h1 className="text-3xl font-extrabold text-app-text tracking-tight mb-2">Comprehensive Purchases Report</h1>
-              <p className="text-app-text-muted">
-                Analyze material purchasing frequency, volume, and total spend across all procurement channels.
-              </p>
-            </div>
-            <div className="relative z-10 flex items-center gap-4 bg-app-bg/50 p-4 rounded-xl border border-app-border/50">
+          {/* Glass Subpage Hero */}
+          <GlassSubPageHero
+            icon={TrendingUp}
+            eyebrow="PROCUREMENT METRICS"
+            title="Comprehensive Purchases Report"
+            description="Analyze material purchasing frequency, volume, and total spend across all procurement channels."
+            accent="emerald"
+            moduleKey="purchaseorders"
+          >
+            <div className="flex items-center gap-3 bg-app-surface/60 backdrop-blur-sm p-2.5 rounded-2xl border border-app-border/60">
               <div className="flex flex-col">
-                <label htmlFor="year-select" className="text-xs font-semibold text-app-text-muted uppercase tracking-wide mb-1">
+                <label htmlFor="year-select" className="text-[10px] font-bold text-app-text-muted uppercase tracking-wider mb-1">
                   Report Year
                 </label>
                 <select
@@ -214,7 +222,7 @@ const PurchasesReport = () => {
                     const v = e.target.value;
                     setSelectedYear(v === "all" ? "all" : parseInt(v, 10));
                   }}
-                  className="bg-app-surface border border-app-border text-app-text rounded px-3 py-1.5 focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-sm font-medium"
+                  className="bg-app-bg border border-app-border text-app-text rounded-xl px-3 py-1.5 focus:outline-none focus:border-emerald-500 text-xs font-bold"
                 >
                   <option value="all">All Years (Lifetime)</option>
                   {years.map((y) => (
@@ -226,23 +234,23 @@ const PurchasesReport = () => {
                 type="button"
                 onClick={downloadExcel}
                 disabled={loadingData || displayData.length === 0}
-                className="ml-2 px-4 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-600/50 rounded-lg text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-sm"
+                className="mt-4 px-3.5 py-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-sm"
               >
-                <FiDownload className="mr-2" /> Export
+                <FiDownload className="mr-1.5" /> Export Excel
               </button>
             </div>
-          </div>
+          </GlassSubPageHero>
 
-          {/* Tab Navigation */}
-          <div className="flex overflow-x-auto space-x-2 border-b border-app-border mb-6 pb-px scrollbar-hide">
+          {/* Tab Navigation Pill Bar */}
+          <div className="flex overflow-x-auto space-x-2 p-1.5 bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl shadow-sm scrollbar-hide">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab)}
-                className={`py-3 px-5 font-semibold text-sm rounded-t-lg transition-colors flex items-center whitespace-nowrap ${
+                className={`py-2 px-4 font-bold text-xs rounded-xl transition-all flex items-center whitespace-nowrap ${
                   activeTab.id === tab.id
-                    ? 'bg-app-surface text-app-accent border-t border-x border-slate-800'
-                    : 'text-app-text-muted hover:text-app-text-secondary hover:bg-app-surface-muted'
+                    ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-sm'
+                    : 'text-app-text-muted hover:text-app-text hover:bg-app-surface-muted'
                 }`}
               >
                 {tab.icon}
@@ -253,77 +261,77 @@ const PurchasesReport = () => {
 
           {/* Error State */}
           {error && (
-            <div className="mb-6 rounded-xl bg-rose-500/10 border border-rose-500/20 p-4 text-rose-400 flex items-center shadow-inner">
+            <div className="rounded-2xl bg-rose-500/10 border border-rose-500/20 p-4 text-rose-500 flex items-center shadow-sm">
               <FiFilter className="mr-3 text-lg" />
-              <span className="font-medium">{error}</span>
+              <span className="font-semibold text-xs">{error}</span>
             </div>
           )}
 
           {/* Loading Data State */}
           {loadingData ? (
-            <div className="flex flex-col items-center justify-center py-20 bg-app-surface border border-app-border rounded-xl shadow-xl">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-app-accent mb-4" />
-              <span className="text-app-text-muted font-medium tracking-wide">Crunching numbers for {activeTab.label}...</span>
+            <div className="flex flex-col items-center justify-center py-20 bg-app-surface/90 backdrop-blur-md border border-app-border rounded-2xl shadow-sm">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-500 mb-4" />
+              <span className="text-app-text-muted font-medium text-xs tracking-wide">Crunching numbers for {activeTab.label}...</span>
             </div>
           ) : (
             <>
-              {/* Summary Metrics */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div className="bg-app-surface border border-app-border rounded-xl shadow-lg p-5 flex items-center">
-                  <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg mr-4">
-                    <FiHash className="text-blue-400 text-xl" />
-                  </div>
+              {/* Summary Metrics Bento Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+                <Tilt glow="sky" className="bg-app-surface/90 backdrop-blur-md border border-app-border rounded-2xl shadow-sm p-5 flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1">Total POs</p>
+                    <p className="text-[11px] font-bold text-app-text-muted uppercase tracking-wider mb-1">Total POs</p>
                     <p className="text-2xl font-black text-app-text">{distinctPoCount != null ? distinctPoCount.toLocaleString() : "—"}</p>
                   </div>
-                </div>
-                
-                <div className="bg-app-surface border border-app-border rounded-xl shadow-lg p-5 flex items-center">
-                  <div className="p-3 bg-violet-500/10 border border-violet-500/20 rounded-lg mr-4">
-                    <FiBox className="text-violet-400 text-xl" />
+                  <div className="p-3.5 bg-sky-500/10 border border-sky-500/20 rounded-xl text-sky-500">
+                    <FiHash className="text-xl" />
                   </div>
+                </Tilt>
+                
+                <Tilt glow="violet" className="bg-app-surface/90 backdrop-blur-md border border-app-border rounded-2xl shadow-sm p-5 flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1">Unique Materials</p>
+                    <p className="text-[11px] font-bold text-app-text-muted uppercase tracking-wider mb-1">Unique Materials</p>
                     <p className="text-2xl font-black text-app-text">{displayData.length.toLocaleString()}</p>
                   </div>
-                </div>
+                  <div className="p-3.5 bg-violet-500/10 border border-violet-500/20 rounded-xl text-violet-500">
+                    <FiBox className="text-xl" />
+                  </div>
+                </Tilt>
                 
-                <div className="bg-app-surface border border-app-border rounded-xl shadow-lg p-5 flex items-center">
-                  <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg mr-4">
-                    <FiDollarSign className="text-emerald-400 text-xl" />
-                  </div>
+                <Tilt glow="emerald" className="bg-app-surface/90 backdrop-blur-md border border-app-border rounded-2xl shadow-sm p-5 flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-bold text-app-text-muted uppercase tracking-wider mb-1">Total Value (SAR)</p>
-                    <p className="text-2xl font-black text-app-text">{formatCurrency(totalValue)}</p>
+                    <p className="text-[11px] font-bold text-app-text-muted uppercase tracking-wider mb-1">Total Spend Value (SAR)</p>
+                    <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{formatCurrency(totalValue)}</p>
                   </div>
-                </div>
+                  <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-500">
+                    <FiDollarSign className="text-xl" />
+                  </div>
+                </Tilt>
               </div>
 
-              {/* Data Table */}
-              <div className="bg-app-surface border border-app-border rounded-xl shadow-xl overflow-hidden">
-                <div className="p-4 bg-app-surface/80 border-b border-app-border flex items-center gap-4">
-                  <div className="flex-1 relative">
+              {/* Data Table Section */}
+              <div className="bg-app-surface/90 backdrop-blur-md border border-app-border rounded-2xl shadow-sm overflow-hidden">
+                <div className="p-4 bg-app-surface-muted/40 border-b border-app-border flex flex-col md:flex-row items-center gap-3">
+                  <div className="flex-1 w-full relative">
                     <input
                       type="text"
                       placeholder="Filter by Material Code..."
                       value={filterMaterialCode}
                       onChange={(e) => setFilterMaterialCode(e.target.value)}
-                      className="w-full bg-app-bg border border-app-border text-app-text text-sm rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent placeholder-app-text-disabled transition-colors"
+                      className="w-full bg-app-bg border border-app-border text-app-text text-xs rounded-xl pl-9 pr-4 py-2 focus:outline-none focus:border-emerald-500 placeholder-app-text-disabled transition-colors"
                     />
-                    <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
+                    <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted text-xs" />
                   </div>
-                  <div className="flex-1 relative">
+                  <div className="flex-1 w-full relative">
                     <input
                       type="text"
                       placeholder="Filter by Material Description..."
                       value={filterMaterialDescription}
                       onChange={(e) => setFilterMaterialDescription(e.target.value)}
-                      className="w-full bg-app-bg border border-app-border text-app-text text-sm rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent placeholder-app-text-disabled transition-colors"
+                      className="w-full bg-app-bg border border-app-border text-app-text text-xs rounded-xl pl-9 pr-4 py-2 focus:outline-none focus:border-emerald-500 placeholder-app-text-disabled transition-colors"
                     />
-                    <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
+                    <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-app-text-muted text-xs" />
                   </div>
-                  <div className="text-xs font-bold text-app-text-muted uppercase tracking-wide bg-app-bg px-3 py-2 rounded-lg border border-app-border">
+                  <div className="text-[11px] font-bold text-app-text-muted uppercase tracking-wide bg-app-bg px-3 py-2 rounded-xl border border-app-border shrink-0">
                     {filteredData.length !== data.length ? `${filteredData.length} of ${data.length} records` : `${data.length} records`}
                   </div>
                 </div>

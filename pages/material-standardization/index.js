@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
 import { OpenAI } from 'openai';
-import styles from './MaterialStandardization.module.css';
+import { Sparkles, UploadCloud, Plus, Trash2, CheckCircle2, AlertCircle, Play, FileSpreadsheet } from 'lucide-react';
+import GlassSubPageHero from '../../components/GlassSubPageHero';
+import { GlassStyles, Tilt } from '../../components/landing/glass';
 
 function getOpenAIClient() {
   const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
@@ -258,177 +260,249 @@ Output only the standardized description or one of these keywords: CHARACTERISTI
   };
 
   return (
-    <>
-    <div className={`${styles.container} app-page`}>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"></div>
-      <h1 className={styles.title}>Material Description Standardization</h1>
+    <div className="app-page min-h-screen font-[Poppins,sans-serif]">
+      <GlassStyles />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        {/* Glass Sub Page Hero */}
+        <GlassSubPageHero
+          icon={Sparkles}
+          eyebrow="AI Data Engineering"
+          title="Material Description Standardization"
+          description="Build taxonomy rule heuristics and generate clean, standardized material master catalogs using AI transformation models."
+          accent="emerald"
+          moduleKey="materials"
+        />
 
-      <div className={styles.mainGrid}>
-        <div className={styles.templateSection}>
-          <h2>Example Descriptions</h2>
-          <div className={styles.templateFields}>
-            <div className={styles.field}>
-              <label>Primary Characteristic Examples</label>
-              <textarea
-                value={templateFields.primary}
-                onChange={(e) => setTemplateFields(prev => ({...prev, primary: e.target.value}))}
-                placeholder="e.g., GASKET, SEAL, O-RING"
-                rows={3}
-              />
+        {/* Bento Grid: Rules & Transformations */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+          {/* Characteristic Rules Card */}
+          <Tilt glow="emerald" className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+            <div>
+              <h2 className="text-base font-bold text-app-text flex items-center gap-2">
+                <div className="w-1.5 h-5 bg-emerald-500 rounded-full" />
+                Characteristic Rules
+              </h2>
+              <p className="text-xs text-app-text-muted mt-1">Specify taxonomy rules and characteristic placeholders.</p>
             </div>
 
-            <div className={styles.field}>
-              <label>Secondary Characteristic Examples</label>
-              <textarea
-                value={templateFields.secondary}
-                onChange={(e) => setTemplateFields(prev => ({...prev, secondary: e.target.value}))}
-                placeholder="e.g., 2 INCH 300#, 3 INCH 600#"
-                rows={3}
-              />
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-app-text-muted mb-1 uppercase tracking-wider">Primary Characteristic (Item/Noun)</label>
+                <textarea
+                  value={templateFields.primary}
+                  onChange={(e) => setTemplateFields(prev => ({...prev, primary: e.target.value}))}
+                  placeholder="e.g., GASKET, SEAL, O-RING"
+                  rows={2}
+                  className="w-full px-3.5 py-2.5 bg-app-bg border border-app-border rounded-xl text-xs text-app-text placeholder:text-app-text-disabled focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-app-text-muted mb-1 uppercase tracking-wider">Secondary Characteristic (Size/Rating/Model)</label>
+                <textarea
+                  value={templateFields.secondary}
+                  onChange={(e) => setTemplateFields(prev => ({...prev, secondary: e.target.value}))}
+                  placeholder="e.g., 2 INCH 300#, 3 INCH 600#, <model>"
+                  rows={2}
+                  className="w-full px-3.5 py-2.5 bg-app-bg border border-app-border rounded-xl text-xs text-app-text placeholder:text-app-text-disabled focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-app-text-muted mb-1 uppercase tracking-wider">Tertiary Characteristic (Material/Type)</label>
+                <textarea
+                  value={templateFields.tertiary}
+                  onChange={(e) => setTemplateFields(prev => ({...prev, tertiary: e.target.value}))}
+                  placeholder="e.g., SPIRAL WOUND SS316, SW SS304"
+                  rows={2}
+                  className="w-full px-3.5 py-2.5 bg-app-bg border border-app-border rounded-xl text-xs text-app-text placeholder:text-app-text-disabled focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-app-text-muted mb-1 uppercase tracking-wider">Other Specifications</label>
+                <textarea
+                  value={templateFields.other}
+                  onChange={(e) => setTemplateFields(prev => ({...prev, other: e.target.value}))}
+                  placeholder="e.g., RING JOINT, RTJ"
+                  rows={2}
+                  className="w-full px-3.5 py-2.5 bg-app-bg border border-app-border rounded-xl text-xs text-app-text placeholder:text-app-text-disabled focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500"
+                />
+              </div>
+            </div>
+          </Tilt>
+
+          {/* Example Transformations Builder Card */}
+          <Tilt glow="teal" className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-base font-bold text-app-text flex items-center gap-2">
+                  <div className="w-1.5 h-5 bg-teal-500 rounded-full" />
+                  Example Transformations
+                </h2>
+                <p className="text-xs text-app-text-muted mt-1">Provide few-shot examples for the model parser.</p>
+              </div>
+              <button
+                onClick={addTransformation}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-app-surface-muted hover:bg-app-surface border border-app-border text-xs font-semibold text-app-text rounded-xl transition-all shadow-sm"
+              >
+                <Plus className="w-3.5 h-3.5 text-emerald-500" />
+                Add Example
+              </button>
             </div>
 
-            <div className={styles.field}>
-              <label>Tertiary Characteristic Examples</label>
-              <textarea
-                value={templateFields.tertiary}
-                onChange={(e) => setTemplateFields(prev => ({...prev, tertiary: e.target.value}))}
-                placeholder="e.g., SPIRAL WOUND SS316, SW SS304"
-                rows={3}
-              />
-            </div>
-
-            <div className={styles.field}>
-              <label>Other Specification Examples</label>
-              <textarea
-                value={templateFields.other}
-                onChange={(e) => setTemplateFields(prev => ({...prev, other: e.target.value}))}
-                placeholder="e.g., RING JOINT, RTJ"
-                rows={3}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.transformationsSection}>
-          <h2>Example Transformations</h2>
-          <div className={styles.transformationsGrid}>
-            {transformations.map((transformation, index) => (
-              <div key={index} className={styles.transformationRow}>
-                <div className={styles.transformationFields}>
-                  <div className={styles.field}>
-                    <label>Input Example</label>
+            <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+              {transformations.map((transformation, index) => (
+                <div key={index} className="p-3.5 rounded-xl border border-app-border bg-app-surface-muted/50 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] font-bold uppercase text-app-text-muted">Example #{index + 1}</span>
+                    <button
+                      onClick={() => removeTransformation(index)}
+                      className="text-app-text-muted hover:text-rose-500 transition-colors p-1 disabled:opacity-30"
+                      disabled={transformations.length <= 2}
+                      title="Remove"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-app-text-muted mb-1">Input Text</label>
                     <textarea
                       value={transformation.input}
                       onChange={(e) => updateTransformation(index, 'input', e.target.value)}
                       placeholder="e.g., spiral wound gasket, 2 inch 300#, ss316"
-                      rows={2}
+                      rows={1}
+                      className="w-full px-3 py-1.5 bg-app-bg border border-app-border rounded-lg text-xs text-app-text placeholder:text-app-text-disabled focus:outline-none focus:ring-1 focus:ring-teal-500"
                     />
                   </div>
-                  <div className={styles.field}>
-                    <label>Output Example</label>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-app-text-muted mb-1">Target Output</label>
                     <textarea
                       value={transformation.output}
                       onChange={(e) => updateTransformation(index, 'output', e.target.value)}
-                      placeholder="e.g., GASKET 2&quot; 300# SW SS316"
-                      rows={2}
+                      placeholder='e.g., GASKET 2" 300# SW SS316'
+                      rows={1}
+                      className="w-full px-3 py-1.5 bg-app-bg border border-app-border rounded-lg text-xs text-app-text placeholder:text-app-text-disabled focus:outline-none focus:ring-1 focus:ring-teal-500"
                     />
                   </div>
-                  <button
-                    onClick={() => removeTransformation(index)}
-                    className={styles.removeButton}
-                    disabled={transformations.length <= 2}
-                  >
-                    Remove
-                  </button>
                 </div>
-              </div>
+              ))}
+            </div>
+          </Tilt>
+        </div>
+
+        {/* Upload & Run Action Card */}
+        <div className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-emerald-500/10 text-emerald-500 rounded-xl border border-emerald-500/20">
+              <FileSpreadsheet className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-app-text">Upload Raw Materials CSV</h3>
+              <p className="text-xs text-app-text-muted mt-0.5">Select a CSV file containing unstandardized material descriptions.</p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <input
+              type="file"
+              accept=".csv"
+              onChange={(e) => setUploadedFile(e.target.files[0])}
+              className="text-xs text-app-text-secondary file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border file:border-app-border file:bg-app-surface file:text-xs file:font-semibold file:text-app-text hover:file:bg-app-surface-muted cursor-pointer"
+            />
+            <button
+              onClick={handleProcess}
+              disabled={isProcessing || !uploadedFile}
+              className="app-btn-primary text-xs flex items-center gap-2 disabled:opacity-50"
+            >
+              <Play className="w-4 h-4" />
+              {isProcessing ? 'Processing Batch...' : 'Process Materials'}
+            </button>
+          </div>
+        </div>
+
+        {/* Processing Progress Bar */}
+        {isProcessing && (
+          <div className="bg-app-surface/80 border border-app-border rounded-2xl p-5 shadow-sm space-y-2">
+            <div className="flex justify-between text-xs font-semibold text-app-text">
+              <span>Standardizing descriptions...</span>
+              <span className="text-emerald-500 font-mono">{progress}%</span>
+            </div>
+            <div className="w-full bg-app-surface-muted h-3 rounded-full overflow-hidden border border-app-border">
+              <div 
+                className="bg-emerald-500 h-full transition-all duration-300 rounded-full" 
+                style={{width: `${progress}%`}}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Results Summary Bento Cards */}
+        {Object.entries(results).some(([_, m]) => m.length > 0) && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {Object.entries(results).map(([type, materials]) => (
+              materials.length > 0 && (
+                <Tilt
+                  key={type}
+                  glow={type === 'standardized' ? 'emerald' : type === 'oversized' ? 'amber' : 'rose'}
+                  className="p-5 bg-app-surface/80 backdrop-blur-md rounded-2xl border border-app-border shadow-sm flex flex-col justify-between"
+                >
+                  <span className="text-xs font-bold uppercase tracking-wider text-app-text-muted">
+                    {type === 'characteristic_notavailable' 
+                      ? 'Missing Primary Char' 
+                      : type.charAt(0).toUpperCase() + type.slice(1)}
+                  </span>
+                  <p className="text-3xl font-extrabold text-app-text mt-2">
+                    {materials.length}
+                  </p>
+                </Tilt>
+              )
             ))}
           </div>
-          <button
-            onClick={addTransformation}
-            className={styles.addButton}
-          >
-            Add Example
-          </button>
-        </div>
+        )}
 
-        <div className={styles.uploadSection}>
-          <h2>Upload Raw Materials File</h2>
-          <input
-            type="file"
-            accept=".csv"
-            onChange={(e) => setUploadedFile(e.target.files[0])}
-            className={styles.fileInput}
-          />
-        </div>
-      </div>
-
-      <button
-        onClick={handleProcess}
-        className={styles.processButton}
-        disabled={isProcessing || !uploadedFile}
-      >
-        {isProcessing ? 'Processing...' : 'Process Materials'}
-      </button>
-
-      {isProcessing && (
-        <div className={styles.progressBar}>
-          <div 
-            className={styles.progressFill} 
-            style={{width: `${progress}%`}}
-          />
-          <span>{progress}%</span>
-        </div>
-      )}
-
-      <div className={styles.resultsContainer}>
-        <h2>Processing Results</h2>
-        <table className={styles.resultsTable}>
-          <thead>
-            <tr>
-              <th>Status</th>
-              <th>Original Description</th>
-              <th>Standardized Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {visibleResults.map((result, index) => (
-              <tr 
-                key={index}
-                className={`${styles.resultRow} ${styles.fadeIn}`}
-              >
-                <td className={styles.statusCell}>
-                  {result.type === 'characteristic_notavailable' 
-                    ? 'Primary Char Not Available'
-                    : result.type.charAt(0).toUpperCase() + result.type.slice(1)}
-                </td>
-                <td>{result.material.originalDescription}</td>
-                <td>{result.material.standardDescription || '-'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className={styles.summarySection}>
-        {Object.entries(results).map(([type, materials]) => (
-          materials.length > 0 && (
-            <div key={type} className={styles.summaryItem}>
-              <span className={styles.summaryLabel}>
-                {type === 'characteristic_notavailable' 
-                  ? 'Missing Primary Characteristic'
-                  : type.charAt(0).toUpperCase() + type.slice(1)}
-              </span>
-              <span className={styles.summaryCount}>
-                {materials.length}
-              </span>
+        {/* Results Live Table */}
+        {visibleResults.length > 0 && (
+          <div className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl shadow-sm overflow-hidden space-y-3 p-5">
+            <h2 className="text-base font-bold text-app-text flex items-center gap-2">
+              <div className="w-1.5 h-5 bg-app-accent rounded-full" />
+              Live Processing Stream
+            </h2>
+            <div className="overflow-x-auto rounded-xl border border-app-border">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead className="bg-app-surface-muted text-app-text-secondary uppercase tracking-wider text-[10px] font-bold">
+                  <tr>
+                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3">Original Description</th>
+                    <th className="px-4 py-3">Standardized Description</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-app-border bg-app-surface text-app-text">
+                  {visibleResults.map((result, index) => (
+                    <tr key={index} className="hover:bg-app-surface-muted/50 transition-colors">
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                          result.type === 'standardized'
+                            ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'
+                            : result.type === 'oversized'
+                            ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30'
+                            : 'bg-rose-500/15 text-rose-500 border border-rose-500/30'
+                        }`}>
+                          {result.type === 'characteristic_notavailable' 
+                            ? 'Primary Char Missing'
+                            : result.type.charAt(0).toUpperCase() + result.type.slice(1)}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-app-text-secondary font-mono">{result.material.originalDescription}</td>
+                      <td className="px-4 py-3 font-semibold text-app-text">{result.material.standardDescription || '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          )
-        ))}
+          </div>
+        )}
       </div>
     </div>
-    {/* <FooterComponent className="mt-32" /> */}
-    </>
   );
 }

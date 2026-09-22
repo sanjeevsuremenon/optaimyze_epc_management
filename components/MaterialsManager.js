@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
+import GlassSubPageHero from "./GlassSubPageHero";
+import { GlassStyles, Tilt } from "./landing/glass";
 import { 
   Boxes, 
   Layers, 
@@ -287,10 +289,94 @@ export default function MaterialsManager({ initialTab = "materials" }) {
     reader.readAsText(file);
   };
 
+  const currentTabDef = tabs.find((t) => t.id === activeTab) || tabs[0];
+
+  const getHeroInfo = () => {
+    switch (activeTab) {
+      case "materialgroups":
+        return {
+          eyebrow: "Category Catalog",
+          title: "Material Groups",
+          description: "Organize material classifications, parent commodity codes, and groupings.",
+          accent: "violet",
+        };
+      case "mattypes":
+        return {
+          eyebrow: "Type Taxonomy",
+          title: "Material Types",
+          description: "Configure service and stock item classifications and procurement behaviors.",
+          accent: "teal",
+        };
+      case "explorer":
+        return {
+          eyebrow: "Taxonomy Explorer",
+          title: "Hierarchy Visualizer",
+          description: "Interactive visual tree of material types, categories, and linked items.",
+          accent: "emerald",
+        };
+      default:
+        return {
+          eyebrow: "Inventory Masters",
+          title: "Materials Master Catalog",
+          description: "Browse, search, and manage items, specifications, and old material cross-references.",
+          accent: "emerald",
+        };
+    }
+  };
+
+  const heroInfo = getHeroInfo();
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 space-y-6 bg-[var(--app-bg)] text-[var(--app-text)]">
+    <div className="max-w-7xl mx-auto px-4 py-8 space-y-6 bg-[var(--app-bg)] text-[var(--app-text)] font-[Poppins,sans-serif]">
+      <GlassStyles />
+
+      {/* Glass Sub Page Hero */}
+      <GlassSubPageHero
+        icon={currentTabDef.icon}
+        eyebrow={heroInfo.eyebrow}
+        title={heroInfo.title}
+        description={heroInfo.description}
+        accent={heroInfo.accent}
+        moduleKey="materials"
+      >
+        {activeTab !== "explorer" && (
+          <div className="flex flex-wrap items-center gap-2">
+            <button 
+              onClick={handleDownloadTemplate}
+              className="inline-flex items-center gap-2 rounded-xl border border-app-border bg-app-surface/80 px-4 py-2.5 text-xs font-semibold text-app-text transition-all hover:bg-app-surface hover:border-app-accent hover:shadow-sm"
+            >
+              <Download className="w-4 h-4 text-app-accent" />
+              Template
+            </button>
+
+            <div className="relative">
+              <input
+                type="file"
+                accept=".csv"
+                onChange={handleUploadCSV}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+              <button 
+                className="inline-flex items-center gap-2 rounded-xl border border-app-border bg-app-surface/80 px-4 py-2.5 text-xs font-semibold text-app-text transition-all hover:bg-app-surface hover:border-app-accent hover:shadow-sm pointer-events-none"
+              >
+                <Upload className="w-4 h-4 text-app-accent" />
+                Import CSV
+              </button>
+            </div>
+
+            <button
+              onClick={openAddModal}
+              className="app-btn-primary text-xs flex items-center gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Add New
+            </button>
+          </div>
+        )}
+      </GlassSubPageHero>
+
       {/* Navigation tabs */}
-      <div className="flex border-b border-[var(--app-border)] gap-2 overflow-x-auto pb-px">
+      <div className="flex border-b border-[var(--app-border)] gap-2 overflow-x-auto pb-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const active = activeTab === tab.id;
@@ -301,10 +387,10 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                 setActiveTab(tab.id);
                 setSearchTerm("");
               }}
-              className={`flex items-center gap-2 px-6 py-3 border-b-2 font-semibold text-sm transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs transition-all whitespace-nowrap ${
                 active 
-                  ? "border-[var(--app-accent)] text-[var(--app-accent)]" 
-                  : "border-transparent text-[var(--app-text-muted)] hover:text-[var(--app-text)]"
+                  ? "bg-app-accent/15 text-app-accent border border-app-accent/30 shadow-sm" 
+                  : "border border-transparent text-app-text-muted hover:bg-app-surface hover:text-app-text"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -483,11 +569,15 @@ export default function MaterialsManager({ initialTab = "materials" }) {
             /* Card view */
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {dataList.map((row) => (
-                <div key={row._id} className="app-card rounded-[1.5rem] p-6 shadow-md border border-[var(--app-border)] hover:border-[var(--app-border)] flex flex-col justify-between space-y-4">
+                <Tilt
+                  key={row._id}
+                  glow={activeTab === "materialgroups" ? "violet" : activeTab === "mattypes" ? "teal" : "emerald"}
+                  className="bg-app-surface/80 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-[var(--app-border)] hover:border-app-accent/40 transition-all flex flex-col justify-between space-y-4"
+                >
                   <div>
                     {activeTab === "materials" && (
                       <>
-                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-[var(--app-accent)] bg-[var(--app-accent-soft)] border border-[var(--app-accent)] px-2.5 py-0.5 rounded-full">
+                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
                           Code: {row["material-code"]}
                         </span>
                         <h4 className="text-base font-bold text-[var(--app-text)] mt-3 line-clamp-2">{row["material-description"]}</h4>
@@ -496,7 +586,7 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                     )}
                     {activeTab === "materialgroups" && (
                       <>
-                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-purple-700 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/30 px-2.5 py-0.5 rounded-full">
+                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-violet-600 dark:text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2.5 py-0.5 rounded-full">
                           Group: {row["name"]}
                         </span>
                         <h4 className="text-base font-bold text-[var(--app-text)] mt-3 line-clamp-2">{row["description"]}</h4>
@@ -505,7 +595,7 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                     )}
                     {activeTab === "mattypes" && (
                       <>
-                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/30 px-2.5 py-0.5 rounded-full">
+                        <span className="text-[10px] uppercase font-extrabold tracking-widest text-teal-600 dark:text-teal-400 bg-teal-500/10 border border-teal-500/20 px-2.5 py-0.5 rounded-full">
                           Type: {row["name"]}
                         </span>
                         <h4 className="text-base font-bold text-[var(--app-text)] mt-3">{row["description"]}</h4>
@@ -517,20 +607,20 @@ export default function MaterialsManager({ initialTab = "materials" }) {
                   <div className="flex items-center justify-end border-t border-[var(--app-border)] pt-4 gap-2">
                     <button
                       onClick={() => openEditModal(row)}
-                      className="p-1.5 bg-[var(--app-surface-muted)] hover:bg-[var(--app-border)] text-[var(--app-text-secondary)] hover:text-amber-400 rounded-lg transition"
+                      className="p-1.5 bg-app-surface-muted hover:bg-amber-500/10 text-app-text-muted hover:text-amber-500 rounded-lg transition"
                       title="Edit"
                     >
                       <Edit className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(row)}
-                      className="p-1.5 bg-[var(--app-surface-muted)] hover:bg-[var(--app-border)] text-[var(--app-text-secondary)] hover:text-rose-500 rounded-lg transition"
+                      className="p-1.5 bg-app-surface-muted hover:bg-rose-500/10 text-app-text-muted hover:text-rose-500 rounded-lg transition"
                       title="Delete"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                </div>
+                </Tilt>
               ))}
               {dataList.length === 0 && (
                 <div className="col-span-full text-center py-12 text-[var(--app-text-muted)]">No records found.</div>

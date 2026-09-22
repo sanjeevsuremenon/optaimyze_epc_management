@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getSession, useSession } from "next-auth/react";
-import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiX, FiFile, FiDownload, FiEye } from "react-icons/fi";
+import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiX, FiFile, FiDownload, FiEye, FiPackage } from "react-icons/fi";
 import moment from "moment";
+import GlassSubPageHero from "../../components/GlassSubPageHero";
+import { GlassStyles, Tilt } from "../../components/landing/glass";
 
 function LongLeadPackages() {
   const { data: session } = useSession();
@@ -482,38 +484,47 @@ function LongLeadPackages() {
 
   return (
     <div className="app-page min-h-screen font-[Poppins,sans-serif]">
+      <GlassStyles />
+      <main className="container mx-auto px-4 sm:px-6 py-8 space-y-6">
+        {/* Glass Sub Page Hero */}
+        <GlassSubPageHero
+          icon={FiPackage}
+          eyebrow="Critical Path Procurement"
+          title="Long Lead Material Packages"
+          description="Manage specialized equipment procurement timelines, engineering deliverables, and PO allocations."
+          accent="cyan"
+          moduleKey="projects"
+        />
 
-      <main className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-app-text mb-6 tracking-tight">
-          Long Lead Material Packages
-        </h1>
-
-        {/* Search Section */}
-        <div className="max-w-2xl mx-auto mb-8">
-          <div className="relative">
+        {/* Project Selector Bento Panel */}
+        <div className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl p-5 shadow-sm">
+          <label className="block text-xs font-bold uppercase tracking-wider text-app-text-muted mb-2">
+            Select Project
+          </label>
+          <div className="relative max-w-2xl">
             <input
               type="text"
-              placeholder="Search projects by name..."
-              className="w-full px-4 py-3 pl-12 text-app-text bg-app-surface border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/30 shadow-sm"
+              placeholder="Type to search projects by name or WBS..."
+              className="w-full px-4 py-3 pl-11 text-sm text-app-text bg-app-bg border border-app-border rounded-xl focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/30 shadow-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-app-text-muted" />
+            <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-app-text-muted" size={16} />
           </div>
 
           {/* Project Suggestions */}
           {projects.length > 0 && (
-            <div className="mt-2 bg-app-surface rounded-lg shadow-lg border border-app-border max-h-96 overflow-auto z-50">
+            <div className="mt-3 bg-app-surface rounded-xl shadow-xl border border-app-border max-h-72 overflow-y-auto divide-y divide-app-border">
               {projects.map((project, index) => (
                 <div
                   key={index}
                   onClick={() => handleProjectSelect(project)}
-                  className="p-3 hover:bg-app-accent-soft cursor-pointer border-b border-app-border last:border-b-0"
+                  className="p-3.5 hover:bg-app-accent-soft cursor-pointer transition-colors"
                 >
-                  <div className="font-semibold text-app-text">
+                  <div className="font-semibold text-sm text-app-text">
                     {project["project-name"]}
                   </div>
-                  <div className="text-sm text-app-text-muted">
+                  <div className="text-xs text-app-accent font-mono mt-0.5">
                     {project["project-wbs"]}
                   </div>
                 </div>
@@ -524,25 +535,28 @@ function LongLeadPackages() {
 
         {/* Selected Project Display */}
         {selectedProject && (
-          <div className="mb-6 p-4 bg-app-accent-soft rounded-xl border border-app-border">
-            <div className="flex justify-between items-center">
-              <div>
-                <h2 className="text-xl font-semibold text-app-text">
-                  {selectedProject["project-name"]}
-                </h2>
-                <p className="text-sm text-app-text-muted">
-                  WBS: {selectedProject["project-wbs"]}
-                </p>
+          <Tilt glow="cyan" className="p-5 bg-app-surface/80 backdrop-blur-md rounded-2xl border border-app-border shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-app-accent bg-app-accent-soft px-2.5 py-0.5 rounded-full border border-app-accent/20">
+                  Active Project Context
+                </span>
+                <span className="text-xs font-mono font-semibold text-app-text-secondary">
+                  {selectedProject["project-wbs"]}
+                </span>
               </div>
-              <button
-                onClick={handleAddNew}
-                className="app-btn-primary"
-              >
-                <FiPlus className="mr-2" />
-                Add New Package
-              </button>
+              <h2 className="text-lg font-bold text-app-text mt-1.5">
+                {selectedProject["project-name"]}
+              </h2>
             </div>
-          </div>
+            <button
+              onClick={handleAddNew}
+              className="app-btn-primary flex items-center justify-center gap-2 self-start sm:self-auto text-xs"
+            >
+              <FiPlus className="w-4 h-4" />
+              Add New Package
+            </button>
+          </Tilt>
         )}
 
         {/* Packages List */}

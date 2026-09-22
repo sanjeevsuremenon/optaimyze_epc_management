@@ -1,6 +1,9 @@
 import React from "react";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
+import { Briefcase, Search, RotateCcw } from "lucide-react";
+import GlassSubPageHero from "../../components/GlassSubPageHero";
+import { GlassStyles } from "../../components/landing/glass";
 
 import { getSession } from "next-auth/react";
 
@@ -107,30 +110,39 @@ export default function Projectdetails({ initialProjects = [], session }) {
 
   return (
     <div className="app-page min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-app-text">Projects</h1>
-            <p className="text-sm text-app-text-muted mt-1">Master list of all projects in the system</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search projects, WBS or manager"
-              className="bg-app-surface/70 placeholder:text-app-text-muted text-app-text px-3 py-2 rounded-md border border-app-border focus:outline-none focus:ring-2 focus:ring-app-accent"
-            />
+      <GlassStyles />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        {/* Glass Sub Page Hero */}
+        <GlassSubPageHero
+          icon={Briefcase}
+          eyebrow="Project Master"
+          title="Project Details & Schedules"
+          description="Master repository of active and planned projects, project managers, and milestone schedules."
+          accent="cyan"
+          moduleKey="projects"
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative min-w-[260px]">
+              <Search className="absolute left-3.5 top-3 text-app-text-muted w-4 h-4" />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search projects, WBS or manager..."
+                className="w-full bg-app-surface/80 pl-10 pr-4 py-2 rounded-xl border border-app-border text-xs text-app-text placeholder:text-app-text-disabled focus:outline-none focus:ring-2 focus:ring-app-accent/30 focus:border-app-accent"
+              />
+            </div>
             <button
               onClick={() => window.location.reload()}
-              className="bg-app-surface/70 text-app-text px-3 py-2 rounded-md hover:bg-app-surface/90"
+              className="inline-flex items-center gap-1.5 bg-app-surface/80 hover:bg-app-surface border border-app-border text-app-text px-3.5 py-2 rounded-xl text-xs font-semibold transition-all shadow-sm"
             >
+              <RotateCcw className="w-3.5 h-3.5 text-app-accent" />
               Refresh
             </button>
           </div>
-        </div>
+        </GlassSubPageHero>
 
         <div className="space-y-6">
-          <div className="rounded-2xl bg-app-surface/80 border border-app-border p-4 shadow-lg">
+          <div className="rounded-2xl bg-app-surface/80 backdrop-blur-md border border-app-border p-5 shadow-sm">
             <Tablecomponent 
               columns={columns} 
               data={filtered}

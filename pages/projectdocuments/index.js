@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
+import GlassSubPageHero from "../../components/GlassSubPageHero";
+import { GlassStyles, Tilt } from "../../components/landing/glass";
 import { 
   FileImage, 
   FileSpreadsheet, 
@@ -382,23 +384,23 @@ export default function ProjectDocuments() {
 
         {/* Main Content Area */}
         <div className="flex-1 p-4 md:p-6 lg:px-8 xl:px-12 w-full max-w-7xl mx-auto flex flex-col gap-6">
+          <GlassStyles />
           
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 bg-slate-850 p-4 rounded-xl border border-app-border">
-            <div>
-              <h1 className="text-xl font-bold text-app-text flex items-center gap-2">
-                <activeTab.icon className="text-app-accent" size={22} />
-                {activeTab.label}
-              </h1>
-              <p className="text-xs text-app-text-muted mt-0.5">Manage and view your {activeTab.label.toLowerCase()} files</p>
-            </div>
-
+          {/* Glass Sub Page Hero */}
+          <GlassSubPageHero
+            icon={activeTab.icon}
+            eyebrow="Project Documentation"
+            title={activeTab.label}
+            description={`Manage and review ${activeTab.label.toLowerCase()} files, technical specifications, and approvals.`}
+            accent="cyan"
+            moduleKey="projects"
+          >
             {/* Searchable Combobox Project Selector */}
             <div className="relative w-full sm:w-80 z-30">
               <span className="block text-[10px] text-app-text-muted uppercase tracking-wider font-bold mb-1">Project Context</span>
               <div 
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center justify-between bg-app-surface border border-app-border rounded-lg px-3 py-1.5 cursor-pointer hover:border-slate-700 transition-colors"
+                className="flex items-center justify-between bg-app-surface/90 border border-app-border rounded-xl px-3.5 py-2 cursor-pointer hover:border-app-accent transition-all shadow-sm"
               >
                 <div className="truncate pr-2">
                   {loadingProjects ? (
@@ -408,7 +410,7 @@ export default function ProjectDocuments() {
                       {selectedProject["project-wbs"]} <span className="text-app-text-muted">- {selectedProject["project-name"]}</span>
                     </span>
                   ) : (
-                    <span className="text-xs text-app-text-muted">No project selected</span>
+                    <span className="text-xs text-app-text-muted">Select a project...</span>
                   )}
                 </div>
                 <ChevronDown size={14} className="text-app-text-muted shrink-0" />
@@ -417,7 +419,7 @@ export default function ProjectDocuments() {
               {isOpen && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
-                  <div className="absolute right-0 mt-1 w-full bg-app-surface border border-app-border rounded-lg shadow-2xl z-20 max-h-64 overflow-y-auto flex flex-col p-2">
+                  <div className="absolute right-0 mt-1.5 w-full bg-app-surface border border-app-border rounded-xl shadow-2xl z-20 max-h-64 overflow-y-auto flex flex-col p-2 backdrop-blur-md">
                     <div className="relative mb-2 shrink-0">
                       <Search size={12} className="absolute left-2.5 top-2.5 text-app-text-muted" />
                       <input
@@ -426,10 +428,10 @@ export default function ProjectDocuments() {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onClick={(e) => e.stopPropagation()}
-                        className="w-full bg-app-bg border border-slate-850 rounded-md px-2 py-1.5 pl-8 text-xs text-app-text focus:outline-none focus:border-app-accent"
+                        className="w-full bg-app-bg border border-app-border rounded-lg px-2 py-1.5 pl-8 text-xs text-app-text focus:outline-none focus:border-app-accent"
                       />
                     </div>
-                    <div className="overflow-y-auto flex-1 custom-scrollbar max-h-48 divide-y divide-slate-850/50">
+                    <div className="overflow-y-auto flex-1 custom-scrollbar max-h-48 divide-y divide-app-border">
                       {displayProjects.length > 0 ? (
                         displayProjects.map((p) => (
                           <div
@@ -439,9 +441,9 @@ export default function ProjectDocuments() {
                               setIsOpen(false);
                               setSearchTerm("");
                             }}
-                            className={`px-2.5 py-2 cursor-pointer hover:bg-app-surface/80 transition-colors text-left ${
+                            className={`px-2.5 py-2 cursor-pointer hover:bg-app-accent-soft transition-colors text-left rounded-lg ${
                               selectedProject && selectedProject["project-wbs"] === p["project-wbs"]
-                                ? "bg-app-accent/10 text-app-accent font-semibold"
+                                ? "bg-app-accent/15 text-app-accent font-semibold"
                                 : "text-app-text-secondary"
                             }`}
                           >
@@ -457,7 +459,7 @@ export default function ProjectDocuments() {
                 </>
               )}
             </div>
-          </div>
+          </GlassSubPageHero>
 
           {/* Grid Panel Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
@@ -602,8 +604,8 @@ export default function ProjectDocuments() {
                     </div>
                   </div>
                 ) : documents.length === 0 ? (
-                  <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border border-dashed border-slate-850 rounded-lg bg-app-surface/10">
-                    <FolderOpen size={32} className="text-slate-700 mb-2" />
+                  <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border border-dashed border-app-border rounded-xl bg-app-surface/20">
+                    <FolderOpen size={32} className="text-app-text-disabled mb-2" />
                     <h3 className="text-xs font-bold text-app-text-muted">No Files Uploaded</h3>
                     <p className="text-[11px] text-app-text-muted max-w-xs mt-1 leading-normal">
                       No documents are currently uploaded for <strong>{activeTab.label}</strong> in this project.
@@ -621,9 +623,9 @@ export default function ProjectDocuments() {
                           <th className="py-2 px-3 text-right">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-850">
+                      <tbody className="divide-y divide-app-border">
                         {documents.map((doc) => (
-                          <tr key={doc._id} className="hover:bg-slate-850/40 transition-colors">
+                          <tr key={doc._id} className="hover:bg-app-surface-muted/60 transition-colors">
                             <td className="py-2.5 px-3">
                               <div className="flex items-center gap-2 max-w-[200px] md:max-w-[300px]">
                                 <FileIcon ext={pathExt(doc.originalName)} className="shrink-0 text-app-accent/80" size={14} />
@@ -655,14 +657,14 @@ export default function ProjectDocuments() {
                                 <a
                                   href={doc.filePath}
                                   download={doc.originalName}
-                                  className="p-1 hover:bg-app-surface rounded text-app-text-muted hover:text-app-accent transition-all"
+                                  className="p-1.5 hover:bg-app-surface rounded-lg text-app-text-muted hover:text-app-accent transition-all"
                                   title="Download"
                                 >
                                   <Download size={13} />
                                 </a>
                                 <button
                                   onClick={() => setDeleteTarget(doc)}
-                                  className="p-1 hover:bg-app-surface rounded text-app-text-muted hover:text-rose-400 transition-all"
+                                  className="p-1.5 hover:bg-app-surface rounded-lg text-app-text-muted hover:text-rose-400 transition-all"
                                   title="Delete"
                                 >
                                   <Trash2 size={13} />
@@ -686,8 +688,8 @@ export default function ProjectDocuments() {
 
       {/* Delete Confirmation Modal */}
       {deleteTarget && (
-        <div className="fixed inset-0 bg-app-bg/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-app-surface border border-slate-850 rounded-2xl max-w-sm w-full p-5 shadow-2xl flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 bg-app-overlay backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-app-surface border border-app-border rounded-2xl max-w-sm w-full p-5 shadow-2xl flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex gap-3 items-start">
               <div className="w-9 h-9 bg-rose-500/10 border border-rose-500/20 rounded-full flex items-center justify-center text-rose-500 shrink-0">
                 <AlertCircle size={18} />
@@ -703,14 +705,14 @@ export default function ProjectDocuments() {
               <button
                 onClick={() => setDeleteTarget(null)}
                 disabled={deleting}
-                className="px-3.5 py-1.5 bg-slate-850 hover:bg-app-surface border border-app-border text-app-text-secondary font-semibold rounded-lg text-xs transition-colors disabled:opacity-50"
+                className="px-3.5 py-1.5 bg-app-surface-muted hover:bg-app-surface border border-app-border text-app-text-secondary font-semibold rounded-xl text-xs transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
                 disabled={deleting}
-                className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-lg text-xs transition-colors shadow-lg shadow-rose-600/10 disabled:opacity-50 flex items-center gap-1.5"
+                className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-xl text-xs transition-colors shadow-lg shadow-rose-600/10 disabled:opacity-50 flex items-center gap-1.5"
               >
                 {deleting ? (
                   <>

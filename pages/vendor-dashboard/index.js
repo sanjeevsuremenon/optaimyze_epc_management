@@ -7,19 +7,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import VendorAdditionalInfoForm from '../../components/Vendor/VendorAdditionalInfoForm';
 import VendorProfileOverviewForm from '../../components/Vendor/VendorProfileOverviewForm';
 import VendorGroupMapping from '../../components/VendorGroupMapping';
-import { FiCalendar, FiMessageSquare, FiEye } from 'react-icons/fi';
+import { FiCalendar, FiMessageSquare, FiEye, FiUser, FiFileText, FiPhone, FiStar, FiUploadCloud, FiInfo, FiUsers, FiShoppingBag, FiGrid, FiGlobe, FiDollarSign, FiTrendingUp, FiCheckCircle, FiHash } from 'react-icons/fi';
 import POCommentModal from '../../components/PO/POCommentModal';
 import moment from 'moment';
 
 const SERVICE_OVERVIEW_CARD_STYLES = [
-  'bg-violet-50 border-violet-200/90 text-violet-950 shadow-[0_8px_24px_rgba(124,58,237,0.12)]',
-  'bg-sky-50 border-sky-200/90 text-sky-950 shadow-[0_8px_24px_rgba(14,165,233,0.12)]',
-  'bg-amber-50 border-amber-200/90 text-amber-950 shadow-[0_8px_24px_rgba(245,158,11,0.12)]',
-  'bg-emerald-50 border-emerald-200/90 text-emerald-950 shadow-[0_8px_24px_rgba(16,185,129,0.12)]',
-  'bg-rose-50 border-rose-200/90 text-rose-950 shadow-[0_8px_24px_rgba(244,63,94,0.12)]',
-  'bg-cyan-50 border-cyan-200/90 text-cyan-950 shadow-[0_8px_24px_rgba(6,182,212,0.12)]',
-  'bg-fuchsia-50 border-fuchsia-200/90 text-fuchsia-950 shadow-[0_8px_24px_rgba(217,70,239,0.12)]',
-  'bg-teal-50 border-teal-200/90 text-teal-950 shadow-[0_8px_24px_rgba(20,184,166,0.12)]',
+  'bg-violet-50 dark:bg-violet-950/40 border-violet-200/90 dark:border-violet-800/40 text-violet-950 dark:text-violet-200',
+  'bg-sky-50 dark:bg-sky-950/40 border-sky-200/90 dark:border-sky-800/40 text-sky-950 dark:text-sky-200',
+  'bg-amber-50 dark:bg-amber-950/40 border-amber-200/90 dark:border-amber-800/40 text-amber-950 dark:text-amber-200',
+  'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200/90 dark:border-emerald-800/40 text-emerald-950 dark:text-emerald-200',
+  'bg-rose-50 dark:bg-rose-950/40 border-rose-200/90 dark:border-rose-800/40 text-rose-950 dark:text-rose-200',
+  'bg-cyan-50 dark:bg-cyan-950/40 border-cyan-200/90 dark:border-cyan-800/40 text-cyan-950 dark:text-cyan-200',
+  'bg-fuchsia-50 dark:bg-fuchsia-950/40 border-fuchsia-200/90 dark:border-fuchsia-800/40 text-fuchsia-950 dark:text-fuchsia-200',
+  'bg-teal-50 dark:bg-teal-950/40 border-teal-200/90 dark:border-teal-800/40 text-teal-950 dark:text-teal-200',
 ];
 
 function getContactSegmentType(segment) {
@@ -67,8 +67,8 @@ function VendorProfileOverviewDisplay({ vendorOverview }) {
   let otherContactLine = 0;
   const contactLineStyles = contactParts.map((part) => {
     const kind = getContactSegmentType(part);
-    if (kind === 'email') return 'text-emerald-400 font-semibold';
-    if (kind === 'phone') return 'text-amber-800 font-semibold';
+    if (kind === 'email') return 'text-emerald-600 dark:text-emerald-400 font-semibold';
+    if (kind === 'phone') return 'text-amber-700 dark:text-amber-400 font-semibold';
     const cls = otherContactLine % 2 === 0 ? 'text-app-accent font-medium' : 'text-app-text font-medium';
     otherContactLine += 1;
     return cls;
@@ -91,7 +91,7 @@ function VendorProfileOverviewDisplay({ vendorOverview }) {
               href={website}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-indigo-600 hover:text-indigo-500 hover:underline break-all"
+              className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 hover:underline break-all"
             >
               {website}
             </a>
@@ -453,9 +453,9 @@ export default function VendorDashboard() {
     
     <div className="min-h-screen p-6 bg-app-bg" style={{
       backgroundImage: `
-        radial-gradient(circle at 0 0, rgba(59,130,246,0.16) 0, transparent 55%),
-        radial-gradient(circle at 100% 0, rgba(236,72,153,0.12) 0, transparent 55%),
-        radial-gradient(circle at 50% 120%, rgba(16,185,129,0.12) 0, transparent 60%)
+        radial-gradient(circle at 0 0, rgba(59,130,246,0.08) 0, transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(236,72,153,0.06) 0, transparent 55%),
+        radial-gradient(circle at 50% 120%, rgba(16,185,129,0.06) 0, transparent 60%)
       `,
       backgroundAttachment: 'fixed',
       backgroundSize: '120% 120%'
@@ -497,7 +497,7 @@ export default function VendorDashboard() {
               <div
                 key={index}
                 onClick={() => handleVendorSelect(vendor)}
-                className="p-4 rounded-2xl border border-app-border bg-app-surface/90 shadow-[0_10px_25px_rgba(15,23,42,0.12)] hover:bg-cyan-900/30 hover:border-cyan-800 cursor-pointer transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(37,99,235,0.35)]"
+                className="p-4 rounded-2xl border border-app-border bg-app-surface/90 shadow-sm hover:bg-app-accent-soft hover:border-app-accent/30 cursor-pointer transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-md"
               >
                 <div className="flex justify-between items-start">
                   <div>
@@ -505,7 +505,7 @@ export default function VendorDashboard() {
                     <p className="text-sm text-app-text-muted">Code: {vendor.vendorcode}</p>
                     <p className="text-xs text-app-text-muted">Source: {vendor.source}</p>
                   </div>
-                  <span className="text-xs bg-cyan-900/50 text-app-accent px-2 py-1 rounded">
+                  <span className="text-xs bg-app-accent-soft text-app-accent px-2.5 py-1 rounded-full font-medium">
                     Click to view details
                   </span>
                 </div>
@@ -524,49 +524,121 @@ export default function VendorDashboard() {
 
       {/* Dashboard Section */}
       {showDashboard && vendorData && selectedVendor && vendorData.vendor && (
-        <div className="space-y-6">
-          {/** Determine if vendor is from registeredvendors without a valid code **/}
-          {(() => { return null; })()}
-          {/** Helper flag within render scope **/}
-          {(() => { return null; })()}
-          {/** Compute flag for conditional rendering **/}
-          {(() => { return null; })()}
-          {/** Using inline const via IIFE not possible in JSX; use simple variable assignment before return instead. **/}
-          {/** We will derive the flag below for readability **/}
-          {(() => { return null; })()}
-          {/**/}
-          {/* Vendor Header */}
-          <div className="bg-app-surface/90 backdrop-blur-sm rounded-2xl border border-app-border shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h2 className="text-2xl font-bold text-app-text tracking-tight">{vendorData.vendor?.vendorname || 'N/A'}</h2>
-                <p className="text-app-text-muted text-sm md:text-base">Vendor Code: {vendorData.vendor?.vendorcode || 'N/A'}</p>
-                <p className="text-xs md:text-sm text-app-text-muted mt-1">Source: {vendorData.vendor?.source || 'N/A'}</p>
+        <div className="space-y-6">          {/* Vendor Header */}
+          <div className="bg-app-surface/90 backdrop-blur-sm rounded-2xl border border-app-border shadow-sm p-6 border-l-4 border-l-app-accent relative overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-cyan-500/20 shrink-0">
+                  {(vendorData.vendor?.vendorname || 'V').charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="text-2xl font-bold text-app-text tracking-tight">
+                      {vendorData.vendor?.vendorname || 'N/A'}
+                    </h2>
+                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-app-accent-soft text-app-accent border border-app-accent/20 uppercase tracking-wider">
+                      {vendorData.vendor?.source || 'Vendor'}
+                    </span>
+                  </div>
+                  <p className="text-app-text-muted text-sm mt-0.5 flex items-center gap-2">
+                    <FiHash className="text-app-accent" size={14} />
+                    <span>Code: <strong className="text-app-text font-semibold">{vendorData.vendor?.vendorcode || 'N/A'}</strong></span>
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => setShowDashboard(false)}
-                className="text-app-text-muted hover:text-app-text-muted transition-colors"
+                className="self-start sm:self-center text-app-text-muted hover:text-app-text transition-colors p-2 rounded-xl hover:bg-app-surface-muted"
+                title="Close Dashboard"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
+          </div>
 
-              {/* Vendor profile overview (Mongo: vendorsdata, hyphen field names) */}
+          {/* Quick Stats Grid (4 columns) */}
           {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
-            <div className="bg-gradient-to-br from-slate-900 via-white/95 to-slate-800 backdrop-blur-sm rounded-2xl border border-cyan-900/50 shadow-[0_20px_55px_rgba(6,182,212,0.1)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_28px_70px_rgba(6,182,212,0.2)]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-app-surface/90 backdrop-blur-sm p-5 rounded-2xl border border-app-border shadow-sm flex items-center gap-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-500 shrink-0">
+                  <FiDollarSign size={22} />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-app-text-muted">Total PO Value</span>
+                  <p className="text-xl font-bold text-app-text mt-0.5">
+                    {formatCurrency(vendorData.poSummary?.totalValue || 0)}
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-app-surface/90 backdrop-blur-sm p-5 rounded-2xl border border-app-border shadow-sm flex items-center gap-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 shrink-0">
+                  <FiShoppingBag size={22} />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-app-text-muted">Total POs</span>
+                  <p className="text-xl font-bold text-app-text mt-0.5">
+                    {vendorData.poSummary?.poCount || 0}
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-app-surface/90 backdrop-blur-sm p-5 rounded-2xl border border-app-border shadow-sm flex items-center gap-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-500 shrink-0">
+                  <FiTrendingUp size={22} />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-app-text-muted">Avg PO Value</span>
+                  <p className="text-xl font-bold text-app-text mt-0.5">
+                    {formatCurrency(
+                      (vendorData.poSummary?.poCount || 0) > 0
+                        ? (vendorData.poSummary?.totalValue || 0) / (vendorData.poSummary?.poCount || 1)
+                        : 0
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-app-surface/90 backdrop-blur-sm p-5 rounded-2xl border border-app-border shadow-sm flex items-center gap-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 shrink-0">
+                  <FiCheckCircle size={22} />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-app-text-muted">Completed POs</span>
+                  <p className="text-xl font-bold text-app-text mt-0.5">
+                    {vendorData.poSummary?.poList?.filter(po => Number(po.balgrval || 0) === 0).length || 0}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Vendor profile overview (Mongo: vendorsdata, hyphen field names) */}
+          {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
+            <div className="bg-app-surface/90 backdrop-blur-sm rounded-2xl border border-app-border shadow-sm p-6 transition-all duration-300 hover:shadow-md">
               <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                <h3 className="text-xl font-bold text-app-text tracking-tight bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent">
-                  Vendor profile overview
-                </h3>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center border border-cyan-500/20">
+                    <FiGlobe size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-app-text tracking-tight">
+                      Vendor Profile Overview
+                    </h3>
+                    <p className="text-xs text-app-text-muted">
+                      Public-style summary: website, contact details, and services or materials.
+                    </p>
+                  </div>
+                </div>
                 {!editingVendorOverview && (
                   <div className="flex items-center gap-2">
                     {vendorOverview ? (
                       <button
                         type="button"
                         onClick={() => setEditingVendorOverview(true)}
-                        className="px-4 py-2 bg-app-accent text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(6,182,212,0.3)] hover:bg-app-accent hover:-translate-y-0.5 transition-all"
+                        className="px-4 py-2 bg-app-accent text-white rounded-xl text-sm font-semibold tracking-wide shadow-sm hover:bg-app-accent/90 transition-all"
                       >
                         Edit
                       </button>
@@ -574,7 +646,7 @@ export default function VendorDashboard() {
                       <button
                         type="button"
                         onClick={() => setEditingVendorOverview(true)}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white rounded-full text-sm font-semibold tracking-wide shadow-[0_10px_25px_rgba(16,185,129,0.3)] hover:bg-emerald-500 hover:-translate-y-0.5 transition-all"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm font-semibold tracking-wide shadow-sm hover:bg-emerald-500 transition-all"
                         title="Add vendor profile overview"
                       >
                         <span className="text-lg leading-none font-bold">+</span>
@@ -584,10 +656,7 @@ export default function VendorDashboard() {
                   </div>
                 )}
               </div>
-              <p className="text-sm text-app-text-muted mb-4">
-                Public-style summary: website, contact details, and services or materials.
-              </p>
-              <div className="bg-app-surface/95 rounded-2xl border border-blue-100/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_12px_40px_rgba(0,0,0,0.2)] px-6 py-5 md:px-8 md:py-6">
+              <div className="bg-app-surface-muted/50 rounded-xl border border-app-border p-5">
                 {editingVendorOverview ? (
                   <VendorProfileOverviewForm
                     key={`overview-${selectedVendor.vendorcode}`}
@@ -602,36 +671,19 @@ export default function VendorDashboard() {
                   />
                 ) : vendorOverviewLoading ? (
                   <div className="flex items-center justify-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-600" />
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-app-accent" />
                     <span className="ml-2 text-app-text-muted">Loading overview…</span>
                   </div>
                 ) : vendorOverview ? (
                   <VendorProfileOverviewDisplay vendorOverview={vendorOverview} />
                 ) : (
-                  <p className="text-app-text-muted text-center py-6">
+                  <p className="text-app-text-muted text-center py-6 text-sm">
                     No profile overview yet. Use <span className="font-medium text-app-text-secondary">+ Add overview</span> to create a record for this vendor code.
                   </p>
                 )}
               </div>
             </div>
           )}
-
-            {/* Quick Stats */}
-            {!(vendorData.vendor?.source === 'registeredvendors' && (!vendorData.vendor?.vendorcode || vendorData.vendor?.vendorcode === 'NA')) && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 p-4 rounded-2xl shadow-[0_14px_35px_rgba(6,182,212,0.15)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(6,182,212,0.25)]">
-                  <h3 className="text-sm font-medium text-app-accent">Total PO Value</h3>
-                  <p className="text-2xl font-bold text-app-text">
-                    {formatCurrency(vendorData.poSummary?.totalValue || 0)}
-                  </p>
-                </div>
-              <div className="bg-gradient-to-br from-emerald-950/40 to-emerald-900/20 p-4 rounded-2xl shadow-[0_14px_35px_rgba(16,185,129,0.15)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(16,185,129,0.25)]">
-                  <h3 className="text-sm font-medium text-emerald-400">Number of POs</h3>
-                  <p className="text-2xl font-bold text-emerald-100">{vendorData.poSummary?.poCount || 0}</p>
-                </div>
-              </div>
-            )}
-          </div>
 
           {/* Material & service groups (vendorgroupmap / unregisteredvendorgroupmap) */}
           <div className="bg-app-surface/90 backdrop-blur-sm rounded-2xl border border-app-border shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
@@ -674,7 +726,7 @@ export default function VendorDashboard() {
                   <button
                     type="button"
                     onClick={() => setEditingGroupMappings(false)}
-                    className="px-4 py-2 border border-slate-600 text-app-text-secondary rounded-lg text-sm font-medium hover:bg-app-surface"
+                    className="px-4 py-2 border border-app-border text-app-text-secondary rounded-xl text-sm font-medium hover:bg-app-surface-muted transition-colors"
                   >
                     Cancel
                   </button>
@@ -689,7 +741,7 @@ export default function VendorDashboard() {
                       return (
                         <div
                           key={`${m.subgroupId}-${m.mappingId}`}
-                          className={`px-4 py-3 rounded-xl border border-slate-850/60 flex flex-col gap-1 transition-all ${bgClass}`}
+                          className={`px-4 py-3 rounded-xl border border-app-border flex flex-col gap-1 transition-all ${bgClass}`}
                         >
                           <div className="flex justify-between items-center">
                             <span className="text-[9px] font-black text-app-accent uppercase tracking-widest leading-none">
@@ -830,7 +882,7 @@ export default function VendorDashboard() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center space-x-2 mb-1">
                           <span className="text-sm font-medium text-app-text truncate">{document.filename}</span>
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-800">{document.documentType}</span>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-app-accent-soft text-app-accent border border-app-accent/20">{document.documentType}</span>
                         </div>
                         {document.description && (
                           <p className="text-xs text-app-text-muted mb-1">{document.description}</p>
@@ -903,7 +955,7 @@ export default function VendorDashboard() {
                       <div className="mt-1 flex flex-wrap gap-2">
                         {additionalInfo.companyTypes?.length ? (
                           additionalInfo.companyTypes.map((t, idx) => (
-                            <span key={idx} className="px-2 py-1 bg-slate-100 text-app-text rounded-full text-xs">{t}</span>
+                            <span key={idx} className="px-2.5 py-0.5 bg-app-accent-soft text-app-accent border border-app-accent/20 rounded-full text-xs font-medium">{t}</span>
                           ))
                         ) : (
                           <span className="text-app-text-muted">N/A</span>
@@ -986,11 +1038,11 @@ export default function VendorDashboard() {
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                          <div className="w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                             {feedback.username?.charAt(0)?.toUpperCase() || 'U'}
                           </div>
                           <div>
-                            <span className="font-semibold text-gray-800">
+                            <span className="font-semibold text-app-text">
                               {feedback.username}
                             </span>
                             <div className="text-xs text-app-text-muted">
@@ -1007,7 +1059,7 @@ export default function VendorDashboard() {
                       </div>
                       
                       {feedback.vendorName && (
-                        <div className="mb-3 p-2 bg-blue-50/80 rounded-xl border border-cyan-800">
+                        <div className="mb-3 p-2 bg-app-accent-soft rounded-xl border border-app-accent/20">
                           <div className="text-sm text-app-accent">
                             <span className="font-medium">Vendor:</span> {feedback.vendorName}
                           </div>
@@ -1138,6 +1190,8 @@ function ContactEditForm({ contact, onSave, onCancel }) {
     onSave(formData);
   };
 
+  const inputClass = "w-full px-3 py-2 border border-app-border bg-app-surface text-app-text rounded-xl focus:ring-2 focus:ring-app-accent focus:border-app-accent transition-colors";
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1147,7 +1201,7 @@ function ContactEditForm({ contact, onSave, onCancel }) {
             type="text"
             value={formData.telephone1}
             onChange={(e) => setFormData({...formData, telephone1: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-app-accent focus:border-app-accent"
+            className={inputClass}
           />
         </div>
         <div>
@@ -1156,7 +1210,7 @@ function ContactEditForm({ contact, onSave, onCancel }) {
             type="text"
             value={formData.telephone2}
             onChange={(e) => setFormData({...formData, telephone2: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-app-accent focus:border-app-accent"
+            className={inputClass}
           />
         </div>
         <div>
@@ -1165,7 +1219,7 @@ function ContactEditForm({ contact, onSave, onCancel }) {
             type="text"
             value={formData.fax}
             onChange={(e) => setFormData({...formData, fax: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-app-accent focus:border-app-accent"
+            className={inputClass}
           />
         </div>
         <div>
@@ -1174,7 +1228,7 @@ function ContactEditForm({ contact, onSave, onCancel }) {
             type="text"
             value={formData.salesname}
             onChange={(e) => setFormData({...formData, salesname: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-app-accent focus:border-app-accent"
+            className={inputClass}
           />
         </div>
         <div>
@@ -1183,7 +1237,7 @@ function ContactEditForm({ contact, onSave, onCancel }) {
             type="email"
             value={formData.salesemail}
             onChange={(e) => setFormData({...formData, salesemail: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-app-accent focus:border-app-accent"
+            className={inputClass}
           />
         </div>
         <div>
@@ -1192,27 +1246,26 @@ function ContactEditForm({ contact, onSave, onCancel }) {
             type="text"
             value={formData.salesmobile}
             onChange={(e) => setFormData({...formData, salesmobile: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-app-accent focus:border-app-accent"
+            className={inputClass}
           />
         </div>
       </div>
-      <div className="flex justify-end space-x-3">
+      <div className="flex justify-end space-x-3 pt-2">
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 border border-gray-300 text-app-text-secondary rounded-lg hover:bg-gray-50"
+          className="px-4 py-2 border border-app-border text-app-text-secondary rounded-xl hover:bg-app-surface-muted transition-colors text-sm font-medium"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-app-accent"
+          className="px-4 py-2 bg-app-accent text-white rounded-xl hover:bg-app-accent/90 transition-colors shadow-sm text-sm font-semibold"
         >
           Save Changes
         </button>
       </div>
     </form>
-    
   );
 }
 
@@ -1246,11 +1299,11 @@ function VendorEvaluationSection({ evaluation, vendorcode }) {
   ];
 
   return (
-    <div className="bg-app-surface/90 backdrop-blur-sm rounded-2xl border border-app-border shadow-[0_20px_55px_rgba(15,23,42,0.22)] p-6 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.38)]">
+    <div className="bg-app-surface/90 backdrop-blur-sm rounded-2xl border border-app-border shadow-sm p-6">
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-xl font-semibold text-app-text tracking-tight">Vendor Evaluation</h3>
         {vendorcode && (
-          <Link href={`/vendorevaluation/webformat/${vendorcode}`} className="text-xs font-bold text-app-accent hover:text-app-accent hover:underline flex items-center gap-1">
+          <Link href={`/vendorevaluation/webformat/${vendorcode}`} className="text-xs font-bold text-app-accent hover:underline flex items-center gap-1">
             View Full Evaluation →
           </Link>
         )}
@@ -1258,41 +1311,38 @@ function VendorEvaluationSection({ evaluation, vendorcode }) {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Summary Scores Card */}
-        <div className="bg-gradient-to-br from-cyan-950/40 to-blue-100 rounded-2xl p-6 shadow-[0_16px_40px_rgba(6,182,212,0.15)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(37,99,235,0.5)]" style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, rgba(59, 130, 246, 0.1) 1px, transparent 0)`,
-          backgroundSize: '20px 20px'
-        }}>
+        <div className="bg-app-surface-muted/60 border border-app-border border-l-4 border-l-cyan-500 rounded-2xl p-5 shadow-sm">
           <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
-              <svg className="w-6 h-6 text-app-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 bg-cyan-500/10 text-cyan-500 rounded-xl flex items-center justify-center mr-3 border border-cyan-500/20">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h4 className="text-lg font-bold text-app-text">Summary Scores</h4>
+            <h4 className="text-base font-bold text-app-text">Summary Scores</h4>
           </div>
-          <div className="space-y-3">
-            <div className="bg-app-surface rounded-lg p-3 shadow-sm">
-              <div className="text-xs text-app-accent font-medium">Fixed Score</div>
-              <div className="text-sm font-bold text-app-text">
+          <div className="space-y-2.5">
+            <div className="bg-app-surface rounded-xl p-3 border border-app-border flex justify-between items-center">
+              <span className="text-xs text-app-accent font-semibold uppercase tracking-wider">Fixed Score</span>
+              <span className="text-sm font-bold text-app-text">
                 {evalmarks?.finalfixedscore?.$numberDecimal || evalmarks?.finalfixedscore || 'N/A'}
-              </div>
+              </span>
             </div>
             {evalmarks.finalscore2022 && (
-              <div className="bg-app-surface rounded-lg p-3 shadow-sm">
-                <div className="text-xs text-emerald-400 font-medium">2022 Score</div>
-                <div className="text-sm font-bold text-emerald-100">{evalmarks.finalscore2022.toFixed(2)}</div>
+              <div className="bg-app-surface rounded-xl p-3 border border-app-border flex justify-between items-center">
+                <span className="text-xs text-emerald-500 font-semibold uppercase tracking-wider">2022 Score</span>
+                <span className="text-sm font-bold text-app-text">{evalmarks.finalscore2022.toFixed(2)}</span>
               </div>
             )}
             {evalmarks.finalscore2023 && (
-              <div className="bg-app-surface rounded-lg p-3 shadow-sm">
-                <div className="text-xs text-teal-600 font-medium">2023 Score</div>
-                <div className="text-sm font-bold text-teal-900">{evalmarks.finalscore2023.toFixed(2)}</div>
+              <div className="bg-app-surface rounded-xl p-3 border border-app-border flex justify-between items-center">
+                <span className="text-xs text-teal-500 font-semibold uppercase tracking-wider">2023 Score</span>
+                <span className="text-sm font-bold text-app-text">{evalmarks.finalscore2023.toFixed(2)}</span>
               </div>
             )}
             {evalmarks.finalscore2024 && (
-              <div className="bg-app-surface rounded-lg p-3 shadow-sm">
-                <div className="text-xs text-emerald-600 font-medium">2024 Score</div>
-                <div className="text-sm font-bold text-emerald-900">{evalmarks.finalscore2024.toFixed(2)}</div>
+              <div className="bg-app-surface rounded-xl p-3 border border-app-border flex justify-between items-center">
+                <span className="text-xs text-indigo-500 font-semibold uppercase tracking-wider">2024 Score</span>
+                <span className="text-sm font-bold text-app-text">{evalmarks.finalscore2024.toFixed(2)}</span>
               </div>
             )}
           </div>
@@ -1300,26 +1350,21 @@ function VendorEvaluationSection({ evaluation, vendorcode }) {
 
         {/* Past Scores Card */}
         {evalmarks2?.past && evalmarks2.past.length > 0 && (
-          <div className="bg-gradient-to-br from-emerald-950/40 to-green-100 rounded-2xl p-6 shadow-[0_16px_40px_rgba(22,163,74,0.32)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(22,163,74,0.5)]" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(34, 197, 94, 0.1) 1px, transparent 0)`,
-            backgroundSize: '20px 20px'
-          }}>
+          <div className="bg-app-surface-muted/60 border border-app-border border-l-4 border-l-emerald-500 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center mr-3">
-                <svg className="w-6 h-6 text-app-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-10 h-10 bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center justify-center mr-3 border border-emerald-500/20">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h4 className="text-lg font-bold text-emerald-100">Past Scores</h4>
+              <h4 className="text-base font-bold text-app-text">Past Scores</h4>
             </div>
             <div className="space-y-2">
               {evalmarks2.past.map((past, index) =>
                 past.pastyearscore > 0 ? (
-                  <div key={index} className="bg-app-surface rounded-lg p-3 shadow-sm">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-green-700">Year {past.pastyear}</span>
-                      <span className="text-sm font-bold text-emerald-100">{past.pastyearscore}</span>
-                    </div>
+                  <div key={index} className="bg-app-surface rounded-xl p-3 border border-app-border flex justify-between items-center">
+                    <span className="text-xs font-semibold text-app-text-muted">Year {past.pastyear}</span>
+                    <span className="text-sm font-bold text-emerald-500">{past.pastyearscore}</span>
                   </div>
                 ) : null
               )}
@@ -1329,25 +1374,20 @@ function VendorEvaluationSection({ evaluation, vendorcode }) {
 
         {/* Fixed Score Basis Card */}
         {evalmarks2?.fixedevalyear1?.fixedeval && (
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 shadow-[0_16px_40px_rgba(147,51,234,0.34)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(147,51,234,0.54)]" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(168, 85, 247, 0.1) 1px, transparent 0)`,
-            backgroundSize: '20px 20px'
-          }}>
+          <div className="bg-app-surface-muted/60 border border-app-border border-l-4 border-l-purple-500 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-purple-300 rounded-lg flex items-center justify-center mr-3">
-                <svg className="w-6 h-6 text-app-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-10 h-10 bg-purple-500/10 text-purple-500 rounded-xl flex items-center justify-center mr-3 border border-purple-500/20">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h4 className="text-lg font-bold text-purple-900">Fixed Score Basis</h4>
+              <h4 className="text-base font-bold text-app-text">Fixed Score Basis</h4>
             </div>
             <div className="space-y-2">
               {evalmarks2.fixedevalyear1.fixedeval.map((fixed, index) => (
-                <div key={index} className="bg-app-surface rounded-lg p-3 shadow-sm">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-sky-400">{fixedscoretext[index]}</span>
-                    <span className="text-[16px] italic font-bold text-sky-500">{fixed}</span>
-                  </div>
+                <div key={index} className="bg-app-surface rounded-xl p-3 border border-app-border flex justify-between items-center">
+                  <span className="text-xs font-medium text-app-text-muted">{fixedscoretext[index]}</span>
+                  <span className="text-sm font-bold text-purple-400">{fixed}</span>
                 </div>
               ))}
             </div>
@@ -1356,25 +1396,20 @@ function VendorEvaluationSection({ evaluation, vendorcode }) {
 
         {/* PO Scoring 2022 Card */}
         {evalmarks2?.powiseevalyear1?.powiserating && evalmarks2.powiseevalyear1.powiserating.length > 0 && (
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-6 shadow-[0_16px_40px_rgba(234,88,12,0.34)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(234,88,12,0.54)]" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(249, 115, 22, 0.1) 1px, transparent 0)`,
-            backgroundSize: '20px 20px'
-          }}>
+          <div className="bg-app-surface-muted/60 border border-app-border border-l-4 border-l-amber-500 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center mr-3">
-                <svg className="w-6 h-6 text-app-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              <div className="w-10 h-10 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center mr-3 border border-amber-500/20">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
-              <h4 className="text-lg font-bold text-orange-900">PO Scoring 2022</h4>
+              <h4 className="text-base font-bold text-app-text">PO Scoring 2022</h4>
             </div>
             <div className="space-y-2">
               {evalmarks2.powiseevalyear1.powiserating.map((po, index) => (
-                <div key={index} className="bg-app-surface rounded-lg p-3 shadow-sm">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-orange-700">{po.ponumber}</span>
-                    <span className="text-sm font-bold text-orange-900">{po.povalue}</span>
-                  </div>
+                <div key={index} className="bg-app-surface rounded-xl p-3 border border-app-border flex justify-between items-center">
+                  <span className="text-xs font-mono text-app-text-muted">{po.ponumber}</span>
+                  <span className="text-sm font-bold text-amber-500">{po.povalue}</span>
                 </div>
               ))}
             </div>
@@ -1383,25 +1418,20 @@ function VendorEvaluationSection({ evaluation, vendorcode }) {
 
         {/* PO Scoring 2023 Card */}
         {evalmarks2?.powiseevalyear2?.powiserating && evalmarks2.powiseevalyear2.powiserating.length > 0 && (
-          <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-2xl p-6 shadow-[0_16px_40px_rgba(8,145,178,0.34)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(8,145,178,0.54)]" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(6, 182, 212, 0.1) 1px, transparent 0)`,
-            backgroundSize: '20px 20px'
-          }}>
+          <div className="bg-app-surface-muted/60 border border-app-border border-l-4 border-l-cyan-500 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-app-accent rounded-lg flex items-center justify-center mr-3">
-                <svg className="w-6 h-6 text-app-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              <div className="w-10 h-10 bg-cyan-500/10 text-cyan-500 rounded-xl flex items-center justify-center mr-3 border border-cyan-500/20">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
-              <h4 className="text-lg font-bold text-cyan-900">PO Scoring 2023</h4>
+              <h4 className="text-base font-bold text-app-text">PO Scoring 2023</h4>
             </div>
             <div className="space-y-2">
               {evalmarks2.powiseevalyear2.powiserating.map((po, index) => (
-                <div key={index} className="bg-app-surface rounded-lg p-3 shadow-sm">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-cyan-700">{po.ponumber}</span>
-                    <span className="text-sm font-bold text-cyan-900">{po.povalue}</span>
-                  </div>
+                <div key={index} className="bg-app-surface rounded-xl p-3 border border-app-border flex justify-between items-center">
+                  <span className="text-xs font-mono text-app-text-muted">{po.ponumber}</span>
+                  <span className="text-sm font-bold text-cyan-500">{po.povalue}</span>
                 </div>
               ))}
             </div>
@@ -1410,25 +1440,20 @@ function VendorEvaluationSection({ evaluation, vendorcode }) {
 
         {/* PO Scoring 2024 Card */}
         {evalmarks2?.powiseevalyear3?.powiserating && evalmarks2.powiseevalyear3.powiserating.length > 0 && (
-          <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl p-6 shadow-[0_16px_40px_rgba(219,39,119,0.34)] transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(219,39,119,0.54)]" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(236, 72, 153, 0.1) 1px, transparent 0)`,
-            backgroundSize: '20px 20px'
-          }}>
+          <div className="bg-app-surface-muted/60 border border-app-border border-l-4 border-l-rose-500 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center mr-3">
-                <svg className="w-6 h-6 text-app-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              <div className="w-10 h-10 bg-rose-500/10 text-rose-500 rounded-xl flex items-center justify-center mr-3 border border-rose-500/20">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
-              <h4 className="text-lg font-bold text-pink-900">PO Scoring 2024</h4>
+              <h4 className="text-base font-bold text-app-text">PO Scoring 2024</h4>
             </div>
             <div className="space-y-2">
               {evalmarks2.powiseevalyear3.powiserating.map((po, index) => (
-                <div key={index} className="bg-app-surface rounded-lg p-3 shadow-sm">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-pink-700">{po.ponumber}</span>
-                    <span className="text-sm font-bold text-pink-900">{po.povalue}</span>
-                  </div>
+                <div key={index} className="bg-app-surface rounded-xl p-3 border border-app-border flex justify-between items-center">
+                  <span className="text-xs font-mono text-app-text-muted">{po.ponumber}</span>
+                  <span className="text-sm font-bold text-rose-500">{po.povalue}</span>
                 </div>
               ))}
             </div>

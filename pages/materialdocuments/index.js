@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 import { FiSearch, FiX, FiFileText, FiFilter } from "react-icons/fi";
 import Matdocument from "./Matdocument";
+import GlassSubPageHero from "../../components/GlassSubPageHero";
+import { GlassStyles, Tilt } from "../../components/landing/glass";
 
 function Matdocs() {
   const { ref, inView } = useInView();
@@ -88,90 +90,93 @@ function Matdocs() {
     );
 
   return (
-    <div className="app-page min-h-screen flex flex-col">
-      <main className="container mx-auto px-4 py-8 flex-1 flex flex-col">
-        {/* Header Section */}
-        <div className="mb-6">
-          <div className="flex items-center mb-6">
-            <div className="w-1.5 h-8 bg-app-accent rounded-full mr-4"></div>
-            <h1 className="text-3xl font-bold text-app-text tracking-tight">Material Documents</h1>
+    <div className="app-page min-h-screen flex flex-col font-[Poppins,sans-serif]">
+      <GlassStyles />
+      <main className="container mx-auto px-4 sm:px-6 py-8 flex-1 flex flex-col space-y-6">
+        {/* Glass Sub Page Hero */}
+        <GlassSubPageHero
+          icon={FiFileText}
+          eyebrow="Inventory Movements"
+          title="Material Documents"
+          description="Real-time ledger of goods receipts, warehouse issues, and physical transfer documents."
+          accent="emerald"
+          moduleKey="materials"
+        />
+
+        {/* Multi-Field Filter Bento Panel */}
+        <div className="bg-app-surface/80 backdrop-blur-md border border-app-border rounded-2xl shadow-sm p-6">
+          <div className="flex items-center gap-2 mb-4 text-emerald-600 dark:text-emerald-400">
+            <FiFilter className="w-4 h-4" />
+            <h2 className="font-bold text-sm text-app-text">Multi-Criteria Search Filters</h2>
           </div>
           
-          {/* Multi-Field Filter Panel */}
-          <div className="bg-app-surface/80 border border-app-border rounded-2xl shadow-lg p-6 mb-8">
-            <div className="flex items-center mb-4 text-app-accent">
-              <FiFilter className="mr-2" />
-              <h2 className="font-semibold">Search Filters</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-app-text-muted mb-1.5 uppercase tracking-wider">PO Number</label>
+              <input
+                type="text"
+                name="po"
+                placeholder="e.g. 4500001234"
+                className="w-full px-3.5 py-2.5 bg-app-bg border border-app-border rounded-xl focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/30 text-app-text placeholder-app-text-disabled transition-all text-xs"
+                value={filters.po}
+                onChange={handleFilterChange}
+                onKeyDown={handleKeyDown}
+              />
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-xs font-semibold text-app-text-muted mb-1 uppercase tracking-wider">PO Number</label>
-                <input
-                  type="text"
-                  name="po"
-                  placeholder="e.g. 4500001234"
-                  className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors"
-                  value={filters.po}
-                  onChange={handleFilterChange}
-                  onKeyDown={handleKeyDown}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-xs font-semibold text-app-text-muted mb-1 uppercase tracking-wider">Material Code</label>
-                <input
-                  type="text"
-                  name="matCode"
-                  placeholder="e.g. 10002345"
-                  className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors"
-                  value={filters.matCode}
-                  onChange={handleFilterChange}
-                  onKeyDown={handleKeyDown}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-xs font-semibold text-app-text-muted mb-1 uppercase tracking-wider">Description</label>
-                <input
-                  type="text"
-                  name="desc"
-                  placeholder="e.g. porta cabin"
-                  className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors"
-                  value={filters.desc}
-                  onChange={handleFilterChange}
-                  onKeyDown={handleKeyDown}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-xs font-semibold text-app-text-muted mb-1 uppercase tracking-wider">Project / WBS</label>
-                <input
-                  type="text"
-                  name="wbs"
-                  placeholder="e.g. PRJ-2023"
-                  className="w-full px-4 py-2.5 bg-app-bg border border-app-border rounded-lg focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent text-app-text placeholder-app-text-disabled transition-colors"
-                  value={filters.wbs}
-                  onChange={handleFilterChange}
-                  onKeyDown={handleKeyDown}
-                />
-              </div>
+            <div>
+              <label className="block text-xs font-bold text-app-text-muted mb-1.5 uppercase tracking-wider">Material Code</label>
+              <input
+                type="text"
+                name="matCode"
+                placeholder="e.g. 10002345"
+                className="w-full px-3.5 py-2.5 bg-app-bg border border-app-border rounded-xl focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/30 text-app-text placeholder-app-text-disabled transition-all text-xs"
+                value={filters.matCode}
+                onChange={handleFilterChange}
+                onKeyDown={handleKeyDown}
+              />
             </div>
             
-            <div className="flex justify-end mt-6 gap-3">
-              <button
-                onClick={handleClearFilters}
-                className="px-5 py-2.5 text-sm font-semibold text-app-text-secondary bg-app-surface hover:bg-app-surface-muted rounded-lg transition-colors flex items-center border border-app-border hover:border-slate-600"
-              >
-                <FiX className="mr-2" /> Clear
-              </button>
-              <button
-                onClick={applyFilters}
-                className="px-6 py-2.5 text-sm font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg shadow-lg shadow-cyan-900/20 transition-all flex items-center"
-              >
-                <FiSearch className="mr-2" /> Apply Filters
-              </button>
+            <div>
+              <label className="block text-xs font-bold text-app-text-muted mb-1.5 uppercase tracking-wider">Description</label>
+              <input
+                type="text"
+                name="desc"
+                placeholder="e.g. porta cabin"
+                className="w-full px-3.5 py-2.5 bg-app-bg border border-app-border rounded-xl focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/30 text-app-text placeholder-app-text-disabled transition-all text-xs"
+                value={filters.desc}
+                onChange={handleFilterChange}
+                onKeyDown={handleKeyDown}
+              />
             </div>
+            
+            <div>
+              <label className="block text-xs font-bold text-app-text-muted mb-1.5 uppercase tracking-wider">Project / WBS</label>
+              <input
+                type="text"
+                name="wbs"
+                placeholder="e.g. PRJ-2023"
+                className="w-full px-3.5 py-2.5 bg-app-bg border border-app-border rounded-xl focus:outline-none focus:border-app-accent focus:ring-2 focus:ring-app-accent/30 text-app-text placeholder-app-text-disabled transition-all text-xs"
+                value={filters.wbs}
+                onChange={handleFilterChange}
+                onKeyDown={handleKeyDown}
+              />
+            </div>
+          </div>
+          
+          <div className="flex justify-end mt-5 gap-2.5">
+            <button
+              onClick={handleClearFilters}
+              className="px-4 py-2 text-xs font-semibold text-app-text-secondary bg-app-surface hover:bg-app-surface-muted rounded-xl transition-all flex items-center border border-app-border"
+            >
+              <FiX className="mr-1.5" /> Clear
+            </button>
+            <button
+              onClick={applyFilters}
+              className="app-btn-primary text-xs flex items-center"
+            >
+              <FiSearch className="mr-1.5" /> Apply Filters
+            </button>
           </div>
         </div>
 
