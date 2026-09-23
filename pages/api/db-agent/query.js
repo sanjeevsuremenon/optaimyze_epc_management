@@ -218,6 +218,26 @@ ${JSON.stringify(sampleRawData, null, 2)}
     });
   } catch (error) {
     console.error('Error in DB Agent Query Route:', error);
+
+    const errorMessage = String(error?.message || '');
+    const isLlmIssue =
+      error?.isLlmError ||
+      error?.status === 401 ||
+      error?.status === 402 ||
+      error?.status === 429 ||
+      /LLM API error|No LLM API key|Authentication Fails|invalid_request_error|insufficient_quota|Rate limit|Failed to communicate with LLM|Empty response received from LLM/i.test(
+        errorMessage
+      );
+
+    if (isLlmIssue) {
+      return res.status(503).json({
+        success: false,
+        isAiServiceUnavailable: true,
+        error:
+          'The AI agent is currently busy or temporarily unavailable. Please try again after some time. If the issue persists, please contact your administrator.',
+      });
+    }
+
     return res.status(500).json({
       success: false,
       error: error.message || 'An error occurred while processing the AI query.',
