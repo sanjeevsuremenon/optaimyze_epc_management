@@ -7,8 +7,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "react-datepicker/dist/react-datepicker.css";
+
+@theme inline {
+  --color-epc-primary: #074E84;
+  --color-epc-secondary: #2380C6;
+  --color-epc-gold: #FCBC45;
+  --color-epc-golddeep: #E8A020;
+  --color-epc-ink: #05052D;
+  --color-epc-navy: #0A1B33;
+  --color-epc-body: #505E6B;
+  --color-epc-mist: #F6F4FF;
+  --color-epc-line: #E7E3F5;
+  --font-display: 'Heebo', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --shadow-card: 0 10px 40px -12px rgba(7, 78, 132, 0.18);
+  --shadow-cardhover: 0 24px 60px -16px rgba(7, 78, 132, 0.32);
+}
 
 html,
 body,
@@ -17,6 +34,7 @@ body,
   min-height: 100%;
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 
 @layer components {
@@ -49,7 +67,271 @@ body,
         max-height: 1000px;
       }
 
+  /* ================================================================== */
+  /* EPCORA Stack Landing Page Design System                             */
+  /* ================================================================== */
+  .epcora-landing {
+    font-family: 'Inter', sans-serif;
+    color: #505E6B;
+    background-color: #ffffff;
+  }
 
+  .epcora-landing ::selection {
+    background: #fcbc45;
+    color: #05052d;
+  }
+
+  .epcora-eyebrow {
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    color: #2380C6;
+  }
+
+  .epcora-eyebrow-center {
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    color: #2380C6;
+    text-align: center;
+  }
+
+  .epcora-bordered-heading {
+    border-left: 4px solid #2380C6;
+    padding-left: 1.25rem;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 700;
+    color: #074E84;
+    line-height: 1.22;
+  }
+
+  .epcora-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    background-color: #074E84;
+    padding: 1rem 2rem;
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    transition: all 0.3s ease;
+  }
+  .epcora-btn-primary:hover {
+    background-color: #2380C6;
+    box-shadow: 0 24px 60px -16px rgba(7, 78, 132, 0.32);
+  }
+
+  .epcora-btn-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    background-color: #FCBC45;
+    padding: 1rem 2rem;
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #05052D;
+    transition: all 0.3s ease;
+  }
+  .epcora-btn-gold:hover {
+    background-color: #E8A020;
+    box-shadow: 0 24px 60px -16px rgba(7, 78, 132, 0.32);
+  }
+
+  .epcora-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    border: 2px solid #074E84;
+    padding: 1rem 2rem;
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #074E84;
+    transition: all 0.3s ease;
+  }
+  .epcora-btn-outline:hover {
+    background-color: #074E84;
+    color: #ffffff;
+  }
+
+  .epcora-service-card {
+    position: relative;
+    background-color: #ffffff;
+    padding: 2rem;
+    box-shadow: 0 10px 40px -12px rgba(7, 78, 132, 0.18);
+    transition: all 0.5s ease;
+  }
+  .epcora-service-card:hover {
+    transform: translateY(-0.5rem);
+    box-shadow: 0 24px 60px -16px rgba(7, 78, 132, 0.32);
+  }
+  .epcora-service-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 4px;
+    transform-origin: left;
+    transform: scaleX(0);
+    background-color: #FCBC45;
+    transition: transform 0.5s ease;
+  }
+  .epcora-service-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .epcora-check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #0A1B33;
+  }
+
+  .epcora-check-badge {
+    display: flex;
+    height: 1.25rem;
+    width: 1.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background-color: rgba(252, 188, 69, 0.25);
+    margin-top: 0.125rem;
+  }
+
+  .epcora-icon-chip {
+    margin-bottom: 1.5rem;
+    display: flex;
+    height: 3.5rem;
+    width: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    background-color: rgba(7, 78, 132, 0.05);
+    color: #074E84;
+    box-shadow: inset 0 0 0 1px rgba(7, 78, 132, 0.15);
+    transition: all 0.5s ease;
+  }
+  .group:hover .epcora-icon-chip {
+    background-color: #FCBC45;
+    color: #05052D;
+    box-shadow: inset 0 0 0 1px #FCBC45;
+  }
+
+  .bg-denim {
+    background-color: #33517d;
+    background-image:
+      repeating-linear-gradient(63deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(153deg, rgba(4, 16, 38, 0.1) 0 1px, transparent 1px 3px),
+      radial-gradient(ellipse 90% 70% at 50% 0%, rgba(255, 255, 255, 0.07), transparent 65%);
+  }
+
+  .text-3d-gold {
+    color: #fcbc45;
+    text-shadow:
+      0 1px 0 #b97f10,
+      0 2px 0 #a9730e,
+      0 3px 0 #98670c,
+      0 4px 0 #875b0b,
+      0 5px 0 #765009,
+      0 6px 0 #654408,
+      0 7px 16px rgba(0, 0, 0, 0.55);
+  }
+
+  .mark-floor-shadow {
+    width: 64%;
+    height: 10px;
+    margin: 10px auto 0;
+    border-radius: 9999px;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.5), transparent 70%);
+    filter: blur(2px);
+  }
+
+  .agentically {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    letter-spacing: 0.45em;
+    margin-top: 2px;
+    background: linear-gradient(90deg, #c99b3f 0%, #fcbc45 30%, #ffedbe 50%, #fcbc45 70%, #c99b3f 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: agentic-shimmer 5s ease-in-out infinite;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.float-soft {
+  animation: float-soft 6s ease-in-out infinite;
+}
+
+@keyframes agentic-shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+    opacity: 0.85;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 1;
+  }
 }
 
 /* React DatePicker — theme-aware styling */

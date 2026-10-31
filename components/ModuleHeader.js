@@ -186,14 +186,162 @@ const NAV_ITEMS = [
   }
 ];
 
+const LANDING_NAV_LINKS = [
+  { label: "Top", href: "#top" },
+  { label: "Why It Matters", href: "#problem" },
+  { label: "How It Works", href: "#workflow" },
+  { label: "Modules", href: "#modules" },
+  { label: "Showcase", href: "#showcase" },
+  { label: "Industries", href: "#industries" },
+  { label: "FAQ", href: "#faq" },
+];
+
 export default function ModuleHeader() {
   const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const isLandingUnauth = router.pathname === "/" && (!mounted || !session);
+
+  if (isLandingUnauth) {
+    return (
+      <>
+        {/* EPCORA TopBar */}
+        <div className="hidden border-b border-[#E7E3F5] bg-white md:block">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 text-xs text-[#505E6B]">
+            <div className="flex items-center gap-6">
+              <span>
+                Welcome to EPCORA Stack — Digital Transformation for Construction &amp; EPC
+              </span>
+              <span className="flex items-center gap-1.5 font-semibold text-[#E8A020]">
+                <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#E8A020]" />
+                Optaimyze EPC Portal · v2 Live
+              </span>
+            </div>
+            <div className="flex items-center gap-4 font-display text-[11px] font-semibold uppercase tracking-wider text-[#074E84]">
+              <Link href="/db-agent" className="transition-colors hover:text-[#E8A020]">
+                AI DB Agent
+              </Link>
+              <span className="text-[#E7E3F5]">|</span>
+              <Link href="/auth/login" className="transition-colors hover:text-[#E8A020]">
+                Portal Sign In
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* EPCORA Sticky Nav */}
+        <header
+          className={`sticky top-0 z-50 border-b bg-white/95 backdrop-blur transition-shadow duration-300 ${
+            scrolled
+              ? "border-[#E7E3F5] shadow-[0_10px_40px_-12px_rgba(7,78,132,0.18)]"
+              : "border-[#E7E3F5]/60"
+          }`}
+        >
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+            <Link href="/#top" className="flex items-center gap-3">
+              <img
+                src="/images/epcora/epcora-mark.svg"
+                alt="EPCORA logo"
+                className="h-10 w-auto object-contain"
+              />
+              <div>
+                <span className="font-display text-xl font-extrabold tracking-tight text-[#074E84]">
+                  EPC<span className="text-[#2380C6]">ORA</span>{" "}
+                  <span className="text-[#0A1B33]">Optaimyze</span>
+                </span>
+                <p className="font-display text-[10px] font-bold uppercase tracking-[0.22em] text-[#E8A020]">
+                  EPC Management Portal
+                </p>
+              </div>
+            </Link>
+
+            <nav className="hidden items-center gap-6 lg:flex">
+              {LANDING_NAV_LINKS.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className={`font-display text-[13px] uppercase tracking-[0.15em] transition-colors hover:text-[#E8A020] ${
+                    item.label === "Modules"
+                      ? "font-bold text-[#E8A020]"
+                      : "font-semibold text-[#074E84]"
+                  }`}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+
+            <div className="hidden items-center gap-3 lg:flex">
+              <Link
+                href="/auth/login"
+                className="border-2 border-[#074E84] px-5 py-2 font-display text-xs font-bold uppercase tracking-wider text-[#074E84] transition-colors duration-300 hover:bg-[#074E84] hover:text-white"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/auth/register"
+                className="bg-[#FCBC45] px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-[#05052D] transition-colors duration-300 hover:bg-[#E8A020]"
+              >
+                Register
+              </Link>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((v) => !v)}
+              aria-label="Toggle navigation menu"
+              className="inline-flex items-center justify-center border border-[#E7E3F5] p-2 text-[#074E84] lg:hidden"
+            >
+              <FiMenu size={22} />
+            </button>
+          </div>
+
+          {mobileMenuOpen && (
+            <div className="border-t border-[#E7E3F5] bg-white px-6 py-5 lg:hidden">
+              <div className="flex flex-col gap-3.5">
+                {LANDING_NAV_LINKS.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="font-display text-sm font-semibold uppercase tracking-[0.15em] text-[#074E84] hover:text-[#E8A020]"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <div className="mt-2 flex flex-wrap gap-3 pt-2 border-t border-[#E7E3F5]">
+                  <Link
+                    href="/auth/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="border-2 border-[#074E84] px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-[#074E84]"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="bg-[#FCBC45] px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-[#05052D]"
+                  >
+                    Register
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+        </header>
+      </>
+    );
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-app-border bg-[var(--app-header-bg)] shadow-sm backdrop-blur-xl">
@@ -203,14 +351,16 @@ export default function ModuleHeader() {
             href="/"
             className="flex items-center gap-3 rounded-2xl border border-app-border bg-app-surface px-4 py-2.5 shadow-sm transition hover:border-app-accent hover:shadow-md"
           >
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-app-accent text-base font-bold text-app-accent-text">
-              J
-            </div>
+            <img
+              src="/images/epcora/epcora-mark.svg"
+              alt="EPCORA logo"
+              className="h-9 w-9 object-contain"
+            />
             <div className="hidden sm:block">
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-app-text">
                 OPTAIMYZE PORTAL
               </p>
-              <p className="text-xs text-app-text-muted">EPC Management, simplified</p>
+              <p className="text-xs text-app-text-muted">EPCORA Stack · EPC Management</p>
             </div>
           </Link>
         </div>

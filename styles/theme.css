@@ -93,18 +93,18 @@
     @apply min-h-full bg-app-bg text-app-text;
   }
 
-  /* Headings on surface backgrounds should always use theme text color */
-  .app-page h1,
-  .app-page h2,
-  .app-page h3,
-  .app-page h4,
+  /* Headings on surface backgrounds should always use theme text color (except on EPCORA landing page) */
+  .app-page h1:not(.epcora-landing *),
+  .app-page h2:not(.epcora-landing *),
+  .app-page h3:not(.epcora-landing *),
+  .app-page h4:not(.epcora-landing *),
   .app-card h1,
   .app-card h2,
   .app-card h3,
   .app-card h4,
-  main h1,
-  main h2,
-  main h3 {
+  main h1:not(.epcora-landing *),
+  main h2:not(.epcora-landing *),
+  main h3:not(.epcora-landing *) {
     color: var(--app-text);
   }
 
