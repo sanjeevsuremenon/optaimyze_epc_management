@@ -35,9 +35,12 @@ yarn-error.log*
 .vercel
 
 # public files
-/public
+# /public
 
 /public/uploads
+/public/images/epcora/products
+/public/videos
+
 /unusedfiles
 unusedcomponents.txt
 unusedcomponents.txt

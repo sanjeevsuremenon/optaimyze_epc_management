@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" width="200" height="40">
+  <defs>
+    <linearGradient id="epc-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+  </defs>
+  <!-- Stack Logo Symbol -->
+  <g transform="translate(10, 4)">
+    <path d="M 0 8 L 16 0 L 32 8 L 16 16 Z" fill="url(#epc-gradient)" />
+    <path d="M 0 15 L 16 23 L 32 15" fill="none" stroke="url(#epc-gradient)" stroke-width="2" stroke-linecap="round" />
+    <path d="M 0 22 L 16 30 L 32 22" fill="none" stroke="url(#epc-gradient)" stroke-width="2" stroke-linecap="round" />
+  </g>
+  <!-- Brand Text -->
+  <text x="54" y="26" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="20" fill="#0f172a">
+    EPC-<tspan fill="#2563eb">Stack</tspan>
+  </text>
+</svg>

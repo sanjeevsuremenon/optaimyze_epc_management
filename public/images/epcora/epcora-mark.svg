@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 240" role="img" aria-label="EPCORA mark">
+  <!-- C: gear arc -->
+  <g fill="#074E84">
+    <rect x="134" y="16" width="12" height="16" rx="2"/>
+    <rect x="134" y="16" width="12" height="16" rx="2" transform="rotate(40 140 120)"/>
+    <rect x="134" y="16" width="12" height="16" rx="2" transform="rotate(80 140 120)"/>
+    <rect x="134" y="16" width="12" height="16" rx="2" transform="rotate(120 140 120)"/>
+    <rect x="134" y="16" width="12" height="16" rx="2" transform="rotate(-40 140 120)"/>
+    <rect x="134" y="16" width="12" height="16" rx="2" transform="rotate(-80 140 120)"/>
+    <rect x="134" y="16" width="12" height="16" rx="2" transform="rotate(-120 140 120)"/>
+  </g>
+  <path d="M84.8 64.8 A78 78 0 1 1 84.8 175.2" fill="none" stroke="#074E84" stroke-width="34"/>
+
+  <!-- E: gold, crane nod -->
+  <g fill="#FCBC45">
+    <rect x="22" y="58" width="22" height="124"/>
+    <rect x="22" y="58" width="62" height="22"/>
+    <rect x="22" y="109" width="70" height="22"/>
+    <rect x="22" y="160" width="62" height="22"/>
+  </g>
+  <!-- crane hook -->
+  <path d="M78 80 v10 a8 8 0 1 1 -8 -8" fill="none" stroke="#05052D" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- P: saffron -->
+  <rect x="92" y="58" width="24" height="124" fill="#E8730C"/>
+  <path d="M116 58 h26 a32 32 0 0 1 0 64 h-26" fill="none" stroke="#E8730C" stroke-width="22"/>
+</svg>
